@@ -26,4 +26,24 @@ public final class EquGenExtFactory_c extends EquGenAbstractExtFactory_c {
 	protected Ext extClassDeclImpl() {
 		return new EquGenClassDeclExt();
 	}
+	
+	/**
+	 * FieldDecl <: ClassMember <: Term <: Node	<br>
+	 * FieldDecl <: CodeNode <: Term <: Node
+	 */
+	@Override
+	protected Ext extFieldDeclImpl() {
+//		return super.extFieldDeclImpl();
+		return new EquGenFieldDeclExt();
+	}
+	
+	/**
+	 * ProcedureDecl <: CodeDecl <: ClassMember <: Term <: Node	<br>
+	 * ProcedureDecl <: CodeDecl <: CodeBlock <: CodeNode <: Term <: Node
+	 */
+	@Override
+	protected Ext extProcedureDeclImpl() {
+//		return super.extProcedureDeclImpl();
+		return new EquGenProcedureDeclExt();
+	}
 }

@@ -1,7 +1,7 @@
 package tool.compiler.java;
 
 import polyglot.ast.NodeFactory;
-import polyglot.ext.jl5.Topics;
+//import polyglot.ext.jl5.Topics;
 import polyglot.ext.jl5.ast.JL5ExtFactory_c;
 import polyglot.ext.jl7.ast.JL7ExtFactory_c;
 import polyglot.frontend.Scheduler;
@@ -15,7 +15,7 @@ import tool.compiler.java.types.EquGenTypeSystem_c;
 
 public class ExtensionInfo extends polyglot.ext.jl7.JL7ExtensionInfo {
 	static {
-		Topics t = new Topics();
+//		Topics t = new Topics();
 	}
 
 	@Override

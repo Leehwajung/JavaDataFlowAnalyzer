@@ -3,7 +3,6 @@ package tool.compiler.java.ast;
 import polyglot.ast.Ext;
 import polyglot.ast.Ext_c;
 import polyglot.ast.Node;
-import polyglot.ext.jl7.ast.JL7Ext;
 import polyglot.util.InternalCompilerError;
 import polyglot.util.SerialVersionUID;
 import tool.compiler.java.visit.EquGenerator;
