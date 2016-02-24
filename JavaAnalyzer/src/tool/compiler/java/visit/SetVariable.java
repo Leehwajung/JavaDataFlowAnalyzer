@@ -2,54 +2,46 @@ package tool.compiler.java.visit;
 
 import polyglot.types.Type;
 
-public class SetVariable {
+public class SetVariable extends InfoVariable implements ProgramPointSet {
 	
-	private String kind = "X";
-	private Type type;
-	private long id;
 	private static long idGen = 1;
 	
 	/**
 	 * 
 	 */
 	public SetVariable(Type type) {
-		this.type = type;
+		setType(type);
 		
-		if(!type.isVoid()) {
+		if(type != null) {
 			generateID();
 		}
 	}
 	
 	/**
-	 * @return the type
+	 * @see tool.compiler.java.visit.InfoVariable#kind()
 	 */
-	public Type getType() {
-		return type;
+	@Override
+	protected String kind() {
+		return "X";
 	}
 	
-	/**
-	 * @param type the type to set
-	 */
-	public void setType(Type type) {
-		this.type = type;
-	}
-
 	/**
 	 * @return the ID
 	 */
 	public String getID() {
-		if(!type.isVoid()) {
-			return kind + id;
+		if(!getType().isVoid()) {
+			return super.getID();
 		} else {
 			return null;
 		}
 	}
 	
 	/**
-	 * generate ID
+	 * generate ID Number
 	 */
-	protected void generateID() {
-		id = idGen++;
+	@Override
+	protected long generateIDNum() {
+		return idGen++;
 	}
 
 	/**
@@ -57,18 +49,10 @@ public class SetVariable {
 	 */
 	@Override
 	public String toString() {
-		String result = type + "{";
-		if(!type.isVoid()) {
-			result += getID();
+		String result = getType() + "{";
+		if(!getType().isVoid()) {
+			result += super.toString();
 		} 
 		return result + "}";
-	}
-
-	/**
-	 * @see java.lang.Object#equals(java.lang.Object)
-	 */
-	@Override
-	public boolean equals(Object obj) {
-		return super.equals(obj);
 	}
 }

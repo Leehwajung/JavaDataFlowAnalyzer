@@ -4,15 +4,16 @@ import polyglot.ext.jl5.types.JL5ConstructorInstance;
 import polyglot.ext.jl5.types.JL5MethodInstance;
 import polyglot.ext.jl5.types.JL5PrimitiveType_c;
 import polyglot.ext.jl5.types.JL5ProcedureInstance;
+import polyglot.ext.jl5.types.TypeVariable;
 import polyglot.types.MemberInstance;
 import polyglot.types.PrimitiveType;
-import polyglot.types.ReferenceType;
 import polyglot.types.Type;
+import tool.compiler.java.util.ExtCollection;
 
 import java.util.ArrayList;
-import java.util.Iterator;
+import java.util.List;
 
-public class MethodInfo extends Info{
+public class MethodInfo extends TypingInfo{
 	
 	private JL5ProcedureInstance procIns;
 	private SetVariableList formalList;
@@ -40,13 +41,9 @@ public class MethodInfo extends Info{
 	}
 	
 	@Override
-	public ReferenceType getContainerType() {
-		return procIns.container();
-	}
-	
-	@Override
 	public Type getType() {
-		return isNormalMethod() ? ((JL5MethodInstance)procIns).returnType() : new JL5PrimitiveType_c(procIns.container().typeSystem(), PrimitiveType.VOID);
+//		return isNormalMethod() ? ((JL5MethodInstance)procIns).returnType() : new JL5PrimitiveType_c(procIns.container().typeSystem(), PrimitiveType.VOID);
+		return isNormalMethod() ? ((JL5MethodInstance)procIns).returnType() : null;
 	}
 	
 	@Override
@@ -55,19 +52,32 @@ public class MethodInfo extends Info{
 	}
 	
 	public ArrayList<SetVariable> getFormalList() {
-		return formalList;
+		return (ArrayList<SetVariable>) formalList.getCollection();
 	}
 	
 	private void generateFormalList() {
 		if(formalList == null) {
-			formalList = new SetVariableList();
+			formalList = new SetVariableList(new ArrayList<SetVariable>());
+		} else if(!formalList.isNull()) {
+			formalList.setCollection(new ArrayList<SetVariable>());
 		} else {
-			formalList.clear();
+			formalList.getCollection().clear();
 		}
 		
 		for(Type type: procIns.formalTypes()) {
-			formalList.add(new SetVariable(type));
+			formalList.getCollection().add(new SetVariable(type));
 		}
+	}
+	
+	public List<TypeVariable> getTypeParams() {
+		return procIns.typeParams();
+	}
+	
+	@Override
+	public List<TypeVariable> getBoundVariables() {
+		List<TypeVariable> result = super.getBoundVariables();
+		result.addAll(getTypeParams());
+		return result;
 	}
 	
 	/**
@@ -75,44 +85,34 @@ public class MethodInfo extends Info{
 	 */
 	@Override
 	public String toString() {
-		return "M("
-				+ getContainerType() + ", "
-				+ absObjInfoSet + ", "
-				+ getName() + ") = "
-				+ formalList + " -> "
-				+ getSetVariable();
-	}
-	
-	private class SetVariableList extends ArrayList<SetVariable> {
-		private static final long serialVersionUID = -3791546666769723203L;
-		
-		// String conversion
-		
-		/**
-		 * @see java.lang.Object#toString()
-		 */
-		@Override
-		public String toString() {
-			return "(" + toStringWithNoBracket() + ")";
+		String containerStr = getContainerType().toString();
+		if(getTypeVariables().isEmpty()) {
+				containerStr += "<>";
 		}
 		
-		/**
-		 * @param list List object to represent string
-		 * @return a string representation of list
-		 */
-		private final String toStringWithNoBracket() {
-			Iterator<?> it = iterator();
-			
-			if (!it.hasNext())
-				return "";
-			
-			StringBuilder sb = new StringBuilder();
-			for (;;) {
-				sb.append(it.next());
-				if (!it.hasNext())
-					return sb.toString();
-				sb.append(',').append(' ');
-			}
+		String result =  "M("
+				+ getBoundVariables() + ", "
+				+ containerStr + ", "
+				+ absObjInfoSet + ", "
+				+ getName() + ") = "
+				+ formalList;
+		
+		if(isNormalMethod()) {
+			result += " -> " + getSetVariable();
+		}
+		
+		return result;
+	}
+	
+	private class SetVariableList extends ExtCollection<SetVariable> {
+		
+		public SetVariableList(ArrayList<SetVariable> setVariableList) {
+			super(setVariableList);
+		}
+
+		@Override
+		public String toString() {
+			return "(" + super.toString() + ")";
 		}
 	}
 }

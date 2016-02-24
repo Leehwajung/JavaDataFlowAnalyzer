@@ -1,19 +1,14 @@
 package tool.compiler.java.visit;
 
-import java.util.List;
-import java.util.Map.Entry;
-
-import polyglot.ext.jl5.types.JL5ClassType;
 import polyglot.ext.jl5.types.JL5FieldInstance;
-import polyglot.ext.jl5.types.JL5ReferenceType;
-import polyglot.ext.jl5.types.JL5SubstClassType;
+import polyglot.ext.jl5.types.JL5ParsedClassType;
 import polyglot.ext.jl5.types.TypeVariable;
-import polyglot.ext.param.types.Subst;
 import polyglot.types.MemberInstance;
-import polyglot.types.ReferenceType;
 import polyglot.types.Type;
 
-public class FieldInfo extends Info {
+import java.util.List;
+
+public class FieldInfo extends TypingInfo {
 	
 	private JL5FieldInstance fldIns;
 	private AbstractObjectInfoSet absObjInfoSet;
@@ -31,20 +26,9 @@ public class FieldInfo extends Info {
 	}
 	
 	@Override
-	public ReferenceType getContainerType() {
-		return fldIns.container();
-	}
-	
-	@Override
 	public Type getType() {
 		return fldIns.type();
 	}
-	
-//	@Override
-//	public List<TypeVariable> getBoundVariables() {
-//
-//		return ;
-//	}
 	
 	@Override
 	public String getName() {
@@ -56,8 +40,14 @@ public class FieldInfo extends Info {
 	 */
 	@Override
 	public String toString() {
+		String containerStr = getContainerType().toString();
+		if(getTypeVariables().isEmpty()) {
+				containerStr += "<>";
+		}
+		
 		return "F("
-				+ getContainerType() + ", "
+				+ getBoundVariables() + ", "
+				+ containerStr + ", "
 				+ absObjInfoSet + ", "
 				+ getName() + ") = "
 				+ getSetVariable();

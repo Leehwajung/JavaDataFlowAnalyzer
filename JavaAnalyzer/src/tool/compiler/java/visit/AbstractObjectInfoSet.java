@@ -1,5 +1,5 @@
 package tool.compiler.java.visit;
 
-public class AbstractObjectInfoSet {
-
+public class AbstractObjectInfoSet implements ProgramPointSet {
+	
 }

@@ -4,7 +4,7 @@ import polyglot.ext.jl5.types.JL5ReferenceType;
 import polyglot.types.MemberInstance;
 import polyglot.types.Type;
 
-public class LocalVarInfo extends Info {
+public class LocalVarInfo extends TypingInfo {
 
 	protected LocalVarInfo(MemberInstance memberInstance) {
 		super(memberInstance);

@@ -4,7 +4,7 @@ import polyglot.ext.jl5.types.JL5ReferenceType;
 import polyglot.types.MemberInstance;
 import polyglot.types.Type;
 
-public class GenMethodTypeArgInfo extends Info {
+public class GenMethodTypeArgInfo extends TypingInfo {
 
 	protected GenMethodTypeArgInfo(MemberInstance memberInstance) {
 		super(memberInstance);

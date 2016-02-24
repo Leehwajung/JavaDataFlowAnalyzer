@@ -30,6 +30,6 @@ class Box<E> {
     <G> boolean isEmpty(Box<G> box) {return true;}
     
     class Box2<E> {
-    	
+    	<E> boolean isEmpty(Box<E> box) {return true;}
     }
  }        

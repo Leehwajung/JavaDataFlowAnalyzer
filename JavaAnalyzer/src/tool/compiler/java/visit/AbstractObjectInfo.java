@@ -1,38 +1,29 @@
 package tool.compiler.java.visit;
 
-import polyglot.ext.jl5.types.JL5ReferenceType;
-import polyglot.types.MemberInstance;
-import polyglot.types.Type;
+import polyglot.ext.jl5.types.JL5ConstructorInstance;
 
-public class AbstractObjectInfo extends Info {
+public class AbstractObjectInfo extends InfoVariable {
+	
+	private JL5ConstructorInstance ctorIns;
+	
+	/**
+	 * @param ctorIns
+	 */
+	public AbstractObjectInfo(JL5ConstructorInstance constructorInstance) {
+		setType(constructorInstance.container());
+		this.ctorIns = constructorInstance;
+	}
 
-	protected AbstractObjectInfo(MemberInstance memberInstance) {
-		super(memberInstance);
-		// TODO Auto-generated constructor stub
+	private static long idGen = 1;
+	
+	@Override
+	protected String kind() {
+		return "o";
 	}
 
 	@Override
-	public JL5ReferenceType getContainerType() {
-		// TODO Auto-generated method stub
-		return null;
+	protected long generateIDNum() {
+		return idGen++;
 	}
-
-	@Override
-	public Type getType() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public String getName() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	protected void setInstance(MemberInstance memberInstance) {
-		// TODO Auto-generated method stub
-		
-	}
-
+	
 }
