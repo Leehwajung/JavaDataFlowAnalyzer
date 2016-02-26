@@ -11,24 +11,25 @@ import polyglot.visit.NodeVisitor;
 import tool.compiler.java.ast.EquGenLang;
 import tool.compiler.java.util.CollUtil;
 
+import java.util.HashSet;
 import java.util.LinkedList;
 
 public class EquGenerator extends ContextVisitor {
 	
-	private static LinkedList<MethodInfo> methodInfoSet;
-	private static LinkedList<FieldInfo> fieldInfoSet;
-	private static LinkedList<AbstractObjectInfo> abstractObjectInfoSet;
+	private static LinkedList<MethodInfo> methodInfoList;
+	private static LinkedList<FieldInfo> fieldInfoList;
+	private static LinkedList<AbstractObjectInfo> abstractObjectInfoList;
 	
-	private static LinkedList<MethodTable> methodTableSet;
-	private static LinkedList<FieldTable> fieldTableSet;
+	private static LinkedList<MethodTable> methodTableList;
+	private static LinkedList<FieldTable> fieldTableList;
 	
 	static {
-		methodInfoSet = new LinkedList<>();
-		fieldInfoSet = new LinkedList<>();
-		abstractObjectInfoSet = new LinkedList<>();
+		methodInfoList = new LinkedList<>();
+		fieldInfoList = new LinkedList<>();
+		abstractObjectInfoList = new LinkedList<>();
 		
-		methodTableSet = new LinkedList<>();
-		fieldTableSet = new LinkedList<>();
+		methodTableList = new LinkedList<>();
+		fieldTableList = new LinkedList<>();
 	}
 	
 	public EquGenerator(Job job, TypeSystem ts, NodeFactory nf) {
@@ -52,8 +53,8 @@ public class EquGenerator extends ContextVisitor {
 		Report.report(1, "EquGenerator: finish()");
 		generateTables();
 		
-		Report.report(1, CollUtil.getNLStringOf(methodTableSet));
-		Report.report(1, CollUtil.getNLStringOf(fieldTableSet));
+		Report.report(1, CollUtil.getNLStringOf(fieldTableList));
+		Report.report(1, CollUtil.getNLStringOf(methodTableList));
 		
 		super.finish();
 	}
@@ -105,28 +106,28 @@ public class EquGenerator extends ContextVisitor {
 	
 	
 	public void addToSet(MethodInfo methodInfo) {
-		methodInfoSet.add(methodInfo);
+		methodInfoList.add(methodInfo);
 	}
 	
 	public void addToSet(FieldInfo fieldInfo) {
-		fieldInfoSet.add(fieldInfo);
+		fieldInfoList.add(fieldInfo);
 	}
 	
 	public void addToSet(AbstractObjectInfo abstractObjectInfoInfo) {
-		abstractObjectInfoSet.add(abstractObjectInfoInfo);
+		abstractObjectInfoList.add(abstractObjectInfoInfo);
 	}
 	
 	public void generateTables() {
-		for(AbstractObjectInfo absObjInfo: abstractObjectInfoSet) {
-			for(MethodInfo methodInfo: methodInfoSet) {
+		for(AbstractObjectInfo absObjInfo: abstractObjectInfoList) {
+			for(MethodInfo methodInfo: methodInfoList) {
 				if(absObjInfo.getBaseType().equals(methodInfo.getContainerBaseType())) {
-					methodTableSet.add(new MethodTable(absObjInfo, methodInfo));
+					methodTableList.add(new MethodTable(absObjInfo, methodInfo));
 				}
 			}
 			
-			for(FieldInfo fieldInfo: fieldInfoSet) {
+			for(FieldInfo fieldInfo: fieldInfoList) {
 				if(absObjInfo.getBaseType().equals(fieldInfo.getContainerBaseType())) {
-					fieldTableSet.add(new FieldTable(absObjInfo, fieldInfo));
+					fieldTableList.add(new FieldTable(absObjInfo, fieldInfo));
 				}
 			}
 		}

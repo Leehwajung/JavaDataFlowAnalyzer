@@ -31,11 +31,15 @@ class Box<E> {
             
             Box2<Integer> box2 = new Box2<>(); 
             
+            Box<Long> boxl = new Box<>();
+            isEmpty(boxl);
+            
+            isEmpty(boxstr);
          }
 
     <G> boolean isEmpty(Box<G> box) {return true;}
     
     class Box2<F> {
-    	<G> boolean isEmpty(Box<E> box) {return true;}
+    	<G> boolean mtd(Box<E> box) {return true;}
     }
- }        
+ }

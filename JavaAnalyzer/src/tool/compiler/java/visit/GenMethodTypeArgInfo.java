@@ -3,7 +3,6 @@ package tool.compiler.java.visit;
 import polyglot.types.MemberInstance;
 import polyglot.types.Type;
 
-@Deprecated
 public class GenMethodTypeArgInfo extends TypingInfo {
 
 	protected GenMethodTypeArgInfo(MemberInstance memberInstance) {
