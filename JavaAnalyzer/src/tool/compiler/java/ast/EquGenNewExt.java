@@ -2,9 +2,10 @@ package tool.compiler.java.ast;
 
 import polyglot.ast.New;
 import polyglot.ast.Node;
-import polyglot.ext.jl5.types.JL5ProcedureInstance;
+import polyglot.ext.jl5.types.JL5ConstructorInstance;
 import polyglot.main.Report;
 import polyglot.util.SerialVersionUID;
+import tool.compiler.java.visit.AbstractObjectInfo;
 import tool.compiler.java.visit.EquGenerator;
 
 /**
@@ -19,9 +20,17 @@ public class EquGenNewExt extends EquGenExt {
 	public EquGenerator equGenEnter(EquGenerator v) {
 		New nw = (New) this.node();
 		Report.report(0, "New: " + nw);
-//		System.out.println("dddddddddd   " + ((JL5ProcedureInstance)nw.procedureInstance()).typeParams());
-		((JL5ProcedureInstance)nw.procedureInstance()).typeParams();
 		
+		AbstractObjectInfo aa = new AbstractObjectInfo((JL5ConstructorInstance) nw.constructorInstance());
+		v.addToSet(aa);
+		System.out.println(aa);
+		
+		
+//		System.out.println("dddddddddd   " + ((JL5ProcedureInstance)nw.procedureInstance()).typeParams());
+//		((JL5ProcedureInstance)nw.procedureInstance()).typeParams();
+		
+		
+//		System.out.println(nw.precedence());
 		
 		return super.equGenEnter(v);
 	}

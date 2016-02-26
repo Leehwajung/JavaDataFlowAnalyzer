@@ -1,17 +1,13 @@
 package tool.compiler.java.visit;
 
 import polyglot.ext.jl5.types.JL5FieldInstance;
-import polyglot.ext.jl5.types.JL5ParsedClassType;
-import polyglot.ext.jl5.types.TypeVariable;
 import polyglot.types.MemberInstance;
 import polyglot.types.Type;
+import tool.compiler.java.util.CollUtil;
 
-import java.util.List;
-
-public class FieldInfo extends TypingInfo {
+public class FieldInfo extends TypingInfo implements FieldOps {
 	
 	private JL5FieldInstance fldIns;
-	private AbstractObjectInfoSet absObjInfoSet;
 	
 	/**
 	 * @param fieldInstance
@@ -21,18 +17,13 @@ public class FieldInfo extends TypingInfo {
 	}
 	
 	@Override
-	protected void setInstance(MemberInstance memberInstance) {
-		fldIns = (JL5FieldInstance) memberInstance;
+	public String getName() {
+		return fldIns.name();
 	}
 	
 	@Override
 	public Type getType() {
 		return fldIns.type();
-	}
-	
-	@Override
-	public String getName() {
-		return fldIns.name();
 	}
 	
 	/**
@@ -45,11 +36,26 @@ public class FieldInfo extends TypingInfo {
 				containerStr += "<>";
 		}
 		
-		return "F("
-				+ getBoundVariables() + ", "
+		return "FI("
+				+ CollUtil.getStringOf(getBoundVariables(), '{', '}') + ", "
 				+ containerStr + ", "
-				+ absObjInfoSet + ", "
 				+ getName() + ") = "
-				+ getSetVariable();
+				+ getType();
+	}
+	
+	/**
+	 * @return the FieldInstance
+	 */
+	@Override
+	public JL5FieldInstance getTypeInstance() {
+		return fldIns;
+	}
+	
+	/**
+	 * @param FieldInstance the FieldInstance to set
+	 */
+	@Override
+	protected void setTypeInstance(MemberInstance fieldInstance) {
+		fldIns = (JL5FieldInstance) fieldInstance;		// ClassCastingException이 발생하는 경우가 없음.
 	}
 }

@@ -12,7 +12,7 @@ public class SetVariable extends InfoVariable implements ProgramPointSet {
 	public SetVariable(Type type) {
 		setType(type);
 		
-		if(type != null) {
+		if(type != null && !type.isVoid()) {
 			generateID();
 		}
 	}

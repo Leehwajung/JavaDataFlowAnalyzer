@@ -1,5 +1,6 @@
 package tool.compiler.java.visit;
 
+import polyglot.ext.jl5.types.JL5SubstClassType;
 import polyglot.types.Type;
 
 public abstract class InfoVariable implements Info {
@@ -13,6 +14,14 @@ public abstract class InfoVariable implements Info {
 	@Override
 	public Type getType() {
 		return type;
+	}
+	
+	@Override
+	public Type getBaseType() {
+		if(type instanceof JL5SubstClassType) {
+			return ((JL5SubstClassType)type).base();
+		}
+		return getType();
 	}
 	
 	/**

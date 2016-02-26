@@ -22,6 +22,7 @@ public class EquGenFieldDeclExt extends EquGenExt {
 //		Report.report(0, "Field Declaration: " + fldDecl/*.name()*/);
 		
 		FieldInfo aa = new FieldInfo((JL5FieldInstance) fldDecl.fieldInstance());
+		v.addToSet(aa);
 		System.out.println(aa);
 		
 		return super.equGenEnter(v);

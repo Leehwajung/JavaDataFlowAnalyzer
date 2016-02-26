@@ -3,6 +3,7 @@ package tool.compiler.java.util;
 import java.util.Collection;
 import java.util.Iterator;
 
+@Deprecated
 public class ExtCollection<E> {
 
 	private Collection<E> collection;
