@@ -16,6 +16,9 @@ public abstract class InfoVariable implements Info {
 		return type;
 	}
 	
+	/**
+	 * 
+	 */
 	@Override
 	public Type getBaseType() {
 		if(type instanceof JL5SubstClassType) {

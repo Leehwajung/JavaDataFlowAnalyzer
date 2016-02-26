@@ -13,9 +13,6 @@ import java.util.List;
 
 public abstract class TypingInfo implements Info, Ops {
 	
-//	private static JL5ClassType currClass;
-//	private static Set<TypeVariable> currSubstTypes;
-	
 	private ReferenceType container;
 	
 	protected TypingInfo(MemberInstance memberInstance) {
@@ -31,7 +28,7 @@ public abstract class TypingInfo implements Info, Ops {
 	public List<TypeVariable> getBoundVariables() {
 		try {
 			return getBoundVariables((JL5ParsedClassType)container, new LinkedList<TypeVariable>());
-		} catch (ClassCastException e) {	// 무시 가능 (println() 메서드 호출은 확인용)
+		} catch (ClassCastException e) {	// 무시 가능
 //			System.err.println("getBoundVariables(): ClassCastException: " + container.getClass());
 			return null;
 		}
@@ -57,13 +54,13 @@ public abstract class TypingInfo implements Info, Ops {
 	
 	/**
 	 * get Type Variables
-	 * @return
+	 * @return	타입 변수 리스트
 	 */
 	@Override
 	public List<TypeVariable> getTypeVariables() {
 		try {
 			return ((JL5ParsedClassType) container).typeVariables();
-		} catch (ClassCastException e) {	// 무시 가능 (println() 메서드 호출은 확인용)
+		} catch (ClassCastException e) {	// 무시 가능
 //			System.err.println("getTypeVariables(): ClassCastException: " + container.getClass());
 			return null;
 		}
@@ -71,7 +68,7 @@ public abstract class TypingInfo implements Info, Ops {
 	
 	/**
 	 * get Class
-	 * @return
+	 * @return	포함되어 있는 클래스의 타입
 	 */
 	@Override
 	public ReferenceType getContainerType() {
@@ -87,7 +84,7 @@ public abstract class TypingInfo implements Info, Ops {
 	}
 	
 	/**
-	 * @param Container Type
+	 * @param containerType
 	 */
 	private void setContainerType(ReferenceType containerType) {
 		this.container = containerType;
@@ -111,52 +108,4 @@ public abstract class TypingInfo implements Info, Ops {
 	 * @param Instance the Instance to set
 	 */
 	protected abstract void setTypeInstance(MemberInstance memberInstance);
-
-	
-
-	
-
-	
-
-	
-	
-	
-	
-	
-//	protected class TypeVariableList extends ExtCollection<TypeVariable> {
-//		
-//		public TypeVariableList(ArrayList<TypeVariable> typeVariableList) {
-//			super(typeVariableList);
-//		}
-//		
-//		@Override
-//		public String toString() {
-//			return "{" + super.toString() + "}";
-//		}
-//	}
-	
-//	public static void setCurrentClass(JL5ClassType classType) {
-//		currClass = classType;
-//		
-//	}
-//	
-//	public static List<TypeVariable> getSubstTypes() {
-//		/* Substitution Class Type */
-//		if (currClass instanceof JL5SubstClassType) { // 제네릭 클래스인 경우
-////			addToUsedClasses(((JL5SubstClassType) classType).base()); // Base
-////			for (Entry<TypeVariable, ReferenceType> substType 
-////					: ((JL5SubstClassType) classType).subst().substitutions().entrySet()) {
-////				addToUsedClasses((JL5ClassType) substType.getValue()); // Substitutions
-////			}
-//			
-//			currSubstTypes = ((JL5SubstClassType) currClass).subst().substitutions().keySet();
-//		}
-//		
-////		/* Class Type */
-////		else { // (제네릭이 아닌) 일반 클래스인 경우
-////			addToUsedClasses(classType);
-////		}
-//	}
-	
-
 }

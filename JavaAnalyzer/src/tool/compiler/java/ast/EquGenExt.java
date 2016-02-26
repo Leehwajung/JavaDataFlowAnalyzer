@@ -33,7 +33,7 @@ public class EquGenExt extends Ext_c implements EquGenOps {  // TODO: Not JL7Ext
 		return EquGenLang_c.instance;
 	}
 	
-    // TODO:  Override operation methods for overridden AST operations.
+	// TODO:  Override operation methods for overridden AST operations.
 	@Override
 	public EquGenerator equGenEnter(EquGenerator v) {
 		// By default, return the given visitor.

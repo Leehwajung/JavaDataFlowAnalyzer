@@ -19,18 +19,11 @@ public class EquGenNewExt extends EquGenExt {
 	@Override
 	public EquGenerator equGenEnter(EquGenerator v) {
 		New nw = (New) this.node();
-		Report.report(0, "New: " + nw);
+//		Report.report(0, "New: " + nw);
 		
-		AbstractObjectInfo aa = new AbstractObjectInfo((JL5ConstructorInstance) nw.constructorInstance());
-		v.addToSet(aa);
-		System.out.println(aa);
-		
-		
-//		System.out.println("dddddddddd   " + ((JL5ProcedureInstance)nw.procedureInstance()).typeParams());
-//		((JL5ProcedureInstance)nw.procedureInstance()).typeParams();
-		
-		
-//		System.out.println(nw.precedence());
+		AbstractObjectInfo absObjInfo = new AbstractObjectInfo((JL5ConstructorInstance) nw.constructorInstance());
+		v.addToList(absObjInfo);
+		Report.report(0, "New: " + absObjInfo);
 		
 		return super.equGenEnter(v);
 	}

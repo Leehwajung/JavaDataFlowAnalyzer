@@ -11,11 +11,15 @@ import polyglot.visit.NodeVisitor;
 import tool.compiler.java.ast.EquGenLang;
 import tool.compiler.java.util.CollUtil;
 
-import java.util.HashSet;
 import java.util.LinkedList;
 
 public class EquGenerator extends ContextVisitor {
 	
+	// TODO: 인포와 테이블을 저장하는 자료구조 정하기
+	// 후보1 LinkedList: 중복 발생가능하므로 좋지는 않은 듯.
+	// 후보2 HashSet: 이 프로그램 논리 상의 중복이 제거되지 않으므로 대안 필요.
+	//						인포와 테이블의 정렬 순서가 중요해 보이지는 않지만, 순서가 섞여 알아보기 힘듦.
+	// 후보3 별도의 중복이 제거된 리스트: LinkedList를 확장하여 중복 제거 리스트 클래스를 별도로 만듦.
 	private static LinkedList<MethodInfo> methodInfoList;
 	private static LinkedList<FieldInfo> fieldInfoList;
 	private static LinkedList<AbstractObjectInfo> abstractObjectInfoList;
@@ -53,6 +57,7 @@ public class EquGenerator extends ContextVisitor {
 		Report.report(1, "EquGenerator: finish()");
 		generateTables();
 		
+		Report.report(1, "\n----- Tables -----");
 		Report.report(1, CollUtil.getNLStringOf(fieldTableList));
 		Report.report(1, CollUtil.getNLStringOf(methodTableList));
 		
@@ -104,19 +109,33 @@ public class EquGenerator extends ContextVisitor {
 		return super.clone();
 	}
 	
-	
-	public void addToSet(MethodInfo methodInfo) {
+	/**
+	 * 메서드 인포 리스트에 추가
+	 * @param methodInfo
+	 */
+	public void addToList(MethodInfo methodInfo) {
 		methodInfoList.add(methodInfo);
 	}
 	
-	public void addToSet(FieldInfo fieldInfo) {
+	/**
+	 * 필드 인포 리스트에 추가
+	 * @param fieldInfo
+	 */
+	public void addToList(FieldInfo fieldInfo) {
 		fieldInfoList.add(fieldInfo);
 	}
 	
-	public void addToSet(AbstractObjectInfo abstractObjectInfoInfo) {
-		abstractObjectInfoList.add(abstractObjectInfoInfo);
+	/**
+	 * 추상 객체 인포 리스트에 추가
+	 * @param abstractObjectInfo
+	 */
+	public void addToList(AbstractObjectInfo abstractObjectInfo) {
+		abstractObjectInfoList.add(abstractObjectInfo);
 	}
 	
+	/**
+	 * 테이블 생성 및 테이블 리스트에 추가
+	 */
 	public void generateTables() {
 		for(AbstractObjectInfo absObjInfo: abstractObjectInfoList) {
 			for(MethodInfo methodInfo: methodInfoList) {
@@ -132,15 +151,4 @@ public class EquGenerator extends ContextVisitor {
 			}
 		}
 	}
-	
-	
-//	public void addToSet(MethodTable methodTable) {
-//		methodTableSet.add(methodTable);
-//	}
-//	
-//	public void addToSet(FieldTable fieldTable) {
-//		fieldTableSet.add(fieldTable);
-//	}
-	
-	
 }

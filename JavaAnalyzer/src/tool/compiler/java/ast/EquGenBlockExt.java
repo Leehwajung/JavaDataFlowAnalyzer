@@ -17,7 +17,6 @@ public class EquGenBlockExt extends EquGenExt {
 	public EquGenerator equGenEnter(EquGenerator v) {
 		Block blk = (Block)this.node();
 		Report.report(0, "Block: " + blk);
-//		System.out.println(blk);
 		
 		return super.equGenEnter(v);
 	}

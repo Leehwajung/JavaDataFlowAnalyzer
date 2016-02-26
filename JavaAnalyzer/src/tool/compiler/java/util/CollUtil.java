@@ -42,20 +42,9 @@ public class CollUtil {
 	 * @return a string representation of collection
 	 */
 	public static <E> String getStringOf(Collection<E> collection, char leftBracket, char rightBracket) {
+		
 		try {
-			Iterator<E> it = collection.iterator();
-			if (!it.hasNext())
-				return String.valueOf(leftBracket) + rightBracket;
-			
-			StringBuilder sb = new StringBuilder();
-			sb.append(leftBracket);
-			for (;;) {
-				E e = it.next();
-				sb.append(e == collection ? "(this Collection)" : e);
-				if (!it.hasNext())
-					return sb.append(rightBracket).toString();
-				sb.append(',').append(' ');
-			}
+			return leftBracket + getStringOf(collection) + rightBracket;
 		} catch (NullPointerException e) {
 			return String.valueOf(leftBracket) + rightBracket;
 		}

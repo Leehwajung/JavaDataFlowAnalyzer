@@ -18,28 +18,36 @@ class X {
 
 
 class Box<E> {
-    E elem;
-    E get() {return elem;}
-    void set(E elem) { 
-            this.get(); // this의 타입은?    this:Box<E>  ===>    this:Box<E>{Xi}
+	E elem;
 
-            Box<E> boxe = new Box<E>();   // o3
-            Box<String> boxstr = new Box<String>();   // o4
-            if(true) {
-            	
-            }
-            
-            Box2<Integer> box2 = new Box2<>(); 
-            
-            Box<Long> boxl = new Box<>();
-            isEmpty(boxl);
-            
-            isEmpty(boxstr);
-         }
+	E get() {
+		return elem;
+	}
 
-    <G> boolean isEmpty(Box<G> box) {return true;}
-    
-    class Box2<F> {
-    	<G> boolean mtd(Box<E> box) {return true;}
-    }
- }
+	void set(E elem) {
+		this.get(); // this의 타입은? this:Box<E> ===> this:Box<E>{Xi}
+
+		Box<E> boxe = new Box<E>(); // o3
+		Box<String> boxstr = new Box<String>(); // o4
+		if (true) {
+
+		}
+
+		Box2<Integer> box2 = new Box2<>();
+
+		Box<Long> boxl = new Box<>();
+		isEmpty(boxl);
+
+		isEmpty(boxstr);
+	}
+
+	<G> boolean isEmpty(Box<G> box) {
+		return true;
+	}
+
+	class Box2<F> {
+		<G> boolean mtd(Box<E> box) {
+			return true;
+		}
+	}
+}

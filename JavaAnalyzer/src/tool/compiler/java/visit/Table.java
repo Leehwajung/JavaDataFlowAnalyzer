@@ -4,7 +4,6 @@ import polyglot.ext.jl5.types.JL5SubstClassType;
 import polyglot.ext.jl5.types.TypeVariable;
 import polyglot.types.ReferenceType;
 import polyglot.types.Type;
-import tool.compiler.java.Exceptions.InvalidParameterException;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -13,14 +12,14 @@ public abstract class Table implements Ops {
 	
 	private TypingInfo info;
 	private AbstractObjectInfo absObjInfo;	// 추상 객체
-	private SetVariable setVar;						// 집합 변수
+	private SetVariable setVar;						// 집합 변수 (필드타입/메서드리턴타입)
 	
 	/**
 	 * @param abstractObjectInfo
 	 * @param info
 	 */
 	protected Table(AbstractObjectInfo abstractObjectInfo, TypingInfo info) {
-		checkParameter(abstractObjectInfo, info);
+//		checkParameter(abstractObjectInfo, info);	// TODO: 생성자에서 타입을 검사할지 판단
 		
 		this.info = info;
 		this.absObjInfo = abstractObjectInfo;
@@ -30,12 +29,6 @@ public abstract class Table implements Ops {
 		}
 	}
 	
-	private void checkParameter(AbstractObjectInfo abstractObjectInfo, TypingInfo info) {
-		if(!abstractObjectInfo.getBaseType().equals(info.getContainerBaseType())) {
-//			throw new InvalidParameterException();
-		}
-	}
-
 	@Override
 	public List<TypeVariable> getBoundVariables() {
 		return info.getBoundVariables();
@@ -110,6 +103,18 @@ public abstract class Table implements Ops {
 	
 	protected SetVariable generateSetVariable(Type type) {
 		return new SetVariable(type);
+	}
+	
+	/**
+	 * AbstractObjectInfo와 TypingInfo의 타입이 일치하지 않는 경우를 검사.
+	 * 두 타입이 일치하지 않는 경우에 IllegalArgumentException가 발생함.
+	 * @param abstractObjectInfo
+	 * @param info
+	 */
+	public static void checkParameter(AbstractObjectInfo abstractObjectInfo, TypingInfo info) {
+		if(!abstractObjectInfo.getBaseType().equals(info.getContainerBaseType())) {
+			throw new IllegalArgumentException("The type of 'abstractObjectInfo'("+abstractObjectInfo.getBaseType()+") does NOT correspond with the type of 'FieldInfo' or 'MethodInfo.'("+ info.getBaseType() +")");
+		}
 	}
 	
 	/**

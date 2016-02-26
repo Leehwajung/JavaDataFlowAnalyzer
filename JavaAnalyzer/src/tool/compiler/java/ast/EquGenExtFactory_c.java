@@ -8,7 +8,7 @@ public final class EquGenExtFactory_c extends EquGenAbstractExtFactory_c {
 	public EquGenExtFactory_c() {
 		super();
 	}
-
+	
 	public EquGenExtFactory_c(ExtFactory nextExtFactory) {
 		super(nextExtFactory);
 	}
@@ -18,10 +18,14 @@ public final class EquGenExtFactory_c extends EquGenAbstractExtFactory_c {
 		return new EquGenExt();
 	}
 	
-
-    // TODO: Override factory methods for new extension nodes in the current
-    // extension.
 	
+	// TODO: Override factory methods for new extension nodes in the current
+	// extension.
+	
+	/**
+	 * ClassDecl <: ClassMember <: Term <: Node	<br>
+	 * ClassDecl <: CodeNode <: Term <: Node
+	 */
 	@Override
 	protected Ext extClassDeclImpl() {
 		return new EquGenClassDeclExt();
@@ -58,15 +62,6 @@ public final class EquGenExtFactory_c extends EquGenAbstractExtFactory_c {
 	}
 	
 	/**
-	 * Block <: CompoundStmt <: Stmt <: Term <: Node
-	 */
-	@Override
-	protected Ext extBlockImpl() {
-//		return super.extBlockImpl();
-		return new EquGenBlockExt();
-	}
-	
-	/**
 	 * Call <: Expr <: Term <: Node	<br>
 	 * Call <: Expr <: Receiver <: Prefix <: Node
 	 */
@@ -76,5 +71,12 @@ public final class EquGenExtFactory_c extends EquGenAbstractExtFactory_c {
 		return new EquGenCallExt();
 	}
 	
-	
+	/**
+	 * Block <: CompoundStmt <: Stmt <: Term <: Node
+	 */
+	@Override
+	protected Ext extBlockImpl() {
+//		return super.extBlockImpl();
+		return new EquGenBlockExt();
+	}
 }
