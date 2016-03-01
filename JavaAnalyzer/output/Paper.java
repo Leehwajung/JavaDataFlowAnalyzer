@@ -3,7 +3,11 @@ class Y {
     public Y() { super(); }
     
     public static final String jlc$CompilerVersion$jl7 = "2.7.0";
+<<<<<<< HEAD
     public static final long jlc$SourceLastModified$jl7 = 1456765414742L;
+=======
+    public static final long jlc$SourceLastModified$jl7 = 1456800659699L;
+>>>>>>> refs/heads/master
     public static final String jlc$ClassType$jl7 =
       ("H4sIAAAAAAAAAK1WX2wURRifu/6vhbsWKIhQChwm5c8djdZEi5FyFtt60AsH" +
        "GOrJMd2da7ed211m59prEQUTA0+EREB8gCeIiVEhRqIvmBoTxWBMMMSoieij" +
@@ -54,7 +58,11 @@ class X {
     public X() { super(); }
     
     public static final String jlc$CompilerVersion$jl7 = "2.7.0";
+<<<<<<< HEAD
     public static final long jlc$SourceLastModified$jl7 = 1456765414742L;
+=======
+    public static final long jlc$SourceLastModified$jl7 = 1456800659699L;
+>>>>>>> refs/heads/master
     public static final String jlc$ClassType$jl7 =
       ("H4sIAAAAAAAAAK1Xe2wURRifu75oLdy1CCKPFmjBlMcdqGi0Piilpa0HvdCC" +
        "eBaO6e5cu3Rvd9mda49qFUgMxD8I0YKYAH9BVAJCjEQTg6kxCgRjgiFGTQTj" +
@@ -142,7 +150,11 @@ class Box<E> {
         public Box2() { super(); }
         
         public static final String jlc$CompilerVersion$jl7 = "2.7.0";
+<<<<<<< HEAD
         public static final long jlc$SourceLastModified$jl7 = 1456765414742L;
+=======
+        public static final long jlc$SourceLastModified$jl7 = 1456800659699L;
+>>>>>>> refs/heads/master
         public static final String jlc$ClassType$jl7 =
           ("H4sIAAAAAAAAAK1Yb2wcxRWfu/O/OI7PsROTBuI4yYXKAe6SQCIVF4p9OWO7" +
            "l/jwOW7iGi7rvTl77b3dze6cfXEwENTKESIpBUNTCdIPBAkqIKht1A8VlatK" +
@@ -199,7 +211,11 @@ class Box<E> {
     public Box() { super(); }
     
     public static final String jlc$CompilerVersion$jl7 = "2.7.0";
+<<<<<<< HEAD
     public static final long jlc$SourceLastModified$jl7 = 1456765414742L;
+=======
+    public static final long jlc$SourceLastModified$jl7 = 1456800659699L;
+>>>>>>> refs/heads/master
     public static final String jlc$ClassType$jl7 =
       ("H4sIAAAAAAAAAK1YfWwUxxWfu/MHNrbP2HyVgLHBpDIJd0ALUuM2wT7O2M6B" +
        "Tz7jKq7Dsd6bsxfv7W525+yzg9OAVIFShUapkxKJ8BeRmoiEqC2t1CqVo6oJ" +

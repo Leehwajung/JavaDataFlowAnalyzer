@@ -11,6 +11,10 @@ import polyglot.visit.NodeVisitor;
 import tool.compiler.java.ast.EquGenLang;
 import tool.compiler.java.util.CollUtil;
 
+import java.io.DataOutputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.LinkedList;
 
 public class EquGenerator extends ContextVisitor {
@@ -61,9 +65,11 @@ public class EquGenerator extends ContextVisitor {
 		Report.report(1, CollUtil.getNLStringOf(fieldTableList));
 		Report.report(1, CollUtil.getNLStringOf(methodTableList));
 		
+		writeTablesToFile();
+		
 		super.finish();
 	}
-
+	
 //	@Override
 //	protected NodeVisitor enterCall(Node parent, Node n)
 //			throws SemanticException {
@@ -149,6 +155,24 @@ public class EquGenerator extends ContextVisitor {
 					fieldTableList.add(new FieldTable(absObjInfo, fieldInfo));
 				}
 			}
+		}
+	}
+	
+	/**
+	 * 테이블을 파일에 출력
+	 */
+	private void writeTablesToFile() {
+		try {
+			DataOutputStream dos = new DataOutputStream(new FileOutputStream("tables.txt"));
+			
+			dos.write("----- Tables -----\n\n".getBytes());
+			CollUtil.writeFile(dos, fieldTableList);
+			CollUtil.writeFile(dos, methodTableList);
+			
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
 	}
 }
