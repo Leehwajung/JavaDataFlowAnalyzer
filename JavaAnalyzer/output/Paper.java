@@ -3,7 +3,7 @@ class Y {
     public Y() { super(); }
     
     public static final String jlc$CompilerVersion$jl7 = "2.7.0";
-    public static final long jlc$SourceLastModified$jl7 = 1456494984208L;
+    public static final long jlc$SourceLastModified$jl7 = 1456800659699L;
     public static final String jlc$ClassType$jl7 =
       ("H4sIAAAAAAAAAK1WX2wURRifu/6vhbsWKIhQChwm5c8djdZEi5FyFtt60AsH" +
        "GOrJMd2da7ed211m59prEQUTA0+EREB8gCeIiVEhRqIvmBoTxWBMMMSoieij" +
@@ -54,7 +54,7 @@ class X {
     public X() { super(); }
     
     public static final String jlc$CompilerVersion$jl7 = "2.7.0";
-    public static final long jlc$SourceLastModified$jl7 = 1456494984208L;
+    public static final long jlc$SourceLastModified$jl7 = 1456800659699L;
     public static final String jlc$ClassType$jl7 =
       ("H4sIAAAAAAAAAK1Xe2wURRifu75oLdy1CCKPFmjBlMcdqGi0Piilpa0HvdCC" +
        "eBaO6e5cu3Rvd9mda49qFUgMxD8I0YKYAH9BVAJCjEQTg6kxCgRjgiFGTQTj" +
@@ -125,7 +125,7 @@ class Box<E> {
         public Box2() { super(); }
         
         public static final String jlc$CompilerVersion$jl7 = "2.7.0";
-        public static final long jlc$SourceLastModified$jl7 = 1456494984208L;
+        public static final long jlc$SourceLastModified$jl7 = 1456800659699L;
         public static final String jlc$ClassType$jl7 =
           ("H4sIAAAAAAAAAK1Yb2wUxxWfu/M/jPEZG0hKgzFwJDJJ7jAtSK3bNPZxxnYP" +
            "fPIZR3FdjvHunL14b3fZnbMPE5OQqgJVColSJ6VSwiciNVUSoraoH6JUrio1" +
@@ -179,7 +179,7 @@ class Box<E> {
     public Box() { super(); }
     
     public static final String jlc$CompilerVersion$jl7 = "2.7.0";
-    public static final long jlc$SourceLastModified$jl7 = 1456494984208L;
+    public static final long jlc$SourceLastModified$jl7 = 1456800659699L;
     public static final String jlc$ClassType$jl7 =
       ("H4sIAAAAAAAAAK1YfWwUxxWfu/MHNrbP2HyVgLHNkcoE7gItSK3bBPs4Y7sH" +
        "PvmMq1wdjvXenL14b3ezu2efHZwGpArUKjRKnZRKhL+I1EQkRG1ppVapHFVN" +
