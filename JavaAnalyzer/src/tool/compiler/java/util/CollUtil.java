@@ -1,7 +1,7 @@
 package tool.compiler.java.util;
 
-import java.io.DataOutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.util.Collection;
 import java.util.Iterator;
 
@@ -76,7 +76,7 @@ public class CollUtil {
 		}
 	}
 	
-	public static <E> void writeFile(DataOutputStream stream, Collection<E> collection) throws IOException {
+	public static <E> void writeFile(OutputStream stream, Collection<E> collection) throws IOException {
 		for(E ft: collection) {
 			stream.write((ft + "\n").getBytes());
 		}
