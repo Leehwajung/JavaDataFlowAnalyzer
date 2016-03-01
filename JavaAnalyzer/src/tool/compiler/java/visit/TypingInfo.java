@@ -108,4 +108,12 @@ public abstract class TypingInfo implements Info, Ops {
 	 * @param Instance the Instance to set
 	 */
 	protected abstract void setTypeInstance(MemberInstance memberInstance);
+
+	/**
+	 * @see java.lang.Object#equals(java.lang.Object)
+	 */
+	@Override
+	public boolean equals(Object obj) {
+		return getTypeInstance().equals(obj);
+	}
 }

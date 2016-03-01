@@ -53,7 +53,7 @@ public abstract class Table implements Ops {
 	 * 
 	 * @return
 	 */
-	public List<ReferenceType> getSubstitutionTypes() {
+	public List<ReferenceType> getContainerSubstitutionTypes() {
 		if(absObjInfo.getType() instanceof JL5SubstClassType) {
 			LinkedList<ReferenceType> result = new LinkedList<>();
 			for(TypeVariable typeVar: info.getTypeVariables()) {

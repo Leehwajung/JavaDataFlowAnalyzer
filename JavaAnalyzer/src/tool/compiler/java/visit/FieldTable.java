@@ -21,7 +21,7 @@ public class FieldTable extends Table implements FieldOps {
 		return "F("
 				+ CollUtil.getStringOf(getBoundVariables(), '{', '}') + ", "
 				+ containerStr + ", "
-				+ getAbstractObjectInfo() + CollUtil.getStringOf(getSubstitutionTypes(), '<', '>') + ", "
+				+ getAbstractObjectInfo() + CollUtil.getStringOf(getContainerSubstitutionTypes(), '<', '>') + ", "
 				+ getName() + ") = "
 				+ getSetVariable();
 	}

@@ -36,12 +36,12 @@ class Box<E> {
 		Box2<Integer> box2 = new Box2<>();
 
 		Box<Long> boxl = new Box<>();
-		isEmpty(boxl);
+		isEmpty(boxl, 2);
 
-		isEmpty(boxstr);
+		this.<Integer, String>isEmpty(boxstr, 1);
 	}
 
-	<G> boolean isEmpty(Box<G> box) {
+	<H, G> boolean isEmpty(Box<G> box, H hjkl) {
 		return true;
 	}
 

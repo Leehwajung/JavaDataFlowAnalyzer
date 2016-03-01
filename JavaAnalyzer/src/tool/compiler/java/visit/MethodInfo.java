@@ -5,6 +5,7 @@ import polyglot.ext.jl5.types.JL5MethodInstance;
 import polyglot.ext.jl5.types.JL5ProcedureInstance;
 import polyglot.ext.jl5.types.TypeVariable;
 import polyglot.types.MemberInstance;
+import polyglot.types.ReferenceType;
 import polyglot.types.Type;
 import tool.compiler.java.util.CollUtil;
 
@@ -39,6 +40,11 @@ public class MethodInfo extends TypingInfo implements MethodOps {
 	}
 	
 	@Override
+	public List<ReferenceType> getMethodSubstitutionTypes() {
+		return null;
+	}
+	
+	@Override
 	public List<? extends Type> getFormalTypes() {
 		return procIns.formalTypes();
 	}
@@ -63,7 +69,7 @@ public class MethodInfo extends TypingInfo implements MethodOps {
 		}
 		
 		result += ", "
-				+ getName() + ") = "
+				+ getName() + CollUtil.getStringOf(getMethodSubstitutionTypes(), '<', '>') + ") = "
 				+ CollUtil.getStringOf(getFormalTypes(), '(', ')');
 		
 		if(isNormalMethod()) {

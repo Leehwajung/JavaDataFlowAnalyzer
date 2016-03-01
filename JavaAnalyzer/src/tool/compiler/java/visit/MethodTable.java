@@ -1,6 +1,7 @@
 package tool.compiler.java.visit;
 
 import polyglot.ext.jl5.types.TypeVariable;
+import polyglot.types.ReferenceType;
 import polyglot.types.Type;
 import tool.compiler.java.util.CollUtil;
 
@@ -19,6 +20,11 @@ public class MethodTable extends Table implements MethodOps {
 	@Override
 	public List<TypeVariable> getTypeParams() {
 		return getInfo().getTypeParams();
+	}
+	
+	@Override
+	public List<ReferenceType> getMethodSubstitutionTypes() {
+		return getInfo().getMethodSubstitutionTypes();
 	}
 	
 	@Override
@@ -44,8 +50,8 @@ public class MethodTable extends Table implements MethodOps {
 		}
 		
 		result += ", "
-				+ getAbstractObjectInfo() + CollUtil.getStringOf(getSubstitutionTypes(), '<', '>') + ", "
-				+ getName() + CollUtil.getStringOf(getTypeParams(), '<', '>') + ") = "
+				+ getAbstractObjectInfo() + CollUtil.getStringOf(getContainerSubstitutionTypes(), '<', '>') + ", "
+				+ getName() + CollUtil.getStringOf(getMethodSubstitutionTypes(), '<', '>') + ") = "
 				+ CollUtil.getStringOf(getFormalSetVariables(), '(', ')');
 		
 		if(isNormalMethod()) {
