@@ -7,6 +7,7 @@ import polyglot.types.Type;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 public abstract class Table implements Ops {
 	
@@ -49,15 +50,18 @@ public abstract class Table implements Ops {
 		return info.getContainerBaseType();
 	}
 	
+	public Map<TypeVariable, ReferenceType> getContainerSubstitution() {
+		return absObjInfo.getSubstitutions();
+	}
+	
 	/**
-	 * 
 	 * @return
 	 */
 	public List<ReferenceType> getContainerSubstitutionTypes() {
 		if(absObjInfo.getType() instanceof JL5SubstClassType) {
 			LinkedList<ReferenceType> result = new LinkedList<>();
 			for(TypeVariable typeVar: info.getTypeVariables()) {
-				result.add(absObjInfo.getSubstitutions().get(typeVar));
+				result.add(getContainerSubstitution().get(typeVar));
 			}
 			return result;
 		}

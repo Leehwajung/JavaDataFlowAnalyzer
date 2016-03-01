@@ -9,7 +9,7 @@ import polyglot.types.Type;
 public interface MethodOps extends Ops {
 	public List<TypeVariable> getTypeParams();
 	public List<? extends Type> getFormalTypes();
-	public List<ReferenceType> getMethodSubstitutionTypes();
+	public List<? extends ReferenceType> getMethodSubstitutionTypes();
 	public boolean isConstructor();
 	public boolean isNormalMethod();
 }

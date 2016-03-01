@@ -40,8 +40,8 @@ public class MethodInfo extends TypingInfo implements MethodOps {
 	}
 	
 	@Override
-	public List<ReferenceType> getMethodSubstitutionTypes() {
-		return null;
+	public List<? extends ReferenceType> getMethodSubstitutionTypes() {
+		return getTypeParams();
 	}
 	
 	@Override

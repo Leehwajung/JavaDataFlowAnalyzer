@@ -7,6 +7,7 @@ import tool.compiler.java.util.CollUtil;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 public class MethodTable extends Table implements MethodOps {
 	
@@ -22,8 +23,15 @@ public class MethodTable extends Table implements MethodOps {
 		return getInfo().getTypeParams();
 	}
 	
+	public Map<TypeVariable, ReferenceType> getMethodSubstitution() {
+		if(getInfo() instanceof GenericMethodInfo) {
+			return ((GenericMethodInfo)getInfo()).getSubstitutions();
+		}
+		return null;
+	}
+	
 	@Override
-	public List<ReferenceType> getMethodSubstitutionTypes() {
+	public List<? extends ReferenceType> getMethodSubstitutionTypes() {
 		return getInfo().getMethodSubstitutionTypes();
 	}
 	

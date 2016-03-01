@@ -17,6 +17,7 @@ public class EquGenClassDeclExt extends EquGenExt {
 	public EquGenerator equGenEnter(EquGenerator v) {
 		ClassDecl clzDecl = (ClassDecl)this.node();
 		Report.report(0, "Class Declaration: " + clzDecl.name());
+		
 		return super.equGenEnter(v);
 	}
 	
