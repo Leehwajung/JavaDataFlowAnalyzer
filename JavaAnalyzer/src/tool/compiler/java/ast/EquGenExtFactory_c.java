@@ -2,6 +2,7 @@ package tool.compiler.java.ast;
 
 import polyglot.ast.Ext;
 import polyglot.ast.ExtFactory;
+import polyglot.ext.jl5.ast.JL5CallExt;
 
 public final class EquGenExtFactory_c extends EquGenAbstractExtFactory_c {
 	

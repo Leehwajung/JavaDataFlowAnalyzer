@@ -29,7 +29,7 @@ public class AbstractObjectInfo extends InfoVariable {
 	public Collection<ReferenceType> getSubstitutionTypes() {
 		try {
 			return getSubstitutions().values();
-		} catch (NullPointerException e) {	// getSubstitutions()이 nul인 경우 무시
+		} catch (NullPointerException e) {	// getSubstitutions()이 null인 경우 무시
 			return null;
 		}
 	}

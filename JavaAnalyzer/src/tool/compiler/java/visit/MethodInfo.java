@@ -30,6 +30,11 @@ public class MethodInfo extends TypingInfo implements MethodOps {
 	
 	@Override
 	public List<TypeVariable> getTypeParams() {
+		try{
+//			System.out.println("###########" + procIns);
+//		System.out.println("###########" + procIns.erasureSubst().substitutions());
+//			System.out.println("###########" + procIns.typeParams());
+		} catch (NullPointerException ignored) {}
 		return procIns.typeParams();
 	}
 	
@@ -63,7 +68,7 @@ public class MethodInfo extends TypingInfo implements MethodOps {
 		}
 		
 		result += ", "
-				+ getName() + ") = "
+				+ getName() + CollUtil.getStringOf(getTypeParams(), '<', '>') + ") = "
 				+ CollUtil.getStringOf(getFormalTypes(), '(', ')');
 		
 		if(isNormalMethod()) {

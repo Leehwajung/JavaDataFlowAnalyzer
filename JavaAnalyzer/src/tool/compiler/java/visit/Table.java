@@ -113,7 +113,9 @@ public abstract class Table implements Ops {
 	 */
 	public static void checkParameter(AbstractObjectInfo abstractObjectInfo, TypingInfo info) {
 		if(!abstractObjectInfo.getBaseType().equals(info.getContainerBaseType())) {
-			throw new IllegalArgumentException("The type of 'abstractObjectInfo'("+abstractObjectInfo.getBaseType()+") does NOT correspond with the type of 'FieldInfo' or 'MethodInfo.'("+ info.getBaseType() +")");
+			throw new IllegalArgumentException(
+					"The type of 'abstractObjectInfo'("+abstractObjectInfo.getBaseType()+") "
+					+ "does NOT correspond with the type of 'FieldInfo' or 'MethodInfo.'("+ info.getBaseType() +")");
 		}
 	}
 	

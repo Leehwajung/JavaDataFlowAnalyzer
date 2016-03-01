@@ -3,6 +3,7 @@ package tool.compiler.java.ast;
 import polyglot.ast.Ext;
 import polyglot.ast.Ext_c;
 import polyglot.ast.Node;
+import polyglot.ext.jl5.ast.JL5ProcedureCallExt;
 import polyglot.util.InternalCompilerError;
 import polyglot.util.SerialVersionUID;
 import tool.compiler.java.visit.EquGenerator;
@@ -37,12 +38,30 @@ public class EquGenExt extends Ext_c implements EquGenOps {  // TODO: Not JL7Ext
 	@Override
 	public EquGenerator equGenEnter(EquGenerator v) {
 		// By default, return the given visitor.
+		try{
+//			JL5ProcedureCallExt ext = (JL5ProcedureCallExt)JL5ProcedureCallExt.ext(node());
+//			System.out.println("&&&&&0" + node().getClass());
+//			System.out.println("&&&&&1" + ext.getClass());
+//		System.out.println("&&&&&2" + ext.typeArgs());
+		
+		}catch (ClassCastException e) {
+			
+		}
+		
 		return v;
 	}
 
 	@Override
 	public Node equGen(EquGenerator v) {
 		// By default, do nothing.
+//		try{
+//			JL5ProcedureCallExt ext = (JL5ProcedureCallExt)JL5ProcedureCallExt.ext(node());
+//			System.out.println("&&&&&1" + ext.getClass());
+//		System.out.println("&&&&&2" + ext.typeArgs());
+//		
+//		}catch (ClassCastException e) {
+//			
+//		}
 		return node();
 	}
 }

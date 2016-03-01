@@ -19,14 +19,20 @@ public class EquGenProcedureDeclExt extends EquGenExt {
 	@Override
 	public EquGenerator equGenEnter(EquGenerator v) {
 		ProcedureDecl pcdDecl = (ProcedureDecl) this.node();
+		JL5ProcedureInstance pcdIns = (JL5ProcedureInstance) pcdDecl.procedureInstance();
+		
+		
 //		Report.report(0, "Procedure Declaration: " + pcdDecl/*.name()*/);
 		
 		MethodInfo mtdInfo = new MethodInfo((JL5ProcedureInstance) pcdDecl.procedureInstance());
 		v.addToList(mtdInfo);
 		Report.report(0, "Procedure Declaration: " + mtdInfo);
 		
+//		((JL5ProcedureInstance) pcdDecl.procedureInstance()).erasureSubst().substitutions();
+		
 		return super.equGenEnter(v);
 	}
+	
 	
 	@Override
 	public Node equGen(EquGenerator v) {

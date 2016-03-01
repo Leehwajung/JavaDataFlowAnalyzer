@@ -6,9 +6,7 @@ import polyglot.ext.jl5.ast.JL5ExtFactory_c;
 import polyglot.ext.jl7.ast.JL7ExtFactory_c;
 import polyglot.frontend.Scheduler;
 import polyglot.types.TypeSystem;
-import tool.compiler.java.ast.EquGenExtFactory;
 import tool.compiler.java.ast.EquGenExtFactory_c;
-import tool.compiler.java.ast.EquGenLang;
 import tool.compiler.java.ast.EquGenLang_c;
 import tool.compiler.java.ast.EquGenNodeFactory_c;
 import tool.compiler.java.types.EquGenTypeSystem_c;
@@ -49,6 +47,4 @@ public class ExtensionInfo extends polyglot.ext.jl7.JL7ExtensionInfo {
 	protected TypeSystem createTypeSystem() {
 		return new EquGenTypeSystem_c();
 	}
-	
-	
 }

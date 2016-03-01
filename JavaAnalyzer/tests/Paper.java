@@ -39,6 +39,9 @@ class Box<E> {
 		isEmpty(boxl);
 
 		isEmpty(boxstr);
+		
+		
+		
 	}
 
 	<G> boolean isEmpty(Box<G> box) {
@@ -46,8 +49,25 @@ class Box<E> {
 	}
 
 	class Box2<F> {
-		<G> boolean mtd(Box<E> box) {
+		int aaaaa (){
+			Box<X> aaa = new Box<>();
+			mtd(aaa);
+			X x = new X();
+			md(x, 1);
+			return 1;
+		}
+		
+		/**
+		 * 
+		 * @param box
+		 * @return
+		 */
+		<H extends X> boolean mtd(Box<H> box) {
 			return true;
+		}
+		
+		<J extends X> int md(J jx, int qer) {
+			return 1;
 		}
 	}
 }

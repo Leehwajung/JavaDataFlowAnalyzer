@@ -16,7 +16,7 @@ import java.util.LinkedList;
 public class EquGenerator extends ContextVisitor {
 	
 	// TODO: 인포와 테이블을 저장하는 자료구조 정하기
-	// 후보1 LinkedList: 중복 발생가능하므로 좋지는 않은 듯.
+	// 후보1 LinkedList: 중복이 발생 가능하므로 좋지는 않은 듯.
 	// 후보2 HashSet: 이 프로그램 논리 상의 중복이 제거되지 않으므로 대안 필요.
 	//						인포와 테이블의 정렬 순서가 중요해 보이지는 않지만, 순서가 섞여 알아보기 힘듦.
 	// 후보3 별도의 중복이 제거된 리스트: LinkedList를 확장하여 중복 제거 리스트 클래스를 별도로 만듦.
