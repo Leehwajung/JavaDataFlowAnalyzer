@@ -50,7 +50,7 @@ public abstract class Table implements Ops {
 		return info.getContainerBaseType();
 	}
 	
-	public Map<TypeVariable, ReferenceType> getContainerSubstitution() {
+	public Map<TypeVariable, ReferenceType> getContainerSubstitutions() {
 		return absObjInfo.getSubstitutions();
 	}
 	
@@ -61,7 +61,7 @@ public abstract class Table implements Ops {
 		if(absObjInfo.getType() instanceof JL5SubstClassType) {
 			LinkedList<ReferenceType> result = new LinkedList<>();
 			for(TypeVariable typeVar: info.getTypeVariables()) {
-				result.add(getContainerSubstitution().get(typeVar));
+				result.add(getContainerSubstitutions().get(typeVar));
 			}
 			return result;
 		}

@@ -23,7 +23,7 @@ public class MethodTable extends Table implements MethodOps {
 		return getInfo().getTypeParams();
 	}
 	
-	public Map<TypeVariable, ReferenceType> getMethodSubstitution() {
+	public Map<TypeVariable, ReferenceType> getMethodSubstitutions() {
 		if(getInfo() instanceof GenericMethodInfo) {
 			return ((GenericMethodInfo)getInfo()).getSubstitutions();
 		}
