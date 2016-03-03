@@ -33,9 +33,9 @@ class Box<E> {
 
 		}
 
-		Box2<Integer> box2 = new Box2<>();
+		Box2<Integer> box2 = new Box2<>();	// o5
 
-		Box<Long> boxl = new Box<>();
+		Box<Long> boxl = new Box<>();	// o6
 		isEmpty(boxl, elem);
 
 		this.<E, String>isEmpty(boxstr, this.elem);
