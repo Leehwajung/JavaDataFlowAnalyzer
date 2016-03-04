@@ -76,9 +76,9 @@ public class CollUtil {
 		}
 	}
 	
-	public static <E> void writeFile(OutputStream stream, Collection<E> collection) throws IOException {
+	public static <E> void writeToOutputStream(OutputStream oStream, Collection<E> collection) throws IOException {
 		for(E ft: collection) {
-			stream.write((ft + "\n").getBytes());
+			oStream.write((ft + "\n").getBytes());
 		}
 	}
 }

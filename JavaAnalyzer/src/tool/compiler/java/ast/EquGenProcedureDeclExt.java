@@ -21,8 +21,9 @@ public class EquGenProcedureDeclExt extends EquGenExt {
 		ProcedureDecl pcdDecl = (ProcedureDecl) this.node();
 //		Report.report(0, "Procedure Declaration: " + pcdDecl/*.name()*/);
 		
+		// 메서드 인포 생성
 		MethodInfo mtdInfo = new MethodInfo((JL5ProcedureInstance) pcdDecl.procedureInstance());
-		v.addToList(mtdInfo);
+		v.addToDeclSet(mtdInfo);
 		Report.report(0, "Procedure Declaration: " + mtdInfo);
 		
 		return super.equGenEnter(v);

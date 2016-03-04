@@ -7,10 +7,12 @@ import polyglot.main.Report;
 import polyglot.util.SerialVersionUID;
 import tool.compiler.java.visit.EquGenerator;
 import tool.compiler.java.visit.GenericMethodInfo;
+import tool.compiler.java.visit.MethodInfo;
 
 /**
  * Call <: Expr <: Term <: Node
  * Call <: Expr <: Receiver <: Prefix <: Node
+ * Call <: ProcedureCall <: Term <: Node
  * @author LHJ
  */
 public class EquGenCallExt extends EquGenExt {
@@ -19,15 +21,19 @@ public class EquGenCallExt extends EquGenExt {
 	@Override
 	public EquGenerator equGenEnter(EquGenerator v) {
 		Call call = (Call)this.node();
-		JL5MethodInstance procIns = (JL5MethodInstance) call.methodInstance();
+//		Report.report(0, "Call: " + call/*.name()*/);
+		JL5MethodInstance methIns = (JL5MethodInstance) call.methodInstance();
 		
-		if(procIns != procIns.orig()) {	// 제네릭 메서드인 경우 (타입 파라메터 전달)
-			GenericMethodInfo mtdInfo = new GenericMethodInfo(procIns);
-			v.addToList(mtdInfo);
-			Report.report(0, "Call: " + call/*.name()*/ + ": " + mtdInfo);
-		} else {
-			Report.report(0, "Call: " + call/*.name()*/);
+		// 메서드 인포 생성 (일반)
+		MethodInfo mtdInfo = null;
+		if(MethodInfo.isGenericMethod(methIns)) {	// 제네릭 메서드인 경우
+			mtdInfo = new GenericMethodInfo(methIns);
+		} else {														// 일반 메서드인 경우
+			mtdInfo = new MethodInfo(methIns);
 		}
+		
+		Report.report(0, "Call: " + call/*.name()*/ + ": " + mtdInfo);
+		v.addToCallSet(mtdInfo);
 		
 		return super.equGenEnter(v);
 	}

@@ -1,8 +1,11 @@
 package tool.compiler.java.visit;
 
+import polyglot.ext.jl5.types.JL5ClassType;
 import polyglot.ext.jl5.types.JL5ParsedClassType;
 import polyglot.ext.jl5.types.JL5SubstClassType;
+import polyglot.ext.jl5.types.RawClass;
 import polyglot.ext.jl5.types.TypeVariable;
+import polyglot.ext.jl7.types.DiamondType;
 import polyglot.types.ClassType;
 import polyglot.types.MemberInstance;
 import polyglot.types.ReferenceType;
@@ -27,8 +30,9 @@ public abstract class TypingInfo implements Info, Ops {
 	@Override
 	public List<TypeVariable> getBoundVariables() {
 		try {
-			return getBoundVariables((JL5ParsedClassType)container, new LinkedList<TypeVariable>());
-		} catch (ClassCastException e) {	// 무시 가능
+			return getBoundVariables((JL5ClassType)container, new LinkedList<TypeVariable>());
+		} catch (ClassCastException e) {
+			e.printStackTrace();
 //			System.err.println("getBoundVariables(): ClassCastException: " + container.getClass());
 			return null;
 		}
@@ -40,15 +44,17 @@ public abstract class TypingInfo implements Info, Ops {
 	 * @param boundVariables
 	 * @return
 	 */
-	private List<TypeVariable> getBoundVariables(JL5ParsedClassType classType, List<TypeVariable> boundVariables) {
+	private List<TypeVariable> getBoundVariables(JL5ClassType classType, List<TypeVariable> boundVariables) {
 		ClassType outer = classType.outer();
 		List<TypeVariable> result;
-		if(outer != null && outer instanceof JL5ParsedClassType) {
-			result = getBoundVariables((JL5ParsedClassType) outer, boundVariables);
+		if(outer != null) {
+			result = getBoundVariables((JL5ClassType) outer, boundVariables);
 		} else {
 			result = boundVariables;
 		}
-		boundVariables.addAll(classType.typeVariables());
+		
+		boundVariables.addAll(getTypeVariables(classType));
+		
 		return result;
 	}
 	
@@ -59,11 +65,31 @@ public abstract class TypingInfo implements Info, Ops {
 	@Override
 	public List<TypeVariable> getTypeVariables() {
 		try {
-			return ((JL5ParsedClassType) container).typeVariables();
-		} catch (ClassCastException e) {	// 무시 가능
-//			System.err.println("getTypeVariables(): ClassCastException: " + container.getClass());
+			return getTypeVariables((JL5ClassType) container);
+		} catch (ClassCastException e) {
+			e.printStackTrace();
+//			System.err.println("getBoundVariables(): ClassCastException: " + container.getClass());
 			return null;
 		}
+	}
+	
+	protected final List<TypeVariable> getTypeVariables(JL5ClassType classType) {
+		
+		JL5ParsedClassType parsedClass = null;
+		
+		if(classType instanceof JL5ParsedClassType) {
+			parsedClass = (JL5ParsedClassType) classType;
+		} else if (classType instanceof JL5SubstClassType){
+			parsedClass =  ((JL5SubstClassType) classType).base();
+		} else if (classType instanceof RawClass) {
+			parsedClass = ((RawClass)classType).base();
+		} else if (classType instanceof DiamondType) {
+			parsedClass = ((DiamondType)classType).base();
+		} else /*if (classType instanceof IntersectionType) */{
+			throw new RuntimeException("Not JL5ParsedClassType, JL5SubstClassType, RawClass nor DiamondType");
+		}
+		
+		return parsedClass.typeVariables();
 	}
 	
 	/**
@@ -114,6 +140,15 @@ public abstract class TypingInfo implements Info, Ops {
 	 */
 	@Override
 	public boolean equals(Object obj) {
-		return getTypeInstance().equals(obj);
+		boolean superResult = super.equals(obj);
+		
+		if(superResult) {
+			return superResult;
+		} else if(!(obj instanceof TypingInfo)) {
+			return false;
+		} else {
+			TypingInfo tiObj = (TypingInfo) obj;
+			return this.getTypeInstance().equals(tiObj.getTypeInstance());
+		}
 	}
 }

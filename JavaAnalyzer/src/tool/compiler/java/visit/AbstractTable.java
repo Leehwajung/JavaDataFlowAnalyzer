@@ -1,5 +1,6 @@
 package tool.compiler.java.visit;
 
+import polyglot.ext.jl5.types.JL5Subst;
 import polyglot.ext.jl5.types.JL5SubstClassType;
 import polyglot.ext.jl5.types.TypeVariable;
 import polyglot.types.ReferenceType;
@@ -7,20 +8,20 @@ import polyglot.types.Type;
 
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 
-public abstract class Table implements Ops {
+public abstract class AbstractTable implements Ops {
 	
 	private TypingInfo info;
 	private AbstractObjectInfo absObjInfo;	// 추상 객체
 	private SetVariable setVar;						// 집합 변수 (필드타입/메서드리턴타입)
+	private List<ReferenceType> substitutionTypes;
 	
 	/**
 	 * @param abstractObjectInfo
 	 * @param info
 	 */
-	protected Table(AbstractObjectInfo abstractObjectInfo, TypingInfo info) {
-//		checkParameter(abstractObjectInfo, info);	// TODO: 생성자에서 타입을 검사할지 판단
+	protected AbstractTable(AbstractObjectInfo abstractObjectInfo, TypingInfo info) {
+		checkArguments(abstractObjectInfo, info);	// TODO: 생성자에서 타입을 검사할지 판단
 		
 		this.info = info;
 		this.absObjInfo = abstractObjectInfo;
@@ -28,6 +29,8 @@ public abstract class Table implements Ops {
 		if(getType() != null) {
 			generateSetVariable();
 		}
+		
+		setSubstitutionTypes();
 	}
 	
 	@Override
@@ -50,7 +53,7 @@ public abstract class Table implements Ops {
 		return info.getContainerBaseType();
 	}
 	
-	public Map<TypeVariable, ReferenceType> getContainerSubstitutions() {
+	public JL5Subst getContainerSubstitutions() {
 		return absObjInfo.getSubstitutions();
 	}
 	
@@ -58,14 +61,19 @@ public abstract class Table implements Ops {
 	 * @return
 	 */
 	public List<ReferenceType> getContainerSubstitutionTypes() {
+		return substitutionTypes;
+	}
+	
+	private final void setSubstitutionTypes() {
 		if(absObjInfo.getType() instanceof JL5SubstClassType) {
-			LinkedList<ReferenceType> result = new LinkedList<>();
+			substitutionTypes = new LinkedList<>();
 			for(TypeVariable typeVar: info.getTypeVariables()) {
-				result.add(getContainerSubstitutions().get(typeVar));
+				substitutionTypes.add(getContainerSubstitutions().substitutions().get(typeVar));
 			}
-			return result;
+			
+		} else {
+			substitutionTypes = null;
 		}
-		return null;
 		// TODO: Nested Class에 대한 대응 필요 (별도 메서드 만드는 편이 좋을 듯)
 	}
 	
@@ -115,9 +123,11 @@ public abstract class Table implements Ops {
 	 * @param abstractObjectInfo
 	 * @param info
 	 */
-	public static void checkParameter(AbstractObjectInfo abstractObjectInfo, TypingInfo info) {
-		if(!abstractObjectInfo.getBaseType().equals(info.getContainerBaseType())) {
-			throw new IllegalArgumentException("The type of 'abstractObjectInfo'("+abstractObjectInfo.getBaseType()+") does NOT correspond with the type of 'FieldInfo' or 'MethodInfo.'("+ info.getBaseType() +")");
+	public static boolean checkArguments(AbstractObjectInfo abstractObjectInfo, TypingInfo info) {
+		if(abstractObjectInfo.getBaseType().equals(info.getContainerBaseType())) {
+			return true;
+		} else {
+			throw new IllegalArgumentException("The type of 'abstractObjectInfo'("+abstractObjectInfo.getBaseType()+") does NOT correspond with the type of 'FieldInfo' or 'MethodInfo.'("+ info.getContainerBaseType() +")");
 		}
 	}
 	
@@ -133,5 +143,23 @@ public abstract class Table implements Ops {
 	 */
 	protected final void setInfo(TypingInfo info) {
 		this.info = info;
+	}
+	
+	/**
+	 * @see java.lang.Object#equals(java.lang.Object)
+	 */
+	@Override
+	public boolean equals(Object obj) {
+		boolean superResult = super.equals(obj);
+		
+		if(superResult) {
+			return superResult;
+		} else if(!(obj instanceof AbstractTable)) {
+			return false;
+		} else {
+			AbstractTable absTableObj = (AbstractTable) obj;
+			return this.getInfo().equals(absTableObj.getInfo())
+					&& this.getAbstractObjectInfo().equals(absTableObj.getAbstractObjectInfo());
+		}
 	}
 }

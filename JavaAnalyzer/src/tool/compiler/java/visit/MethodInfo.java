@@ -56,30 +56,6 @@ public class MethodInfo extends TypingInfo implements MethodOps {
 	}
 	
 	/**
-	 * @see java.lang.Object#toString()
-	 */
-	@Override
-	public String toString() {
-		String result =  "MI("
-				+ CollUtil.getStringOf(getBoundVariables(), '{', '}') + ", "
-				+ getContainerType();
-		
-		if(getTypeVariables().isEmpty()) {
-			result += "<>";
-		}
-		
-		result += ", "
-				+ getName() + CollUtil.getStringOf(getMethodSubstitutionTypes(), '<', '>') + ") = "
-				+ CollUtil.getStringOf(getFormalTypes(), '(', ')');
-		
-		if(isNormalMethod()) {
-			result += " -> " + getType();
-		}
-		
-		return result;
-	}
-	
-	/**
 	 * @return the ProcedureInstance
 	 */
 	@Override
@@ -103,5 +79,47 @@ public class MethodInfo extends TypingInfo implements MethodOps {
 	@Override
 	public boolean isNormalMethod() {
 		return procIns instanceof JL5MethodInstance;
+	}
+	
+	public boolean isGenericMethod() {
+		return isGenericMethod(getTypeInstance());
+	}
+	
+	public static boolean isGenericMethod(JL5ProcedureInstance procedureInstance) {
+		return procedureInstance != getOrigInstanceOf(procedureInstance);
+	}
+	
+	protected final static JL5ProcedureInstance getOrigInstanceOf(JL5ProcedureInstance procedureInstance) {
+		if(procedureInstance instanceof JL5MethodInstance) {
+			return (JL5MethodInstance) ((JL5MethodInstance)procedureInstance).orig();
+		} else if(procedureInstance instanceof JL5ConstructorInstance) {
+			return (JL5ConstructorInstance) ((JL5ConstructorInstance)procedureInstance).orig();
+		} else {		// 발생하지 않는 경우임.
+			return null;
+		}
+	}
+	
+	/**
+	 * @see java.lang.Object#toString()
+	 */
+	@Override
+	public String toString() {
+		String result =  "MI("
+				+ CollUtil.getStringOf(getBoundVariables(), '{', '}') + ", "
+				+ getContainerBaseType();
+		
+		if(getTypeVariables().isEmpty()) {
+			result += "<>";
+		}
+		
+		result += ", "
+				+ getName() + CollUtil.getStringOf(getMethodSubstitutionTypes(), '<', '>') + ") = "
+				+ CollUtil.getStringOf(getFormalTypes(), '(', ')');
+		
+		if(isNormalMethod()) {
+			result += " -> " + getType();
+		}
+		
+		return result;
 	}
 }

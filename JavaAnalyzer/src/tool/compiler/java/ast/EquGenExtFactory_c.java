@@ -52,23 +52,25 @@ public final class EquGenExtFactory_c extends EquGenAbstractExtFactory_c {
 	}
 	
 	/**
-	 * New <: Expr <: Term <: Node	<br>
-	 * New <: Expr <: Receiver <: Prefix <: Node
-	 */
-	@Override
-	protected Ext extNewImpl() {
-//		return super.extNewImpl();
-		return new EquGenNewExt();
-	}
-	
-	/**
 	 * Call <: Expr <: Term <: Node	<br>
-	 * Call <: Expr <: Receiver <: Prefix <: Node
+	 * Call <: Expr <: Receiver <: Prefix <: Node	<br>
+	 * Call <: ProcedureCall <: Term <: Node
 	 */
 	@Override
 	protected Ext extCallImpl() {
 //		return super.extCallImpl();
 		return new EquGenCallExt();
+	}
+	
+	/**
+	 * New <: Expr <: Term <: Node	<br>
+	 * New <: Expr <: Receiver <: Prefix <: Node	<br>
+	 * New <: ProcedureCall <: Term <: Node
+	 */
+	@Override
+	protected Ext extNewImpl() {
+//		return super.extNewImpl();
+		return new EquGenNewExt();
 	}
 	
 	/**

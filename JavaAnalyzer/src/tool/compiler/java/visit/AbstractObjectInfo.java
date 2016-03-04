@@ -1,12 +1,11 @@
 package tool.compiler.java.visit;
 
-import java.util.Collection;
-import java.util.Map;
-
 import polyglot.ext.jl5.types.JL5ConstructorInstance;
+import polyglot.ext.jl5.types.JL5Subst;
 import polyglot.ext.jl5.types.JL5SubstClassType;
-import polyglot.ext.jl5.types.TypeVariable;
 import polyglot.types.ReferenceType;
+
+import java.util.Collection;
 
 public class AbstractObjectInfo extends InfoVariable {
 	
@@ -17,7 +16,6 @@ public class AbstractObjectInfo extends InfoVariable {
 	 * @param JL5 Constructor Instance
 	 */
 	public AbstractObjectInfo(JL5ConstructorInstance constructorInstance) {
-		
 		setType(constructorInstance.container());
 		generateID();
 		this.ctorIns = constructorInstance;
@@ -28,7 +26,7 @@ public class AbstractObjectInfo extends InfoVariable {
 	 */
 	public Collection<ReferenceType> getSubstitutionTypes() {
 		try {
-			return getSubstitutions().values();
+			return getSubstitutions().substitutions().values();
 		} catch (NullPointerException e) {	// getSubstitutions()이 nul인 경우 무시
 			return null;
 		}
@@ -37,9 +35,9 @@ public class AbstractObjectInfo extends InfoVariable {
 	/**
 	 * @return	타입 파라메터의 맵
 	 */
-	public Map<TypeVariable, ReferenceType> getSubstitutions() {
+	public JL5Subst getSubstitutions() {
 		if(getType() instanceof JL5SubstClassType) {
-			return ((JL5SubstClassType)getType()).subst().substitutions();
+			return (JL5Subst) ((JL5SubstClassType)getType()).subst();
 		}
 		return null;
 	}
@@ -52,7 +50,7 @@ public class AbstractObjectInfo extends InfoVariable {
 	}
 	
 	/**
-	 * 식별 문자 설정
+	 * 식별 문자열 설정
 	 */
 	@Override
 	protected String kind() {

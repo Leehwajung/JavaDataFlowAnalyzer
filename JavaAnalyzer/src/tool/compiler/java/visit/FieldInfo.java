@@ -27,6 +27,22 @@ public class FieldInfo extends TypingInfo implements FieldOps {
 	}
 	
 	/**
+	 * @return the FieldInstance
+	 */
+	@Override
+	public JL5FieldInstance getTypeInstance() {
+		return fldIns;
+	}
+	
+	/**
+	 * @param FieldInstance the FieldInstance to set
+	 */
+	@Override
+	protected void setTypeInstance(MemberInstance fieldInstance) {
+		fldIns = (JL5FieldInstance) fieldInstance;		// ClassCastingException이 발생하는 경우가 없음.
+	}
+	
+	/**
 	 * @see java.lang.Object#toString()
 	 */
 	@Override
@@ -41,21 +57,5 @@ public class FieldInfo extends TypingInfo implements FieldOps {
 				+ containerStr + ", "
 				+ getName() + ") = "
 				+ getType();
-	}
-	
-	/**
-	 * @return the FieldInstance
-	 */
-	@Override
-	public JL5FieldInstance getTypeInstance() {
-		return fldIns;
-	}
-	
-	/**
-	 * @param FieldInstance the FieldInstance to set
-	 */
-	@Override
-	protected void setTypeInstance(MemberInstance fieldInstance) {
-		fldIns = (JL5FieldInstance) fieldInstance;		// ClassCastingException이 발생하는 경우가 없음.
 	}
 }

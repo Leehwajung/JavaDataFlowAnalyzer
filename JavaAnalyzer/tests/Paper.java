@@ -47,6 +47,13 @@ class Box<E> {
 		ABC(2,"t",3.1);
 		
 		ABCD(2.1,"t",'y', box2);
+		
+		BoxClass<String> bcstr = new BoxClass<>(2);
+		bcstr.test("aa");
+		
+		String str = new String();	// o7
+		BoxClass<Integer> bcInt = new BoxClass<>("QQQQ");
+		
 	}
 
 	<H extends E, G> boolean isEmpty(Box<G> box, H hjkl) {
@@ -70,16 +77,30 @@ class Box<E> {
 			return true;
 		}
 	}
+	
+	
 }
 
 class BoxClass<E> {
 	
-	void test(E elem) {
-		Box<E> box = new Box();
+	public BoxClass() {
+		
+	}
+	
+	public BoxClass(int i) {
+		
+	}
+	
+	public <T> BoxClass(T tp) {
+		
+	}
+	
+	public void test(E elem) {
+		Box<E> box = new Box<>();
 		mth(2.1,"t",'y', box);
 	}
 	
-	<A, B ,C, D> int mth(A box, B aaa, C hjkl, D dd) {
+	public <A, B ,C, D> int mth(A box, B aaa, C hjkl, D dd) {
 		return 1;
 	}
 	

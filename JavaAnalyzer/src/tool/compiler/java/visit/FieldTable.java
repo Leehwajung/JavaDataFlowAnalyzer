@@ -2,10 +2,18 @@ package tool.compiler.java.visit;
 
 import tool.compiler.java.util.CollUtil;
 
-public class FieldTable extends Table implements FieldOps {
+public class FieldTable extends AbstractTable implements FieldOps {
 	
 	public FieldTable(AbstractObjectInfo abstractObjectInfo, FieldInfo fieldInfo) {
 		super(abstractObjectInfo, fieldInfo);
+	}
+	
+	/**
+	 * @see tool.compiler.java.visit.AbstractTable#getInfo()
+	 */
+	@Override
+	public FieldInfo getInfo() {
+		return (FieldInfo) super.getInfo();
 	}
 	
 	/**
@@ -24,13 +32,5 @@ public class FieldTable extends Table implements FieldOps {
 				+ getAbstractObjectInfo() + CollUtil.getStringOf(getContainerSubstitutionTypes(), '<', '>') + ", "
 				+ getName() + ") = "
 				+ getSetVariable();
-	}
-	
-	/**
-	 * @see tool.compiler.java.visit.Table#getInfo()
-	 */
-	@Override
-	public FieldInfo getInfo() {
-		return (FieldInfo) super.getInfo();
 	}
 }
