@@ -1,3 +1,5 @@
 # JavaAnalyzer
 
-dummy line for fork test
+- Kwanghoon Choi
+- Seungwhui Lee
+- Hwajung Lee
