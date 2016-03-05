@@ -44,7 +44,7 @@ public abstract class TypingInfo implements Info, Ops {
 	 * @param boundVariables
 	 * @return
 	 */
-	private List<TypeVariable> getBoundVariables(JL5ClassType classType, List<TypeVariable> boundVariables) {
+	private final List<TypeVariable> getBoundVariables(JL5ClassType classType, List<TypeVariable> boundVariables) {
 		ClassType outer = classType.outer();
 		List<TypeVariable> result;
 		if(outer != null) {
@@ -144,11 +144,11 @@ public abstract class TypingInfo implements Info, Ops {
 		
 		if(superResult) {
 			return superResult;
-		} else if(!(obj instanceof TypingInfo)) {
-			return false;
-		} else {
+		} else if(obj instanceof TypingInfo) {
 			TypingInfo tiObj = (TypingInfo) obj;
 			return this.getTypeInstance().equals(tiObj.getTypeInstance());
+		} else {
+			return false;
 		}
 	}
 }

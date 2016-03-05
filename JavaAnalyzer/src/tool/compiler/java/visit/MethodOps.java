@@ -12,4 +12,5 @@ public interface MethodOps extends Ops {
 	public List<? extends ReferenceType> getMethodSubstitutionTypes();
 	public boolean isConstructor();
 	public boolean isNormalMethod();
+	public boolean isGenericMethod();
 }

@@ -13,9 +13,9 @@ public class MethodTable extends AbstractTable implements MethodOps {
 	
 	private LinkedList<SetVariable> formalList;
 	
-	public MethodTable(AbstractObjectInfo abstractObjectInfo, MethodInfo info) {
+	public MethodTable(AbstractObjectInfo abstractObjectInfo, MethodCallInfo info) {
 		super(abstractObjectInfo, info);
-		generateFormalList();
+		generateFormalSetVariables();
 	}
 	
 	@Override
@@ -24,10 +24,7 @@ public class MethodTable extends AbstractTable implements MethodOps {
 	}
 	
 	public JL5Subst getMethodSubstitutions() {
-		if(getInfo() instanceof GenericMethodInfo) {
-			return ((GenericMethodInfo)getInfo()).getSubstitutions();
-		}
-		return null;
+		return getInfo().getSubstitutions();
 	}
 	
 	@Override
@@ -44,12 +41,24 @@ public class MethodTable extends AbstractTable implements MethodOps {
 		return formalList;
 	}
 	
+	private void generateFormalSetVariables() {
+		if(formalList == null) {
+			formalList = new LinkedList<SetVariable>();
+		} else {
+			formalList.clear();
+		}
+		
+		for(Type type: getFormalTypes()) {
+			formalList.add(new SetVariable(type));
+		}
+	}
+	
 	/**
 	 * @see tool.compiler.java.visit.AbstractTable#getInfo()
 	 */
 	@Override
-	public MethodInfo getInfo() {
-		return (MethodInfo) super.getInfo();
+	public MethodCallInfo getInfo() {
+		return (MethodCallInfo) super.getInfo();
 	}
 	
 	@Override
@@ -62,16 +71,9 @@ public class MethodTable extends AbstractTable implements MethodOps {
 		return getInfo().isNormalMethod();
 	}
 	
-	private void generateFormalList() {
-		if(formalList == null) {
-			formalList = new LinkedList<SetVariable>();
-		} else {
-			formalList.clear();
-		}
-		
-		for(Type type: getFormalTypes()) {
-			formalList.add(new SetVariable(type));
-		}
+	@Override
+	public boolean isGenericMethod() {
+		return getInfo().isGenericMethod();
 	}
 	
 	/**

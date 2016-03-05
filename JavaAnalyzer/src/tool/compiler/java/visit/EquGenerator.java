@@ -24,7 +24,7 @@ public class EquGenerator extends ContextVisitor {
 	// 후보2 LinkedHashSet: 이 프로그램 논리 상의 중복이 제거되지 않으므로 대안 필요.
 	// 후보3 별도의 중복이 제거된 리스트: LinkedList를 확장하여 중복 제거 리스트 클래스를 별도로 만듦.
 	private static LinkedHashSet<MethodInfo> methodDeclInfoSet;
-	private static LinkedHashSet<MethodInfo> methodCallInfoSet;
+	private static LinkedHashSet<MethodCallInfo> methodCallInfoSet;
 	private static LinkedHashSet<FieldInfo> fieldDeclInfoSet;
 	private static LinkedHashSet<AbstractObjectInfo> abstractObjectInfoSet;
 	
@@ -122,7 +122,7 @@ public class EquGenerator extends ContextVisitor {
 	 * 메서드 선언 인포 집합에 추가
 	 * @param methodInfo
 	 */
-	public void addToDeclSet(MethodInfo methodInfo) {
+	public void addToSet(MethodInfo methodInfo) {
 		methodDeclInfoSet.add(methodInfo);
 	}
 	
@@ -130,7 +130,7 @@ public class EquGenerator extends ContextVisitor {
 	 * 메서드 호출 인포 집합에 추가
 	 * @param methodInfo
 	 */
-	public void addToCallSet(MethodInfo methodInfo) {
+	public void addToSet(MethodCallInfo methodInfo) {
 		methodCallInfoSet.add(methodInfo);
 	}
 	
@@ -155,7 +155,7 @@ public class EquGenerator extends ContextVisitor {
 	 */
 	public void generateTables() {
 		for(AbstractObjectInfo absObjInfo: abstractObjectInfoSet) {
-			for(MethodInfo methodInfo: methodCallInfoSet) {
+			for(MethodCallInfo methodInfo: methodCallInfoSet) {
 				try {
 //					MethodTable.checkArguments(absObjInfo, methodInfo);	// IllegalArgumentException 발생
 					MethodTable mt = new MethodTable(absObjInfo, methodInfo);	// IllegalArgumentException 발생

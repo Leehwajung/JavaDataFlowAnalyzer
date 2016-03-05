@@ -74,6 +74,16 @@ public final class EquGenExtFactory_c extends EquGenAbstractExtFactory_c {
 	}
 	
 	/**
+	 * ConstructorCall <: Stmt <: Term <: Node	<br>
+	 * ConstructorCall <: ProcedureCall <: Term <: Node
+	 */
+	@Override
+	protected Ext extConstructorCallImpl() {
+//		return super.extConstructorCallImpl();
+		return new EquGenConstructorCallExt();
+	}
+	
+	/**
 	 * Block <: CompoundStmt <: Stmt <: Term <: Node
 	 */
 	@Override
