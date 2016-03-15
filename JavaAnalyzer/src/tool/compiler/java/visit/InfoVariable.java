@@ -72,12 +72,4 @@ public abstract class InfoVariable implements Info {
 	public String toString() {
 		return getID();
 	}
-	
-	/**
-	 * @see java.lang.Object#equals(java.lang.Object)
-	 */
-	@Override
-	public boolean equals(Object obj) {
-		return super.equals(obj);
-	}
 }
