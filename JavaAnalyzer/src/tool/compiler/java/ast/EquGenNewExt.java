@@ -25,7 +25,7 @@ public class EquGenNewExt extends EquGenProcedureCallExt {
 		
 		// 추상 객체 인포 생성
 		AbstractObjectInfo absObjInfo = new AbstractObjectInfo(ctorIns);
-		v.addToAbsObjSet(absObjInfo);
+		v.addToSet(absObjInfo);
 		Report.report(0, "New: " + absObjInfo);
 		
 		return super.equGenEnter(v);

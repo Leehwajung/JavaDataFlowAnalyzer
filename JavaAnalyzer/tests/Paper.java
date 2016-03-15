@@ -39,7 +39,7 @@ class Box<E> {
 		isEmpty(boxl, elem);
 
 		this.<E, String>isEmpty(boxstr, this.elem);
-		
+		this.<E, String>isEmpty(boxstr, this.elem);
 		this.<Integer, Integer>AB(1,2);
 		
 		AB(3,4);

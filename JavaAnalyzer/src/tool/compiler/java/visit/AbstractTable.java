@@ -13,7 +13,7 @@ public abstract class AbstractTable implements Ops {
 	
 	private TypingInfo info;
 	private AbstractObjectInfo absObjInfo;	// 추상 객체
-	private SetVariable setVar;						// 집합 변수 (필드타입/메서드리턴타입)
+	private SetVariable setVar;				// 집합 변수 (필드타입/메서드리턴타입)
 	private List<ReferenceType> substitutionTypes;
 	
 	/**
@@ -74,7 +74,7 @@ public abstract class AbstractTable implements Ops {
 		} else {
 			substitutionTypes = null;
 		}
-		// TODO: Nested Class에 대한 대응 필요 (별도 메서드 만드는 편이 좋을 듯)
+		// TODO: Nested Class에 대한 대응 필요 (별도의 메서드를 만드는 편이 좋을 듯)
 	}
 	
 	/**
@@ -127,7 +127,12 @@ public abstract class AbstractTable implements Ops {
 		if(abstractObjectInfo.getBaseType().equals(info.getContainerBaseType())) {
 			return true;
 		} else {
-			throw new IllegalArgumentException("The type of 'abstractObjectInfo'("+abstractObjectInfo.getBaseType()+") does NOT correspond with the type of 'FieldInfo' or 'MethodInfo.'("+ info.getContainerBaseType() +")");
+			throw new IllegalArgumentException(
+					"The type of '" + abstractObjectInfo.getClass().getSimpleName() + "'"
+						+ "("+abstractObjectInfo.getBaseType()+") "
+						+ "does NOT correspond with the type of "
+						+ "'" + info.getClass().getSimpleName() + ".'"
+						+ "("+ info.getContainerBaseType() +")");
 		}
 	}
 	
@@ -146,20 +151,46 @@ public abstract class AbstractTable implements Ops {
 	}
 	
 	/**
+	 * @see java.lang.Object#hashCode()
+	 */
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((info == null) ? 0 : info.hashCode());
+		result = prime * result + ((absObjInfo == null) ? 0 : absObjInfo.hashCode());
+		return result;
+	}
+	
+	/**
 	 * @see java.lang.Object#equals(java.lang.Object)
 	 */
 	@Override
 	public boolean equals(Object obj) {
-		boolean superResult = super.equals(obj);
-		
-		if(superResult) {
-			return superResult;
-		} else if(!(obj instanceof AbstractTable)) {
-			return false;
-		} else {
-			AbstractTable absTableObj = (AbstractTable) obj;
-			return this.getInfo().equals(absTableObj.getInfo())
-					&& this.getAbstractObjectInfo().equals(absTableObj.getAbstractObjectInfo());
+		if (this == obj) {
+			return true;
 		}
+		if (obj == null) {
+			return false;
+		}
+		if (getClass() != obj.getClass()) {
+			return false;
+		}
+		AbstractTable other = (AbstractTable) obj;
+		if (info == null) {
+			if (other.info != null) {
+				return false;
+			}
+		} else if (!info.equals(other.info)) {
+			return false;
+		}
+		if (absObjInfo == null) {
+			if (other.absObjInfo != null) {
+				return false;
+			}
+		} else if (!absObjInfo.equals(other.absObjInfo)) {
+			return false;
+		}
+		return true;
 	}
 }
