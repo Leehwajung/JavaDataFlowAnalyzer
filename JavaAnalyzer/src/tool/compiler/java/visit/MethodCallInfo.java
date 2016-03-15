@@ -3,6 +3,7 @@ package tool.compiler.java.visit;
 import polyglot.ext.jl5.types.JL5ProcedureInstance;
 import polyglot.ext.jl5.types.JL5Subst;
 import polyglot.ext.jl5.types.JL5TypeSystem;
+import polyglot.ext.jl5.types.JL5TypeSystem_c;
 import polyglot.ext.jl5.types.TypeVariable;
 import polyglot.types.ReferenceType;
 import tool.compiler.java.util.EquGenUtil;

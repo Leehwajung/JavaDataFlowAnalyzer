@@ -1,19 +1,29 @@
 package tool.compiler.java.visit;
 
 public abstract class AbstractEquation {
-	private String name;
+	
+	private TypingInfo info;
 	
 	/**
 	 * @return the name
 	 */
 	public String getName() {
-		return name;
+		return info.getName();
 	}
 	
 	/**
-	 * @param name the name to set
+	 * @return the info
 	 */
-	protected final void setName(String name) {
-		this.name = name;
+	public TypingInfo getInfo() {
+		return info;
 	}
+
+	/**
+	 * @param info the info to set
+	 */
+	protected final void setInfo(TypingInfo info) {
+		this.info = info;
+	}
+	
+	
 }
