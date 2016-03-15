@@ -31,6 +31,8 @@ public class EquGenerator extends ContextVisitor {
 	private static LinkedHashSet<MethodTable> methodTableSet;
 	private static LinkedHashSet<FieldTable> fieldTableSet;
 	
+	private static LinkedHashSet<FieldTable> fieldEquationSet;
+	
 	static {
 		methodDeclInfoSet = new LinkedHashSet<>();
 		methodCallInfoSet = new LinkedHashSet<>();
@@ -39,6 +41,8 @@ public class EquGenerator extends ContextVisitor {
 		
 		methodTableSet = new LinkedHashSet<>();
 		fieldTableSet = new LinkedHashSet<>();
+		
+		fieldEquationSet = new LinkedHashSet<>();
 	}
 	
 	private static final String OutputFileName = "tables.txt";
