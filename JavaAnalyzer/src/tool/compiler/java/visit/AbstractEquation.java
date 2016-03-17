@@ -1,14 +1,49 @@
 package tool.compiler.java.visit;
 
-public abstract class AbstractEquation {
+import java.util.List;
+
+import polyglot.ext.jl5.types.TypeVariable;
+import polyglot.types.ReferenceType;
+import polyglot.types.Type;
+
+public abstract class AbstractEquation implements Ops{
 	
 	private TypingInfo info;
 	
 	/**
 	 * @return the name
 	 */
+	@Override
 	public String getName() {
 		return info.getName();
+	}
+	
+	@Override
+	public List<TypeVariable> getBoundVariables() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<TypeVariable> getTypeVariables() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public ReferenceType getContainerType() {
+		return info.getContainerType();
+	}
+
+	@Override
+	public Type getType() {
+		return info.getType();
+	}
+
+	@Override
+	public ReferenceType getContainerBaseType() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 	
 	/**
@@ -24,6 +59,4 @@ public abstract class AbstractEquation {
 	protected final void setInfo(TypingInfo info) {
 		this.info = info;
 	}
-	
-	
 }

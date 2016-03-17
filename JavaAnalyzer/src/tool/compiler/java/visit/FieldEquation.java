@@ -4,11 +4,16 @@ import java.util.Collection;
 import java.util.LinkedHashSet;
 import java.util.LinkedList;
 
+import tool.compiler.java.util.CollUtil;
+
+// TODO: 나중에 refactoring 필요 
 public class FieldEquation extends AbstractEquation {
 	
 	private LinkedHashSet<FieldTable> fieldTableSet;
 	private LinkedList<AbstractObjectInfo> absObjInfoList;
 	private LinkedList<SetVariable> setVarList;
+	
+	private static final char envId = 'x';
 	
 	public FieldEquation(FieldInfo fieldInfo, Collection<FieldTable> fieldTables) {
 		this(fieldInfo, fieldTables, true);
@@ -21,6 +26,7 @@ public class FieldEquation extends AbstractEquation {
 		}
 		setInfo(fieldInfo);
 		this.fieldTableSet = new LinkedHashSet<>(fieldTables);
+		System.out.println(fieldTables);
 	}
 	
 	public FieldEquation(Collection<FieldTable> fieldTables) {
@@ -45,7 +51,7 @@ public class FieldEquation extends AbstractEquation {
 	@Override
 	public String toString() {
 		// 형식: Γ{x:C{R}} ▷ x.f:S, ∅
-		return "Γ{" + getName() + ":";
+		return "Γ{" + envId + ":" + getContainerType() + CollUtil.getStringOf(absObjInfoList, '{', '}') +"} ▷ " + envId + "." + getName() + ":" + "S" + ", ∅";
 	}
 	
 	public static final void checkArguments(FieldInfo fieldInfo, Collection<FieldTable> fieldTables) {

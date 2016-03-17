@@ -12,6 +12,7 @@ class X {
 	void main() {
 		X p = new X();	// o1
 		Y q = new Y();	// o2
+		Y r = new Y();
 		p.set(q);
 	}
 }
