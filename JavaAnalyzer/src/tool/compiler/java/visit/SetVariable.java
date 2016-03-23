@@ -1,13 +1,19 @@
 package tool.compiler.java.visit;
 
+import java.util.Collection;
+import java.util.LinkedHashSet;
+import java.util.Set;
+
 import polyglot.types.Type;
 
 public class SetVariable extends InfoVariable implements ProgramPointSet {
 	
+	private LinkedHashSet<SetVariable> subSetVars = null;
+	
 	private static long idGen = 1;
 	
 	/**
-	 * 
+	 * @param type
 	 */
 	public SetVariable(Type type) {
 		setType(type);
@@ -15,6 +21,20 @@ public class SetVariable extends InfoVariable implements ProgramPointSet {
 		if(type != null && !type.isVoid()) {
 			generateID();
 		}
+	}
+	
+	/**
+	 * @param subSetVars
+	 */
+	public SetVariable(Collection<SetVariable> subSetVars) {
+		this(inferTypeFromSubSetVars(subSetVars));
+		setSubSetVars(subSetVars);
+	}
+	
+	protected static final Type inferTypeFromSubSetVars(Collection<SetVariable> subSetVars) {
+		
+		
+		return null;
 	}
 	
 	/**
@@ -43,7 +63,21 @@ public class SetVariable extends InfoVariable implements ProgramPointSet {
 	protected long generateIDNum() {
 		return idGen++;
 	}
+	
+	/**
+	 * @return the subSetVars
+	 */
+	public Set<SetVariable> getSubSetVars() {
+		return subSetVars;
+	}
 
+	/**
+	 * @param subSetVars the subSetVars to set
+	 */
+	protected final void setSubSetVars(Collection<SetVariable> subSetVars) {
+		this.subSetVars = new LinkedHashSet<>(subSetVars);
+	}
+	
 	/**
 	 * @see java.lang.Object#toString()
 	 */

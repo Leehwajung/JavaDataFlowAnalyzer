@@ -3,10 +3,12 @@ package tool.compiler.java.visit;
 import java.util.Collection;
 import java.util.LinkedHashSet;
 import java.util.LinkedList;
+import java.util.List;
 
 import tool.compiler.java.util.CollUtil;
 
-// TODO: 나중에 refactoring 필요 
+// TODO: 나중에 refactoring 필요
+@Deprecated
 public class FieldEquation extends AbstractEquation {
 	
 	private LinkedHashSet<FieldTable> fieldTableSet;
@@ -46,12 +48,26 @@ public class FieldEquation extends AbstractEquation {
 	}
 	
 	/**
+	 * @return the absObjInfoList
+	 */
+	public final List<AbstractObjectInfo> getAbsObjInfoList() {
+		return absObjInfoList;
+	}
+	
+	/**
+	 * @return the setVarList
+	 */
+	public final List<SetVariable> getSetVarList() {
+		return setVarList;
+	}
+	
+	/**
 	 * @see java.lang.Object#toString()
 	 */
 	@Override
 	public String toString() {
 		// 형식: Γ{x:C{R}} ▷ x.f:S, ∅
-		return "Γ{" + envId + ":" + getContainerType() + CollUtil.getStringOf(absObjInfoList, '{', '}') +"} ▷ " + envId + "." + getName() + ":" + "S" + ", ∅";
+		return "Γ{" + envId + ":" + getContainerType() + CollUtil.getStringOf(absObjInfoList, '{', '}') +"} ▷ " + envId + "." + getName() + ":";
 	}
 	
 	public static final void checkArguments(FieldInfo fieldInfo, Collection<FieldTable> fieldTables) {

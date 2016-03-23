@@ -2,6 +2,9 @@ class Y {
 	
 }
 
+class Z extends Y {
+	
+}
 class X {
 	Y f;
 	
@@ -12,7 +15,7 @@ class X {
 	void main() {
 		X p = new X();	// o1
 		Y q = new Y();	// o2
-		Y r = new Y();
+		X r = new X();
 		p.set(q);
 	}
 }

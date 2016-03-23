@@ -30,6 +30,7 @@ public class EquGenerator extends ContextVisitor {
 	private static LinkedHashMap<MethodCallInfo, LinkedHashSet<MethodTable>> methodTableMap;
 	private static LinkedHashMap<FieldInfo, LinkedHashSet<FieldTable>> fieldTableMap;
 	
+	@Deprecated
 	private static LinkedHashSet<FieldTable> fieldEquationSet;
 	
 	private static final String OutputFileName = "tables.txt";

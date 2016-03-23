@@ -6,6 +6,7 @@ import polyglot.ext.jl5.types.TypeVariable;
 import polyglot.types.ReferenceType;
 import polyglot.types.Type;
 
+@Deprecated
 public abstract class AbstractEquation implements Ops{
 	
 	private TypingInfo info;
