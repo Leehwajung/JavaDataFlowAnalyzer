@@ -1,17 +1,20 @@
 package tool.compiler.java.visit;
 
+import polyglot.types.ReferenceType;
+import polyglot.types.Type;
+
 /**
  * C.f <: D{X}<br>
  * ... read a static field
  */
-class ReadStaticField extends AbstractReadField {
+class ReadStaticField extends AbstractFieldConstraint {
 	
-	/* Abstract */
-	// C.f
-//	ReferenceType c;	// C
-//	FieldTable f;		// f
-//	Type d;				// D
-//	SetVariable x;		// X
+	/* ### Abstract Fields ###
+	 * ReferenceType c;		// C
+	 * FieldTable f;		// f
+	 * Type d;				// D
+	 * SetVariable x;		// X
+	 */
 	
 	
 	// constructor
@@ -29,24 +32,38 @@ class ReadStaticField extends AbstractReadField {
 	// getter methods
 	
 	/**
-	 * @return	X (SetVariable)
+	 * @return	C
 	 */
 	@Override
+	public ReferenceType getLeftType() {	// C
+		return super.getClassType();
+	}
+	
+	/**
+	 * @return	D
+	 */
+	@Override
+	public Type getRightType() {	// D
+		return super.getSetVarType();
+	}
+	
+	/**
+	 * @return	X (SetVariable)
+	 */
 	public SetVariable getRightSetVar() {	// X
-		return super.getRightSetVar();
+		return super.getSetVar();
 	}
 	
 	/**
 	 * @return	X (ID String)
 	 */
-	@Override
-	public String getRightSetVarID() {		// X
-		return super.getRightSetVarID();
+	public String getRightSetVarID() {	// X
+		return super.getSetVarID();
 	}
 	
 	
 	/**
-	 * Form: C.f <: D{X}
+	 * Form:	C.f <: D{X}
 	 */
 	@Override
 	public String toString() {

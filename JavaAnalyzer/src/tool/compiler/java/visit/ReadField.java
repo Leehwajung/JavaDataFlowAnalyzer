@@ -1,18 +1,21 @@
 package tool.compiler.java.visit;
 
+import polyglot.types.ReferenceType;
+import polyglot.types.Type;
+
 /**
  * C{X}.f <: D{Y}<br>
  * ... read an instance field
  */
-public class ReadField extends AbstractReadField {
+public class ReadField extends AbstractFieldConstraint {
 	
-	/* Abstract */
-	// C{X}
-//	ReferenceType c;	// C
-//	SetVariable x;		// X
-//	FieldTable f;		// f
-//	Type d;				// D
-//	SetVariable Y;		// Y
+	/* ### Abstract Fields ###
+	 * ReferenceType c;		// C
+	 * SetVariable x;		// X
+	 * FieldTable f;		// f
+	 * Type d;				// D
+	 * SetVariable Y;		// Y
+	 */
 	
 	
 	// constructor
@@ -30,6 +33,14 @@ public class ReadField extends AbstractReadField {
 	// getter methods
 	
 	/**
+	 * @return	C
+	 */
+	@Override
+	public ReferenceType getLeftType() {	// C
+		return super.getClassType();
+	}
+	
+	/**
 	 * @return	X (SetVariable)
 	 */
 	public SetVariable getLeftSetVar() {	// X
@@ -39,32 +50,38 @@ public class ReadField extends AbstractReadField {
 	/**
 	 * @return	X (ID String)
 	 */
-	public String getLeftSetVarID() {		// X
+	public String getLeftSetVarID() {	// X
 		return getLeftSetVar().getID();
+	}
+	
+	/**
+	 * @return	D
+	 */
+	@Override
+	public Type getRightType() {	// D
+		return super.getSetVarType();
 	}
 	
 	/**
 	 * @return	Y (SetVariable)
 	 */
-	@Override
 	public SetVariable getRightSetVar() {	// Y
-		return super.getRightSetVar();
+		return super.getSetVar();
 	}
 	
 	/**
 	 * @return	Y (ID String)
 	 */
-	@Override
-	public String getRightSetVarID() {		// Y
-		return super.getRightSetVarID();
+	public String getRightSetVarID() {	// Y
+		return super.getSetVarID();
 	}
 	
 	
 	/**
-	 * Form: C{X}.f <: D{Y}
+	 * Form:	C{X}.f <: D{Y}
 	 */
 	@Override
 	public String toString() {
-		return getLeftType().toString() + getLeftSetVar() + "." + getFieldName() + inclusion + getRightSetVar();
+		return getLeftSetVar() + "." + getFieldName() + inclusion + getRightSetVar();
 	}
 }
