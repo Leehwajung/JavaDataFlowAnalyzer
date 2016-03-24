@@ -8,8 +8,6 @@ import java.util.ArrayList;
  * 	(Not mandatory)
  */
 class MthToMth extends Constraint {
-	//          
-	//   
 	
 	ArrayList<Object/*???*/> cs;			// C1, ... , Cn		// TODO: ArrayList의 저장 타입 정하기
 	ArrayList<SetVariable> xs;	// X1, ..., Xn

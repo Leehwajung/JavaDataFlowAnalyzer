@@ -8,6 +8,7 @@ import polyglot.types.Type;
 
 public class SetVariable extends InfoVariable implements ProgramPointSet {
 	
+	@Deprecated
 	private LinkedHashSet<SetVariable> subSetVars = null;
 	
 	private static long idGen = 1;
@@ -26,11 +27,13 @@ public class SetVariable extends InfoVariable implements ProgramPointSet {
 	/**
 	 * @param subSetVars
 	 */
+	@Deprecated
 	public SetVariable(Collection<SetVariable> subSetVars) {
 		this(inferTypeFromSubSetVars(subSetVars));
 		setSubSetVars(subSetVars);
 	}
 	
+	@Deprecated
 	protected static final Type inferTypeFromSubSetVars(Collection<SetVariable> subSetVars) {
 		
 		
@@ -67,6 +70,7 @@ public class SetVariable extends InfoVariable implements ProgramPointSet {
 	/**
 	 * @return the subSetVars
 	 */
+	@Deprecated
 	public Set<SetVariable> getSubSetVars() {
 		return subSetVars;
 	}
@@ -74,6 +78,7 @@ public class SetVariable extends InfoVariable implements ProgramPointSet {
 	/**
 	 * @param subSetVars the subSetVars to set
 	 */
+	@Deprecated
 	protected final void setSubSetVars(Collection<SetVariable> subSetVars) {
 		this.subSetVars = new LinkedHashSet<>(subSetVars);
 	}
