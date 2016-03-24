@@ -1,11 +1,7 @@
 package tool.compiler.java.visit;
 
-/**
- * C.f <: D{X}
- */
-class ReadStaticField extends AbstractReadField {
+public class AbstractReadField extends Constraint {
 	
-	// C.f
 //	??? c;			// C
 //	??? f;			// f
 //	??? d;			// D

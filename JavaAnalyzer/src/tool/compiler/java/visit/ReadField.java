@@ -3,12 +3,14 @@ package tool.compiler.java.visit;
 /**
  * C{X}.f <: D{Y}
  */
-public class ReadField extends Constraint {
+public class ReadField extends AbstractReadField {
 	
 	// C{X}
 //	??? c;			// C
-	SetVariable x;	// X
+//	SetVariable x;	// X
 //	??? f;			// f
 //	??? d;			// D
-	SetVariable y;	// Y
+//	SetVariable y;	// Y
+	
+	
 }

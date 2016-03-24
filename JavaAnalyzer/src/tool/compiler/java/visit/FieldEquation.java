@@ -86,5 +86,4 @@ public class FieldEquation extends AbstractEquation {
 		checkArguments(!fieldTables.isEmpty() ? fieldTables.iterator().next().getInfo() : null, fieldTables);
 				// fieldTables가 null이면 NullPointerException 발생
 	}
-	
 }

@@ -47,6 +47,11 @@ public abstract class AbstractEquation implements Ops{
 		return null;
 	}
 	
+	@Override
+	public boolean isStatic() {
+		return info.isStatic();
+	}
+	
 	/**
 	 * @return the info
 	 */

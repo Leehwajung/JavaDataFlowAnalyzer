@@ -1,5 +1,9 @@
 class Y {
-	
+	static char stf;
+	static void stm() {
+		
+	}
+
 }
 
 class Z extends Y {
@@ -13,10 +17,22 @@ class X {
 	}
 	
 	void main() {
+		Y.stm();
+		char a = Y.stf;
+		
 		X p = new X();	// o1
 		Y q = new Y();	// o2
 		X r = new X();
 		p.set(q);
+		
+		YY.<Y>gstm();
+	}
+	
+}
+
+class YY<T> {
+	static void gstm() {
+//		T t;	// wrong
 	}
 }
 
@@ -98,6 +114,7 @@ class BoxClass<E> {
 	public <T> BoxClass(T tp) {
 		
 	}
+	
 	
 	public void test(E elem) {
 		Box<E> box = new Box<>();

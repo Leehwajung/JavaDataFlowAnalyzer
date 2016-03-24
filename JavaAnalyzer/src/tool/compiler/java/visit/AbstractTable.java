@@ -12,8 +12,8 @@ import java.util.List;
 public abstract class AbstractTable implements Ops {
 	
 	private TypingInfo info;
-	private AbstractObjectInfo absObjInfo;	// 추상 객체
-	private SetVariable setVar;				// 집합 변수 (필드타입/메서드리턴타입)
+	private AbstractObjectInfo absObjInfo = null;	// 추상 객체
+	private SetVariable setVar;						// 집합 변수 (필드타입/메서드리턴타입)
 	private List<ReferenceType> substitutionTypes;
 	
 	/**
@@ -24,13 +24,20 @@ public abstract class AbstractTable implements Ops {
 		checkArguments(abstractObjectInfo, info);	// TODO: 생성자에서 타입을 검사할지 판단
 		
 		this.info = info;
-		this.absObjInfo = abstractObjectInfo;
+		
+		if(!info.isStatic()) {
+			this.absObjInfo = abstractObjectInfo;
+		}
 		
 		if(getType() != null) {
 			generateSetVariable();
 		}
 		
 		setSubstitutionTypes();
+	}
+	
+	protected AbstractTable(TypingInfo info) {
+		this(null, info);
 	}
 	
 	@Override
@@ -65,7 +72,7 @@ public abstract class AbstractTable implements Ops {
 	}
 	
 	private final void setSubstitutionTypes() {
-		if(absObjInfo.getType() instanceof JL5SubstClassType) {
+		if(!isStatic() && absObjInfo.getType() instanceof JL5SubstClassType) {
 			substitutionTypes = new LinkedList<>();
 			for(TypeVariable typeVar: info.getTypeVariables()) {
 				substitutionTypes.add(getContainerSubstitutions().substitutions().get(typeVar));
@@ -133,6 +140,15 @@ public abstract class AbstractTable implements Ops {
 						+ "does NOT correspond with the type of "
 						+ "'" + info.getClass().getSimpleName() + ".'"
 						+ "("+ info.getContainerBaseType() +")");
+		}
+	}
+	
+	@Override
+	public boolean isStatic() {
+		if(absObjInfo == null) {
+			return true;
+		} else {
+			return info.isStatic();
 		}
 	}
 	

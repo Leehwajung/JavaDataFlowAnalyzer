@@ -18,6 +18,10 @@ public class MethodTable extends AbstractTable implements MethodOps {
 		generateFormalSetVariables();
 	}
 	
+	public MethodTable(MethodCallInfo info) {
+		this(null, info);
+	}
+	
 	@Override
 	public List<TypeVariable> getTypeParams() {
 		return getInfo().getTypeParams();
@@ -90,7 +94,7 @@ public class MethodTable extends AbstractTable implements MethodOps {
 		}
 		
 		result += ", "
-				+ getAbstractObjectInfo() + CollUtil.getStringOf(getContainerSubstitutionTypes(), '<', '>') + ", "
+				+ getAbstractObjectInfo() + (!isStatic() ? CollUtil.getStringOf(getContainerSubstitutionTypes(), '<', '>') : "") + ", "
 				+ getName() + CollUtil.getStringOf(getMethodSubstitutionTypes(), '<', '>') + ") = "
 				+ CollUtil.getStringOf(getFormalSetVariables(), '(', ')');
 		

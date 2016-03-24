@@ -69,9 +69,9 @@ public class EquGenerator extends ContextVisitor {
 		writeTablesToFile();
 		
 		
-		FieldEquation fe = new FieldEquation(fieldTableMap.keySet().iterator().next(), fieldTableMap.values().iterator().next());
-		
-		System.out.println(fe);
+//		FieldEquation fe = new FieldEquation(fieldTableMap.keySet().iterator().next(), fieldTableMap.values().iterator().next());
+//		
+//		System.out.println(fe);
 		
 		super.finish();
 	}

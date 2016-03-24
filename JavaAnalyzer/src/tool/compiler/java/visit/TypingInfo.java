@@ -125,6 +125,11 @@ public abstract class TypingInfo implements Info, Ops {
 		return type;
 	}
 	
+	@Override
+	public boolean isStatic() {
+		return getTypeInstance().flags().isStatic();
+	}
+	
 	/**
 	 * @return the Instance
 	 */

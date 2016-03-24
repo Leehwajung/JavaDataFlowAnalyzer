@@ -8,6 +8,10 @@ public class FieldTable extends AbstractTable implements FieldOps {
 		super(abstractObjectInfo, fieldInfo);
 	}
 	
+	public FieldTable(FieldInfo fieldInfo) {
+		super(fieldInfo);
+	}
+	
 	/**
 	 * @see tool.compiler.java.visit.AbstractTable#getInfo()
 	 */
@@ -29,7 +33,7 @@ public class FieldTable extends AbstractTable implements FieldOps {
 		return "F("
 				+ CollUtil.getStringOf(getBoundVariables(), '{', '}') + ", "
 				+ containerStr + ", "
-				+ getAbstractObjectInfo() + CollUtil.getStringOf(getContainerSubstitutionTypes(), '<', '>') + ", "
+				+ getAbstractObjectInfo() + (!isStatic() ? CollUtil.getStringOf(getContainerSubstitutionTypes(), '<', '>') : "") + ", "
 				+ getName() + ") = "
 				+ getSetVariable();
 	}
