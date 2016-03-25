@@ -3,11 +3,7 @@ package tool.compiler.java.visit;
 /**
  * C.m <: (D1{X1}, ..., Dn{Xn}) -- effect --> E{Y}
  */
-<<<<<<< HEAD
 public class InvokeStaticMth extends Constraint {	// 
-=======
-public class InvokeStaticMth extends AbstractMethodConstraint {	// 
->>>>>>> branch 'develop' of https://hjtl22.visualstudio.com/DefaultCollection/Java%20Analyzer/_git/JavaAnalyzer
 	
 	// fields
 	

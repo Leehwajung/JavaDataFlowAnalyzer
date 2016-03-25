@@ -1,23 +1,14 @@
 package tool.compiler.java.visit;
 
-<<<<<<< HEAD
 import polyglot.ext.jl5.types.JL5FieldInstance;
-=======
-import polyglot.types.ReferenceType;
->>>>>>> branch 'develop' of https://hjtl22.visualstudio.com/DefaultCollection/Java%20Analyzer/_git/JavaAnalyzer
 import polyglot.types.Type;
 
 /**
  * C.f <: D{X}<br>
  * ... read a static field
  */
-<<<<<<< HEAD
 public class ReadStaticField extends Constraint {
-=======
-public class ReadStaticField extends AbstractFieldConstraint {
->>>>>>> branch 'develop' of https://hjtl22.visualstudio.com/DefaultCollection/Java%20Analyzer/_git/JavaAnalyzer
 	
-<<<<<<< HEAD
 	// fields
 	
 	/* ### Abstract Fields ###
@@ -90,66 +81,5 @@ public class ReadStaticField extends AbstractFieldConstraint {
 	@Override
 	public String toString() {
 		return getC() + "." + getF().name() + " <: " + getDX();
-=======
-	/* ### Abstract Fields ###
-	 * ReferenceType c;		// C
-	 * FieldTable f;		// f
-	 * Type d;				// D
-	 * SetVariable x;		// X
-	 */
-	
-	
-	// constructor
-	
-	/**
-	 * 
-	 * @param f	set C, f	( C.f )
-	 * @param x	set D, X	( D{X} )
-	 */
-	public ReadStaticField(FieldTable f, SetVariable x) {
-		super(f, x);
-	}
-	
-	
-	// getter methods
-	
-	/**
-	 * @return	C
-	 */
-	@Override
-	public ReferenceType getLeftType() {	// C
-		return super.getClassType();
-	}
-	
-	/**
-	 * @return	D
-	 */
-	@Override
-	public Type getRightType() {	// D
-		return super.getSetVarType();
-	}
-	
-	/**
-	 * @return	X (SetVariable)
-	 */
-	public SetVariable getRightSetVar() {	// X
-		return super.getSetVar();
-	}
-	
-	/**
-	 * @return	X (ID String)
-	 */
-	public String getRightSetVarID() {	// X
-		return super.getSetVarID();
-	}
-	
-	
-	/**
-	 * Form:	C.f <: D{X}
-	 */
-	@Override
-	public String toString() {
-		return getLeftType() + "." + getFieldName() + inclusion + getRightSetVar();
->>>>>>> branch 'develop' of https://hjtl22.visualstudio.com/DefaultCollection/Java%20Analyzer/_git/JavaAnalyzer
 	}
 }
