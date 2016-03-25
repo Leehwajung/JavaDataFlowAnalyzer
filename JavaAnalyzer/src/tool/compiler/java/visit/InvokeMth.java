@@ -5,7 +5,7 @@ import java.util.ArrayList;
 /**
  * C{X}.m <: (D1{X1}, ..., Dn{Xn}) -- effect --> E{Y}
  */
-class InvokeMth extends Constraint {
+public class InvokeMth extends AbstractMethodConstraint {
 	
 //	??? c;						// C
 	SetVariable x;				// X

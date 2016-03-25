@@ -7,7 +7,7 @@ import polyglot.types.Type;
  * C.f <: D{X}<br>
  * ... read a static field
  */
-class ReadStaticField extends AbstractFieldConstraint {
+public class ReadStaticField extends AbstractFieldConstraint {
 	
 	/* ### Abstract Fields ###
 	 * ReferenceType c;		// C

@@ -5,7 +5,7 @@ import java.util.ArrayList;
 /**
  * C.m <: (D1{X1}, ..., Dn{Xn}) -- effect --> E{Y}
  */
-class InvokeStaticMth extends Constraint {	// 
+public class InvokeStaticMth extends AbstractMethodConstraint {	// 
 	
 //	??? c;						// C
 //	??? m;						// m

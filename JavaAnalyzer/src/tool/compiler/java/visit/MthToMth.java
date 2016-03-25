@@ -7,7 +7,7 @@ import java.util.ArrayList;
  * 	<: (D1{Y1}, ..., Dn{Ym}) -- effect2 --> E2{Y}<br>
  * 	(Not mandatory)
  */
-class MthToMth extends Constraint {
+public class MthToMth extends AbstractMethodConstraint {
 	
 	ArrayList<Object/*???*/> cs;			// C1, ... , Cn		// TODO: ArrayList의 저장 타입 정하기
 	ArrayList<SetVariable> xs;	// X1, ..., Xn

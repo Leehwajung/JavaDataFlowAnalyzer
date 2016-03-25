@@ -7,7 +7,7 @@ import polyglot.types.Type;
  * C{X} <: D.f<br>
  * ... assign to a static field
  */
-class AssignStaticField extends AbstractFieldConstraint {
+public class AssignStaticField extends AbstractFieldConstraint {
 	
 	/* ### Abstract Fields ###
 	 * Type c;				// C
