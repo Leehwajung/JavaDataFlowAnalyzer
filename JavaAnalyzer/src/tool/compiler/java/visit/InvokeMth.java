@@ -3,7 +3,11 @@ package tool.compiler.java.visit;
 /**
  * C{X}.m <: (D1{X1}, ..., Dn{Xn}) -- effect --> E{Y}
  */
+<<<<<<< HEAD
 public class InvokeMth extends Constraint {
+=======
+public class InvokeMth extends AbstractMethodConstraint {
+>>>>>>> branch 'develop' of https://hjtl22.visualstudio.com/DefaultCollection/Java%20Analyzer/_git/JavaAnalyzer
 	
 	// fields
 	

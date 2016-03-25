@@ -5,7 +5,11 @@ package tool.compiler.java.visit;
  * 	<: (D1{Y1}, ..., Dn{Ym}) -- effect2 --> E2{Y}<br>
  * 	(Not mandatory)
  */
+<<<<<<< HEAD
 public class MthToMth extends Constraint {
+=======
+public class MthToMth extends AbstractMethodConstraint {
+>>>>>>> branch 'develop' of https://hjtl22.visualstudio.com/DefaultCollection/Java%20Analyzer/_git/JavaAnalyzer
 	
 	// fields
 	
