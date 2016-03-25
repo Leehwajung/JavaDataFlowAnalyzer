@@ -38,7 +38,6 @@ public abstract class AbstractMethodInfo extends TypingInfo implements MethodOps
 	@Override
 	public Type getType() {
 		return isNormalMethod() ? ((JL5MethodInstance)procIns).returnType() : null;
-//		return isNormalMethod() ? ((JL5MethodInstance)procIns).returnType() : new JL5PrimitiveType_c(procIns.container().typeSystem(), PrimitiveType.VOID);
 	}
 	
 	/**

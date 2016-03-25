@@ -13,7 +13,7 @@ public abstract class AbstractTable implements Ops {
 	
 	private TypingInfo info;
 	private AbstractObjectInfo absObjInfo = null;	// 추상 객체
-	private SetVariable setVar;						// 집합 변수 (필드타입/메서드리턴타입)
+	private TypedSetVariable setVar;				// 집합 변수 (필드타입/메서드리턴타입)
 	private List<ReferenceType> substitutionTypes;
 	
 	/**
@@ -112,16 +112,16 @@ public abstract class AbstractTable implements Ops {
 	/**
 	 * @return the setVar
 	 */
-	public final SetVariable getSetVariable() {
+	public final TypedSetVariable getSetVariable() {
 		return setVar;
 	}
 	
 	protected void generateSetVariable() {
-		setVar = new SetVariable(getType());
+		setVar = new TypedSetVariable(getType());
 	}
 	
-	protected SetVariable generateSetVariable(Type type) {
-		return new SetVariable(type);
+	protected TypedSetVariable generateSetVariable(Type type) {
+		return new TypedSetVariable(type);
 	}
 	
 	/**

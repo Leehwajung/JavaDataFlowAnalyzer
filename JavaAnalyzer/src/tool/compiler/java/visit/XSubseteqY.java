@@ -5,9 +5,13 @@ package tool.compiler.java.visit;
  */
 public class XSubseteqY extends Constraint {
 	
-	SetVariable x, y;	// X, Y
+	// fields
+	
+	TypedSetVariable x, y;	// X, Y
+	
 	
 	// constructor
+	
 	
 	// setter,getter methods
 	

@@ -1,17 +1,19 @@
 package tool.compiler.java.visit;
 
-import java.util.ArrayList;
-
 /**
  * C.m <: (D1{X1}, ..., Dn{Xn}) -- effect --> E{Y}
  */
-class InvokeStaticMth extends Constraint {	// 
+public class InvokeStaticMth extends Constraint {	// 
 	
-//	??? c;						// C
-//	??? m;						// m
-	ArrayList<Object/*???*/> ds;			// D1, ... , Dn		// TODO: ArrayList의 저장 타입 정하기
-	ArrayList<SetVariable> xs;	// X1, ..., Xn
-	// effect
-//	??? e;						// E
-	SetVariable y;				// Y
+	// fields
+	
+	/* ### Abstract Fields ###
+	 * Type c;						// C
+	 * MethodInstance m;			// method name m
+	 * ArrayList<Type> ds;			// D1, ... , Dn
+	 * ArrayList<SetVariable> xs;	// X1, ..., Xn
+	 * (effect)						// effect
+	 * Type e;						// E
+	 * SetVariable y;				// Y
+	 */
 }

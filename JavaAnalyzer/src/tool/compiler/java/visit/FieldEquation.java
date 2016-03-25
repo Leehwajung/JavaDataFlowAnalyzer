@@ -13,7 +13,7 @@ public class FieldEquation extends AbstractEquation {
 	
 	private LinkedHashSet<FieldTable> fieldTableSet;
 	private LinkedList<AbstractObjectInfo> absObjInfoList;
-	private LinkedList<SetVariable> setVarList;
+	private LinkedList<TypedSetVariable> setVarList;
 	
 	private static final char envId = 'x';
 	
@@ -57,7 +57,7 @@ public class FieldEquation extends AbstractEquation {
 	/**
 	 * @return the setVarList
 	 */
-	public final List<SetVariable> getSetVarList() {
+	public final List<TypedSetVariable> getSetVarList() {
 		return setVarList;
 	}
 	

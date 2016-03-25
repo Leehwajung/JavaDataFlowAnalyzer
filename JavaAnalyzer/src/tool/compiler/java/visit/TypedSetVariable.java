@@ -6,16 +6,16 @@ import java.util.Set;
 
 import polyglot.types.Type;
 
-public class SetVariable extends InfoVariable implements ProgramPointSet {
+public class TypedSetVariable extends InfoVariable implements ProgramPointSet {
 	
-	private LinkedHashSet<SetVariable> subSetVars = null;
+	private LinkedHashSet<TypedSetVariable> subSetVars = null;
 	
 	private static long idGen = 1;
 	
 	/**
 	 * @param type
 	 */
-	public SetVariable(Type type) {
+	public TypedSetVariable(Type type) {
 		setType(type);
 		
 		if(type != null && !type.isVoid()) {
@@ -26,12 +26,12 @@ public class SetVariable extends InfoVariable implements ProgramPointSet {
 	/**
 	 * @param subSetVars
 	 */
-	public SetVariable(Collection<SetVariable> subSetVars) {
+	public TypedSetVariable(Collection<TypedSetVariable> subSetVars) {
 		this(inferTypeFromSubSetVars(subSetVars));
 		setSubSetVars(subSetVars);
 	}
 	
-	protected static final Type inferTypeFromSubSetVars(Collection<SetVariable> subSetVars) {
+	protected static final Type inferTypeFromSubSetVars(Collection<TypedSetVariable> subSetVars) {
 		
 		
 		return null;
@@ -67,14 +67,14 @@ public class SetVariable extends InfoVariable implements ProgramPointSet {
 	/**
 	 * @return the subSetVars
 	 */
-	public Set<SetVariable> getSubSetVars() {
+	public Set<TypedSetVariable> getSubSetVars() {
 		return subSetVars;
 	}
 
 	/**
 	 * @param subSetVars the subSetVars to set
 	 */
-	protected final void setSubSetVars(Collection<SetVariable> subSetVars) {
+	protected final void setSubSetVars(Collection<TypedSetVariable> subSetVars) {
 		this.subSetVars = new LinkedHashSet<>(subSetVars);
 	}
 	

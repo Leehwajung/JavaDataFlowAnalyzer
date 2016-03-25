@@ -11,7 +11,7 @@ import java.util.List;
 
 public class MethodTable extends AbstractTable implements MethodOps {
 	
-	private LinkedList<SetVariable> formalList;
+	private LinkedList<TypedSetVariable> formalList;
 	
 	public MethodTable(AbstractObjectInfo abstractObjectInfo, MethodCallInfo info) {
 		super(abstractObjectInfo, info);
@@ -41,19 +41,19 @@ public class MethodTable extends AbstractTable implements MethodOps {
 		return getInfo().getFormalTypes();
 	}
 	
-	public List<SetVariable> getFormalSetVariables() {
+	public List<TypedSetVariable> getFormalSetVariables() {
 		return formalList;
 	}
 	
 	private void generateFormalSetVariables() {
 		if(formalList == null) {
-			formalList = new LinkedList<SetVariable>();
+			formalList = new LinkedList<TypedSetVariable>();
 		} else {
 			formalList.clear();
 		}
 		
 		for(Type type: getFormalTypes()) {
-			formalList.add(new SetVariable(type));
+			formalList.add(new TypedSetVariable(type));
 		}
 	}
 	
