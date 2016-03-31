@@ -30,9 +30,6 @@ public class EquGenerator extends ContextVisitor {
 	private static LinkedHashMap<MethodCallInfo, LinkedHashSet<MethodTable>> methodTableMap;
 	private static LinkedHashMap<FieldInfo, LinkedHashSet<FieldTable>> fieldTableMap;
 	
-	@Deprecated
-	private static LinkedHashSet<FieldTable> fieldEquationSet;
-	
 	private static final String OutputFileName = "tables.txt";
 	
 	static {
@@ -41,8 +38,6 @@ public class EquGenerator extends ContextVisitor {
 		
 		methodTableMap = new LinkedHashMap<>();
 		fieldTableMap = new LinkedHashMap<>();
-		
-		fieldEquationSet = new LinkedHashSet<>();
 	}
 	
 	public EquGenerator(Job job, TypeSystem ts, NodeFactory nf) {
@@ -67,10 +62,6 @@ public class EquGenerator extends ContextVisitor {
 		generateTables();
 		printTablesToConsole();
 		writeTablesToFile();
-		
-//		FieldEquation fe = new FieldEquation(fieldTableMap.keySet().iterator().next(), fieldTableMap.values().iterator().next());
-		
-//		System.out.println(fe);
 		
 		super.finish();
 	}
@@ -159,7 +150,6 @@ public class EquGenerator extends ContextVisitor {
 		for(AbstractObjectInfo absObjInfo: abstractObjectInfoSet) {
 			for(Entry<MethodCallInfo, LinkedHashSet<MethodTable>> miEntry: methodTableMap.entrySet()) {
 				try {
-//					MethodTable.checkArguments(absObjInfo, miEntry.getKey());	// IllegalArgumentException 발생
 					MethodTable mt = new MethodTable(absObjInfo, miEntry.getKey());	// IllegalArgumentException 발생
 					
 					if(miEntry.getValue() == null) {
@@ -172,7 +162,6 @@ public class EquGenerator extends ContextVisitor {
 			
 			for(Entry<FieldInfo, LinkedHashSet<FieldTable>> fiEntry: fieldTableMap.entrySet()) {
 				try {
-//					FieldTable.checkArguments(absObjInfo, fiEntry.getKey());	// IllegalArgumentException 발생
 					FieldTable ft = new FieldTable(absObjInfo, fiEntry.getKey());	// IllegalArgumentException 발생
 					
 					if(fiEntry.getValue() == null) {
