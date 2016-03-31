@@ -100,4 +100,56 @@ public class AssignField extends Constraint {
 	public String toString() {
 		return getCX() + " <: " + getDY() + "." + getF().name();
 	}
+	
+	/**
+	 * @see java.lang.Object#hashCode()
+	 */
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((cx == null) ? 0 : cx.hashCode());
+		result = prime * result + ((dy == null) ? 0 : dy.hashCode());
+		result = prime * result + ((f == null) ? 0 : f.hashCode());
+		return result;
+	}
+	
+	/**
+	 * @see java.lang.Object#equals(java.lang.Object)
+	 */
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj) {
+			return true;
+		}
+		if (obj == null) {
+			return false;
+		}
+		if (getClass() != obj.getClass()) {
+			return false;
+		}
+		AssignField other = (AssignField) obj;
+		if (cx == null) {
+			if (other.cx != null) {
+				return false;
+			}
+		} else if (!cx.equals(other.cx)) {
+			return false;
+		}
+		if (dy == null) {
+			if (other.dy != null) {
+				return false; }
+			
+		} else if (!dy.equals(other.dy)) {
+			return false;
+		}
+		if (f == null) {
+			if (other.f != null) {
+				return false;
+			}
+		} else if (!f.equals(other.f)) {
+			return false;
+		}
+		return true;
+	}
 }

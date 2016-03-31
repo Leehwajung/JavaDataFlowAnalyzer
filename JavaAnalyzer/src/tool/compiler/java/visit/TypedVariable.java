@@ -81,12 +81,14 @@ public abstract class TypedVariable implements Info {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + ((kind() == null) ? 0 : kind().hashCode());
-		result = prime * result + (int) (idNum ^ (idNum >>> 32));
 		result = prime * result + ((type == null) ? 0 : type.hashCode());
 		return result;
 	}
 	
 	/**
+	 * 변수의 종류와 타입이 일치하는지 비교하여 같은지 판단한다.
+	 * ID까지 같은지는 == 연산자로 비교하여 판단할 수 있다.
+	 * (각 변수는 고유의 ID를 가지므로, ID가 같으면 객체도 일치한다.)
 	 * @see java.lang.Object#equals(java.lang.Object)
 	 */
 	@Override
@@ -106,9 +108,6 @@ public abstract class TypedVariable implements Info {
 				return false;
 			}
 		} else if (!kind().equals(other.kind())) {
-			return false;
-		}
-		if (idNum != other.idNum) {
 			return false;
 		}
 		if (type == null) {

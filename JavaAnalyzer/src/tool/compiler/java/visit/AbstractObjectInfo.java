@@ -64,4 +64,37 @@ public class AbstractObjectInfo extends TypedVariable {
 	protected long generateIDNum() {
 		return idGen++;
 	}
+	
+	/**
+	 * @see java.lang.Object#hashCode()
+	 */
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = super.hashCode();
+		result = prime * result + (int) (idNum() ^ (idNum() >>> 32));
+		return result;
+	}
+	
+	/**
+	 * ID가 같아야 같은 Object이다.
+	 * @see java.lang.Object#equals(java.lang.Object)
+	 */
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj) {
+			return true;
+		}
+		if (!super.equals(obj)) {
+			return false;
+		}
+		if (getClass() != obj.getClass()) {
+			return false;
+		}
+		AbstractObjectInfo other = (AbstractObjectInfo) obj;
+		if (idNum() != other.idNum()) {
+			return false;
+		}
+		return true;
+	}
 }

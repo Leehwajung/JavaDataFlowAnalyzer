@@ -88,4 +88,48 @@ public class VarToVar extends Constraint {
 	public String toString() {
 		return getCX() + " <: " + getDY();
 	}
+	
+	/**
+	 * @see java.lang.Object#hashCode()
+	 */
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((cx == null) ? 0 : cx.hashCode());
+		result = prime * result + ((dy == null) ? 0 : dy.hashCode());
+		return result;
+	}
+	
+	/**
+	 * @see java.lang.Object#equals(java.lang.Object)
+	 */
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj) {
+			return true;
+		}
+		if (obj == null) {
+			return false;
+		}
+		if (getClass() != obj.getClass()) {
+			return false;
+		}
+		VarToVar other = (VarToVar) obj;
+		if (cx == null) {
+			if (other.cx != null) {
+				return false;
+			}
+		} else if (!cx.equals(other.cx)) {
+			return false;
+		}
+		if (dy == null) {
+			if (other.dy != null) {
+				return false;
+			}
+		} else if (!dy.equals(other.dy)) {
+			return false;
+		}
+		return true;
+	}
 }

@@ -3,6 +3,7 @@ package tool.compiler.java.visit;
 import tool.compiler.java.util.CollUtil;
 
 import java.util.Collection;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -14,7 +15,7 @@ public class ObjsSubseteqX extends Constraint {
 	
 	// fields
 	
-	private ArrayList<AbstractObjectInfo> objs;	// { context1, ..., contextk }
+	private LinkedHashSet<AbstractObjectInfo> objs;	// { context1, ..., contextk }
 	private TypedSetVariable x;						// X
 	
 	
@@ -28,9 +29,9 @@ public class ObjsSubseteqX extends Constraint {
 	public ObjsSubseteqX(Collection<AbstractObjectInfo> objs, TypedSetVariable x) {
 		super();
 		try{
-			this.objs = new ArrayList<>(objs);
+			this.objs = new LinkedHashSet<>(objs);
 		} catch (NullPointerException e) {
-			this.objs = new ArrayList<>();
+			this.objs = null;
 		}
 		this.x = x;
 	}
@@ -55,14 +56,6 @@ public class ObjsSubseteqX extends Constraint {
 	}
 	
 	/**
-	 * @param i	index
-	 * @return Obj	( contexti )
-	 */
-	public AbstractObjectInfo getObj(int i) {
-		return objs.get(i);
-	}
-	
-	/**
 	 * @return the X
 	 */
 	public TypedSetVariable getX() {
@@ -76,5 +69,53 @@ public class ObjsSubseteqX extends Constraint {
 	@Override
 	public String toString() {
 		return CollUtil.getStringOf(objs, '{', '}') + " \\subseteq " + getX();
+	}
+	
+	/**
+	 * @see java.lang.Object#hashCode()
+	 */
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		try {
+			for(AbstractObjectInfo obj : objs) {
+				result = prime * result + ((obj == null) ? 0 : obj.hashCode());
+			}
+		} catch (NullPointerException ignored) {}
+		result = prime * result + ((x == null) ? 0 : x.hashCode());
+		return result;
+	}
+	
+	/**
+	 * @see java.lang.Object#equals(java.lang.Object)
+	 */
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj) {
+			return true;
+		}
+		if (obj == null) {
+			return false;
+		}
+		if (getClass() != obj.getClass()) {
+			return false;
+		}
+		ObjsSubseteqX other = (ObjsSubseteqX) obj;
+		if (objs == null) {
+			if (other.objs != null) {
+				return false;
+			}
+		} else if (!objs.equals(other.objs)) {
+			return false;
+		}
+		if (x == null) {
+			if (other.x != null) {
+				return false;
+			}
+		} else if (!x.equals(other.x)) {
+			return false;
+		}
+		return true;
 	}
 }

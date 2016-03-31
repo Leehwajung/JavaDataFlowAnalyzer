@@ -6,7 +6,6 @@ import tool.compiler.java.util.CollUtil;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.LinkedHashSet;
 import java.util.List;
 
 /**
@@ -27,9 +26,9 @@ public class InvokeStaticMth extends Constraint {
 	 */
 	
 	/* ### Actual Fields ### */
-	private JL5MethodInstance cm;					// C, m
+	private JL5MethodInstance cm;				// C, m
 	private ArrayList<TypedSetVariable> dxs;	// Ds, Xs ( D1{X1}, ..., Dn{Xn} )
-	private TypedSetVariable ey;					// E, Y
+	private TypedSetVariable ey;				// E, Y
 	
 	
 	// constructor
@@ -43,7 +42,11 @@ public class InvokeStaticMth extends Constraint {
 	public InvokeStaticMth(JL5MethodInstance cm, Collection<TypedSetVariable> dxs, TypedSetVariable ey) {
 		super();
 		this.cm = cm;
-		this.dxs = new ArrayList<TypedSetVariable>(dxs);
+		if(dxs != null) {
+			this.dxs = new ArrayList<TypedSetVariable>(dxs);
+		} else {
+			this.dxs = null;
+		}
 		this.ey = ey;
 	}
 	
@@ -108,5 +111,61 @@ public class InvokeStaticMth extends Constraint {
 	public String toString() {
 		return getC() + "." + getM().name() + " <: " + CollUtil.getStringOf(getDXs(), '{', '}') 
 				+ " -- " + "effect" + " --> "	+ getEY();
+	}
+	
+	/**
+	 * @see java.lang.Object#hashCode()
+	 */
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((cm == null) ? 0 : cm.hashCode());
+		if(dxs != null) {
+			for(TypedSetVariable dx : dxs) {
+				result = prime * result + ((dx == null) ? 0 : dx.hashCode());
+			}
+		}
+		result = prime * result + ((ey == null) ? 0 : ey.hashCode());
+		return result;
+	}
+	
+	/**
+	 * @see java.lang.Object#equals(java.lang.Object)
+	 */
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj) {
+			return true;
+		}
+		if (obj == null) {
+			return false;
+		}
+		if (getClass() != obj.getClass()) {
+			return false;
+		}
+		InvokeStaticMth other = (InvokeStaticMth) obj;
+		if (cm == null) {
+			if (other.cm != null) {
+				return false;
+			}
+		} else if (!cm.equals(other.cm)) {
+			return false;
+		}
+		if (dxs == null) {
+			if (other.dxs != null) {
+				return false;
+			}
+		} else if (!dxs.equals(other.dxs)) {
+			return false;
+		}
+		if (ey == null) {
+			if (other.ey != null) {
+				return false;
+			}
+		} else if (!ey.equals(other.ey)) {
+			return false;
+		}
+		return true;
 	}
 }

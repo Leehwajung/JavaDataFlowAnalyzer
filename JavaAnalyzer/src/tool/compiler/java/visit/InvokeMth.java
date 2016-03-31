@@ -6,7 +6,7 @@ import tool.compiler.java.util.CollUtil;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.LinkedHashSet;
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -28,10 +28,10 @@ public class InvokeMth extends Constraint {
 	 */
 	
 	/* ### Actual Fields ### */
-	private TypedSetVariable cx;					// C, X
-	private JL5MethodInstance m;					// m
+	private TypedSetVariable cx;				// C, X
+	private JL5MethodInstance m;				// m
 	private ArrayList<TypedSetVariable> dxs;	// Ds, Xs ( D1{X1}, ..., Dn{Xn} )
-	private TypedSetVariable ey;					// E, Y
+	private TypedSetVariable ey;				// E, Y
 	
 	
 	// constructor
@@ -47,7 +47,11 @@ public class InvokeMth extends Constraint {
 		super();
 		this.cx = cx;
 		this.m = m;
-		this.dxs = new ArrayList<TypedSetVariable>(dxs);
+		if(dxs != null) {
+			this.dxs = new ArrayList<TypedSetVariable>(dxs);
+		} else {
+			this.dxs = null;
+		}
 		this.ey = ey;
 	}
 	
@@ -126,5 +130,69 @@ public class InvokeMth extends Constraint {
 	public String toString() {
 		return getCX() + "." + getM().name() + " <: " + CollUtil.getStringOf(getDXs(), '{', '}') 
 				+ " -- " + "effect" + " --> "	+ getEY();
+	}
+	
+	/**
+	 * @see java.lang.Object#hashCode()
+	 */
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((cx == null) ? 0 : cx.hashCode());
+		result = prime * result + ((m == null) ? 0 : m.hashCode());
+		if(dxs != null) {
+			for(TypedSetVariable dx : dxs) {
+				result = prime * result + ((dx == null) ? 0 : dx.hashCode());
+			}
+		}
+		result = prime * result + ((ey == null) ? 0 : ey.hashCode());
+		return result;
+	}
+	
+	/**
+	 * @see java.lang.Object#equals(java.lang.Object)
+	 */
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj) {
+			return true;
+		}
+		if (obj == null) {
+			return false;
+		}
+		if (getClass() != obj.getClass()) {
+			return false;
+		}
+		InvokeMth other = (InvokeMth) obj;
+		if (cx == null) {
+			if (other.cx != null) {
+				return false;
+			}
+		} else if (!cx.equals(other.cx)) {
+			return false;
+		}
+		if (m == null) {
+			if (other.m != null) {
+				return false;
+			}
+		} else if (!m.equals(other.m)) {
+			return false;
+		}
+		if (dxs == null) {
+			if (other.dxs != null) {
+				return false;
+			}
+		} else if (!dxs.equals(other.dxs)) {
+			return false;
+		}
+		if (ey == null) {
+			if (other.ey != null) {
+				return false;
+			}
+		} else if (!ey.equals(other.ey)) {
+			return false;
+		}
+		return true;
 	}
 }
