@@ -3,7 +3,7 @@ package tool.compiler.java.visit;
 import polyglot.ext.jl5.types.JL5SubstClassType;
 import polyglot.types.Type;
 
-public abstract class InfoVariable implements Info {
+public abstract class TypedVariable implements Info {
 	
 	private Type type;
 	private long idNum;
@@ -71,5 +71,53 @@ public abstract class InfoVariable implements Info {
 	@Override
 	public String toString() {
 		return getID();
+	}
+	
+	/**
+	 * @see java.lang.Object#hashCode()
+	 */
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((kind() == null) ? 0 : kind().hashCode());
+		result = prime * result + (int) (idNum ^ (idNum >>> 32));
+		result = prime * result + ((type == null) ? 0 : type.hashCode());
+		return result;
+	}
+	
+	/**
+	 * @see java.lang.Object#equals(java.lang.Object)
+	 */
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj) {
+			return true;
+		}
+		if (obj == null) {
+			return false;
+		}
+		if (getClass() != obj.getClass()) {
+			return false;
+		}
+		TypedVariable other = (TypedVariable) obj;
+		if (kind() == null) {
+			if (other.kind() != null) {
+				return false;
+			}
+		} else if (!kind().equals(other.kind())) {
+			return false;
+		}
+		if (idNum != other.idNum) {
+			return false;
+		}
+		if (type == null) {
+			if (other.type != null) {
+				return false;
+			}
+		} else if (!type.equals(other.type)) {
+			return false;
+		}
+		return true;
 	}
 }

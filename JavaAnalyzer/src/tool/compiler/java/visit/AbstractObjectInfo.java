@@ -7,7 +7,7 @@ import polyglot.types.ReferenceType;
 
 import java.util.Collection;
 
-public class AbstractObjectInfo extends InfoVariable {
+public class AbstractObjectInfo extends TypedVariable {
 	
 	private JL5ConstructorInstance ctorIns;
 	private static long idGen = 1;

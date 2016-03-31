@@ -6,7 +6,7 @@ import java.util.Set;
 
 import polyglot.types.Type;
 
-public class TypedSetVariable extends InfoVariable implements ProgramPointSet {
+public class TypedSetVariable extends TypedVariable implements ProgramPointSet {
 	
 	private LinkedHashSet<TypedSetVariable> subSetVars = null;
 	
@@ -38,7 +38,7 @@ public class TypedSetVariable extends InfoVariable implements ProgramPointSet {
 	}
 	
 	/**
-	 * @see tool.compiler.java.visit.InfoVariable#kind()
+	 * @see tool.compiler.java.visit.TypedVariable#kind()
 	 */
 	@Override
 	protected String kind() {
@@ -70,7 +70,7 @@ public class TypedSetVariable extends InfoVariable implements ProgramPointSet {
 	public Set<TypedSetVariable> getSubSetVars() {
 		return subSetVars;
 	}
-
+	
 	/**
 	 * @param subSetVars the subSetVars to set
 	 */
