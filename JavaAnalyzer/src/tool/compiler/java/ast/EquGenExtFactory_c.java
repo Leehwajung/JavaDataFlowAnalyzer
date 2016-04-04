@@ -74,6 +74,26 @@ public final class EquGenExtFactory_c extends EquGenAbstractExtFactory_c {
 	}
 	
 	/**
+	 * Field <: NamedVariable <: Variable <: Expr <: Term <: Node
+	 * Field <: NamedVariable <: Variable <: Expr <: Receiver <: Prefix <: Node
+	 */
+	@Override
+	protected Ext extFieldImpl() {
+//		return super.extFieldImpl();
+		return new EquGenFieldExt();
+	}
+	
+	/**
+	 * FieldAssign <: Assign <: Expr <: Term <: Node	<br>
+	 * FieldAssign <: Assign <: Expr <: Receiver <: Prefix <: Node
+	 */
+	@Override
+	protected Ext extFieldAssignImpl() {
+//		return super.extAssignImpl();
+		return new EquGenFieldAssignExt();
+	}
+	
+	/**
 	 * ConstructorCall <: Stmt <: Term <: Node	<br>
 	 * ConstructorCall <: ProcedureCall <: Term <: Node
 	 */
@@ -90,5 +110,14 @@ public final class EquGenExtFactory_c extends EquGenAbstractExtFactory_c {
 	protected Ext extBlockImpl() {
 //		return super.extBlockImpl();
 		return new EquGenBlockExt();
+	}
+	
+	/**
+	 * Return <: Stmt <: Term <: Node
+	 */
+	@Override
+	protected Ext extReturnImpl() {
+//		return super.extBlockImpl();
+		return new EquGenReturnExt();
 	}
 }

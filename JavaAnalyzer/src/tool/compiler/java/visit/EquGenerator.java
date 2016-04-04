@@ -30,6 +30,8 @@ public class EquGenerator extends ContextVisitor {
 	private static LinkedHashMap<MethodCallInfo, LinkedHashSet<MethodTable>> methodTableMap;
 	private static LinkedHashMap<FieldInfo, LinkedHashSet<FieldTable>> fieldTableMap;
 	
+	private static LinkedHashSet<Constraint> constraintSet;
+	
 	@Deprecated
 	private static LinkedHashSet<FieldTable> fieldEquationSet;
 	
@@ -41,6 +43,8 @@ public class EquGenerator extends ContextVisitor {
 		
 		methodTableMap = new LinkedHashMap<>();
 		fieldTableMap = new LinkedHashMap<>();
+		
+		constraintSet = new LinkedHashSet<>();
 		
 		fieldEquationSet = new LinkedHashSet<>();
 	}
@@ -66,6 +70,7 @@ public class EquGenerator extends ContextVisitor {
 		Report.report(1, "EquGenerator: finish()");
 		generateTables();
 		printTablesToConsole();
+		printConstraintsToConsole();
 		writeTablesToFile();
 		
 //		FieldEquation fe = new FieldEquation(fieldTableMap.keySet().iterator().next(), fieldTableMap.values().iterator().next());
@@ -153,6 +158,14 @@ public class EquGenerator extends ContextVisitor {
 	}
 	
 	/**
+	 * 제약식 집합에 추가
+	 * @param constraint
+	 */
+	public void addToSet(Constraint constraint) {
+		constraintSet.add(constraint);
+	}
+	
+	/**
 	 * 테이블 생성 및 테이블 집합에 추가
 	 */
 	public void generateTables() {
@@ -206,6 +219,14 @@ public class EquGenerator extends ContextVisitor {
 			} catch (NullPointerException ignored) {}
 		}
 	 }
+	 
+	/**
+	 * 테이블을 콘솔에 출력
+	 */
+	private void printConstraintsToConsole() {
+		Report.report(1, "\n----- Constraints -----");
+		Report.report(1, CollUtil.getNLStringOf(constraintSet));
+	}
 	
 	/**
 	 * 테이블을 파일에 출력

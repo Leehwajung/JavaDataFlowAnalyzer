@@ -1,7 +1,7 @@
 package tool.compiler.java.visit;
 
 /**
- * base class
+ * base constraint class
  */
 public class Constraint {
 	

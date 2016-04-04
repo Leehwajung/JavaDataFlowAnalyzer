@@ -34,7 +34,7 @@ public class InvokeMth extends Constraint {
 	private TypedSetVariable ey;				// E, Y
 	
 	
-	// constructor
+	// constructors
 	
 	/**
 	 * C{X}.m <: (D1{X1}, ..., Dn{Xn}) -- effect --> E{Y}
@@ -44,6 +44,25 @@ public class InvokeMth extends Constraint {
 	 * @param ey	set E, Y	( E{Y} )
 	 */
 	public InvokeMth(TypedSetVariable cx, JL5MethodInstance m, Collection<TypedSetVariable> dxs, TypedSetVariable ey) {
+		super();
+		this.cx = cx;
+		this.m = m;
+		if(dxs != null) {
+			this.dxs = new ArrayList<TypedSetVariable>(dxs);
+		} else {
+			this.dxs = null;
+		}
+		this.ey = ey;
+	}
+	
+	/**
+	 * C{X}.m <: (D1{X1}, ..., Dn{Xn}) -- effect --> E{Y}
+	 * @param cx	set C, X	( C{X} )
+	 * @param m		set m
+	 * @param dxs	set Ds, Xs	( D1{X1}, ..., Dn{Xn} )
+	 * @param ey	set E, Y	( E{Y} )
+	 */
+	public InvokeMth(JL5MethodInstance m, Collection<TypedSetVariable> dxs, TypedSetVariable ey) {
 		super();
 		this.cx = cx;
 		this.m = m;

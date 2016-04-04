@@ -23,7 +23,7 @@ public class AssignStaticField extends Constraint {
 	private JL5FieldInstance df;	// D, f
 	
 	
-	// constructor
+	// constructors
 	
 	/**
 	 * C{X} <: D.f
@@ -34,6 +34,16 @@ public class AssignStaticField extends Constraint {
 		super();
 		this.cx = cx;
 		this.df = df;
+	}
+	
+	/**
+	 * C{X} <: D{Y}<br>
+	 * auto-construct TypedSetVariable object ( C{X} )
+	 * @param left	for C, X	( C{X} )
+	 * @param right	set D, f	( D.f )
+	 */
+	public AssignStaticField(Type left, JL5FieldInstance right) {
+		this(new TypedSetVariable(left), right);
 	}
 	
 	

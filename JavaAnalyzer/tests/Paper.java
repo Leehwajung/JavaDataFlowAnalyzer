@@ -11,9 +11,13 @@ class Z extends Y {
 }
 class X {
 	Y f;
+	static Y s;
 	
-	void set (Y r) {
+	Y set (Y r) {
 		this.f = r;
+		X.s = r;
+		Z z = new Z();
+		return z;
 	}
 	
 	void main() {
@@ -76,11 +80,11 @@ class Box<E> {
 		
 	}
 
-	<H extends E, G> boolean isEmpty(Box<G> box, H hjkl) {
+	<H extends E, G> boolean isEmpty(Box<G> box, Object hjkl) {
 		return true;
 	}
 
-	<A, B> int AB(A box, B hjkl) {
+	<A, B> Integer AB(A box, B hjkl) {
 		return 1;
 	}
 	
