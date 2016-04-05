@@ -15,7 +15,7 @@ import tool.compiler.java.visit.EquGenerator;
  * FieldAssign <: Assign <: Expr <: Receiver <: Prefix <: Node
  * @author LHJ
  */
-public class EquGenFieldAssignExt extends EquGenExt {
+public class EquGenFieldAssignExt extends EquGenAssignExt {
 	private static final long serialVersionUID = SerialVersionUID.generate();
 	
 	@Override

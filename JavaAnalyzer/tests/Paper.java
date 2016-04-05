@@ -17,6 +17,9 @@ class X {
 		this.f = r;
 		X.s = r;
 		Z z = new Z();
+		Y y, y2;
+		y = this.f;
+		y2 = X.s;
 		return z;
 	}
 	

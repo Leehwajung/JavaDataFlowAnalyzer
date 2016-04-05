@@ -84,6 +84,16 @@ public final class EquGenExtFactory_c extends EquGenAbstractExtFactory_c {
 	}
 	
 	/**
+	 * Assign <: Expr <: Term <: Node	<br>
+	 * Assign <: Expr <: Receiver <: Prefix <: Node
+	 */
+	@Override
+	protected Ext extAssignImpl() {
+//		return super.extAssignImpl();
+		return new EquGenAssignExt();
+	}
+	
+	/**
 	 * FieldAssign <: Assign <: Expr <: Term <: Node	<br>
 	 * FieldAssign <: Assign <: Expr <: Receiver <: Prefix <: Node
 	 */

@@ -23,7 +23,7 @@ public class ReadStaticField extends Constraint {
 	private TypedSetVariable dx;	// D, X
 	
 	
-	// constructor
+	// constructors
 	
 	/**
 	 * C.f <: D{X}
@@ -34,6 +34,16 @@ public class ReadStaticField extends Constraint {
 		super();
 		this.cf = cf;
 		this.dx = dx;
+	}
+	
+	/**
+	 * C.f <: D{X}<br>
+	 * auto-construct TypedSetVariable object ( C{X} )
+	 * @param left	for C, f	( C.f )
+	 * @param right	for D, X	( D{X} )
+	 */
+	public ReadStaticField(JL5FieldInstance left, Type right) {
+		this(left, new TypedSetVariable(right));
 	}
 	
 	
