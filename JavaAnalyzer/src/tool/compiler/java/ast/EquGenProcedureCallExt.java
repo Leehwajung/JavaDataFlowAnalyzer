@@ -12,6 +12,7 @@ import tool.compiler.java.visit.MethodCallInfo;
  * ProcedureCall <: Term <: Node
  * @author LHJ
  */
+@Deprecated
 public class EquGenProcedureCallExt extends EquGenExt {
 	private static final long serialVersionUID = SerialVersionUID.generate();
 	

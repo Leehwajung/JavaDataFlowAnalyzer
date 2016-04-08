@@ -3,10 +3,12 @@ package tool.compiler.java.ast;
 import polyglot.ast.New;
 import polyglot.ast.Node;
 import polyglot.ext.jl5.types.JL5ConstructorInstance;
+import polyglot.ext.jl5.types.JL5ProcedureInstance;
 import polyglot.main.Report;
 import polyglot.util.SerialVersionUID;
 import tool.compiler.java.visit.AbstractObjectInfo;
 import tool.compiler.java.visit.EquGenerator;
+import tool.compiler.java.visit.MethodCallInfo;
 
 /**
  * New <: Expr <: Term <: Node
@@ -14,7 +16,7 @@ import tool.compiler.java.visit.EquGenerator;
  * New <: ProcedureCall <: Term <: Node
  * @author LHJ
  */
-public class EquGenNewExt extends EquGenProcedureCallExt {
+public class EquGenNewExt extends EquGenExprExt {
 	private static final long serialVersionUID = SerialVersionUID.generate();
 	
 	@Override
@@ -26,7 +28,12 @@ public class EquGenNewExt extends EquGenProcedureCallExt {
 		// 추상 객체 인포 생성
 		AbstractObjectInfo absObjInfo = new AbstractObjectInfo(ctorIns);
 		v.addToSet(absObjInfo);
-		Report.report(0, "New: " + absObjInfo);
+		
+		// (호출) 메서드 인포 생성
+		MethodCallInfo mtdInfo = new MethodCallInfo((JL5ProcedureInstance) nw.procedureInstance());
+		v.addToSet(mtdInfo);
+		
+		Report.report(0, "New: " + absObjInfo + ": " + mtdInfo);
 		
 		return super.equGenEnter(v);
 	}

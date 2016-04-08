@@ -21,7 +21,7 @@ public abstract class AbstractTable implements Ops {
 	 * @param info
 	 */
 	protected AbstractTable(AbstractObjectInfo abstractObjectInfo, TypingInfo info) {
-		checkArguments(abstractObjectInfo, info);	// TODO: 생성자에서 타입을 검사할지 판단
+		checkArguments(abstractObjectInfo, info);	// TODO: 생성자에서 타입을 검사할지 결정
 		
 		this.info = info;
 		

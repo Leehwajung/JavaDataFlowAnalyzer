@@ -6,6 +6,7 @@ import polyglot.ast.Node;
 import polyglot.util.InternalCompilerError;
 import polyglot.util.SerialVersionUID;
 import tool.compiler.java.visit.EquGenerator;
+import tool.compiler.java.visit.TypedSetVariable;
 
 public class EquGenExt extends Ext_c implements EquGenOps {  // TODO: Not JL7Ext, but Ext_c to override lang()!!!
 	private static final long serialVersionUID = SerialVersionUID.generate();
@@ -39,10 +40,16 @@ public class EquGenExt extends Ext_c implements EquGenOps {  // TODO: Not JL7Ext
 		// By default, return the given visitor.
 		return v;
 	}
-
+	
 	@Override
 	public Node equGen(EquGenerator v) {
 		// By default, do nothing.
 		return node();
+	}
+	
+	@Override
+	public TypedSetVariable setVar() {
+		// By default, do nothing.
+		return null;
 	}
 }

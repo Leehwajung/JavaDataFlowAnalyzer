@@ -62,6 +62,7 @@ public class InvokeMth extends Constraint {
 	 * @param dxs	set Ds, Xs	( D1{X1}, ..., Dn{Xn} )
 	 * @param ey	set E, Y	( E{Y} )
 	 */
+	@Deprecated
 	public InvokeMth(JL5MethodInstance m, Collection<TypedSetVariable> dxs, TypedSetVariable ey) {
 		super();
 		this.cx = cx;

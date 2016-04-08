@@ -42,6 +42,7 @@ public class AssignStaticField extends Constraint {
 	 * @param left	for C, X	( C{X} )
 	 * @param right	set D, f	( D.f )
 	 */
+	@Deprecated
 	public AssignStaticField(Type left, JL5FieldInstance right) {
 		this(new TypedSetVariable(left), right);
 	}

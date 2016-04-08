@@ -26,6 +26,7 @@ public class TypedSetVariable extends TypedVariable implements ProgramPointSet {
 	/**
 	 * @param subSetVars
 	 */
+	@Deprecated
 	public TypedSetVariable(Collection<TypedSetVariable> subSetVars) {
 		this(inferTypeFromSubSetVars(subSetVars));
 		setSubSetVars(subSetVars);

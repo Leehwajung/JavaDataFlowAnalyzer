@@ -16,7 +16,7 @@ public class ReadField extends Constraint {
 	 * SetVariable x;		// X
 	 * FieldInstance f;		// f
 	 * Type d;				// D
-	 * SetVariable Y;		// Y
+	 * SetVariable y;		// Y
 	 */
 	
 	/* ### Actual Fields ### */
@@ -46,6 +46,7 @@ public class ReadField extends Constraint {
 	 * @param left	for C, X, f	( C{X}.f )
 	 * @param right	for D, Y	( D{Y} )
 	 */
+	@Deprecated
 	public ReadField(JL5FieldInstance left, Type right) {
 		this(new TypedSetVariable(left.container()), left, new TypedSetVariable(right));
 	}

@@ -17,7 +17,7 @@ import tool.compiler.java.visit.ReadStaticField;
  * Assign <: Expr <: Receiver <: Prefix <: Node
  * @author LHJ
  */
-public class EquGenAssignExt extends EquGenExt {
+public class EquGenAssignExt extends EquGenExprExt {
 	private static final long serialVersionUID = SerialVersionUID.generate();
 	
 	@Override

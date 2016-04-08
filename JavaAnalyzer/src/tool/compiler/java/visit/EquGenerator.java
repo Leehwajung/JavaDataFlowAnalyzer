@@ -17,6 +17,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
+import java.util.LinkedList;
 import java.util.Map.Entry;
 
 public class EquGenerator extends ContextVisitor {
@@ -32,6 +33,8 @@ public class EquGenerator extends ContextVisitor {
 	
 	private static LinkedHashSet<Constraint> constraintSet;
 	
+	private static LinkedList<TypedSetVariable> currTSVSet;
+	
 	@Deprecated
 	private static LinkedHashSet<FieldTable> fieldEquationSet;
 	
@@ -45,6 +48,8 @@ public class EquGenerator extends ContextVisitor {
 		fieldTableMap = new LinkedHashMap<>();
 		
 		constraintSet = new LinkedHashSet<>();
+		
+		currTSVSet = new LinkedList<>();
 		
 		fieldEquationSet = new LinkedHashSet<>();
 	}
@@ -105,8 +110,8 @@ public class EquGenerator extends ContextVisitor {
 	@Override
 	protected Node leaveCall(Node old, Node n, NodeVisitor v)
 			throws SemanticException {
-		
-		return lang().equGen(n,  this);
+		lang().setV
+		return lang().equGen(n, this);
 	}
 	
 //	@Override
@@ -163,6 +168,14 @@ public class EquGenerator extends ContextVisitor {
 	 */
 	public void addToSet(Constraint constraint) {
 		constraintSet.add(constraint);
+	}
+	
+	public void addToSet(TypedSetVariable typedSetVar) {
+		currTSVSet.push(typedSetVar);
+	}
+	
+	public TypedSetVariable getCurrTypedSetVariable() {
+		return currTSVSet.pop();
 	}
 	
 	/**
