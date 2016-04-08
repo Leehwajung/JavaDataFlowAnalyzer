@@ -12,7 +12,7 @@ import tool.compiler.java.visit.EquGenerator;
 import tool.compiler.java.visit.TypedSetVariable;
 
 /**
- * FieldAssign <: Assign <: Expr <: Term <: Node	<br>
+ * FieldAssign <: Assign <: Expr <: Term <: Node				<br>
  * FieldAssign <: Assign <: Expr <: Receiver <: Prefix <: Node
  * @author LHJ
  */
@@ -39,20 +39,20 @@ public class EquGenFieldAssignExt extends EquGenAssignExt {
 	@Override
 	public Node equGen(EquGenerator v) {
 		
-		FieldAssign fasgn = (FieldAssign) this.node();
-		Type rValType = fasgn.right().type();
-		JL5FieldInstance lValIns = (JL5FieldInstance) fasgn.left().fieldInstance();
-		
-		Report.report(0, "Field Assign: " + fasgn);
-		
-		if(lValIns.flags().isStatic()) {
-//			v.addToSet(new AssignStaticField(rValType, lValIns));
-			v.addToSet(new AssignStaticField(new TypedSetVariable(rValType), lValIns));
-		} else {
-//			v.addToSet(new AssignField(rValType, lValIns));
-			v.addToSet(new AssignField(new TypedSetVariable(rValType), v.getCurrTypedSetVariable(), lValIns));
-		}
-		
+//		FieldAssign fasgn = (FieldAssign) this.node();
+//		Type rValType = fasgn.right().type();
+//		JL5FieldInstance lValIns = (JL5FieldInstance) fasgn.left().fieldInstance();
+//		
+//		Report.report(0, "Field Assign: " + fasgn);
+//		
+//		if(lValIns.flags().isStatic()) {
+////			v.addToSet(new AssignStaticField(rValType, lValIns));
+//			v.addToSet(new AssignStaticField(new TypedSetVariable(rValType), lValIns));
+//		} else {
+////			v.addToSet(new AssignField(rValType, lValIns));
+//			v.addToSet(new AssignField(new TypedSetVariable(rValType), v.getCurrTypedSetVariable(), lValIns));
+//		}
+//		
 		return super.equGen(v);
 	}
 }

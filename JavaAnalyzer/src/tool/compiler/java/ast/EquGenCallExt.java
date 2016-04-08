@@ -11,8 +11,8 @@ import tool.compiler.java.visit.MethodCallInfo;
 import tool.compiler.java.visit.TypedSetVariable;
 
 /**
- * Call <: Expr <: Term <: Node
- * Call <: Expr <: Receiver <: Prefix <: Node
+ * Call <: Expr <: Term <: Node	<br>
+ * Call <: Expr <: Receiver <: Prefix <: Node	<br>
  * Call <: ProcedureCall <: Term <: Node
  * @author LHJ
  */
@@ -21,14 +21,14 @@ public class EquGenCallExt extends EquGenExprExt {
 	
 	@Override
 	public EquGenerator equGenEnter(EquGenerator v) {
-		Call call = (Call)this.node();
+		Call call = (Call) this.node();
 //		Report.report(0, "Call: " + call/*.name()*/);
 		
 		// (호출) 메서드 인포 생성
 		MethodCallInfo mtdInfo = new MethodCallInfo((JL5ProcedureInstance) call.procedureInstance());
 		v.addToSet(mtdInfo);
 		Report.report(0, "Call: " + call + ": " + mtdInfo);
-	
+		
 		
 		
 		
@@ -45,17 +45,13 @@ public class EquGenCallExt extends EquGenExprExt {
 //		call.arguments()
 		call.type();
 		
+		
+		
 		return super.equGenEnter(v);
 	}
 	
 	@Override
 	public Node equGen(EquGenerator v) {
 		return super.equGen(v);
-	}
-	
-	@Override
-	public TypedSetVariable setVar() {
-		// By default, do nothing.
-		return null;
 	}
 }

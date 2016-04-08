@@ -10,7 +10,7 @@ import tool.compiler.java.visit.EquGenerator;
 import tool.compiler.java.visit.TypedSetVariable;
 
 /**
- * Field <: NamedVariable <: Variable <: Expr <: Term <: Node
+ * Field <: NamedVariable <: Variable <: Expr <: Term <: Node					<br>
  * Field <: NamedVariable <: Variable <: Expr <: Receiver <: Prefix <: Node
  * @author LHJ
  */
@@ -27,16 +27,13 @@ public class EquGenFieldExt extends EquGenExprExt {
 		Report.report(0, "Field: " + fld/*.name()*/);
 		
 		
-		
+		setVar(fld.fieldInstance().container());
 		
 		return super.equGenEnter(v);
 	}
 	
 	@Override
 	public Node equGen(EquGenerator v) {
-		Field fld = (Field)this.node();
-		v.addToSet(new TypedSetVariable(fld.fieldInstance().container()));
-		
 		return super.equGen(v);
 	}
 }

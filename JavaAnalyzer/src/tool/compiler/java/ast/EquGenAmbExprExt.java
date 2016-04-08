@@ -1,25 +1,23 @@
 package tool.compiler.java.ast;
 
+import polyglot.ast.AmbExpr;
 import polyglot.ast.Node;
-import polyglot.ast.Return;
 import polyglot.main.Report;
 import polyglot.util.SerialVersionUID;
 import tool.compiler.java.visit.EquGenerator;
 
 /**
- * Return <: Stmt <: Term <: Node
+ * AmbExpr <: Expr <: Term <: Node					<br>
+ * AmbExpr <: Expr <: Receiver <: Prefix <: Node
  * @author LHJ
  */
-public class EquGenReturnExt extends EquGenExt {
+public class EquGenAmbExprExt extends EquGenExprExt {
 	private static final long serialVersionUID = SerialVersionUID.generate();
 	
 	@Override
 	public EquGenerator equGenEnter(EquGenerator v) {
-		Return rtn = (Return)this.node();
-		Report.report(0, "Return: " + rtn/*.name()*/);
-		
-		System.out.println("Return:  " + rtn.expr());
-		
+		AmbExpr aexpr = (AmbExpr) this.node();
+		Report.report(0, "Ambiguous Expression: " + aexpr);
 		
 		return super.equGenEnter(v);
 	}

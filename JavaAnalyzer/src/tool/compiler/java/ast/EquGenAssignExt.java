@@ -13,7 +13,7 @@ import tool.compiler.java.visit.ReadField;
 import tool.compiler.java.visit.ReadStaticField;
 
 /**
- * Assign <: Expr <: Term <: Node	<br>
+ * Assign <: Expr <: Term <: Node				<br>
  * Assign <: Expr <: Receiver <: Prefix <: Node
  * @author LHJ
  */

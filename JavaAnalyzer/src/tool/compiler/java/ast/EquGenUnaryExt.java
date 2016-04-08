@@ -1,25 +1,23 @@
 package tool.compiler.java.ast;
 
 import polyglot.ast.Node;
-import polyglot.ast.Return;
+import polyglot.ast.Unary;
 import polyglot.main.Report;
 import polyglot.util.SerialVersionUID;
 import tool.compiler.java.visit.EquGenerator;
 
 /**
- * Return <: Stmt <: Term <: Node
+ * Unary <: Expr <: Term <: Node				<br>
+ * Unary <: Expr <: Receiver <: Prefix <: Node
  * @author LHJ
  */
-public class EquGenReturnExt extends EquGenExt {
+public class EquGenUnaryExt extends EquGenExprExt {
 	private static final long serialVersionUID = SerialVersionUID.generate();
-	
+
 	@Override
 	public EquGenerator equGenEnter(EquGenerator v) {
-		Return rtn = (Return)this.node();
-		Report.report(0, "Return: " + rtn/*.name()*/);
-		
-		System.out.println("Return:  " + rtn.expr());
-		
+		Unary unary = (Unary) this.node();
+		Report.report(0, "Unary: " + unary);
 		
 		return super.equGenEnter(v);
 	}

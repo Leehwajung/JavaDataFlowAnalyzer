@@ -11,8 +11,8 @@ import tool.compiler.java.visit.EquGenerator;
 import tool.compiler.java.visit.MethodCallInfo;
 
 /**
- * New <: Expr <: Term <: Node
- * New <: Expr <: Receiver <: Prefix <: Node
+ * New <: Expr <: Term <: Node					<br>
+ * New <: Expr <: Receiver <: Prefix <: Node	<br>
  * New <: ProcedureCall <: Term <: Node
  * @author LHJ
  */

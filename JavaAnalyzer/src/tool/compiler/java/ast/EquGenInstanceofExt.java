@@ -1,24 +1,23 @@
 package tool.compiler.java.ast;
 
-import polyglot.ast.Expr;
+import polyglot.ast.Instanceof;
 import polyglot.ast.Node;
 import polyglot.main.Report;
 import polyglot.util.SerialVersionUID;
 import tool.compiler.java.visit.EquGenerator;
-import tool.compiler.java.visit.TypedSetVariable;
 
 /**
- * Expr <: Term <: Node					<br>
- * Expr <: Receiver <: Prefix <: Node
+ * Instanceof <: Expr <: Term <: Node				<br>
+ * Instanceof <: Expr <: Receiver <: Prefix <: Node
  * @author LHJ
  */
-public class EquGenExprExt extends EquGenExt {
+public class EquGenInstanceofExt extends EquGenExprExt {
 	private static final long serialVersionUID = SerialVersionUID.generate();
 	
 	@Override
 	public EquGenerator equGenEnter(EquGenerator v) {
-		Expr expr = (Expr)this.node();
-		Report.report(0, "Expression: " + expr);
+		Instanceof insof = (Instanceof) this.node();
+		Report.report(0, "Instanceof: " + insof);
 		
 		return super.equGenEnter(v);
 	}

@@ -62,14 +62,13 @@ public final class EquGenExtFactory_c extends EquGenAbstractExtFactory_c {
 	}
 	
 	/**
-	 * Call <: Expr <: Term <: Node	<br>
-	 * Call <: Expr <: Receiver <: Prefix <: Node	<br>
-	 * Call <: ProcedureCall <: Term <: Node
+	 * AmbExpr <: Expr <: Term <: Node	<br>
+	 * AmbExpr <: Expr <: Receiver <: Prefix <: Node
 	 */
 	@Override
-	protected Ext extCallImpl() {
-//		return super.extCallImpl();
-		return new EquGenCallExt();
+	protected Ext extAmbExprImpl() {
+//		return super.extAmbExprImpl();
+		return new EquGenAmbExprExt();
 	}
 	
 	/**
@@ -84,13 +83,144 @@ public final class EquGenExtFactory_c extends EquGenAbstractExtFactory_c {
 	}
 	
 	/**
-	 * Field <: NamedVariable <: Variable <: Expr <: Term <: Node
+	 * Call <: Expr <: Term <: Node	<br>
+	 * Call <: Expr <: Receiver <: Prefix <: Node	<br>
+	 * Call <: ProcedureCall <: Term <: Node
+	 */
+	@Override
+	protected Ext extCallImpl() {
+//		return super.extCallImpl();
+		return new EquGenCallExt();
+	}
+	
+	/**
+	 * NewArray <: Expr <: Term <: Node	<br>
+	 * NewArray <: Expr <: Receiver <: Prefix <: Node
+	 */
+	@Override
+	protected Ext extNewArrayImpl() {
+//		return super.extNewArrayImpl();
+		return new EquGenNewArrayExt();
+	}
+	
+	/**
+	 * ArrayInit <: Expr <: Term <: Node	<br>
+	 * ArrayInit <: Expr <: Receiver <: Prefix <: Node
+	 */
+	@Override
+	protected Ext extArrayInitImpl() {
+//		return super.extArrayInitImpl();
+		return new EquGenArrayInitExt();
+	}
+	
+	/**
+	 * Conditional <: Expr <: Term <: Node	<br>
+	 * Conditional <: Expr <: Receiver <: Prefix <: Node
+	 */
+	@Override
+	protected Ext extConditionalImpl() {
+//		return super.extConditionalImpl();
+		return new EquGenConditionalExt();
+	}
+	
+	/**
+	 * Special <: Expr <: Term <: Node	<br>
+	 * Special <: Expr <: Receiver <: Prefix <: Node
+	 */
+	@Override
+	protected Ext extSpecialImpl() {
+//		return super.extSpecialImpl();
+		return new EquGenSpecialExt();
+	}
+	
+	/**
+	 * Cast <: Expr <: Term <: Node	<br>
+	 * Cast <: Expr <: Receiver <: Prefix <: Node
+	 */
+	@Override
+	protected Ext extCastImpl() {
+//		return super.extCastImpl();
+		return new EquGenCastExt();
+	}
+	
+	/**
+	 * Instanceof <: Expr <: Term <: Node	<br>
+	 * Instanceof <: Expr <: Receiver <: Prefix <: Node
+	 */
+	@Override
+	protected Ext extInstanceofImpl() {
+//		return super.extCastImpl();
+		return new EquGenInstanceofExt();
+	}
+	
+	/**
+	 * Unary <: Expr <: Term <: Node	<br>
+	 * Unary <: Expr <: Receiver <: Prefix <: Node
+	 */
+	@Override
+	protected Ext extUnaryImpl() {
+//		return super.extUnaryImpl();
+		return new EquGenUnaryExt();
+	}
+	
+	/**
+	 * Binary <: Expr <: Term <: Node	<br>
+	 * Binary <: Expr <: Receiver <: Prefix <: Node
+	 */
+	@Override
+	protected Ext extBinaryImpl() {
+//		return super.extBinaryImpl();
+		return new EquGenBinaryExt();
+	}
+	
+	/**
+	 * Lit <: Expr <: Term <: Node	<br>
+	 * Lit <: Expr <: Receiver <: Prefix <: Node
+	 */
+	@Override
+	protected Ext extLitImpl() {
+//		return super.extLitImpl();
+		return new EquGenLitExt();
+	}
+	
+	/**
+	 * ClassLit <: Lit <: Expr <: Term <: Node	<br>
+	 * ClassLit <: Lit <: Expr <: Receiver <: Prefix <: Node
+	 */
+	@Override
+	protected Ext extClassLitImpl() {
+//		return super.extClassLitImpl();
+		return new EquGenClassLitExt();
+	}
+	
+	/**
+	 * ArrayAccess <: Variable <: Expr <: Term <: Node	<br>
+	 * ArrayAccess <: Variable <: Expr <: Receiver <: Prefix <: Node
+	 */
+	@Override
+	protected Ext extArrayAccessImpl() {
+//		return super.extArrayAccessImpl();
+		return new EquGenArrayAccessExt();
+	}
+	
+	/**
+	 * Field <: NamedVariable <: Variable <: Expr <: Term <: Node	<br>
 	 * Field <: NamedVariable <: Variable <: Expr <: Receiver <: Prefix <: Node
 	 */
 	@Override
 	protected Ext extFieldImpl() {
 //		return super.extFieldImpl();
 		return new EquGenFieldExt();
+	}
+	
+	/**
+	 * Local <: NamedVariable <: Variable <: Expr <: Term <: Node	<br>
+	 * Local <: NamedVariable <: Variable <: Expr <: Receiver <: Prefix <: Node
+	 */
+	@Override
+	protected Ext extLocalImpl() {
+//		return super.extLocalImpl();
+		return new EquGenLocalExt();
 	}
 	
 	/**
