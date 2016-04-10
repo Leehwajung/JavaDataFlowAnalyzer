@@ -16,8 +16,8 @@ public class EquGenSpecialExt extends EquGenExprExt {
 	
 	@Override
 	public EquGenerator equGenEnter(EquGenerator v) {
-		Special cond = (Special) this.node();
-		Report.report(0, "Special: " + cond);
+		Special spc = (Special) this.node();
+		Report.report(0, "Special: " + spc);
 		
 		return super.equGenEnter(v);
 	}

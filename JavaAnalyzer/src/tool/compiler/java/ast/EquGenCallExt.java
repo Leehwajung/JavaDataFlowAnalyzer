@@ -54,4 +54,9 @@ public class EquGenCallExt extends EquGenExprExt {
 	public Node equGen(EquGenerator v) {
 		return super.equGen(v);
 	}
+	
+//	@Override
+//	protected TypedSetVariable setVarImpl() {
+//		return ;
+//	}
 }

@@ -1,5 +1,6 @@
 package tool.compiler.java.ast;
 
+import polyglot.ast.Expr;
 import polyglot.ast.Field;
 import polyglot.ast.Node;
 import polyglot.ext.jl5.types.JL5FieldInstance;
@@ -22,12 +23,7 @@ public class EquGenFieldExt extends EquGenExprExt {
 		Field fld = (Field)this.node();
 //		Type rValType = fld.right().type();
 		
-		
-		
 		Report.report(0, "Field: " + fld/*.name()*/);
-		
-		
-		setVar(fld.fieldInstance().container());
 		
 		return super.equGenEnter(v);
 	}
@@ -35,5 +31,11 @@ public class EquGenFieldExt extends EquGenExprExt {
 	@Override
 	public Node equGen(EquGenerator v) {
 		return super.equGen(v);
+	}
+	
+	@Override
+	protected TypedSetVariable setVarImpl() {
+		Field fld = (Field)this.node();
+		return new TypedSetVariable(fld.fieldInstance().container());
 	}
 }

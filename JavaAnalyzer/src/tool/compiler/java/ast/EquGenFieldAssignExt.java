@@ -1,5 +1,7 @@
 package tool.compiler.java.ast;
 
+import polyglot.ast.Expr;
+import polyglot.ast.Field;
 import polyglot.ast.FieldAssign;
 import polyglot.ast.Node;
 import polyglot.ext.jl5.types.JL5FieldInstance;
@@ -39,20 +41,27 @@ public class EquGenFieldAssignExt extends EquGenAssignExt {
 	@Override
 	public Node equGen(EquGenerator v) {
 		
-//		FieldAssign fasgn = (FieldAssign) this.node();
-//		Type rValType = fasgn.right().type();
-//		JL5FieldInstance lValIns = (JL5FieldInstance) fasgn.left().fieldInstance();
-//		
-//		Report.report(0, "Field Assign: " + fasgn);
-//		
-//		if(lValIns.flags().isStatic()) {
-////			v.addToSet(new AssignStaticField(rValType, lValIns));
-//			v.addToSet(new AssignStaticField(new TypedSetVariable(rValType), lValIns));
-//		} else {
-////			v.addToSet(new AssignField(rValType, lValIns));
-//			v.addToSet(new AssignField(new TypedSetVariable(rValType), v.getCurrTypedSetVariable(), lValIns));
-//		}
-//		
+		FieldAssign fasgn = (FieldAssign) this.node();
+		Expr rVal = fasgn.right();
+		Field lVal = fasgn.left();
+		JL5FieldInstance lValIns = (JL5FieldInstance) fasgn.left().fieldInstance();
+		
+		Report.report(0, "Field Assign: " + fasgn);
+		
+		if(lValIns.flags().isStatic()) {
+//			v.addToSet(new AssignStaticField(rValType, lValIns));
+			v.addToSet(new AssignStaticField(setVar(rVal), lValIns));
+		} else {
+//			v.addToSet(new AssignField(rValType, lValIns));
+			v.addToSet(new AssignField(setVar(rVal), setVar(lVal), lValIns));
+		}
+		
 		return super.equGen(v);
+	}
+	
+	@Override
+	protected TypedSetVariable setVarImpl() {
+		Field lVal = ((FieldAssign)this.node()).left();
+		return setVar(lVal);
 	}
 }

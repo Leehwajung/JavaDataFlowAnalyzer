@@ -20,11 +20,18 @@ public class EquGenExprExt extends EquGenExt {
 		Expr expr = (Expr)this.node();
 		Report.report(0, "Expression: " + expr);
 		
+		
 		return super.equGenEnter(v);
 	}
 	
 	@Override
 	public Node equGen(EquGenerator v) {
 		return super.equGen(v);
+	}
+	
+	@Override
+	protected TypedSetVariable setVarImpl() {
+		Expr expr = (Expr)this.node();
+		return new TypedSetVariable(expr.type());
 	}
 }

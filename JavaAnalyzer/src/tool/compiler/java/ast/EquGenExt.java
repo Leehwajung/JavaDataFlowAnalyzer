@@ -9,7 +9,7 @@ import polyglot.util.SerialVersionUID;
 import tool.compiler.java.visit.EquGenerator;
 import tool.compiler.java.visit.TypedSetVariable;
 
-public class EquGenExt extends Ext_c implements EquGenOps {  // TODO: Not JL7Ext, but Ext_c to override lang()!!!
+public class EquGenExt extends Ext_c implements EquGenOps {	// TODO: Not JL7Ext, but Ext_c to override lang()!!!
 	private static final long serialVersionUID = SerialVersionUID.generate();
 	
 	private TypedSetVariable setVar = null;
@@ -32,7 +32,7 @@ public class EquGenExt extends Ext_c implements EquGenOps {  // TODO: Not JL7Ext
 		return (EquGenExt)e;
 	}
 		
-	@Override  // TODO: Must extend Ext_c, not JL7Ext!!!
+	@Override	// TODO: Must extend Ext_c, not JL7Ext!!!
 	public final EquGenLang lang() {
 		return EquGenLang_c.instance;
 	}
@@ -41,6 +41,7 @@ public class EquGenExt extends Ext_c implements EquGenOps {  // TODO: Not JL7Ext
 	@Override
 	public EquGenerator equGenEnter(EquGenerator v) {
 		// By default, return the given visitor.
+		setVar();
 		return v;
 	}
 	
@@ -57,6 +58,9 @@ public class EquGenExt extends Ext_c implements EquGenOps {  // TODO: Not JL7Ext
 	 */
 	@Override
 	public final TypedSetVariable setVar() {
+		if(setVar == null) {
+			this.setVar = setVarImpl();
+		}
 		return setVar;
 	}
 	
@@ -69,21 +73,29 @@ public class EquGenExt extends Ext_c implements EquGenOps {  // TODO: Not JL7Ext
 	}
 	
 	/**
-	 * @param setVar the setVar to set
+	 * set the setVar
 	 */
-	protected final void setVar(TypedSetVariable setVar) {
-		if(setVar == null) {
-			this.setVar = setVar;
-		}
+	protected TypedSetVariable setVarImpl() {
+		return null;
 	}
 	
-	/**
-	 * auto-generate typed set variable (TypedSetVariable object)
-	 * @param type the type of setVar to set setVar
-	 */
-	protected final void setVar(Type type) {
-		if(setVar == null) {
-			this.setVar = new TypedSetVariable(type);
-		}
-	}
+	
+//	/**
+//	 * @param setVar the setVar to set
+//	 */
+//	protected final void setVar(TypedSetVariable setVar) {
+//		if(setVar == null) {
+//			this.setVar = setVar;
+//		}
+//	}
+//	
+//	/**
+//	 * auto-generate typed set variable (TypedSetVariable object)
+//	 * @param type the type of setVar to set setVar
+//	 */
+//	protected final void setVar(Type type) {
+//		if(setVar == null) {
+//			this.setVar = new TypedSetVariable(type);
+//		}
+//	}
 }

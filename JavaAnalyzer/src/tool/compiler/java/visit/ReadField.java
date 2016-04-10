@@ -40,16 +40,16 @@ public class ReadField extends Constraint {
 		this.dy = dy;
 	}
 	
-	/**
-	 * C{X}.f <: D{Y}<br>
-	 * auto-construct TypedSetVariable objects ( C{X}, D{Y} )
-	 * @param left	for C, X, f	( C{X}.f )
-	 * @param right	for D, Y	( D{Y} )
-	 */
-	@Deprecated
-	public ReadField(JL5FieldInstance left, Type right) {
-		this(new TypedSetVariable(left.container()), left, new TypedSetVariable(right));
-	}
+//	/**
+//	 * C{X}.f <: D{Y}<br>
+//	 * auto-construct TypedSetVariable objects ( C{X}, D{Y} )
+//	 * @param left	for C, X, f	( C{X}.f )
+//	 * @param right	for D, Y	( D{Y} )
+//	 */
+//	@Deprecated
+//	public ReadField(JL5FieldInstance left, Type right) {
+//		this(new TypedSetVariable(left.container()), left, new TypedSetVariable(right));
+//	}
 	
 	
 	// getter methods
