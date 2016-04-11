@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import polyglot.ast.Call;
 import polyglot.ast.Expr;
 import polyglot.ast.Node;
+import polyglot.ext.jl5.types.JL5MethodInstance;
 import polyglot.ext.jl5.types.JL5ProcedureInstance;
 import polyglot.main.Report;
 import polyglot.types.Type;
@@ -65,14 +66,15 @@ public class EquGenCallExt extends EquGenExprExt {
 		}
 		
 		
-		//v.addToSet(new InvokeMth(setVar(), call.methodInstance(), argSetVars, call.));
+		v.addToSet(new InvokeMth(setVar(), (JL5MethodInstance) call.methodInstance(), argSetVars, new TypedSetVariable(call.type())));
 		
 		
 		return super.equGen(v);
 	}
 	
-//	@Override
-//	protected TypedSetVariable setVarImpl() {
-//		return ;
-//	}
+	@Override
+	protected TypedSetVariable setVarImpl() {
+		Call call = (Call) this.node();
+		return new TypedSetVariable(call.methodInstance().container());
+	}
 }

@@ -8,6 +8,8 @@ import polyglot.main.Report;
 import polyglot.types.Type;
 import polyglot.util.SerialVersionUID;
 import tool.compiler.java.visit.EquGenerator;
+import tool.compiler.java.visit.ReadField;
+import tool.compiler.java.visit.ReadStaticField;
 import tool.compiler.java.visit.TypedSetVariable;
 
 /**
@@ -24,12 +26,22 @@ public class EquGenFieldExt extends EquGenExprExt {
 //		Type rValType = fld.right().type();
 		
 		Report.report(0, "Field: " + fld/*.name()*/);
-		
+		System.out.println("DECL:::   " + fld.fieldInstance().declaration());
 		return super.equGenEnter(v);
 	}
 	
 	@Override
 	public Node equGen(EquGenerator v) {
+		System.out.println("!!setVar!!	" + setVar());
+		Field fld = (Field)this.node();
+		
+		JL5FieldInstance ins = (JL5FieldInstance) fld.fieldInstance();
+		if(ins.flags().isStatic()) {
+			v.addToSet(new ReadStaticField(ins, new TypedSetVariable(fld.type())));
+		} else {
+			v.addToSet(new ReadField(setVar(), ins, new TypedSetVariable(fld.type())));
+		}
+		
 		return super.equGen(v);
 	}
 	
