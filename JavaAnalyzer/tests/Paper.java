@@ -1,5 +1,6 @@
 class Y {
 	static char stf;
+	static char right;
 	static void stm() {
 		
 	}
@@ -26,6 +27,7 @@ class X {
 	void main() {
 		Y.stm();
 		char a = Y.stf;
+		a = Y.stf = Y.right;
 		
 		X p = new X();	// o1
 		Y q = new Y();	// o2

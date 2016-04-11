@@ -41,7 +41,9 @@ public class EquGenExt extends Ext_c implements EquGenOps {	// TODO: Not JL7Ext,
 	@Override
 	public EquGenerator equGenEnter(EquGenerator v) {
 		// By default, return the given visitor.
-		setVar();
+		if(setVar == null) {
+			this.setVar = setVarImpl();
+		}
 		return v;
 	}
 	
@@ -58,9 +60,6 @@ public class EquGenExt extends Ext_c implements EquGenOps {	// TODO: Not JL7Ext,
 	 */
 	@Override
 	public final TypedSetVariable setVar() {
-		if(setVar == null) {
-			this.setVar = setVarImpl();
-		}
 		return setVar;
 	}
 	

@@ -1,17 +1,21 @@
 package tool.compiler.java.ast;
 
+import java.util.ArrayList;
+
 import polyglot.ast.Call;
 import polyglot.ast.Expr;
 import polyglot.ast.Node;
 import polyglot.ext.jl5.types.JL5ProcedureInstance;
 import polyglot.main.Report;
+import polyglot.types.Type;
 import polyglot.util.SerialVersionUID;
 import tool.compiler.java.visit.EquGenerator;
+import tool.compiler.java.visit.InvokeMth;
 import tool.compiler.java.visit.MethodCallInfo;
 import tool.compiler.java.visit.TypedSetVariable;
 
 /**
- * Call <: Expr <: Term <: Node	<br>
+ * Call <: Expr <: Term <: Node					<br>
  * Call <: Expr <: Receiver <: Prefix <: Node	<br>
  * Call <: ProcedureCall <: Term <: Node
  * @author LHJ
@@ -52,6 +56,18 @@ public class EquGenCallExt extends EquGenExprExt {
 	
 	@Override
 	public Node equGen(EquGenerator v) {
+		Call call = (Call) this.node();
+//		Report.report(0, "Call: " + call/*.name()*/);
+		
+		ArrayList<TypedSetVariable> argSetVars = new ArrayList<>();
+		for(Expr arg: call.arguments()) {
+			argSetVars.add(setVar(arg));
+		}
+		
+		
+		//v.addToSet(new InvokeMth(setVar(), call.methodInstance(), argSetVars, call.));
+		
+		
 		return super.equGen(v);
 	}
 	
