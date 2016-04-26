@@ -31,7 +31,8 @@ public class EquGenExprExt extends EquGenExt {
 	
 	@Override
 	protected TypedSetVariable setVarImpl() {
-		Expr expr = (Expr)this.node();
-		return new TypedSetVariable(expr.type());
+//		Expr expr = (Expr)this.node();
+//		return new TypedSetVariable(expr.type());
+		return null;
 	}
 }

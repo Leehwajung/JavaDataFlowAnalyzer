@@ -18,9 +18,6 @@ public class EquGenReturnExt extends EquGenExt {
 		Return rtn = (Return)this.node();
 		Report.report(0, "Return: " + rtn/*.name()*/);
 		
-		System.out.println("Return:  " + rtn.expr());
-		
-		
 		return super.equGenEnter(v);
 	}
 	

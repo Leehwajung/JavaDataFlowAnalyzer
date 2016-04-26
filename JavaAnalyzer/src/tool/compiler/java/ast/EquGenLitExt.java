@@ -5,6 +5,7 @@ import polyglot.ast.Node;
 import polyglot.main.Report;
 import polyglot.util.SerialVersionUID;
 import tool.compiler.java.visit.EquGenerator;
+import tool.compiler.java.visit.TypedSetVariable;
 
 /**
  * Lit <: Expr <: Term <: Node					<br>
@@ -25,5 +26,10 @@ public class EquGenLitExt extends EquGenExprExt {
 	@Override
 	public Node equGen(EquGenerator v) {
 		return super.equGen(v);
+	}
+	
+	@Override
+	protected TypedSetVariable setVarImpl() {
+		return super.setVarImpl();
 	}
 }
