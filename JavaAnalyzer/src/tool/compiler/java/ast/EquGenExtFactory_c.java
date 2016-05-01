@@ -253,6 +253,11 @@ public final class EquGenExtFactory_c extends EquGenAbstractExtFactory_c {
 		return new EquGenConstructorCallExt();
 	}
 	
+	@Override
+	protected Ext extLocalDeclImpl() {
+		return new EquGenLocalDeclExt();
+	}
+	
 	/**
 	 * Block <: CompoundStmt <: Stmt <: Term <: Node
 	 */

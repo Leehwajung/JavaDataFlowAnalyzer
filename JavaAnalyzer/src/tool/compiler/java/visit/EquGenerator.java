@@ -28,13 +28,13 @@ public class EquGenerator extends ContextVisitor {
 	private static LinkedHashSet<MethodInfo> methodDeclInfoSet;
 	private static LinkedHashSet<AbstractObjectInfo> abstractObjectInfoSet;
 	
-	private static LinkedHashMap<MethodCallInfo, LinkedHashSet<MethodTable>> methodTableMap;
-	private static LinkedHashMap<FieldInfo, LinkedHashSet<FieldTable>> fieldTableMap;
+	private static LinkedHashMap<MethodCallInfo, LinkedHashSet<MethodTableRow>> methodTableMap;
+	private static LinkedHashMap<FieldInfo, LinkedHashSet<FieldTableRow>> fieldTableMap;
 	
 	private static LinkedHashSet<Constraint> constraintSet;
 	
 	@Deprecated
-	private static LinkedHashSet<FieldTable> fieldEquationSet;
+	private static LinkedHashSet<FieldTableRow> fieldEquationSet;
 	
 	private static final String OutputFileName = "tables.txt";
 	
@@ -171,26 +171,26 @@ public class EquGenerator extends ContextVisitor {
 	 */
 	public void generateTables() {
 		for(AbstractObjectInfo absObjInfo: abstractObjectInfoSet) {
-			for(Entry<MethodCallInfo, LinkedHashSet<MethodTable>> miEntry: methodTableMap.entrySet()) {
+			for(Entry<MethodCallInfo, LinkedHashSet<MethodTableRow>> miEntry: methodTableMap.entrySet()) {
 				try {
 //					MethodTable.checkArguments(absObjInfo, miEntry.getKey());	// IllegalArgumentException 발생
-					MethodTable mt = new MethodTable(absObjInfo, miEntry.getKey());	// IllegalArgumentException 발생
+					MethodTableRow mt = new MethodTableRow(absObjInfo, miEntry.getKey());	// IllegalArgumentException 발생
 					
 					if(miEntry.getValue() == null) {
-						miEntry.setValue(new LinkedHashSet<MethodTable>());
+						miEntry.setValue(new LinkedHashSet<MethodTableRow>());
 					}
 					
 					miEntry.getValue().add(mt);
 				} catch (IllegalArgumentException ignored) {}	// 무시
 			}
 			
-			for(Entry<FieldInfo, LinkedHashSet<FieldTable>> fiEntry: fieldTableMap.entrySet()) {
+			for(Entry<FieldInfo, LinkedHashSet<FieldTableRow>> fiEntry: fieldTableMap.entrySet()) {
 				try {
 //					FieldTable.checkArguments(absObjInfo, fiEntry.getKey());	// IllegalArgumentException 발생
-					FieldTable ft = new FieldTable(absObjInfo, fiEntry.getKey());	// IllegalArgumentException 발생
+					FieldTableRow ft = new FieldTableRow(absObjInfo, fiEntry.getKey());	// IllegalArgumentException 발생
 					
 					if(fiEntry.getValue() == null) {
-						fiEntry.setValue(new LinkedHashSet<FieldTable>());
+						fiEntry.setValue(new LinkedHashSet<FieldTableRow>());
 					}
 					
 					fiEntry.getValue().add(ft);
@@ -208,13 +208,13 @@ public class EquGenerator extends ContextVisitor {
 	 */
 	 private void printTablesToConsole() {
 		Report.report(1, "\n----- Tables -----");
-		for(Entry<FieldInfo, LinkedHashSet<FieldTable>> fiEntry : fieldTableMap.entrySet()) {
+		for(Entry<FieldInfo, LinkedHashSet<FieldTableRow>> fiEntry : fieldTableMap.entrySet()) {
 			try {
 				Report.report(1, CollUtil.getNLStringOf(fiEntry.getValue()));
 			} catch (NullPointerException ignored) {}
 		}
 		
-		for(Entry<MethodCallInfo, LinkedHashSet<MethodTable>> miEntry : methodTableMap.entrySet()) {
+		for(Entry<MethodCallInfo, LinkedHashSet<MethodTableRow>> miEntry : methodTableMap.entrySet()) {
 			try {
 				Report.report(1, CollUtil.getNLStringOf(miEntry.getValue()));
 			} catch (NullPointerException ignored) {}
@@ -237,13 +237,13 @@ public class EquGenerator extends ContextVisitor {
 			DataOutputStream dos = new DataOutputStream(new FileOutputStream(OutputFileName));
 			
 			dos.write("----- Tables -----\n\n".getBytes());
-			for(Entry<FieldInfo, LinkedHashSet<FieldTable>> fiEntry : fieldTableMap.entrySet()) {
+			for(Entry<FieldInfo, LinkedHashSet<FieldTableRow>> fiEntry : fieldTableMap.entrySet()) {
 				try {
 					CollUtil.writeToOutputStream(dos, fiEntry.getValue());
 				} catch (NullPointerException ignored) {}
 			}
 			
-			for(Entry<MethodCallInfo, LinkedHashSet<MethodTable>> miEntry : methodTableMap.entrySet()) {
+			for(Entry<MethodCallInfo, LinkedHashSet<MethodTableRow>> miEntry : methodTableMap.entrySet()) {
 				try {
 					CollUtil.writeToOutputStream(dos, miEntry.getValue());
 				} catch (NullPointerException ignored) {}

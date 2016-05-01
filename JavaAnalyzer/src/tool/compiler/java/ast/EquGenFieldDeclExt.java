@@ -33,7 +33,7 @@ public class EquGenFieldDeclExt extends EquGenExt {
 	}
 	
 	@Override
-	public Node equGen(EquGenerator v) {
-		return super.equGen(v);
+	public Node equGenLeave(EquGenerator v) {
+		return super.equGenLeave(v);
 	}
 }

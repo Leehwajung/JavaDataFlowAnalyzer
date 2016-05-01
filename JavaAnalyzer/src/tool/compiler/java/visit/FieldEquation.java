@@ -11,17 +11,17 @@ import tool.compiler.java.util.CollUtil;
 @Deprecated
 public class FieldEquation extends AbstractEquation {
 	
-	private LinkedHashSet<FieldTable> fieldTableSet;
+	private LinkedHashSet<FieldTableRow> fieldTableSet;
 	private LinkedList<AbstractObjectInfo> absObjInfoList;
 	private LinkedList<TypedSetVariable> setVarList;
 	
 	private static final char envId = 'x';
 	
-	public FieldEquation(FieldInfo fieldInfo, Collection<FieldTable> fieldTables) {
+	public FieldEquation(FieldInfo fieldInfo, Collection<FieldTableRow> fieldTables) {
 		this(fieldInfo, fieldTables, true);
 	}
 	
-	public FieldEquation(FieldInfo fieldInfo, Collection<FieldTable> fieldTables, boolean argCheck) {
+	public FieldEquation(FieldInfo fieldInfo, Collection<FieldTableRow> fieldTables, boolean argCheck) {
 		super();
 		if(argCheck) {
 			checkArguments(fieldInfo, fieldTables);
@@ -31,11 +31,11 @@ public class FieldEquation extends AbstractEquation {
 		System.out.println(fieldTables);
 	}
 	
-	public FieldEquation(Collection<FieldTable> fieldTables) {
+	public FieldEquation(Collection<FieldTableRow> fieldTables) {
 		this(fieldTables, true);
 	}
 	
-	public FieldEquation(Collection<FieldTable> fieldTables, boolean argCheck) {
+	public FieldEquation(Collection<FieldTableRow> fieldTables, boolean argCheck) {
 		this(!fieldTables.isEmpty() ? fieldTables.iterator().next().getInfo() : null, fieldTables, argCheck);
 	}
 	
@@ -70,9 +70,9 @@ public class FieldEquation extends AbstractEquation {
 		return "Γ{" + envId + ":" + getContainerType() + CollUtil.getStringOf(absObjInfoList, '{', '}') +"} ▷ " + envId + "." + getName() + ":";
 	}
 	
-	public static final void checkArguments(FieldInfo fieldInfo, Collection<FieldTable> fieldTables) {
+	public static final void checkArguments(FieldInfo fieldInfo, Collection<FieldTableRow> fieldTables) {
 		if(!fieldTables.isEmpty()) {					// fieldTables가 null이면 NullPointerException 발생
-			for(FieldTable ft: fieldTables) {
+			for(FieldTableRow ft: fieldTables) {
 				if(!fieldInfo.equals(ft.getInfo())) {	// fieldInfo가 null이면 NullPointerException 발생
 					throw new IllegalArgumentException("Missmatch among Info objects.");
 				}
@@ -82,7 +82,7 @@ public class FieldEquation extends AbstractEquation {
 		}
 	}
 	
-	public static final void checkArguments(Collection<FieldTable> fieldTables) {
+	public static final void checkArguments(Collection<FieldTableRow> fieldTables) {
 		checkArguments(!fieldTables.isEmpty() ? fieldTables.iterator().next().getInfo() : null, fieldTables);
 				// fieldTables가 null이면 NullPointerException 발생
 	}

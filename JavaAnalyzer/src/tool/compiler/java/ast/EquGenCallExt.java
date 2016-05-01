@@ -5,15 +5,11 @@ import java.util.ArrayList;
 import polyglot.ast.Call;
 import polyglot.ast.Expr;
 import polyglot.ast.Node;
-import polyglot.ext.jl5.types.JL5FieldInstance;
-import polyglot.ext.jl5.types.JL5MethodInstance;
 import polyglot.ext.jl5.types.JL5ProcedureInstance;
 import polyglot.main.Report;
-import polyglot.types.Type;
 import polyglot.util.SerialVersionUID;
 import tool.compiler.java.visit.EquGenerator;
 import tool.compiler.java.visit.InvokeMth;
-import tool.compiler.java.visit.InvokeStaticMth;
 import tool.compiler.java.visit.MethodCallInfo;
 import tool.compiler.java.visit.TypedSetVariable;
 
@@ -36,44 +32,48 @@ public class EquGenCallExt extends EquGenExprExt {
 		v.addToSet(mtdInfo);
 		Report.report(0, "Call: " + call + ": " + mtdInfo);
 		
-//		System.out.print("args:   ");
-//		for(Expr aa: call.arguments()) {
-//			System.out.print(aa.type()+", ");
-//		}
-//		
-//		System.out.println();
-//		
-//		System.out.println("formal types: " + call.methodInstance().formalTypes());
-//		call.arguments()
-//		call.type();
-		
-		
 		return super.equGenEnter(v);
 	}
 	
 	@Override
-	public Node equGen(EquGenerator v) {
+	public Node equGenLeave(EquGenerator v) {
 		Call call = (Call) this.node();
 //		Report.report(0, "Call: " + call/*.name()*/);
 		
+		// e.m(e1, ..., en)
+		//   1. e의 타입 C{X0}를 가져오고
+		TypedSetVariable cx0 = EquGenExt.typedSetVar(call.target());
+		
+		//   2. e1~en의 타입 Ci{Xi}를 가져온 다음
 		ArrayList<TypedSetVariable> argSetVars = new ArrayList<>();
 		for(Expr arg: call.arguments()) {
-			argSetVars.add(setVar(arg));
+			argSetVars.add(EquGenExt.typedSetVar(arg));
 		}
 		
-		JL5MethodInstance ins = (JL5MethodInstance) call.methodInstance();
-		if(ins.flags().isStatic()) {
-			v.addToSet(new InvokeStaticMth(ins, argSetVars, new TypedSetVariable(call.type())));
-		} else {
-			v.addToSet(new InvokeMth(setVar(), ins, argSetVars, new TypedSetVariable(call.type())));
-		}
+		//   3. 리턴할 타입 D{X}를 만든다. (X는 새로 만들고 D는 이 노드 자신의 타입)
+		TypedSetVariable dx = new TypedSetVariable(call.type());
 		
-		return super.equGen(v);
-	}
-	
-	@Override
-	protected TypedSetVariable setVarImpl() {
-		Call call = (Call) this.node();
-		return new TypedSetVariable(call.methodInstance().container());
+		//   4. C{X0}.m <: (C1{X1}, ... , Cn{Xn}) -> D{X} 제약식을 추가
+		InvokeMth im = new InvokeMth(cx0, (JL5ProcedureInstance) call.methodInstance(), 
+				argSetVars, dx);
+		v.addToSet(im);
+		
+		//   5. D{X}를 리턴 타입으로 지정
+		setTypedSetVar(dx);
+		
+		
+//		ArrayList<TypedSetVariable> argSetVars = new ArrayList<>();
+//		for(Expr arg: call.arguments()) {
+//			argSetVars.add(typedSetVar(arg));
+//		}
+//		
+//		JL5MethodInstance ins = (JL5MethodInstance) call.methodInstance();
+//		if(ins.flags().isStatic()) {
+//			v.addToSet(new InvokeStaticMth(ins, argSetVars, new TypedSetVariable(call.type())));
+//		} else {
+//			v.addToSet(new InvokeMth(typedSetVar(), ins, argSetVars, new TypedSetVariable(call.type())));
+//		}
+		
+		return super.equGenLeave(v);
 	}
 }

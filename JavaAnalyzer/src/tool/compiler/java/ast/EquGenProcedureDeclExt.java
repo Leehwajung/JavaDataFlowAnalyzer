@@ -30,7 +30,13 @@ public class EquGenProcedureDeclExt extends EquGenExt {
 	}
 	
 	@Override
-	public Node equGen(EquGenerator v) {
-		return super.equGen(v);
+	public Node equGenLeave(EquGenerator v) {
+		// T m(T1 x1, ... Tn xn) { ... }
+		//   1. local env를 x1:T1{X1}, xn:Tn{Xn}으로 초기화
+		//         X1~Xn은 method table에 기록된 TypedSetVariable들임
+		
+		// TODO: 구현 필요
+		
+		return super.equGenLeave(v);
 	}
 }
