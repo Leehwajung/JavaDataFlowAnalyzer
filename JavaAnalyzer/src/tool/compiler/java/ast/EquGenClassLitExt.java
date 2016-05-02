@@ -11,7 +11,7 @@ import tool.compiler.java.visit.EquGenerator;
  * ClassLit <: Lit <: Expr <: Receiver <: Prefix <: Node
  * @author LHJ
  */
-public class EquGenClassLitExt extends EquGenExprExt {
+public class EquGenClassLitExt extends EquGenLitExt {
 	private static final long serialVersionUID = SerialVersionUID.generate();
 	
 	@Override

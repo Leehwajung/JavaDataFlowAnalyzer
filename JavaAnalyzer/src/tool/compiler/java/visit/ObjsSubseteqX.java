@@ -74,7 +74,7 @@ public class ObjsSubseteqX extends Constraint {
 	 */
 	@Override
 	public String toString() {
-		return CollUtil.getStringOf(objs, '{', '}') + " \\subseteq " + getX();
+		return CollUtil.getStringOf(objs, '{', '}') + " <: " + getX();
 	}
 	
 	/**

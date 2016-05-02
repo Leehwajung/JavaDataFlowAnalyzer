@@ -8,19 +8,31 @@ class Y {
 }
 
 class Z extends Y {
-	
+	int aa (){
+		X a = new X();
+		Y y = null;
+		a.f = y;
+		
+		return 1;
+	}
 }
 class X {
 	Y f;
 	static Y s;
+	Y ss;
 	
 	Y set (Y r) {
-		this.f = r;
+		
 		X.s = r;
 		Z z = new Z();
-		Y y, y2;
-		y = this.f;
+		Y y, y2, y3;
+		y = this.f;// = r;
 		y2 = X.s;
+		
+		y3 = f;
+		ss = y3;
+		
+		
 		return z;
 	}
 	

@@ -11,16 +11,14 @@ public class TypedSetVariable extends TypedVariable implements ProgramPointSet {
 	private LinkedHashSet<TypedSetVariable> subSetVars = null;
 	
 	private static long idGen = 1;
+	private static final long NOID = -1;
 	
 	/**
 	 * @param type
 	 */
 	public TypedSetVariable(Type type) {
 		setType(type);
-		
-		if(type != null && !type.isVoid()) {
-			generateID();
-		}
+		generateID();
 	}
 	
 	/**
@@ -50,7 +48,7 @@ public class TypedSetVariable extends TypedVariable implements ProgramPointSet {
 	 * @return the ID
 	 */
 	public String getID() {
-		if(!getType().isVoid()) {
+		if(idNum() != NOID) {
 			return super.getID();
 		} else {
 			return null;
@@ -62,7 +60,11 @@ public class TypedSetVariable extends TypedVariable implements ProgramPointSet {
 	 */
 	@Override
 	protected long generateIDNum() {
-		return idGen++;
+		if(getType() != null && !getType().isVoid() && !getType().isNull()) {
+			return idGen++;
+		} else {
+			return NOID;
+		}
 	}
 	
 	/**
@@ -84,10 +86,18 @@ public class TypedSetVariable extends TypedVariable implements ProgramPointSet {
 	 */
 	@Override
 	public String toString() {
-		String result = getType() + "{";
-		if(!getType().isVoid()) {
-			result += super.toString();
-		} 
-		return result + "}";
+		try {
+			if(getType().isNull()) {
+				return "null";
+			}
+			
+			String result = getType() + "{";
+			if(!getType().isVoid()) {
+				result += super.toString();
+			} 
+			return result + "}";
+		} catch (NullPointerException e) {
+			return "The type of TypedSetVariable is null.";
+		}
 	}
 }

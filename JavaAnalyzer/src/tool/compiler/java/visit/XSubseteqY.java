@@ -46,7 +46,7 @@ public class XSubseteqY extends Constraint {
 	 */
 	@Override
 	public String toString() {
-		return getX() + " \\subseteq " + getY();
+		return getX() + " <: " + getY();
 	}
 	
 	/**

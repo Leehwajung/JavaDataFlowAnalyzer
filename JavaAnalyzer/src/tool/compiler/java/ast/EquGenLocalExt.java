@@ -5,6 +5,7 @@ import polyglot.ast.Node;
 import polyglot.main.Report;
 import polyglot.util.SerialVersionUID;
 import tool.compiler.java.visit.EquGenerator;
+import tool.compiler.java.visit.TypedSetVariable;
 
 /**
  * Local <: NamedVariable <: Variable <: Expr <: Term <: Node				<br>
@@ -16,14 +17,19 @@ public class EquGenLocalExt extends EquGenExprExt {
 	
 	@Override
 	public EquGenerator equGenEnter(EquGenerator v) {
-		Local lcl = (Local)this.node();
-		Report.report(0, "Local: " + lcl/*.name()*/);
+//		Local lcl = (Local)this.node();
+//		Report.report(0, "[Enter] Local: " + lcl/*.name()*/);
 		
 		return super.equGenEnter(v);
 	}
 	
 	@Override
 	public Node equGenLeave(EquGenerator v) {
+		Local lcl = (Local)this.node();
+		Report.report(0, "[Leave] Local: " + lcl/*.name()*/);
+		
+		setTypedSetVar(new TypedSetVariable(lcl.type()));
+		
 		return super.equGenLeave(v);
 	}
 }
