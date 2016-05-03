@@ -150,7 +150,7 @@ public class InvokeMth extends Constraint {
 	public String toString() {
 		return getCX() + "." 
 				+ (getM() instanceof JL5MethodInstance ? ((JL5MethodInstance)getM()).name() : getM().container()) 
-				+ " <: " + CollUtil.getStringOf(getDXs(), '{', '}') 
+				+ " <: " + CollUtil.getStringOf(getDXs(), '(', ')') 
 				+ " -- " + "effect" + " --> "	+ getEY();
 	}
 	

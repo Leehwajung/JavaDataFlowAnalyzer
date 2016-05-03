@@ -33,6 +33,8 @@ public class EquGenerator extends ContextVisitor {
 	
 	private static LinkedHashSet<Constraint> constraintSet;
 	
+	private static LocalEnv localEnv;
+	
 	@Deprecated
 	private static LinkedHashSet<FieldTableRow> fieldEquationSet;
 	
@@ -46,6 +48,8 @@ public class EquGenerator extends ContextVisitor {
 		fieldTableMap = new LinkedHashMap<>();
 		
 		constraintSet = new LinkedHashSet<>();
+		
+		localEnv = new LocalEnv();
 		
 		fieldEquationSet = new LinkedHashSet<>();
 	}
