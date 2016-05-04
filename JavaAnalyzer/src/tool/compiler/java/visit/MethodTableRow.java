@@ -9,16 +9,16 @@ import tool.compiler.java.util.CollUtil;
 import java.util.LinkedList;
 import java.util.List;
 
-public class MethodTable extends AbstractTable implements MethodOps {
+public class MethodTableRow extends AbstractTableRow implements MethodOps {
 	
 	private LinkedList<TypedSetVariable> formalList;
 	
-	public MethodTable(AbstractObjectInfo abstractObjectInfo, MethodCallInfo info) {
+	public MethodTableRow(AbstractObjectInfo abstractObjectInfo, MethodCallInfo info) {
 		super(abstractObjectInfo, info);
 		generateFormalSetVariables();
 	}
 	
-	public MethodTable(MethodCallInfo info) {
+	public MethodTableRow(MethodCallInfo info) {
 		this(null, info);
 	}
 	
@@ -58,7 +58,7 @@ public class MethodTable extends AbstractTable implements MethodOps {
 	}
 	
 	/**
-	 * @see tool.compiler.java.visit.AbstractTable#getInfo()
+	 * @see tool.compiler.java.visit.AbstractTableRow#getInfo()
 	 */
 	@Override
 	public MethodCallInfo getInfo() {

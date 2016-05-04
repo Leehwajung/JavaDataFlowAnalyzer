@@ -1,6 +1,7 @@
 package tool.compiler.java.visit;
 
 import polyglot.ext.jl5.types.JL5MethodInstance;
+import polyglot.ext.jl5.types.JL5ProcedureInstance;
 import polyglot.types.Type;
 import tool.compiler.java.util.CollUtil;
 
@@ -28,12 +29,12 @@ public class InvokeMth extends Constraint {
 	
 	/* ### Actual Fields ### */
 	private TypedSetVariable cx;				// C, X
-	private JL5MethodInstance m;				// m
+	private JL5ProcedureInstance m;				// m
 	private ArrayList<TypedSetVariable> dxs;	// Ds, Xs ( D1{X1}, ..., Dn{Xn} )
 	private TypedSetVariable ey;				// E, Y
 	
 	
-	// constructor
+	// constructors
 	
 	/**
 	 * C{X}.m <: (D1{X1}, ..., Dn{Xn}) -- effect --> E{Y}
@@ -42,7 +43,7 @@ public class InvokeMth extends Constraint {
 	 * @param dxs	set Ds, Xs	( D1{X1}, ..., Dn{Xn} )
 	 * @param ey	set E, Y	( E{Y} )
 	 */
-	public InvokeMth(TypedSetVariable cx, JL5MethodInstance m, Collection<TypedSetVariable> dxs, TypedSetVariable ey) {
+	public InvokeMth(TypedSetVariable cx, JL5ProcedureInstance m, Collection<TypedSetVariable> dxs, TypedSetVariable ey) {
 		super();
 		this.cx = cx;
 		this.m = m;
@@ -53,6 +54,26 @@ public class InvokeMth extends Constraint {
 		}
 		this.ey = ey;
 	}
+	
+//	/**
+//	 * C{X}.m <: (D1{X1}, ..., Dn{Xn}) -- effect --> E{Y}
+//	 * @param cx	set C, X	( C{X} )
+//	 * @param m		set m
+//	 * @param dxs	set Ds, Xs	( D1{X1}, ..., Dn{Xn} )
+//	 * @param ey	set E, Y	( E{Y} )
+//	 */
+//	@Deprecated
+//	public InvokeMth(JL5ProcedureInstance m, Collection<TypedSetVariable> dxs, TypedSetVariable ey) {
+//		super();
+//		this.cx = cx;
+//		this.m = m;
+//		if(dxs != null) {
+//			this.dxs = new ArrayList<TypedSetVariable>(dxs);
+//		} else {
+//			this.dxs = null;
+//		}
+//		this.ey = ey;
+//	}
 	
 	
 	// getter methods
@@ -81,7 +102,7 @@ public class InvokeMth extends Constraint {
 	/**
 	 * @return the m
 	 */
-	public JL5MethodInstance getM() {
+	public JL5ProcedureInstance getM() {
 		return m;
 	}
 	
@@ -127,7 +148,9 @@ public class InvokeMth extends Constraint {
 	 */
 	@Override
 	public String toString() {
-		return getCX() + "." + getM().name() + " <: " + CollUtil.getStringOf(getDXs(), '{', '}') 
+		return getCX() + "." 
+				+ (getM() instanceof JL5MethodInstance ? ((JL5MethodInstance)getM()).name() : getM().container()) 
+				+ " <: " + CollUtil.getStringOf(getDXs(), '(', ')') 
 				+ " -- " + "effect" + " --> "	+ getEY();
 	}
 	

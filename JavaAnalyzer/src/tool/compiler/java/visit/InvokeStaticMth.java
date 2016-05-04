@@ -109,7 +109,7 @@ public class InvokeStaticMth extends Constraint {
 	 */
 	@Override
 	public String toString() {
-		return getC() + "." + getM().name() + " <: " + CollUtil.getStringOf(getDXs(), '{', '}') 
+		return getC() + "." + getM().name() + " <: " + CollUtil.getStringOf(getDXs(), '(', ')') 
 				+ " -- " + "effect" + " --> "	+ getEY();
 	}
 	

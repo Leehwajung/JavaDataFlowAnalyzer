@@ -9,7 +9,7 @@ import polyglot.types.Type;
 import java.util.LinkedList;
 import java.util.List;
 
-public abstract class AbstractTable implements Ops {
+public abstract class AbstractTableRow implements Ops {
 	
 	private TypingInfo info;
 	private AbstractObjectInfo absObjInfo = null;	// 추상 객체
@@ -20,8 +20,8 @@ public abstract class AbstractTable implements Ops {
 	 * @param abstractObjectInfo
 	 * @param info
 	 */
-	protected AbstractTable(AbstractObjectInfo abstractObjectInfo, TypingInfo info) {
-		checkArguments(abstractObjectInfo, info);	// TODO: 생성자에서 타입을 검사할지 판단
+	protected AbstractTableRow(AbstractObjectInfo abstractObjectInfo, TypingInfo info) {
+		checkArguments(abstractObjectInfo, info);	// TODO: 생성자에서 타입을 검사할지 결정
 		
 		this.info = info;
 		
@@ -36,7 +36,7 @@ public abstract class AbstractTable implements Ops {
 		setSubstitutionTypes();
 	}
 	
-	protected AbstractTable(TypingInfo info) {
+	protected AbstractTableRow(TypingInfo info) {
 		this(null, info);
 	}
 	
@@ -192,7 +192,7 @@ public abstract class AbstractTable implements Ops {
 		if (getClass() != obj.getClass()) {
 			return false;
 		}
-		AbstractTable other = (AbstractTable) obj;
+		AbstractTableRow other = (AbstractTableRow) obj;
 		if (info == null) {
 			if (other.info != null) {
 				return false;

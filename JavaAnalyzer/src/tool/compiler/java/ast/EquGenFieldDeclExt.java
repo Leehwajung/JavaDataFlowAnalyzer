@@ -25,11 +25,15 @@ public class EquGenFieldDeclExt extends EquGenExt {
 		v.addToSet(fldInfo);
 		Report.report(0, "Field Declaration: " + fldInfo);
 		
+		if(fldDecl.init() != null) {
+			
+		}
+		
 		return super.equGenEnter(v);
 	}
 	
 	@Override
-	public Node equGen(EquGenerator v) {
-		return super.equGen(v);
+	public Node equGenLeave(EquGenerator v) {
+		return super.equGenLeave(v);
 	}
 }

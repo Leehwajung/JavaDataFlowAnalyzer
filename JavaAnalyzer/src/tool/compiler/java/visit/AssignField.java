@@ -25,10 +25,10 @@ public class AssignField extends Constraint {
 	private JL5FieldInstance f;		// f
 	
 	
-	// constructor
+	// constructors
 	
 	/**
-	 * C{X} <: D{Y}
+	 * C{X} <: D{Y}.f
 	 * @param cx	set C, X	( C{X} )
 	 * @param dy	set D, Y	( D{Y} )
 	 * @param f		set f
@@ -38,6 +38,17 @@ public class AssignField extends Constraint {
 		this.cx = cx;
 		this.dy = dy;
 		this.f = f;
+	}
+	
+	/**
+	 * C{X} <: D{Y}<br>
+	 * auto-construct TypedSetVariable objects ( C{X}, D{Y} )
+	 * @param left	for C, X	( C{X} )
+	 * @param right	for D, Y, f	( D{Y}.f )
+	 */
+	@Deprecated
+	public AssignField(Type left, JL5FieldInstance right) {
+		this(new TypedSetVariable(left), new TypedSetVariable(right.container()), right);
 	}
 	
 	
@@ -138,8 +149,8 @@ public class AssignField extends Constraint {
 		}
 		if (dy == null) {
 			if (other.dy != null) {
-				return false; }
-			
+				return false;
+			}
 		} else if (!dy.equals(other.dy)) {
 			return false;
 		}

@@ -1,5 +1,6 @@
 class Y {
 	static char stf;
+	static char right;
 	static void stm() {
 		
 	}
@@ -11,14 +12,22 @@ class Z extends Y {
 }
 class X {
 	Y f;
+	static Y s;
 	
-	void set (Y r) {
+	Y set (Y r) {
 		this.f = r;
+		X.s = r;
+		Z z = new Z();
+		Y y, y2;
+		y = this.f;
+		y2 = X.s;
+		return z;
 	}
 	
 	void main() {
 		Y.stm();
 		char a = Y.stf;
+		a = Y.stf = Y.right;
 		
 		X p = new X();	// o1
 		Y q = new Y();	// o2
@@ -76,11 +85,11 @@ class Box<E> {
 		
 	}
 
-	<H extends E, G> boolean isEmpty(Box<G> box, H hjkl) {
+	<H extends E, G> boolean isEmpty(Box<G> box, Object hjkl) {
 		return true;
 	}
 
-	<A, B> int AB(A box, B hjkl) {
+	<A, B> Integer AB(A box, B hjkl) {
 		return 1;
 	}
 	

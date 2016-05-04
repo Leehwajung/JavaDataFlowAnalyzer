@@ -4,6 +4,7 @@ import tool.compiler.java.util.CollUtil;
 
 import java.util.Collection;
 import java.util.LinkedHashSet;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -34,6 +35,11 @@ public class ObjsSubseteqX extends Constraint {
 			this.objs = null;
 		}
 		this.x = x;
+	}
+	
+	public ObjsSubseteqX(AbstractObjectInfo obj, TypedSetVariable x) {
+		this(new LinkedList<AbstractObjectInfo>(), x);
+		this.objs.add(obj);
 	}
 	
 	/**
@@ -68,7 +74,7 @@ public class ObjsSubseteqX extends Constraint {
 	 */
 	@Override
 	public String toString() {
-		return CollUtil.getStringOf(objs, '{', '}') + " \\subseteq " + getX();
+		return CollUtil.getStringOf(objs, '{', '}') + " <: " + getX();
 	}
 	
 	/**
