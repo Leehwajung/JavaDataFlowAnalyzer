@@ -10,7 +10,7 @@ import tool.compiler.java.visit.EquGenerator;
  * Return <: Stmt <: Term <: Node
  * @author LHJ
  */
-public class EquGenReturnExt extends EquGenExt {
+public class EquGenReturnExt extends EquGenStmtExt {
 	private static final long serialVersionUID = SerialVersionUID.generate();
 	
 	@Override

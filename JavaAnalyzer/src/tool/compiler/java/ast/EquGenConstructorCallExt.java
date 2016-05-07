@@ -14,7 +14,7 @@ import tool.compiler.java.visit.MethodCallInfo;
  * ConstructorCall <: ProcedureCall <: Term <: Node
  * @author LHJ
  */
-public class EquGenConstructorCallExt extends EquGenExt {
+public class EquGenConstructorCallExt extends EquGenStmtExt {
 	private static final long serialVersionUID = SerialVersionUID.generate();
 	
 	@Override
