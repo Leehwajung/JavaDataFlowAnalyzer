@@ -1,4 +1,8 @@
 class Y {
+	Y() {
+		int aaaaa;
+	}
+	
 	static char stf;
 	static char right;
 	static void stm() {
@@ -8,6 +12,11 @@ class Y {
 }
 
 class Z extends Y {
+	
+	Z() {
+		super();
+	}
+	
 	int aa (){
 		X a = new X();
 		Y y = null;

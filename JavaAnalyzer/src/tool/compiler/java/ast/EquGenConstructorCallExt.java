@@ -1,19 +1,13 @@
 package tool.compiler.java.ast;
 
-import java.util.ArrayList;
-
 import polyglot.ast.ConstructorCall;
-import polyglot.ast.Expr;
 import polyglot.ast.Node;
-import polyglot.ext.jl5.types.JL5MethodInstance;
+import polyglot.ext.jl5.types.JL5ConstructorInstance;
 import polyglot.ext.jl5.types.JL5ProcedureInstance;
 import polyglot.main.Report;
 import polyglot.util.SerialVersionUID;
 import tool.compiler.java.visit.EquGenerator;
-import tool.compiler.java.visit.InvokeMth;
-import tool.compiler.java.visit.InvokeStaticMth;
 import tool.compiler.java.visit.MethodCallInfo;
-import tool.compiler.java.visit.TypedSetVariable;
 
 /**
  * ConstructorCall <: Stmt <: Term <: Node	<br>
@@ -26,12 +20,13 @@ public class EquGenConstructorCallExt extends EquGenExt {
 	@Override
 	public EquGenerator equGenEnter(EquGenerator v) {
 		ConstructorCall cc = (ConstructorCall) this.node();
-		Report.report(0, "Constructor Call: " + cc);
+		JL5ProcedureInstance porcIns = (JL5ProcedureInstance) cc.procedureInstance();
+//		Report.report(0, "[Enter] Constructor Call: " + cc);
 		
 		// (호출) 메서드 인포 생성
-		MethodCallInfo mtdInfo = new MethodCallInfo((JL5ProcedureInstance) cc.procedureInstance());
+		MethodCallInfo mtdInfo = new MethodCallInfo(porcIns);
 		v.addToSet(mtdInfo);
-		Report.report(0, "Constructor Call: " + cc + ": " + mtdInfo);
+		Report.report(0, "[Enter] Constructor Call: " + cc + ": " + mtdInfo);
 		
 //		ArrayList<TypedSetVariable> argSetVars = new ArrayList<>();
 //		for(Expr arg: cc.arguments()) {
@@ -46,6 +41,10 @@ public class EquGenConstructorCallExt extends EquGenExt {
 	
 	@Override
 	public Node equGenLeave(EquGenerator v) {
+		ConstructorCall cc = (ConstructorCall) this.node();
+		JL5ConstructorInstance ctorIns = (JL5ConstructorInstance) cc.constructorInstance();
+		Report.report(0, "[Leave] Constructor Call: " + cc);
+		
 		return super.equGenLeave(v);
 	}
 }
