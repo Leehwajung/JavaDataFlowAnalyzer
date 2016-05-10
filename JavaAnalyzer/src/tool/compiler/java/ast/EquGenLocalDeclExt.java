@@ -14,7 +14,7 @@ import tool.compiler.java.visit.XSubseteqY;
  * LocalDecl <: VarDecl <: Term <: Node
  * @author LHJ
  */
-public class EquGenLocalDeclExt extends EquGenExt {
+public class EquGenLocalDeclExt extends EquGenStmtExt {
 	private static final long serialVersionUID = SerialVersionUID.generate();
 	
 	@Override

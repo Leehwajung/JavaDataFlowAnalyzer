@@ -1,21 +1,21 @@
 ----- Tables -----
 
-F({}, Y<>, null, stf) = char{X58}
-F({}, Y<>, null, right) = char{X59}
-F({}, X<>, o1<>, f) = Y{X49}
-F({}, X<>, o3<>, f) = Y{X55}
-F({}, X<>, o5<>, f) = Y{X63}
-F({}, X<>, null, s) = Y{X50}
-F({}, X<>, o1<>, ss) = Y{X51}
-F({}, X<>, o3<>, ss) = Y{X57}
-F({}, X<>, o5<>, ss) = Y{X65}
-M({}, X<>, null, stt<>) = () -> int{X46}
+F({}, Y<>, null, stf) = char{X60}
+F({}, Y<>, null, right) = char{X61}
+F({}, X<>, o1<>, f) = Y{X51}
+F({}, X<>, o3<>, f) = Y{X57}
+F({}, X<>, o5<>, f) = Y{X65}
+F({}, X<>, null, s) = Y{X52}
+F({}, X<>, o1<>, ss) = Y{X53}
+F({}, X<>, o3<>, ss) = Y{X59}
+F({}, X<>, o5<>, ss) = Y{X67}
+M({}, X<>, null, stt<>) = () -> int{X48}
+M({}, Y<>, o4<>, Y<>) = ()
 M({}, X<>, o1<>, X<>) = ()
 M({}, X<>, o3<>, X<>) = ()
 M({}, X<>, o5<>, X<>) = ()
-M({}, Y<>, o4<>, Y<>) = ()
 M({}, Z<>, o2<>, Z<>) = ()
 M({}, Y<>, null, stm<>) = () -> void{}
-M({}, X<>, o1<>, set<>) = (Y{X48}) -> Y{X47}
-M({}, X<>, o3<>, set<>) = (Y{X54}) -> Y{X53}
-M({}, X<>, o5<>, set<>) = (Y{X62}) -> Y{X61}
+M({}, X<>, o1<>, set<>) = (Y{X50}) -> Y{X49}
+M({}, X<>, o3<>, set<>) = (Y{X56}) -> Y{X55}
+M({}, X<>, o5<>, set<>) = (Y{X64}) -> Y{X63}

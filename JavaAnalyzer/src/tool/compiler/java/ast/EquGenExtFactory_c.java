@@ -244,6 +244,15 @@ public final class EquGenExtFactory_c extends EquGenAbstractExtFactory_c {
 	}
 	
 	/**
+	 * Stmt <: Term <: Node
+	 */
+	@Override
+	protected Ext extStmtImpl() {
+//		return super.extStmtImpl();
+		return new EquGenStmtExt();
+	}
+	
+	/**
 	 * ConstructorCall <: Stmt <: Term <: Node	<br>
 	 * ConstructorCall <: ProcedureCall <: Term <: Node
 	 */
@@ -265,14 +274,5 @@ public final class EquGenExtFactory_c extends EquGenAbstractExtFactory_c {
 	protected Ext extBlockImpl() {
 //		return super.extBlockImpl();
 		return new EquGenBlockExt();
-	}
-	
-	/**
-	 * Return <: Stmt <: Term <: Node
-	 */
-	@Override
-	protected Ext extReturnImpl() {
-//		return super.extBlockImpl();
-		return new EquGenReturnExt();
 	}
 }

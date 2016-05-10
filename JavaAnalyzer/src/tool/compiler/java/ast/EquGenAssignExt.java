@@ -16,14 +16,16 @@ public class EquGenAssignExt extends EquGenExprExt {
 	
 	@Override
 	public EquGenerator equGenEnter(EquGenerator v) {
+//		Assign asgn = (Assign) this.node();
+//		Report.report(0, "[Enter] Assign: " + asgn);
 		
 		return super.equGenEnter(v);
 	}
 	
 	@Override
 	public Node equGenLeave(EquGenerator v) {
-		Assign asgn = (Assign) this.node();
-		Report.report(0, "Assign: " + asgn);
+//		Assign asgn = (Assign) this.node();
+//		Report.report(0, "[Leave] Assign: " + asgn);
 		
 		return super.equGenLeave(v);
 	}

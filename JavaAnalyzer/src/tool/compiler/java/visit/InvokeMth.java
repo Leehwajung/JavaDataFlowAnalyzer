@@ -1,5 +1,6 @@
 package tool.compiler.java.visit;
 
+import polyglot.ext.jl5.types.JL5ConstructorInstance;
 import polyglot.ext.jl5.types.JL5MethodInstance;
 import polyglot.ext.jl5.types.JL5ProcedureInstance;
 import polyglot.types.Type;
@@ -55,25 +56,27 @@ public class InvokeMth extends Constraint {
 		this.ey = ey;
 	}
 	
-//	/**
-//	 * C{X}.m <: (D1{X1}, ..., Dn{Xn}) -- effect --> E{Y}
-//	 * @param cx	set C, X	( C{X} )
-//	 * @param m		set m
-//	 * @param dxs	set Ds, Xs	( D1{X1}, ..., Dn{Xn} )
-//	 * @param ey	set E, Y	( E{Y} )
-//	 */
-//	@Deprecated
-//	public InvokeMth(JL5ProcedureInstance m, Collection<TypedSetVariable> dxs, TypedSetVariable ey) {
-//		super();
-//		this.cx = cx;
-//		this.m = m;
-//		if(dxs != null) {
-//			this.dxs = new ArrayList<TypedSetVariable>(dxs);
-//		} else {
-//			this.dxs = null;
-//		}
-//		this.ey = ey;
-//	}
+	/**
+	 * C{X}.m <: (D1{X1}, ..., Dn{Xn}) -- effect --> E{Y}
+	 * @param cx	set C, X	( C{X} )
+	 * @param m		set m
+	 * @param dxs	set Ds, Xs	( D1{X1}, ..., Dn{Xn} )
+	 * @param ey	set E, Y	( E{Y} )
+	 */
+	public InvokeMth(TypedSetVariable cx, JL5MethodInstance m, Collection<TypedSetVariable> dxs, TypedSetVariable ey) {
+		this(cx, (JL5ProcedureInstance) m, dxs, ey);
+	}
+	
+	/**
+	 * C{X}.m <: (D1{X1}, ..., Dn{Xn}) -- effect --> E{Y}
+	 * @param cx	set C, X	( C{X} )
+	 * @param m		set m
+	 * @param dxs	set Ds, Xs	( D1{X1}, ..., Dn{Xn} )
+	 * @param ey	set E, Y	( E{Y} )
+	 */
+	public InvokeMth(TypedSetVariable cx, JL5ConstructorInstance m, Collection<TypedSetVariable> dxs, TypedSetVariable ey) {
+		this(cx, (JL5ProcedureInstance) m, dxs, ey);
+	}
 	
 	
 	// getter methods
@@ -110,7 +113,7 @@ public class InvokeMth extends Constraint {
 	 * @return D1{X1}, ..., Dn{Xn}
 	 */
 	public List<TypedSetVariable> getDXs() {
-		return new ArrayList<TypedSetVariable>(dxs);
+		return dxs;
 	}
 	
 	/**
@@ -148,8 +151,7 @@ public class InvokeMth extends Constraint {
 	 */
 	@Override
 	public String toString() {
-		return getCX() + "." 
-				+ (getM() instanceof JL5MethodInstance ? ((JL5MethodInstance)getM()).name() : getM().container()) 
+		return getCX() + "." + getName()
 				+ " <: " + CollUtil.getStringOf(getDXs(), '(', ')') 
 				+ " -- " + "effect" + " --> "	+ getEY();
 	}
@@ -216,5 +218,14 @@ public class InvokeMth extends Constraint {
 			return false;
 		}
 		return true;
+	}
+	
+	
+	protected final String getName() {
+		return getM() instanceof JL5MethodInstance ? ((JL5MethodInstance)getM()).name() : getM().container().toString();
+	}
+	
+	public boolean isConstructor() {
+		return m instanceof JL5ConstructorInstance;
 	}
 }
