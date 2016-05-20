@@ -6,7 +6,6 @@ import polyglot.ext.jl5.types.JL5ProcedureInstance;
 import polyglot.types.Type;
 import tool.compiler.java.util.CollUtil;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
@@ -29,10 +28,11 @@ public class InvokeMth extends Constraint {
 	 */
 	
 	/* ### Actual Fields ### */
-	private TypedSetVariable cx;				// C, X
-	private JL5ProcedureInstance m;				// m
-	private ArrayList<TypedSetVariable> dxs;	// Ds, Xs ( D1{X1}, ..., Dn{Xn} )
-	private TypedSetVariable ey;				// E, Y
+//	private TypedSetVariable cx;				// C, X
+//	private JL5ProcedureInstance m;				// m
+//	private ArrayList<TypedSetVariable> dxs;	// Ds, Xs ( D1{X1}, ..., Dn{Xn} )
+//	private TypedSetVariable ey;				// E, Y
+	private MethodConstraint cxmdxsey;
 	
 	
 	// constructors
@@ -45,15 +45,16 @@ public class InvokeMth extends Constraint {
 	 * @param ey	set E, Y	( E{Y} )
 	 */
 	public InvokeMth(TypedSetVariable cx, JL5ProcedureInstance m, Collection<TypedSetVariable> dxs, TypedSetVariable ey) {
-		super();
-		this.cx = cx;
-		this.m = m;
-		if(dxs != null) {
-			this.dxs = new ArrayList<TypedSetVariable>(dxs);
-		} else {
-			this.dxs = null;
-		}
-		this.ey = ey;
+		cxmdxsey = new MethodConstraint(cx, m, dxs, ey);
+//		super();
+//		this.cx = cx;
+//		this.m = m;
+//		if(dxs != null) {
+//			this.dxs = new ArrayList<TypedSetVariable>(dxs);
+//		} else {
+//			this.dxs = null;
+//		}
+//		this.ey = ey;
 	}
 	
 	/**
@@ -85,35 +86,41 @@ public class InvokeMth extends Constraint {
 	 * @return the C{X}
 	 */
 	public TypedSetVariable getCX() {
-		return cx;
+//		return cx;
+		return (TypedSetVariable) cxmdxsey.getCAOS();
 	}
 	
 	/**
 	 * @return the C
 	 */
 	public Type getC() {
-		return cx.getType();
+//		return cx.getType();
+		return cxmdxsey.getC();
 	}
 	
 	/**
 	 * @return the X
 	 */
 	public String getX() {
-		return cx.getID();
+//		return cx.getID();
+		return cxmdxsey.getAOSc();
 	}
 	
 	/**
 	 * @return the m
 	 */
 	public JL5ProcedureInstance getM() {
-		return m;
+//		return m;
+		return cxmdxsey.getM();
 	}
 	
 	/**
 	 * @return D1{X1}, ..., Dn{Xn}
 	 */
+	@SuppressWarnings("unchecked")
 	public List<TypedSetVariable> getDXs() {
-		return dxs;
+//		return dxs;
+		return (List<TypedSetVariable>) cxmdxsey.getDAOSs();
 	}
 	
 	/**
@@ -121,28 +128,32 @@ public class InvokeMth extends Constraint {
 	 * @return Di{Xi}
 	 */
 	public TypedSetVariable getDX(int i) {
-		return dxs.get(i);
+//		return dxs.get(i);
+		return (TypedSetVariable) cxmdxsey.getDAOS(i);
 	}
 	
 	/**
 	 * @return the E{Y}
 	 */
 	public TypedSetVariable getEY() {
-		return ey;
+//		return ey;
+		return (TypedSetVariable) cxmdxsey.getEAOS();
 	}
 	
 	/**
 	 * @return the E
 	 */
 	public Type getE() {
-		return ey.getType();
+//		return ey.getType();
+		return cxmdxsey.getE();
 	}
 	
 	/**
 	 * @return the Y
 	 */
 	public String getY() {
-		return ey.getID();
+//		return ey.getID();
+		return cxmdxsey.getAOSe();
 	}
 	
 	
@@ -163,14 +174,15 @@ public class InvokeMth extends Constraint {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((cx == null) ? 0 : cx.hashCode());
-		result = prime * result + ((m == null) ? 0 : m.hashCode());
-		if(dxs != null) {
-			for(TypedSetVariable dx : dxs) {
-				result = prime * result + ((dx == null) ? 0 : dx.hashCode());
-			}
-		}
-		result = prime * result + ((ey == null) ? 0 : ey.hashCode());
+//		result = prime * result + ((cx == null) ? 0 : cx.hashCode());
+//		result = prime * result + ((m == null) ? 0 : m.hashCode());
+//		if(dxs != null) {
+//			for(TypedSetVariable dx : dxs) {
+//				result = prime * result + ((dx == null) ? 0 : dx.hashCode());
+//			}
+//		}
+//		result = prime * result + ((ey == null) ? 0 : ey.hashCode());
+		result = prime * result + ((cxmdxsey == null) ? 0 : cxmdxsey.hashCode());
 		return result;
 	}
 	
@@ -189,32 +201,39 @@ public class InvokeMth extends Constraint {
 			return false;
 		}
 		InvokeMth other = (InvokeMth) obj;
-		if (cx == null) {
-			if (other.cx != null) {
+//		if (cx == null) {
+//			if (other.cx != null) {
+//				return false;
+//			}
+//		} else if (!cx.equals(other.cx)) {
+//			return false;
+//		}
+//		if (m == null) {
+//			if (other.m != null) {
+//				return false;
+//			}
+//		} else if (!m.equals(other.m)) {
+//			return false;
+//		}
+//		if (dxs == null) {
+//			if (other.dxs != null) {
+//				return false;
+//			}
+//		} else if (!dxs.equals(other.dxs)) {
+//			return false;
+//		}
+//		if (ey == null) {
+//			if (other.ey != null) {
+//				return false;
+//			}
+//		} else if (!ey.equals(other.ey)) {
+//			return false;
+//		}
+		if (cxmdxsey == null) {
+			if (other.cxmdxsey != null) {
 				return false;
 			}
-		} else if (!cx.equals(other.cx)) {
-			return false;
-		}
-		if (m == null) {
-			if (other.m != null) {
-				return false;
-			}
-		} else if (!m.equals(other.m)) {
-			return false;
-		}
-		if (dxs == null) {
-			if (other.dxs != null) {
-				return false;
-			}
-		} else if (!dxs.equals(other.dxs)) {
-			return false;
-		}
-		if (ey == null) {
-			if (other.ey != null) {
-				return false;
-			}
-		} else if (!ey.equals(other.ey)) {
+		} else if (!cxmdxsey.equals(other.cxmdxsey)) {
 			return false;
 		}
 		return true;
@@ -222,10 +241,12 @@ public class InvokeMth extends Constraint {
 	
 	
 	protected final String getName() {
-		return getM() instanceof JL5MethodInstance ? ((JL5MethodInstance)getM()).name() : getM().container().toString();
+//		return getM() instanceof JL5MethodInstance ? ((JL5MethodInstance)getM()).name() : getM().container().toString();
+		return cxmdxsey.getName();
 	}
 	
 	public boolean isConstructor() {
-		return m instanceof JL5ConstructorInstance;
+//		return m instanceof JL5ConstructorInstance;
+		return cxmdxsey.isConstructor();
 	}
 }

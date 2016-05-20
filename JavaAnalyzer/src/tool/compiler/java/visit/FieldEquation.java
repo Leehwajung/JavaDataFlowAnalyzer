@@ -12,7 +12,7 @@ import tool.compiler.java.util.CollUtil;
 public class FieldEquation extends AbstractEquation {
 	
 	private LinkedHashSet<FieldTableRow> fieldTableSet;
-	private LinkedList<AbstractObjectInfo> absObjInfoList;
+	private LinkedList<AbstractObject> absObjInfoList;
 	private LinkedList<TypedSetVariable> setVarList;
 	
 	private static final char envId = 'x';
@@ -50,7 +50,7 @@ public class FieldEquation extends AbstractEquation {
 	/**
 	 * @return the absObjInfoList
 	 */
-	public final List<AbstractObjectInfo> getAbsObjInfoList() {
+	public final List<AbstractObject> getAbsObjInfoList() {
 		return absObjInfoList;
 	}
 	
@@ -85,5 +85,11 @@ public class FieldEquation extends AbstractEquation {
 	public static final void checkArguments(Collection<FieldTableRow> fieldTables) {
 		checkArguments(!fieldTables.isEmpty() ? fieldTables.iterator().next().getInfo() : null, fieldTables);
 				// fieldTables가 null이면 NullPointerException 발생
+	}
+
+	@Override
+	public boolean isStatic() {
+		// TODO Auto-generated method stub
+		return false;
 	}
 }

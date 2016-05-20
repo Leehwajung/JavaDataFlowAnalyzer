@@ -1,14 +1,8 @@
 package tool.compiler.java.visit;
 
-import java.util.Collection;
-import java.util.LinkedHashSet;
-import java.util.Set;
-
 import polyglot.types.Type;
 
-public class TypedSetVariable extends AbsObjSet {
-	
-	private LinkedHashSet<TypedSetVariable> subSetVars = null;
+public class MetaSetVariable extends AbsObjSet {
 	
 	private static long idGen = 1;
 	private static final long NOID = -1;
@@ -16,24 +10,9 @@ public class TypedSetVariable extends AbsObjSet {
 	/**
 	 * @param type
 	 */
-	public TypedSetVariable(Type type) {
+	public MetaSetVariable(Type type) {
 		setType(type);
 		generateID();
-	}
-	
-	/**
-	 * @param subSetVars
-	 */
-	@Deprecated
-	public TypedSetVariable(Collection<TypedSetVariable> subSetVars) {
-		this(inferTypeFromSubSetVars(subSetVars));
-		setSubSetVars(subSetVars);
-	}
-	
-	protected static final Type inferTypeFromSubSetVars(Collection<TypedSetVariable> subSetVars) {
-		
-		
-		return null;
 	}
 	
 	/**
@@ -41,7 +20,9 @@ public class TypedSetVariable extends AbsObjSet {
 	 */
 	@Override
 	protected String kind() {
-		return "X";
+//		return "Χ";	// Capital Chi
+//		return "χ";	// Small Letter Chi
+		return "Chi";
 	}
 	
 	/**
@@ -68,20 +49,6 @@ public class TypedSetVariable extends AbsObjSet {
 	}
 	
 	/**
-	 * @return the subSetVars
-	 */
-	public Set<TypedSetVariable> getSubSetVars() {
-		return subSetVars;
-	}
-	
-	/**
-	 * @param subSetVars the subSetVars to set
-	 */
-	protected final void setSubSetVars(Collection<TypedSetVariable> subSetVars) {
-		this.subSetVars = new LinkedHashSet<>(subSetVars);
-	}
-	
-	/**
 	 * @see java.lang.Object#toString()
 	 */
 	@Override
@@ -97,7 +64,7 @@ public class TypedSetVariable extends AbsObjSet {
 			} 
 			return result + "}";
 		} catch (NullPointerException e) {
-			return "The type field of TypedSetVariable is null.";
+			return "The type field of MetaSetVariable is null.";
 		}
 	}
 }

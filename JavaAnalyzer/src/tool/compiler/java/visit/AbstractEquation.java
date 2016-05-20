@@ -7,9 +7,9 @@ import polyglot.types.ReferenceType;
 import polyglot.types.Type;
 
 @Deprecated
-public abstract class AbstractEquation implements Ops{
+public abstract class AbstractEquation implements TypingOps {
 	
-	private TypingInfo info;
+	private AbstractTypingInfo info;
 	
 	/**
 	 * @return the name
@@ -47,22 +47,17 @@ public abstract class AbstractEquation implements Ops{
 		return null;
 	}
 	
-	@Override
-	public boolean isStatic() {
-		return info.isStatic();
-	}
-	
 	/**
 	 * @return the info
 	 */
-	public TypingInfo getInfo() {
+	public AbstractTypingInfo getInfo() {
 		return info;
 	}
 
 	/**
 	 * @param info the info to set
 	 */
-	protected final void setInfo(TypingInfo info) {
+	protected final void setInfo(AbstractTypingInfo info) {
 		this.info = info;
 	}
 }

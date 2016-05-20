@@ -26,7 +26,7 @@ public class EquGenerator extends ContextVisitor {
 	// 후보1 LinkedHashSet/LinkedHashMap: hashCode()메서드와 equals() 메서드 오버라이딩으로 중복 제거 가능.
 	// 후보2 별도의 중복이 제거된 자료 구조: 고려 가능한 후보.
 	private static LinkedHashSet<MethodInfo> methodDeclInfoSet;
-	private static LinkedHashSet<AbstractObjectInfo> abstractObjectInfoSet;
+	private static LinkedHashSet<AbstractObject> abstractObjectInfoSet;
 	
 	private static LinkedHashMap<MethodCallInfo, LinkedHashSet<MethodTableRow>> methodTableMap;
 	private static LinkedHashMap<FieldInfo, LinkedHashSet<FieldTableRow>> fieldTableMap;
@@ -158,7 +158,7 @@ public class EquGenerator extends ContextVisitor {
 	 * 추상 객체 인포 집합에 추가
 	 * @param abstractObjectInfo
 	 */
-	public void addToSet(AbstractObjectInfo abstractObjectInfo) {
+	public void addToSet(AbstractObject abstractObjectInfo) {
 		abstractObjectInfoSet.add(abstractObjectInfo);
 	}
 	
@@ -174,7 +174,7 @@ public class EquGenerator extends ContextVisitor {
 	 * 테이블 생성 및 테이블 집합에 추가
 	 */
 	public void generateTables() {
-		for(AbstractObjectInfo absObjInfo: abstractObjectInfoSet) {
+		for(AbstractObject absObjInfo: abstractObjectInfoSet) {
 			for(Entry<MethodCallInfo, LinkedHashSet<MethodTableRow>> miEntry: methodTableMap.entrySet()) {
 				try {
 //					MethodTable.checkArguments(absObjInfo, miEntry.getKey());	// IllegalArgumentException 발생

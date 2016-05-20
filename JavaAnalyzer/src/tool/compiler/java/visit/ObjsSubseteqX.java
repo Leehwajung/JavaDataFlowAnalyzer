@@ -16,7 +16,7 @@ public class ObjsSubseteqX extends Constraint {
 	
 	// fields
 	
-	private LinkedHashSet<AbstractObjectInfo> objs;	// { context1, ..., contextk }
+	private LinkedHashSet<AbstractObject> objs;	// { context1, ..., contextk }
 	private TypedSetVariable x;						// X
 	
 	
@@ -27,7 +27,7 @@ public class ObjsSubseteqX extends Constraint {
 	 * @param objs	set objects	{ context1, ..., contextk }
 	 * @param x		set X
 	 */
-	public ObjsSubseteqX(Collection<AbstractObjectInfo> objs, TypedSetVariable x) {
+	public ObjsSubseteqX(Collection<AbstractObject> objs, TypedSetVariable x) {
 		super();
 		try{
 			this.objs = new LinkedHashSet<>(objs);
@@ -37,8 +37,8 @@ public class ObjsSubseteqX extends Constraint {
 		this.x = x;
 	}
 	
-	public ObjsSubseteqX(AbstractObjectInfo obj, TypedSetVariable x) {
-		this(new LinkedList<AbstractObjectInfo>(), x);
+	public ObjsSubseteqX(AbstractObject obj, TypedSetVariable x) {
+		this(new LinkedList<AbstractObject>(), x);
 		this.objs.add(obj);
 	}
 	
@@ -47,7 +47,7 @@ public class ObjsSubseteqX extends Constraint {
 	 * @param objs	set objects	{ context1, ..., contextk }
 	 * @param x		set X
 	 */
-	public ObjsSubseteqX(AbstractObjectInfo[] objs, TypedSetVariable x) {
+	public ObjsSubseteqX(AbstractObject[] objs, TypedSetVariable x) {
 		this(Arrays.asList(objs), x);
 	}
 	
@@ -57,8 +57,8 @@ public class ObjsSubseteqX extends Constraint {
 	/**
 	 * @return Objs	{ context1, ..., contextk }
 	 */
-	public List<AbstractObjectInfo> getObjs() {
-		return new ArrayList<AbstractObjectInfo>(objs);
+	public List<AbstractObject> getObjs() {
+		return new ArrayList<AbstractObject>(objs);
 	}
 	
 	/**
@@ -85,7 +85,7 @@ public class ObjsSubseteqX extends Constraint {
 		final int prime = 31;
 		int result = 1;
 		try {
-			for(AbstractObjectInfo obj : objs) {
+			for(AbstractObject obj : objs) {
 				result = prime * result + ((obj == null) ? 0 : obj.hashCode());
 			}
 		} catch (NullPointerException ignored) {}

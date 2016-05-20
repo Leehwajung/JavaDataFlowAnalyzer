@@ -7,7 +7,7 @@ import polyglot.types.ReferenceType;
 
 import java.util.Collection;
 
-public class AbstractObjectInfo extends TypedVariable {
+public class AbstractObject extends AbsObjSet {
 	
 	private JL5ConstructorInstance ctorIns;
 	private static long idGen = 1;
@@ -15,7 +15,7 @@ public class AbstractObjectInfo extends TypedVariable {
 	/**
 	 * @param JL5 Constructor Instance
 	 */
-	public AbstractObjectInfo(JL5ConstructorInstance constructorInstance) {
+	public AbstractObject(JL5ConstructorInstance constructorInstance) {
 		setType(constructorInstance.container());
 		generateID();
 		this.ctorIns = constructorInstance;
@@ -91,7 +91,7 @@ public class AbstractObjectInfo extends TypedVariable {
 		if (getClass() != obj.getClass()) {
 			return false;
 		}
-		AbstractObjectInfo other = (AbstractObjectInfo) obj;
+		AbstractObject other = (AbstractObject) obj;
 		if (idNum() != other.idNum()) {
 			return false;
 		}

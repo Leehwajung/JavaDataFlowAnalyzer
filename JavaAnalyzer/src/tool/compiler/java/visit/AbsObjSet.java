@@ -3,7 +3,7 @@ package tool.compiler.java.visit;
 import polyglot.ext.jl5.types.JL5SubstClassType;
 import polyglot.types.Type;
 
-public abstract class TypedVariable implements Info {
+public abstract class AbsObjSet implements Info {
 	
 	private Type type;
 	private long idNum;
@@ -102,7 +102,7 @@ public abstract class TypedVariable implements Info {
 		if (getClass() != obj.getClass()) {
 			return false;
 		}
-		TypedVariable other = (TypedVariable) obj;
+		AbsObjSet other = (AbsObjSet) obj;
 		if (kind() == null) {
 			if (other.kind() != null) {
 				return false;

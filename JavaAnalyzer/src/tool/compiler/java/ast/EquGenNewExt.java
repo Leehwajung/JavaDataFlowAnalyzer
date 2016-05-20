@@ -9,7 +9,7 @@ import polyglot.ext.jl5.types.JL5ConstructorInstance;
 import polyglot.ext.jl5.types.JL5ProcedureInstance;
 import polyglot.main.Report;
 import polyglot.util.SerialVersionUID;
-import tool.compiler.java.visit.AbstractObjectInfo;
+import tool.compiler.java.visit.AbstractObject;
 import tool.compiler.java.visit.EquGenerator;
 import tool.compiler.java.visit.InvokeMth;
 import tool.compiler.java.visit.MethodCallInfo;
@@ -25,7 +25,7 @@ import tool.compiler.java.visit.TypedSetVariable;
 public class EquGenNewExt extends EquGenExprExt {
 	private static final long serialVersionUID = SerialVersionUID.generate();
 	
-	private AbstractObjectInfo absObjInfo;
+	private AbstractObject absObjInfo;
 	
 	@Override
 	public EquGenerator equGenEnter(EquGenerator v) {
@@ -33,7 +33,7 @@ public class EquGenNewExt extends EquGenExprExt {
 		JL5ConstructorInstance ctorIns = (JL5ConstructorInstance) nw.constructorInstance();
 //		Report.report(0, "[Enter] New: " + nw);
 		
-		absObjInfo = new AbstractObjectInfo(ctorIns);
+		absObjInfo = new AbstractObject(ctorIns);
 		v.addToSet(absObjInfo);
 		
 		// (호출) 메서드 인포 생성
