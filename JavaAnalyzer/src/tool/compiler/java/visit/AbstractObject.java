@@ -9,6 +9,7 @@ import java.util.Collection;
 
 public class AbstractObject extends AbsObjSet {
 	
+	public static final String KIND = "o";
 	private JL5ConstructorInstance ctorIns;
 	private static long idGen = 1;
 	
@@ -53,8 +54,8 @@ public class AbstractObject extends AbsObjSet {
 	 * 식별 문자열 설정
 	 */
 	@Override
-	protected String kind() {
-		return "o";
+	public String kind() {
+		return KIND;
 	}
 	
 	/**

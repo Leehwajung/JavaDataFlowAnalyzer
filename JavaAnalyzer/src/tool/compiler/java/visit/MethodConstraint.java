@@ -13,18 +13,18 @@ import java.util.List;
 /**
  * C{AOSc}.m <: (D1{AOS1}, ..., Dn{AOSn}) --> E{AOSe}
  */
-public class MethodConstraint extends ConstraintFunction {
+public class MethodConstraint implements ConstraintFunction {
 	
 	// fields
 	
 	/* ### Abstract Fields ###
 	 * Type c;						// C
-	 * AbsObjSet x;				// X
+	 * AbsObjSet aosc;				// AOSc
 	 * MethodInstance m;			// method name m
 	 * ArrayList<Type> ds;			// D1, ... , Dn
-	 * ArrayList<AbsObjSet> xs;	// X1, ..., Xn
+	 * ArrayList<AbsObjSet> aoss;	// AOS1, ..., AOSn
 	 * Type e;						// E
-	 * AbsObjSet y;				// Y
+	 * AbsObjSet aose;				// AOSe
 	 */
 	
 	/* ### Actual Fields ### */

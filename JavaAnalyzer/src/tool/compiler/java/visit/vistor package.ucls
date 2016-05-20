@@ -226,16 +226,7 @@
       <operations public="false" package="false" protected="false" private="false" static="false"/>    
     </display>  
   </class>  
-  <class id="26" language="java" name="tool.compiler.java.visit.Constraint" project="JavaAnalyzer" 
-    file="/JavaAnalyzer/src/tool/compiler/java/visit/Constraint.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="752" y="488"/>    
-    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
-      sort-features="false" accessors="true" visibility="true">      
-      <attributes public="false" package="false" protected="false" private="false" static="false"/>      
-      <operations public="false" package="false" protected="false" private="false" static="false"/>    
-    </display>  
-  </class>  
-  <class id="27" language="java" name="tool.compiler.java.visit.MethodTableRow" project="JavaAnalyzer" 
+  <class id="26" language="java" name="tool.compiler.java.visit.MethodTableRow" project="JavaAnalyzer" 
     file="/JavaAnalyzer/src/tool/compiler/java/visit/MethodTableRow.java" binary="false" corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="1295" y="271"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
@@ -244,7 +235,7 @@
       <operations public="false" package="false" protected="false" private="false" static="false"/>    
     </display>  
   </class>  
-  <class id="28" language="java" name="tool.compiler.java.visit.ReadField" project="JavaAnalyzer" 
+  <class id="27" language="java" name="tool.compiler.java.visit.ReadField" project="JavaAnalyzer" 
     file="/JavaAnalyzer/src/tool/compiler/java/visit/ReadField.java" binary="false" corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="1427" y="581"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
@@ -253,7 +244,7 @@
       <operations public="false" package="false" protected="false" private="false" static="false"/>    
     </display>  
   </class>  
-  <class id="29" language="java" name="tool.compiler.java.visit.AssignField" project="JavaAnalyzer" 
+  <class id="28" language="java" name="tool.compiler.java.visit.AssignField" project="JavaAnalyzer" 
     file="/JavaAnalyzer/src/tool/compiler/java/visit/AssignField.java" binary="false" corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="233" y="581"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
@@ -262,7 +253,7 @@
       <operations public="false" package="false" protected="false" private="false" static="false"/>    
     </display>  
   </class>  
-  <class id="30" language="java" name="tool.compiler.java.visit.MetaSetVariable" project="JavaAnalyzer" 
+  <class id="29" language="java" name="tool.compiler.java.visit.MetaSetVariable" project="JavaAnalyzer" 
     file="/JavaAnalyzer/src/tool/compiler/java/visit/MetaSetVariable.java" binary="false" corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="531" y="271"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
@@ -271,7 +262,7 @@
       <operations public="false" package="false" protected="false" private="false" static="false"/>    
     </display>  
   </class>  
-  <class id="31" language="java" name="tool.compiler.java.visit.ClassConstraint" project="JavaAnalyzer" 
+  <class id="30" language="java" name="tool.compiler.java.visit.ClassConstraint" project="JavaAnalyzer" 
     file="/JavaAnalyzer/src/tool/compiler/java/visit/ClassConstraint.java" binary="false" corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="112" y="457"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
@@ -280,16 +271,7 @@
       <operations public="false" package="false" protected="false" private="false" static="false"/>    
     </display>  
   </class>  
-  <class id="32" language="java" name="tool.compiler.java.visit.ConstraintFunction" project="JavaAnalyzer" 
-    file="/JavaAnalyzer/src/tool/compiler/java/visit/ConstraintFunction.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="198" y="364"/>    
-    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
-      sort-features="false" accessors="true" visibility="true">      
-      <attributes public="false" package="false" protected="false" private="false" static="false"/>      
-      <operations public="false" package="false" protected="false" private="false" static="false"/>    
-    </display>  
-  </class>  
-  <class id="33" language="java" name="tool.compiler.java.visit.MethodConstraint" project="JavaAnalyzer" 
+  <class id="31" language="java" name="tool.compiler.java.visit.MethodConstraint" project="JavaAnalyzer" 
     file="/JavaAnalyzer/src/tool/compiler/java/visit/MethodConstraint.java" binary="false" corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="272" y="457"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
@@ -298,134 +280,86 @@
       <operations public="false" package="false" protected="false" private="false" static="false"/>    
     </display>  
   </class>  
-  <realization id="34">    
-    <end type="SOURCE" refId="22"/>    
-    <end type="TARGET" refId="17"/>  
-  </realization>  
-  <realization id="35">    
-    <end type="SOURCE" refId="6"/>    
-    <end type="TARGET" refId="11"/>  
-  </realization>  
-  <generalization id="36">    
-    <end type="SOURCE" refId="8"/>    
-    <end type="TARGET" refId="26"/>  
-  </generalization>  
-  <generalization id="37">    
-    <end type="SOURCE" refId="17"/>    
-    <end type="TARGET" refId="18"/>  
-  </generalization>  
-  <realization id="38">    
-    <end type="SOURCE" refId="19"/>    
-    <end type="TARGET" refId="17"/>  
-  </realization>  
-  <generalization id="39">    
-    <end type="SOURCE" refId="28"/>    
-    <end type="TARGET" refId="26"/>  
-  </generalization>  
-  <realization id="40">    
-    <end type="SOURCE" refId="4"/>    
-    <end type="TARGET" refId="11"/>  
-  </realization>  
-  <generalization id="41">    
-    <end type="SOURCE" refId="10"/>    
-    <end type="TARGET" refId="26"/>  
-  </generalization>  
-  <generalization id="42">    
-    <end type="SOURCE" refId="12"/>    
-    <end type="TARGET" refId="26"/>  
-  </generalization>  
-  <realization id="43">    
-    <end type="SOURCE" refId="4"/>    
-    <end type="TARGET" refId="18"/>  
-  </realization>  
-  <realization id="44">    
-    <end type="SOURCE" refId="9"/>    
-    <end type="TARGET" refId="18"/>  
-  </realization>  
-  <generalization id="45">    
-    <end type="SOURCE" refId="7"/>    
-    <end type="TARGET" refId="18"/>  
-  </generalization>  
-  <realization id="46">    
-    <end type="SOURCE" refId="3"/>    
-    <end type="TARGET" refId="7"/>  
-  </realization>  
-  <generalization id="47">    
+  <generalization id="32">    
     <end type="SOURCE" refId="20"/>    
     <end type="TARGET" refId="3"/>  
   </generalization>  
-  <generalization id="48">    
-    <end type="SOURCE" refId="2"/>    
-    <end type="TARGET" refId="26"/>  
-  </generalization>  
-  <generalization id="49">    
+  <realization id="33">    
+    <end type="SOURCE" refId="22"/>    
+    <end type="TARGET" refId="17"/>  
+  </realization>  
+  <realization id="34">    
+    <end type="SOURCE" refId="6"/>    
+    <end type="TARGET" refId="11"/>  
+  </realization>  
+  <generalization id="35">    
     <end type="SOURCE" refId="15"/>    
     <end type="TARGET" refId="6"/>  
   </generalization>  
-  <generalization id="50">    
-    <end type="SOURCE" refId="27"/>    
+  <generalization id="36">    
+    <end type="SOURCE" refId="26"/>    
     <end type="TARGET" refId="9"/>  
   </generalization>  
-  <realization id="51">    
+  <realization id="37">    
     <end type="SOURCE" refId="1"/>    
     <end type="TARGET" refId="11"/>  
   </realization>  
-  <realization id="52">    
-    <end type="SOURCE" refId="27"/>    
+  <generalization id="38">    
+    <end type="SOURCE" refId="17"/>    
+    <end type="TARGET" refId="18"/>  
+  </generalization>  
+  <realization id="39">    
+    <end type="SOURCE" refId="26"/>    
     <end type="TARGET" refId="7"/>  
   </realization>  
-  <generalization id="53">    
+  <generalization id="40">    
     <end type="SOURCE" refId="3"/>    
     <end type="TARGET" refId="4"/>  
   </generalization>  
-  <generalization id="54">    
-    <end type="SOURCE" refId="30"/>    
+  <generalization id="41">    
+    <end type="SOURCE" refId="29"/>    
     <end type="TARGET" refId="6"/>  
   </generalization>  
-  <generalization id="55">    
+  <generalization id="42">    
     <end type="SOURCE" refId="22"/>    
     <end type="TARGET" refId="9"/>  
   </generalization>  
-  <generalization id="56">    
-    <end type="SOURCE" refId="16"/>    
-    <end type="TARGET" refId="26"/>  
-  </generalization>  
-  <generalization id="57">    
-    <end type="SOURCE" refId="24"/>    
-    <end type="TARGET" refId="26"/>  
-  </generalization>  
-  <generalization id="58">    
-    <end type="SOURCE" refId="33"/>    
-    <end type="TARGET" refId="32"/>  
-  </generalization>  
-  <generalization id="59">    
+  <realization id="43">    
+    <end type="SOURCE" refId="19"/>    
+    <end type="TARGET" refId="17"/>  
+  </realization>  
+  <realization id="44">    
+    <end type="SOURCE" refId="4"/>    
+    <end type="TARGET" refId="11"/>  
+  </realization>  
+  <generalization id="45">    
     <end type="SOURCE" refId="14"/>    
     <end type="TARGET" refId="6"/>  
   </generalization>  
-  <generalization id="60">    
-    <end type="SOURCE" refId="25"/>    
-    <end type="TARGET" refId="26"/>  
-  </generalization>  
-  <generalization id="61">    
-    <end type="SOURCE" refId="31"/>    
-    <end type="TARGET" refId="32"/>  
-  </generalization>  
-  <generalization id="62">    
+  <realization id="46">    
+    <end type="SOURCE" refId="4"/>    
+    <end type="TARGET" refId="18"/>  
+  </realization>  
+  <generalization id="47">    
     <end type="SOURCE" refId="19"/>    
     <end type="TARGET" refId="4"/>  
   </generalization>  
-  <generalization id="63">    
-    <end type="SOURCE" refId="29"/>    
-    <end type="TARGET" refId="26"/>  
+  <realization id="48">    
+    <end type="SOURCE" refId="9"/>    
+    <end type="TARGET" refId="18"/>  
+  </realization>  
+  <generalization id="49">    
+    <end type="SOURCE" refId="7"/>    
+    <end type="TARGET" refId="18"/>  
   </generalization>  
-  <generalization id="64">    
+  <generalization id="50">    
     <end type="SOURCE" refId="21"/>    
     <end type="TARGET" refId="3"/>  
   </generalization>  
-  <generalization id="65">    
-    <end type="SOURCE" refId="23"/>    
-    <end type="TARGET" refId="26"/>  
-  </generalization>  
+  <realization id="51">    
+    <end type="SOURCE" refId="3"/>    
+    <end type="TARGET" refId="7"/>  
+  </realization>  
   <classifier-display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
     sort-features="false" accessors="true" visibility="true">    
     <attributes public="false" package="false" protected="false" private="false" static="false"/>    

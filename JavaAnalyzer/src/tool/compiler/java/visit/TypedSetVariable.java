@@ -10,6 +10,7 @@ public class TypedSetVariable extends AbsObjSet {
 	
 	private LinkedHashSet<TypedSetVariable> subSetVars = null;
 	
+	public static final String KIND = "X";
 	private static long idGen = 1;
 	private static final long NOID = -1;
 	
@@ -40,8 +41,8 @@ public class TypedSetVariable extends AbsObjSet {
 	 * @see tool.compiler.java.visit.AbsObjSet#kind()
 	 */
 	@Override
-	protected String kind() {
-		return "X";
+	public String kind() {
+		return KIND;
 	}
 	
 	/**

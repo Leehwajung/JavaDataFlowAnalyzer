@@ -44,7 +44,7 @@ public abstract class AbsObjSet implements Info {
 	/**
 	 * @return the kind of program point
 	 */
-	protected abstract String kind();
+	public abstract String kind();
 	
 	/**
 	 * @return the ID number to set

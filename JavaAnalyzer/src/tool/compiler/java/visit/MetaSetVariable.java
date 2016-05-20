@@ -4,25 +4,28 @@ import polyglot.types.Type;
 
 public class MetaSetVariable extends AbsObjSet {
 	
+//	public static final String KIND = "Χ";	// Capital Chi
+//	public static final String KIND = "χ";	// Small Letter Chi
+	public static final String KIND = "Chi";
+	private boolean isLocal;
 	private static long idGen = 1;
 	private static final long NOID = -1;
 	
 	/**
 	 * @param type
 	 */
-	public MetaSetVariable(Type type) {
+	public MetaSetVariable(Type type, boolean isLocal) {
 		setType(type);
 		generateID();
+		this.isLocal = isLocal;
 	}
 	
 	/**
 	 * @see tool.compiler.java.visit.AbsObjSet#kind()
 	 */
 	@Override
-	protected String kind() {
-//		return "Χ";	// Capital Chi
-//		return "χ";	// Small Letter Chi
-		return "Chi";
+	public String kind() {
+		return KIND;
 	}
 	
 	/**
@@ -46,6 +49,13 @@ public class MetaSetVariable extends AbsObjSet {
 		} else {
 			return NOID;
 		}
+	}
+	
+	/**
+	 * @return the isLocal
+	 */
+	public boolean isLocal() {
+		return isLocal;
 	}
 	
 	/**
