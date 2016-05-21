@@ -1,5 +1,10 @@
 package tool.compiler.java.visit;
 
-public class ClassConstraint implements ConstraintFunction {
+import polyglot.ast.ClassDecl;
 
+/**
+ * lam (Y1,..., Yl, Chi_this,Chi_f1,...,Chi_fj). env_C
+ */
+public class ClassConstraint implements ConstraintFunction {
+	
 }
