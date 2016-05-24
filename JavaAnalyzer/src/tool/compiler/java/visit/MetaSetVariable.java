@@ -13,11 +13,19 @@ public class MetaSetVariable extends AbsObjSet {
 	
 	/**
 	 * @param type
+	 * @param isLocal
 	 */
 	public MetaSetVariable(Type type, boolean isLocal) {
 		setType(type);
 		generateID();
 		this.isLocal = isLocal;
+	}
+	
+	/**
+	 * @param type
+	 */
+	public MetaSetVariable(Type type) {
+		this(type, false);
 	}
 	
 	/**

@@ -16,13 +16,16 @@ public class EquGenClassDeclExt extends EquGenExt {
 	@Override
 	public EquGenerator equGenEnter(EquGenerator v) {
 		ClassDecl clzDecl = (ClassDecl)this.node();
-		Report.report(0, "Class Declaration: " + clzDecl.name());
+		Report.report(0, "[Enter] Class Declaration: " + clzDecl/*.name()*/);
 		
 		return super.equGenEnter(v);
 	}
 	
 	@Override
 	public Node equGenLeave(EquGenerator v) {
+		ClassDecl clzDecl = (ClassDecl)this.node();
+		Report.report(0, "[Leave] Class Declaration: " + clzDecl/*.name()*/);
+		
 		return super.equGenLeave(v);
 	}	
 }

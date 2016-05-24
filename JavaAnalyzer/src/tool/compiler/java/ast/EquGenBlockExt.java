@@ -16,13 +16,16 @@ public class EquGenBlockExt extends EquGenStmtExt {
 	@Override
 	public EquGenerator equGenEnter(EquGenerator v) {
 		Block blk = (Block)this.node();
-		Report.report(0, "Block: " + blk);
+		Report.report(0, "[Enter] Block: " + blk);
 		
 		return super.equGenEnter(v);
 	}
 	
 	@Override
 	public Node equGenLeave(EquGenerator v) {
+		Block blk = (Block)this.node();
+		Report.report(0, "[Leave] Block: " + blk);
+		
 		return super.equGenLeave(v);
 	}
 }

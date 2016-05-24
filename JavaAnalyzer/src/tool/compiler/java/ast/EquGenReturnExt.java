@@ -16,13 +16,16 @@ public class EquGenReturnExt extends EquGenStmtExt {
 	@Override
 	public EquGenerator equGenEnter(EquGenerator v) {
 		Return rtn = (Return)this.node();
-		Report.report(0, "Return: " + rtn/*.name()*/);
+		Report.report(0, "[Enter] Return: " + rtn/*.name()*/);
 		
 		return super.equGenEnter(v);
 	}
 	
 	@Override
 	public Node equGenLeave(EquGenerator v) {
+		Return rtn = (Return)this.node();
+		Report.report(0, "[Leave] Return: " + rtn/*.name()*/);
+		
 		return super.equGenLeave(v);
 	}
 }

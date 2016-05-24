@@ -19,11 +19,11 @@ public class EquGenFieldDeclExt extends EquGenExt {
 	@Override
 	public EquGenerator equGenEnter(EquGenerator v) {
 		FieldDecl fldDecl = (FieldDecl) this.node();
-//		Report.report(0, "Field Declaration: " + fldDecl/*.name()*/);
+//		Report.report(0, "[Enter] Field Declaration: " + fldDecl/*.name()*/);
 		
 		FieldInfo fldInfo = new FieldInfo((JL5FieldInstance) fldDecl.fieldInstance());
 		v.addToSet(fldInfo);
-		Report.report(0, "Field Declaration: " + fldInfo);
+		Report.report(0, "[Enter] Field Declaration: " + fldDecl + "\n\t[FieldInfo] " + fldInfo);
 		
 		if(fldDecl.init() != null) {
 			
@@ -34,6 +34,9 @@ public class EquGenFieldDeclExt extends EquGenExt {
 	
 	@Override
 	public Node equGenLeave(EquGenerator v) {
+		FieldDecl fldDecl = (FieldDecl) this.node();
+		Report.report(0, "[Leave] Field Declaration: " + fldDecl/*.name()*/);
+		
 		return super.equGenLeave(v);
 	}
 }

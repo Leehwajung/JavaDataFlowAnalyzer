@@ -1,7 +1,5 @@
 package tool.compiler.java.visit;
 
-import polyglot.ast.Block;
-import polyglot.ast.Stmt;
 import polyglot.ext.jl5.types.JL5MethodInstance;
 import polyglot.ext.jl5.types.JL5ProcedureInstance;
 
@@ -9,32 +7,41 @@ import java.util.Collection;
 import java.util.LinkedHashSet;
 
 /**
- * lam (Chi1, ..., Chin, Chi_ret). Constraint Set					<br>
- * C{AOSc}.m <: (D1{AOS1}, ..., Dn{AOSn}) --> E{AOSe}
+ * lam (Chi1, ..., Chin, Chi_ret). Constraint Set
  */
 public class MethodConstraint implements ConstraintFunction {
 	
-	private Constraint invokeConstraint;
+	private LinkedHashSet<MetaSetVariable> chi_formals;
+	private LinkedHashSet<MetaSetVariable> chi_locals;
+	private MetaSetVariable chi_ret;
+	
+	private Constraint headerConstraint;
 	private LinkedHashSet<Constraint> bodyConstraints;
 	
 	/**
 	 * @param 
 	 */
-	public MethodConstraint(MetaSetVariable caos, JL5ProcedureInstance m, Collection<MetaSetVariable> daoss, MetaSetVariable eaos, Block body) {
-		this.invokeConstraint = new InvokeMth(caos, m, daoss, eaos);
-		this.bodyConstraints = createMetaConstraints(body);
+	public MethodConstraint(MetaSetVariable caos, JL5ProcedureInstance m, Collection<MetaSetVariable> daoss, MetaSetVariable eaos) {
+		this.headerConstraint = new InvokeMth(caos, m, daoss, eaos);
+		this.bodyConstraints = new LinkedHashSet<>();
 	}
 	
-	public MethodConstraint(JL5MethodInstance cm, Collection<MetaSetVariable> daoss, MetaSetVariable eaos, Block body) {
-		this.invokeConstraint = new InvokeStaticMth(cm, daoss, eaos);
-		this.bodyConstraints = createMetaConstraints(body);
+	public MethodConstraint(JL5MethodInstance cm, Collection<MetaSetVariable> daoss, MetaSetVariable eaos) {
+		this.headerConstraint = new InvokeStaticMth(cm, daoss, eaos);
+		this.bodyConstraints = new LinkedHashSet<>();
 	}
 	
-	private LinkedHashSet<Constraint> createMetaConstraints(Block body) {
-		for(Stmt stmt : body.statements()) {
-			
-		}
-		
+	public void addConstraints(Constraint bodyConstraint) {
+		bodyConstraints.add(bodyConstraint);
+	}
+	
+	public ConstraintsPair apply() {
 		return null;
+	}
+}
+
+class ConstraintsPair {
+	public static enum Type {
+		ret
 	}
 }

@@ -7,12 +7,12 @@ import polyglot.util.InternalCompilerError;
 import polyglot.util.SerialVersionUID;
 import tool.compiler.java.visit.EquGenerator;
 import tool.compiler.java.visit.LocalEnv;
-import tool.compiler.java.visit.TypedSetVariable;
+import tool.compiler.java.visit.AbsObjSet;
 
 public class EquGenExt extends Ext_c implements EquGenOps {	// TODO: Not JL7Ext, but Ext_c to override lang()!!!
 	private static final long serialVersionUID = SerialVersionUID.generate();
 	
-	private TypedSetVariable typedSetVar = null;
+	private AbsObjSet absObjSet = null;
 	private LocalEnv localEnv = new LocalEnv();
 	
 	@Override
@@ -54,26 +54,26 @@ public class EquGenExt extends Ext_c implements EquGenOps {	// TODO: Not JL7Ext,
 	
 	
 	/**
-	 * @return the setVar
+	 * @return the absObjSet
 	 */
 	@Override
-	public final TypedSetVariable typedSetVar() {
-		return typedSetVar;
+	public final AbsObjSet AbsObjSet() {
+		return absObjSet;
 	}
 	
 	/**
 	 * @param n node
-	 * @return the setVar of node n
+	 * @return the absObjSet of node n
 	 */
-	public static final TypedSetVariable typedSetVar(Node n) {
-		return EquGenExt.ext(n).typedSetVar();
+	public static final AbsObjSet AbsObjSet(Node n) {
+		return EquGenExt.ext(n).AbsObjSet();
 	}
 	
 	/**
-	 * @param typedSetVar the typedSetVar to set
+	 * @param absObjSet the absObjSet to set
 	 */
-	protected final void setTypedSetVar(TypedSetVariable typedSetVar) {
-		this.typedSetVar = typedSetVar;
+	protected final void setAbsObjSet(AbsObjSet absObjSet) {
+		this.absObjSet = absObjSet;
 	}
 	
 	/**
