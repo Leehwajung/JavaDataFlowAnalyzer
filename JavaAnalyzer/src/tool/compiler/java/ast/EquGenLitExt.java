@@ -28,7 +28,7 @@ public class EquGenLitExt extends EquGenExprExt {
 		Lit lit = (Lit) this.node();
 		Report.report(0, "[Leave] Lit: " + lit);
 		
-		setAbsObjSet(new MetaSetVariable(lit.type()));
+		setMetaSetVar(new MetaSetVariable(lit.type()));
 		
 		return super.equGenLeave(v);
 	}

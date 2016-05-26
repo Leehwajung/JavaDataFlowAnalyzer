@@ -28,7 +28,7 @@ public class EquGenLocalExt extends EquGenExprExt {
 		Local lcl = (Local)this.node();
 		Report.report(0, "[Leave] Local: " + lcl/*.name()*/);
 		
-		setAbsObjSet(new MetaSetVariable(lcl.type()));
+		setMetaSetVar(new MetaSetVariable(lcl.type()));
 		
 		return super.equGenLeave(v);
 	}

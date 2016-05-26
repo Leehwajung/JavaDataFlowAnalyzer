@@ -15,33 +15,22 @@ public class MethodConstraint implements ConstraintFunction {
 	private LinkedHashSet<MetaSetVariable> chi_locals;
 	private MetaSetVariable chi_ret;
 	
-	private Constraint headerConstraint;
-	private LinkedHashSet<Constraint> bodyConstraints;
-	
 	/**
 	 * @param 
 	 */
-	public MethodConstraint(MetaSetVariable caos, JL5ProcedureInstance m, Collection<MetaSetVariable> daoss, MetaSetVariable eaos) {
-		this.headerConstraint = new InvokeMth(caos, m, daoss, eaos);
-		this.bodyConstraints = new LinkedHashSet<>();
+	public MethodConstraint() {
 	}
 	
 	public MethodConstraint(JL5MethodInstance cm, Collection<MetaSetVariable> daoss, MetaSetVariable eaos) {
-		this.headerConstraint = new InvokeStaticMth(cm, daoss, eaos);
-		this.bodyConstraints = new LinkedHashSet<>();
-	}
-	
-	public void addConstraints(Constraint bodyConstraint) {
-		bodyConstraints.add(bodyConstraint);
 	}
 	
 	public ConstraintsPair apply() {
 		return null;
 	}
-}
-
-class ConstraintsPair {
-	public static enum Type {
-		ret
+	
+	public static class ConstraintsPair {
+		public static enum Type {
+			ret
+		}
 	}
 }

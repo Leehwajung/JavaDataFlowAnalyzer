@@ -7,12 +7,12 @@ import polyglot.util.InternalCompilerError;
 import polyglot.util.SerialVersionUID;
 import tool.compiler.java.visit.EquGenerator;
 import tool.compiler.java.visit.LocalEnv;
-import tool.compiler.java.visit.AbsObjSet;
+import tool.compiler.java.visit.MetaSetVariable;
 
 public class EquGenExt extends Ext_c implements EquGenOps {	// TODO: Not JL7Ext, but Ext_c to override lang()!!!
 	private static final long serialVersionUID = SerialVersionUID.generate();
 	
-	private AbsObjSet absObjSet = null;
+	private MetaSetVariable metaSetVar = null;
 	private LocalEnv localEnv = new LocalEnv();
 	
 	@Override
@@ -54,26 +54,26 @@ public class EquGenExt extends Ext_c implements EquGenOps {	// TODO: Not JL7Ext,
 	
 	
 	/**
-	 * @return the absObjSet
+	 * @return the MetaSetVariable
 	 */
 	@Override
-	public final AbsObjSet AbsObjSet() {
-		return absObjSet;
+	public final MetaSetVariable MetaSetVar() {
+		return metaSetVar;
 	}
 	
 	/**
 	 * @param n node
-	 * @return the absObjSet of node n
+	 * @return the MetaSetVariable of node n
 	 */
-	public static final AbsObjSet AbsObjSet(Node n) {
-		return EquGenExt.ext(n).AbsObjSet();
+	public static final MetaSetVariable MetaSetVar(Node n) {
+		return EquGenExt.ext(n).MetaSetVar();
 	}
 	
 	/**
-	 * @param absObjSet the absObjSet to set
+	 * @param metaSetVar the MetaSetVariable to set
 	 */
-	protected final void setAbsObjSet(AbsObjSet absObjSet) {
-		this.absObjSet = absObjSet;
+	protected final void setMetaSetVar(MetaSetVariable metaSetVar) {
+		this.metaSetVar = metaSetVar;
 	}
 	
 	/**

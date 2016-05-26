@@ -28,7 +28,7 @@ public class EquGenSpecialExt extends EquGenExprExt {
 		Special spc = (Special) this.node();
 		Report.report(0, "[Leave] Special: " + spc);
 		
-		setAbsObjSet(new MetaSetVariable(spc.type()));
+		setMetaSetVar(new MetaSetVariable(spc.type()));
 		
 		return super.equGenLeave(v);
 	}
