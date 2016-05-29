@@ -5,4 +5,9 @@ package tool.compiler.java.visit;
  */
 public interface ConstraintFunction {
 	
+	public static class ConstraintsPair {
+		public static enum Type {
+			ret
+		}
+	}
 }

@@ -22,19 +22,19 @@ public class MethodConstraint implements ConstraintFunction {
 		this.method = m;
 	}
 	
-	public MethodConstraint(JL5ProcedureInstance m, Collection<MetaSetVariable> chi_formals) {
+	public MethodConstraint(JL5ProcedureInstance m, Collection<MetaSetVariable> chiFormals) {
 		this(m);
-		this.chi_formals = new LinkedHashSet<>(chi_formals);
+		this.chi_formals = new LinkedHashSet<>(chiFormals);
 	}
 	
-	public MethodConstraint(JL5ProcedureInstance m, Collection<MetaSetVariable> chi_formals, MetaSetVariable chi_return) {
-		this(m, chi_formals);
-		this.chi_ret = chi_return;
+	public MethodConstraint(JL5ProcedureInstance m, Collection<MetaSetVariable> chiFormals, MetaSetVariable chiReturn) {
+		this(m, chiFormals);
+		this.chi_ret = chiReturn;
 	}
 	
-	public MethodConstraint(JL5ProcedureInstance m, Collection<MetaSetVariable> chi_formals, Collection<MetaSetVariable> chi_locals, MetaSetVariable chi_return) {
-		this(m, chi_formals, chi_return);
-		this.chi_locals = new LinkedHashSet<>(chi_locals);
+	public MethodConstraint(JL5ProcedureInstance m, Collection<MetaSetVariable> chiFormals, Collection<MetaSetVariable> chiLocals, MetaSetVariable chiReturn) {
+		this(m, chiFormals, chiReturn);
+		this.chi_locals = new LinkedHashSet<>(chiLocals);
 	}
 	
 	public ConstraintsPair apply() {
@@ -45,43 +45,60 @@ public class MethodConstraint implements ConstraintFunction {
 	/**
 	 * @return the chi_formals
 	 */
-	public LinkedHashSet<MetaSetVariable> getChi_formals() {
+	public LinkedHashSet<MetaSetVariable> getChiFormals() {
 		return new LinkedHashSet<>(chi_formals);
 	}
 	
 	/**
-	 * @param chi_formals the chi_formals to set
+	 * @param chiFormals the chi_formals to set
 	 */
-	public void setChi_formals(LinkedHashSet<MetaSetVariable> chi_formals) {
-		this.chi_formals = chi_formals;
+	public void setChiFormals(LinkedHashSet<MetaSetVariable> chiFormals) {
+		this.chi_formals = chiFormals;
 	}
 	
 	/**
 	 * @return the chi_locals
 	 */
-	public LinkedHashSet<MetaSetVariable> getChi_locals() {
+	public LinkedHashSet<MetaSetVariable> getChiLocals() {
 		return new LinkedHashSet<>(chi_locals);
 	}
 	
 	/**
-	 * @param chi_locals the chi_locals to set
+	 * @param chiLocals the chi_locals to set
 	 */
-	public void setChi_locals(LinkedHashSet<MetaSetVariable> chi_locals) {
-		this.chi_locals = chi_locals;
+	public void addChiLocals(Collection<MetaSetVariable> chiLocals) {
+		if(this.chi_locals == null) {
+			this.chi_locals = new LinkedHashSet<MetaSetVariable>(chiLocals);
+		} else {
+			this.chi_locals.clear();
+			this.chi_locals.addAll(chiLocals);
+		}
+	}
+	
+	/**
+	 * @param chiLocal
+	 */
+	public void addChiLocal(MetaSetVariable chiLocal) {
+		try {
+			this.chi_locals.add(chiLocal);
+		} catch (NullPointerException e) {
+			this.chi_locals = new LinkedHashSet<>();
+			this.chi_locals.add(chiLocal);
+		}
 	}
 	
 	/**
 	 * @return the chi_ret
 	 */
-	public MetaSetVariable getChi_ret() {
+	public MetaSetVariable getChiRet() {
 		return chi_ret;
 	}
 	
 	/**
-	 * @param chi_ret the chi_ret to set
+	 * @param chiRet the chi_ret to set
 	 */
-	public void setChi_ret(MetaSetVariable chi_ret) {
-		this.chi_ret = chi_ret;
+	public void setChiRet(MetaSetVariable chiRet) {
+		this.chi_ret = chiRet;
 	}
 	
 	/**
@@ -89,12 +106,5 @@ public class MethodConstraint implements ConstraintFunction {
 	 */
 	public JL5ProcedureInstance getMethod() {
 		return method;
-	}
-	
-	
-	public static class ConstraintsPair {
-		public static enum Type {
-			ret
-		}
 	}
 }

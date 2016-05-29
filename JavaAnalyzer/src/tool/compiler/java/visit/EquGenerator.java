@@ -15,6 +15,8 @@ import java.io.DataOutputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.Collection;
+import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.LinkedList;
@@ -31,7 +33,10 @@ public class EquGenerator extends ContextVisitor {
 	private static LinkedHashMap<MethodCallInfo, LinkedHashSet<MethodTableRow>> methodTableMap;
 	private static LinkedHashMap<FieldInfo, LinkedHashSet<FieldTableRow>> fieldTableMap;
 	
+	private static LinkedHashSet<ConstraintFunction> classConstraintSet;
+	private static LinkedHashSet<ConstraintFunction> methodConstraintSet;
 	private static LinkedHashSet<Constraint> constraintSet;
+	private static MethodConstraint currMC;
 	
 	private static LocalEnv localEnv;
 	
@@ -47,6 +52,8 @@ public class EquGenerator extends ContextVisitor {
 		methodTableMap = new LinkedHashMap<>();
 		fieldTableMap = new LinkedHashMap<>();
 		
+		classConstraintSet = new LinkedHashSet<>();
+		methodConstraintSet = new LinkedHashSet<>();
 		constraintSet = new LinkedHashSet<>();
 		
 		localEnv = new LocalEnv();
@@ -163,11 +170,35 @@ public class EquGenerator extends ContextVisitor {
 	}
 	
 	/**
+	 * 제약식 함수 집합에 추가
+	 * @param classConstraint
+	 */
+	public void addToSet(ClassConstraint classConstraint) {
+		classConstraintSet.add(classConstraint);
+	}
+	
+	/**
+	 * 제약식 함수 집합에 추가
+	 * @param methodConstraint
+	 */
+	public void addToSet(MethodConstraint methodConstraint) {
+		methodConstraintSet.add(methodConstraint);
+		currMC = methodConstraint;
+	}
+	
+	/**
 	 * 제약식 집합에 추가
 	 * @param constraint
 	 */
 	public void addToSet(Constraint constraint) {
 		constraintSet.add(constraint);
+	}
+	
+	/**
+	 * @return the currMC
+	 */
+	public MethodConstraint getCurrentMethodConstraint() {
+		return currMC;
 	}
 	
 	/**
@@ -259,4 +290,19 @@ public class EquGenerator extends ContextVisitor {
 			e.printStackTrace();
 		}
 	}
+	
+//	public static <E extends Constraint> String getNLStringOf(Collection<E> collection) {
+//		Iterator<E> it = collection.iterator();
+//		if (!it.hasNext())
+//			return "";
+//		
+//		StringBuilder sb = new StringBuilder();
+//		for (;;) {
+//			Constraint e = it.next();
+//			sb.append(e).append(":\t").append();
+//			if (!it.hasNext())
+//				return sb.toString();
+//			sb.append('\n');
+//		}
+//	}
 }
