@@ -34,12 +34,12 @@ public class EquGenProcedureDeclExt extends EquGenExt {
 		v.addToSet(mtdInfo);
 		
 		// MethodConstraint
-		ArrayList<MetaSetVariable> chiFormals = new ArrayList<>();
-		for(Formal formal : procDecl.formals()) {
-			chiFormals.add(MetaSetVar(formal));
-		}
-		mc = new MethodConstraint(procIns, chiFormals);
-		
+//		ArrayList<MetaSetVariable> chiFormals = new ArrayList<>();
+//		for(Formal formal : procDecl.formals()) {
+//			chiFormals.add(MetaSetVar(formal));
+//		}
+		mc = new MethodConstraint(procIns/*, chiFormals*/);
+		v.addToSet(mc);
 		Report.report(0, "[Enter] Procedure Declaration: " + procDecl + "\n\t[MethodConstraint] " + mc + "\n\t[MethodInfo] " + mtdInfo);
 		
 //		if(procIns.flags().isStatic()) {
@@ -57,8 +57,6 @@ public class EquGenProcedureDeclExt extends EquGenExt {
 		ProcedureDecl procDecl = (ProcedureDecl) this.node();
 		JL5ProcedureInstance procIns = (JL5ProcedureInstance) procDecl.procedureInstance();
 		Report.report(0, "[Leave] Procedure Declaration: " + procDecl/*.name()*/);
-		
-		v.addToSet(mc);
 		
 		// T m(T1 x1, ... Tn xn) { ... }ㅣ,
 		//   1. local env를 x1:T1{X1}, xn:Tn{Xn}으로 초기화

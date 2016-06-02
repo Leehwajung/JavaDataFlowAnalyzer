@@ -18,8 +18,6 @@ public class EquGenReturnExt extends EquGenStmtExt {
 		Return rtn = (Return)this.node();
 		Report.report(0, "[Enter] Return: " + rtn/*.name()*/);
 		
-		v.getCurrentMethodConstraint().setChiRet(MetaSetVar(rtn.expr()));
-		
 		return super.equGenEnter(v);
 	}
 	
@@ -27,6 +25,8 @@ public class EquGenReturnExt extends EquGenStmtExt {
 	public Node equGenLeave(EquGenerator v) {
 		Return rtn = (Return)this.node();
 		Report.report(0, "[Leave] Return: " + rtn/*.name()*/);
+		
+		v.getCurrentMethodConstraint().setChiRet(MetaSetVar(rtn.expr()));
 		
 		return super.equGenLeave(v);
 	}

@@ -5,6 +5,7 @@ import polyglot.ext.jl5.types.JL5ParsedClassType;
 import polyglot.ext.jl5.types.JL5SubstClassType;
 import polyglot.ext.jl5.types.TypeVariable;
 import polyglot.types.FieldInstance;
+import tool.compiler.java.util.CollUtil;
 
 import java.util.Collection;
 import java.util.LinkedHashSet;
@@ -90,10 +91,16 @@ public class ClassConstraint implements ConstraintFunction {
 		}
 	}
 	
+	
+	public ConstraintsPair apply() {
+		return null;
+	}
+	
+	
 	/**
-	 * @return the clz
+	 * @return the class
 	 */
-	public JL5ClassType getClz() {
+	public JL5ClassType getClassType() {
 		return clz;
 	}
 	
@@ -105,10 +112,44 @@ public class ClassConstraint implements ConstraintFunction {
 	}
 	
 	/**
+	 * @param chiThis the chi_this to set
+	 */
+	public void setChiThis(MetaSetVariable chiThis) {
+		if(!chiThis.getType().equals(clz)) {
+			this.clz = (JL5ClassType) chiThis.getType();
+		}
+		this.chi_this = chiThis;
+	}
+	
+	/**
 	 * @return the chi_typeVars
 	 */
 	public LinkedHashSet<MetaSetVariable> getChiTypeVars() {
 		return chi_typeVars;
+	}
+	
+	/**
+	 * @param chiTypeVars the chi_typeVars to set
+	 */
+	public void addChiTypeVars(Collection<MetaSetVariable> chiTypeVars) {
+		if(this.chi_typeVars == null) {
+			this.chi_typeVars = new LinkedHashSet<MetaSetVariable>(chiTypeVars);
+		} else {
+			this.chi_typeVars.clear();
+			this.chi_typeVars.addAll(chiTypeVars);
+		}
+	}
+	
+	/**
+	 * @param chiTypeVar
+	 */
+	public void addChiTypeVar(MetaSetVariable chiTypeVar) {
+		try {
+			this.chi_typeVars.add(chiTypeVar);
+		} catch (NullPointerException e) {
+			this.chi_typeVars = new LinkedHashSet<>();
+			this.chi_typeVars.add(chiTypeVar);
+		}
 	}
 	
 	/**
@@ -118,8 +159,101 @@ public class ClassConstraint implements ConstraintFunction {
 		return chi_fields;
 	}
 	
+	/**
+	 * @param chiFields the chi_fields to set
+	 */
+	public void addChiFields(Collection<MetaSetVariable> chiFields) {
+		if(this.chi_fields == null) {
+			this.chi_fields = new LinkedHashSet<MetaSetVariable>(chiFields);
+		} else {
+			this.chi_fields.clear();
+			this.chi_fields.addAll(chiFields);
+		}
+	}
 	
-	public ConstraintsPair apply() {
-		return null;
+	/**
+	 * @param chiField
+	 */
+	public void addChiField(MetaSetVariable chiField) {
+		try {
+			this.chi_fields.add(chiField);
+		} catch (NullPointerException e) {
+			this.chi_fields = new LinkedHashSet<>();
+			this.chi_fields.add(chiField);
+		}
+	}
+	
+	/**
+	 * @see java.lang.Object#toString()
+	 */
+	@Override
+	public String toString() {
+		String result =  "CC " + clz + ": λ(";
+		result += chi_typeVars != null ? (CollUtil.getStringOf(chi_typeVars) + ", ") : "";
+		result += chi_this;
+		result += chi_fields != null ? (", " + CollUtil.getStringOf(chi_fields)) : "";
+		result += ")";
+		
+		return result;
+	}
+	
+	/**
+	 * @see java.lang.Object#hashCode()
+	 */
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((clz == null) ? 0 : clz.hashCode());
+		result = prime * result + ((chi_fields == null) ? 0 : chi_fields.hashCode());
+		result = prime * result + ((chi_this == null) ? 0 : chi_this.hashCode());
+		result = prime * result + ((chi_typeVars == null) ? 0 : chi_typeVars.hashCode());
+		return result;
+	}
+	
+	/**
+	 * @see java.lang.Object#equals(java.lang.Object)
+	 */
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj) {
+			return true;
+		}
+		if (obj == null) {
+			return false;
+		}
+		if (getClass() != obj.getClass()) {
+			return false;
+		}
+		ClassConstraint other = (ClassConstraint) obj;
+		if (clz == null) {
+			if (other.clz != null) {
+				return false;
+			}
+		} else if (!clz.equals(other.clz)) {
+			return false;
+		}
+		if (chi_fields == null) {
+			if (other.chi_fields != null) {
+				return false;
+			}
+		} else if (!chi_fields.equals(other.chi_fields)) {
+			return false;
+		}
+		if (chi_this == null) {
+			if (other.chi_this != null) {
+				return false;
+			}
+		} else if (!chi_this.equals(other.chi_this)) {
+			return false;
+		}
+		if (chi_typeVars == null) {
+			if (other.chi_typeVars != null) {
+				return false;
+			}
+		} else if (!chi_typeVars.equals(other.chi_typeVars)) {
+			return false;
+		}
+		return true;
 	}
 }

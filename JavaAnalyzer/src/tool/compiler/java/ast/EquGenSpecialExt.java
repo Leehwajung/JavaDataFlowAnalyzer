@@ -20,6 +20,12 @@ public class EquGenSpecialExt extends EquGenExprExt {
 		Special spc = (Special) this.node();
 		Report.report(0, "[Enter] Special: " + spc);
 		
+		if(spc.kind() == Special.THIS) {
+			setMetaSetVar(v.getCurrentClassConstraint().getChiThis());
+		} else {
+			setMetaSetVar(new MetaSetVariable(spc.type()));
+		}
+		
 		return super.equGenEnter(v);
 	}
 	
@@ -27,8 +33,6 @@ public class EquGenSpecialExt extends EquGenExprExt {
 	public Node equGenLeave(EquGenerator v) {
 		Special spc = (Special) this.node();
 		Report.report(0, "[Leave] Special: " + spc);
-		
-		setMetaSetVar(new MetaSetVariable(spc.type()));
 		
 		return super.equGenLeave(v);
 	}

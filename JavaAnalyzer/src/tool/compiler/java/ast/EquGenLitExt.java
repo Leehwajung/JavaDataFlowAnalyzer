@@ -20,6 +20,8 @@ public class EquGenLitExt extends EquGenExprExt {
 		Lit lit = (Lit) this.node();
 		Report.report(0, "[Enter] Lit: " + lit);
 		
+		setMetaSetVar(new MetaSetVariable(lit.type()));
+		
 		return super.equGenEnter(v);
 	}
 	
@@ -27,8 +29,6 @@ public class EquGenLitExt extends EquGenExprExt {
 	public Node equGenLeave(EquGenerator v) {
 		Lit lit = (Lit) this.node();
 		Report.report(0, "[Leave] Lit: " + lit);
-		
-		setMetaSetVar(new MetaSetVariable(lit.type()));
 		
 		return super.equGenLeave(v);
 	}

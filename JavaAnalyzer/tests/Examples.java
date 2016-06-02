@@ -9,8 +9,16 @@ class X {
 	}
 	
 	void main() {
-		X p = new X();	// o1
-		Y q = new Y();	// o2
+		X p = new X();
+		Y q = new Y();
 		p.set(q);
 	}
 }
+
+//class C extends X{
+//	char m(int i) {
+//		super.main();
+//		return 'a';
+//	}
+//	
+//}

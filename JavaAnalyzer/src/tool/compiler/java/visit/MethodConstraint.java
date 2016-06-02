@@ -1,6 +1,7 @@
 package tool.compiler.java.visit;
 
 import polyglot.ext.jl5.types.JL5ProcedureInstance;
+import tool.compiler.java.util.CollUtil;
 
 import java.util.Collection;
 import java.util.LinkedHashSet;
@@ -37,10 +38,18 @@ public class MethodConstraint implements ConstraintFunction {
 		this.chi_locals = new LinkedHashSet<>(chiLocals);
 	}
 	
+	
 	public ConstraintsPair apply() {
 		return null;
 	}
 	
+	
+	/**
+	 * @return the method
+	 */
+	public JL5ProcedureInstance getMethod() {
+		return method;
+	}
 	
 	/**
 	 * @return the chi_formals
@@ -52,8 +61,25 @@ public class MethodConstraint implements ConstraintFunction {
 	/**
 	 * @param chiFormals the chi_formals to set
 	 */
-	public void setChiFormals(LinkedHashSet<MetaSetVariable> chiFormals) {
-		this.chi_formals = chiFormals;
+	public void addChiFormals(Collection<MetaSetVariable> chiFormals) {
+		if(this.chi_formals == null) {
+			this.chi_formals = new LinkedHashSet<MetaSetVariable>(chiFormals);
+		} else {
+			this.chi_formals.clear();
+			this.chi_formals.addAll(chiFormals);
+		}
+	}
+	
+	/**
+	 * @param chiFormal
+	 */
+	public void addChiFormal(MetaSetVariable chiFormal) {
+		try {
+			this.chi_formals.add(chiFormal);
+		} catch (NullPointerException e) {
+			this.chi_formals = new LinkedHashSet<>();
+			this.chi_formals.add(chiFormal);
+		}
 	}
 	
 	/**
@@ -101,10 +127,78 @@ public class MethodConstraint implements ConstraintFunction {
 		this.chi_ret = chiRet;
 	}
 	
+	
 	/**
-	 * @return the method
+	 * @see java.lang.Object#toString()
 	 */
-	public JL5ProcedureInstance getMethod() {
-		return method;
+	@Override
+	public String toString() {
+		String result =  "MC " + method + ": λ(";
+		result += chi_formals != null ? CollUtil.getStringOf(chi_formals) : "";
+		result += chi_ret != null ? (chi_formals != null ? ", " : "") + chi_ret : "";
+		result += ")";
+		
+		return result;
+	}
+	
+	/**
+	 * @see java.lang.Object#hashCode()
+	 */
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((method == null) ? 0 : method.hashCode());
+		result = prime * result + ((chi_formals == null) ? 0 : chi_formals.hashCode());
+		result = prime * result + ((chi_locals == null) ? 0 : chi_locals.hashCode());
+		result = prime * result + ((chi_ret == null) ? 0 : chi_ret.hashCode());
+		
+		return result;
+	}
+	
+	/**
+	 * @see java.lang.Object#equals(java.lang.Object)
+	 */
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj) {
+			return true;
+		}
+		if (obj == null) {
+			return false;
+		}
+		if (getClass() != obj.getClass()) {
+			return false;
+		}
+		MethodConstraint other = (MethodConstraint) obj;
+		if (method == null) {
+			if (other.method != null) {
+				return false;
+			}
+		} else if (!method.equals(other.method)) {
+			return false;
+		}
+		if (chi_formals == null) {
+			if (other.chi_formals != null) {
+				return false;
+			}
+		} else if (!chi_formals.equals(other.chi_formals)) {
+			return false;
+		}
+		if (chi_locals == null) {
+			if (other.chi_locals != null) {
+				return false;
+			}
+		} else if (!chi_locals.equals(other.chi_locals)) {
+			return false;
+		}
+		if (chi_ret == null) {
+			if (other.chi_ret != null) {
+				return false;
+			}
+		} else if (!chi_ret.equals(other.chi_ret)) {
+			return false;
+		}
+		return true;
 	}
 }

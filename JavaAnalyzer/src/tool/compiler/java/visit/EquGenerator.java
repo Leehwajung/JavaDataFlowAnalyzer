@@ -36,6 +36,7 @@ public class EquGenerator extends ContextVisitor {
 	private static LinkedHashSet<ConstraintFunction> classConstraintSet;
 	private static LinkedHashSet<ConstraintFunction> methodConstraintSet;
 	private static LinkedHashSet<Constraint> constraintSet;
+	private static ClassConstraint currCC;
 	private static MethodConstraint currMC;
 	
 	private static LocalEnv localEnv;
@@ -175,6 +176,7 @@ public class EquGenerator extends ContextVisitor {
 	 */
 	public void addToSet(ClassConstraint classConstraint) {
 		classConstraintSet.add(classConstraint);
+		currCC = classConstraint;
 	}
 	
 	/**
@@ -192,6 +194,13 @@ public class EquGenerator extends ContextVisitor {
 	 */
 	public void addToSet(Constraint constraint) {
 		constraintSet.add(constraint);
+	}
+	
+	/**
+	 * @return the currCC
+	 */
+	public ClassConstraint getCurrentClassConstraint() {
+		return currCC;
 	}
 	
 	/**
@@ -257,9 +266,13 @@ public class EquGenerator extends ContextVisitor {
 	 }
 	 
 	/**
-	 * 테이블을 콘솔에 출력
+	 * 제약식을 콘솔에 출력
 	 */
 	private void printConstraintsToConsole() {
+		Report.report(1, "\n----- Constraint Functions -----");
+		Report.report(1, CollUtil.getNLStringOf(classConstraintSet));
+		Report.report(1, CollUtil.getNLStringOf(methodConstraintSet));
+		
 		Report.report(1, "\n----- Constraints -----");
 		Report.report(1, CollUtil.getNLStringOf(constraintSet));
 	}

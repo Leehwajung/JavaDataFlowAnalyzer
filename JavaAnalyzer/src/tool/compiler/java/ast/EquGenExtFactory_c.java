@@ -262,8 +262,13 @@ public final class EquGenExtFactory_c extends EquGenAbstractExtFactory_c {
 		return new EquGenConstructorCallExt();
 	}
 	
+	/**
+	 * LocalDecl <: ForInit <: Stmt <: Term <: Node	<br>
+	 * LocalDecl <: VarDecl <: Term <: Node
+	 */
 	@Override
 	protected Ext extLocalDeclImpl() {
+//		return super.extLocalDeclmpl();
 		return new EquGenLocalDeclExt();
 	}
 	
@@ -281,7 +286,16 @@ public final class EquGenExtFactory_c extends EquGenAbstractExtFactory_c {
 	 */
 	@Override
 	protected Ext extReturnImpl() {
-//		return super.extBlockImpl();
+//		return super.extReturnImpl();
 		return new EquGenReturnExt();
+	}
+	
+	/**
+	 * Formal <: VarDecl <: Term <: Node
+	 */
+	@Override
+	protected Ext extFormalImpl() {
+//		return super.extFormalImpl();
+		return new EquGenFormalExt();
 	}
 }
