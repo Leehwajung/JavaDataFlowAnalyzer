@@ -13,6 +13,8 @@ class X {
 		Y q = new Y();
 		p.set(q);
 	}
+	
+	int a;
 }
 
 //class C extends X{

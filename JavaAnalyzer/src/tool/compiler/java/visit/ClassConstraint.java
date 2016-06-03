@@ -1,6 +1,7 @@
 package tool.compiler.java.visit;
 
 import polyglot.ext.jl5.types.JL5ClassType;
+import polyglot.ext.jl5.types.JL5FieldInstance;
 import polyglot.ext.jl5.types.JL5ParsedClassType;
 import polyglot.ext.jl5.types.JL5SubstClassType;
 import polyglot.ext.jl5.types.TypeVariable;
@@ -8,7 +9,10 @@ import polyglot.types.FieldInstance;
 import tool.compiler.java.util.CollUtil;
 
 import java.util.Collection;
+import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
+import java.util.Map;
+import java.util.Map.Entry;
 
 /**
  * lam (Y1,..., Yl, Chi_this,Chi_f1,...,Chi_fj). env_C
@@ -18,7 +22,7 @@ public class ClassConstraint implements ConstraintFunction {
 	private JL5ClassType clz;
 	private MetaSetVariable chi_this;
 	private LinkedHashSet<MetaSetVariable> chi_typeVars;
-	private LinkedHashSet<MetaSetVariable> chi_fields;
+	private LinkedHashMap<JL5FieldInstance, MetaSetVariable> chi_fields;
 	
 	/**
 	 * @param type Class Type
@@ -37,12 +41,12 @@ public class ClassConstraint implements ConstraintFunction {
 		}
 	}
 	
-	public ClassConstraint(JL5ClassType type, Collection<MetaSetVariable> chiTypeVars, Collection<MetaSetVariable> chiFields) {
+	public ClassConstraint(JL5ClassType type, Collection<MetaSetVariable> chiTypeVars, Map<JL5FieldInstance, MetaSetVariable> chiFields) {
 		this(type, chiTypeVars);
 		if(chiFields == null) {
 			this.chi_fields = null;
 		} else {
-			this.chi_fields = new LinkedHashSet<>(chiFields);
+			this.chi_fields = new LinkedHashMap<>(chiFields);
 		}
 	}
 	
@@ -60,12 +64,12 @@ public class ClassConstraint implements ConstraintFunction {
 		}
 	}
 	
-	public ClassConstraint(MetaSetVariable chiThis, Collection<MetaSetVariable> chiTypeVars, Collection<MetaSetVariable> chiFields) {
+	public ClassConstraint(MetaSetVariable chiThis, Collection<MetaSetVariable> chiTypeVars, Map<JL5FieldInstance, MetaSetVariable> chiFields) {
 		this(chiThis, chiTypeVars);
 		if(chiFields == null) {
 			this.chi_fields = null;
 		} else {
-			this.chi_fields = new LinkedHashSet<>(chiFields);
+			this.chi_fields = new LinkedHashMap<>(chiFields);
 		}
 	}
 	
@@ -84,9 +88,10 @@ public class ClassConstraint implements ConstraintFunction {
 				}
 			}
 			
-			this.chi_fields = new LinkedHashSet<>();
+			this.chi_fields = new LinkedHashMap<>();
 			for(FieldInstance field : type.fields()) {
-				this.chi_fields.add(new MetaSetVariable(field.type()));	// field
+				this.chi_fields.put((JL5FieldInstance)field, new MetaSetVariable(field.type()));	// field
+				System.out.println(chi_fields.get(field).getType().getClass());
 			}
 		}
 	}
@@ -156,30 +161,61 @@ public class ClassConstraint implements ConstraintFunction {
 	 * @return the chi_fields
 	 */
 	public LinkedHashSet<MetaSetVariable> getChiFields() {
-		return chi_fields;
+		return new LinkedHashSet<>(chi_fields.values());
+	}
+	
+	/**
+	 * @return the chi_fields
+	 */
+	public LinkedHashMap<JL5FieldInstance, MetaSetVariable> getChiFieldMap() {
+		return new LinkedHashMap<>(chi_fields);
+	}
+	
+	/**
+	 * @return the chi_fields
+	 */
+	public MetaSetVariable getChiField(JL5FieldInstance field) {
+		return chi_fields.get(field);
+	}
+	
+	/**
+	 * @return the chi_fields
+	 */
+	public JL5FieldInstance getField(MetaSetVariable chiField) {
+		if(chi_fields.containsValue(chiField)) {
+			for(Entry<JL5FieldInstance, MetaSetVariable> entry : chi_fields.entrySet()) {
+				if(entry.getValue() == chiField) {
+					return entry.getKey();
+				}
+			}
+			return null;
+		} else {
+			return null;
+		}
 	}
 	
 	/**
 	 * @param chiFields the chi_fields to set
 	 */
-	public void addChiFields(Collection<MetaSetVariable> chiFields) {
+	public void addChiFields(Map<JL5FieldInstance, MetaSetVariable> chiFields) {
 		if(this.chi_fields == null) {
-			this.chi_fields = new LinkedHashSet<MetaSetVariable>(chiFields);
+			this.chi_fields = new LinkedHashMap<>(chiFields);
 		} else {
 			this.chi_fields.clear();
-			this.chi_fields.addAll(chiFields);
+			this.chi_fields.putAll(chiFields);
 		}
 	}
 	
 	/**
+	 * @param field
 	 * @param chiField
 	 */
-	public void addChiField(MetaSetVariable chiField) {
+	public void addChiField(JL5FieldInstance field, MetaSetVariable chiField) {
 		try {
-			this.chi_fields.add(chiField);
+			this.chi_fields.put(field, chiField);
 		} catch (NullPointerException e) {
-			this.chi_fields = new LinkedHashSet<>();
-			this.chi_fields.add(chiField);
+			this.chi_fields = new LinkedHashMap<>();
+			this.chi_fields.put(field, chiField);
 		}
 	}
 	
@@ -189,9 +225,9 @@ public class ClassConstraint implements ConstraintFunction {
 	@Override
 	public String toString() {
 		String result =  "CC " + clz + ": λ(";
-		result += chi_typeVars != null ? (CollUtil.getStringOf(chi_typeVars) + ", ") : "";
+		result += (chi_typeVars != null && !chi_typeVars.isEmpty()) ? (CollUtil.getStringOf(chi_typeVars) + ", ") : "";
 		result += chi_this;
-		result += chi_fields != null ? (", " + CollUtil.getStringOf(chi_fields)) : "";
+		result += (chi_fields != null && !chi_fields.isEmpty()) ? (", " + CollUtil.getStringOf(chi_fields.values())) : "";
 		result += ")";
 		
 		return result;
@@ -205,9 +241,9 @@ public class ClassConstraint implements ConstraintFunction {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + ((clz == null) ? 0 : clz.hashCode());
-		result = prime * result + ((chi_fields == null) ? 0 : chi_fields.hashCode());
 		result = prime * result + ((chi_this == null) ? 0 : chi_this.hashCode());
 		result = prime * result + ((chi_typeVars == null) ? 0 : chi_typeVars.hashCode());
+		result = prime * result + ((chi_fields == null) ? 0 : chi_fields.hashCode());
 		return result;
 	}
 	
@@ -233,13 +269,6 @@ public class ClassConstraint implements ConstraintFunction {
 		} else if (!clz.equals(other.clz)) {
 			return false;
 		}
-		if (chi_fields == null) {
-			if (other.chi_fields != null) {
-				return false;
-			}
-		} else if (!chi_fields.equals(other.chi_fields)) {
-			return false;
-		}
 		if (chi_this == null) {
 			if (other.chi_this != null) {
 				return false;
@@ -252,6 +281,13 @@ public class ClassConstraint implements ConstraintFunction {
 				return false;
 			}
 		} else if (!chi_typeVars.equals(other.chi_typeVars)) {
+			return false;
+		}
+		if (chi_fields == null) {
+			if (other.chi_fields != null) {
+				return false;
+			}
+		} else if (!chi_fields.equals(other.chi_fields)) {
 			return false;
 		}
 		return true;
