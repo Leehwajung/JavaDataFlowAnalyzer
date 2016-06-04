@@ -15,6 +15,7 @@ public class MethodConstraint implements ConstraintFunction {
 	private LinkedHashSet<MetaSetVariable> chi_formals;
 	private LinkedHashSet<MetaSetVariable> chi_locals;
 	private MetaSetVariable chi_ret;
+	private LinkedHashSet<Constraint> metaConstraints;
 	
 	/**
 	 * @param 
@@ -61,11 +62,22 @@ public class MethodConstraint implements ConstraintFunction {
 	/**
 	 * @param chiFormals the chi_formals to set
 	 */
-	public void addChiFormals(Collection<MetaSetVariable> chiFormals) {
+	public void setChiFormals(Collection<MetaSetVariable> chiFormals) {
 		if(this.chi_formals == null) {
 			this.chi_formals = new LinkedHashSet<MetaSetVariable>(chiFormals);
 		} else {
 			this.chi_formals.clear();
+			this.chi_formals.addAll(chiFormals);
+		}
+	}
+	
+	/**
+	 * @param chiFormals the chi_formals to add
+	 */
+	public void addChiFormals(Collection<MetaSetVariable> chiFormals) {
+		if(this.chi_formals == null) {
+			this.chi_formals = new LinkedHashSet<MetaSetVariable>(chiFormals);
+		} else {
 			this.chi_formals.addAll(chiFormals);
 		}
 	}
@@ -92,11 +104,22 @@ public class MethodConstraint implements ConstraintFunction {
 	/**
 	 * @param chiLocals the chi_locals to set
 	 */
-	public void addChiLocals(Collection<MetaSetVariable> chiLocals) {
+	public void setChiLocals(Collection<MetaSetVariable> chiLocals) {
 		if(this.chi_locals == null) {
 			this.chi_locals = new LinkedHashSet<MetaSetVariable>(chiLocals);
 		} else {
 			this.chi_locals.clear();
+			this.chi_locals.addAll(chiLocals);
+		}
+	}
+	
+	/**
+	 * @param chiLocals the chi_locals to add
+	 */
+	public void addChiLocals(Collection<MetaSetVariable> chiLocals) {
+		if(this.chi_locals == null) {
+			this.chi_locals = new LinkedHashSet<MetaSetVariable>(chiLocals);
+		} else {
 			this.chi_locals.addAll(chiLocals);
 		}
 	}
@@ -127,6 +150,48 @@ public class MethodConstraint implements ConstraintFunction {
 		this.chi_ret = chiRet;
 	}
 	
+	/**
+	 * @return the metaConstraints
+	 */
+	public LinkedHashSet<Constraint> getMetaConstraints() {
+		return new LinkedHashSet<>(metaConstraints);
+	}
+	
+	/**
+	 * @param metaConstraints the metaConstraints to set
+	 */
+	public void setMetaConstraints(Collection<Constraint> metaConstraints) {
+		if(this.metaConstraints == null) {
+			this.metaConstraints = new LinkedHashSet<>(metaConstraints);
+		} else {
+			this.metaConstraints.clear();
+			this.metaConstraints.addAll(metaConstraints);
+		}
+	}
+	
+	/**
+	 * @param metaConstraints the metaConstraints to add
+	 */
+	public void addMetaConstraints(Collection<Constraint> metaConstraints) {
+		if(this.metaConstraints == null) {
+			this.metaConstraints = new LinkedHashSet<>(metaConstraints);
+		} else {
+			this.metaConstraints.addAll(metaConstraints);
+		}
+	}
+	
+	/**
+	 * @param metaConstraint the metaConstraint to add
+	 */
+	public void addMetaConstraint(Constraint metaConstraint) {
+		try {
+			this.metaConstraints.add(metaConstraint);
+		} catch (NullPointerException e) {
+			this.metaConstraints = new LinkedHashSet<>();
+			this.metaConstraints.add(metaConstraint);
+		}
+	}
+	
 	
 	/**
 	 * @see java.lang.Object#toString()
@@ -152,6 +217,7 @@ public class MethodConstraint implements ConstraintFunction {
 		result = prime * result + ((chi_formals == null) ? 0 : chi_formals.hashCode());
 		result = prime * result + ((chi_locals == null) ? 0 : chi_locals.hashCode());
 		result = prime * result + ((chi_ret == null) ? 0 : chi_ret.hashCode());
+		result = prime * result + ((metaConstraints == null) ? 0 : metaConstraints.hashCode());
 		
 		return result;
 	}
@@ -197,6 +263,13 @@ public class MethodConstraint implements ConstraintFunction {
 				return false;
 			}
 		} else if (!chi_ret.equals(other.chi_ret)) {
+			return false;
+		}
+		if (metaConstraints == null) {
+			if (other.metaConstraints != null) {
+				return false;
+			}
+		} else if (!metaConstraints.equals(other.metaConstraints)) {
 			return false;
 		}
 		return true;

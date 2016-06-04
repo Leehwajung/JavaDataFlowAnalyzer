@@ -199,14 +199,14 @@ public class EquGenerator extends ContextVisitor {
 	/**
 	 * @return the currCC
 	 */
-	public ClassConstraint getCurrentClassConstraint() {
+	public ClassConstraint getCurrCC() {
 		return currCC;
 	}
 	
 	/**
 	 * @return the currMC
 	 */
-	public MethodConstraint getCurrentMethodConstraint() {
+	public MethodConstraint getCurrMC() {
 		return currMC;
 	}
 	

@@ -25,6 +25,7 @@ public class EquGenFieldDeclExt extends EquGenExt {
 		v.addToSet(fldInfo);
 		Report.report(0, "[Enter] Field Declaration: " + fldDecl + "\n\t[FieldInfo] " + fldInfo);
 		
+		// TODO: 필드 선언시 초기화 하는 경우에 대하여 제약식 추가
 		if(fldDecl.init() != null) {
 			
 		}

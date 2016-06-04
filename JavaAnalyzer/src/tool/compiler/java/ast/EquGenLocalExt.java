@@ -28,7 +28,10 @@ public class EquGenLocalExt extends EquGenExprExt {
 		Local lcl = (Local)this.node();
 		Report.report(0, "[Leave] Local: " + lcl/*.name()*/);
 		
+		// TODO: 아래는 임시 코드로, MetaSetVariable를 생성하고 가져오는 책임 관계를 다시 생각하여 작성할 것
+		//setMetaSetVar(new MetaSetVariable(lcl.type()));
 		setMetaSetVar(new MetaSetVariable(lcl.type()));
+		v.getCurrMC().addChiLocal(MetaSetVar());
 		
 		return super.equGenLeave(v);
 	}

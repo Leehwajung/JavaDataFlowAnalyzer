@@ -11,6 +11,7 @@ import tool.compiler.java.util.CollUtil;
 import java.util.Collection;
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
@@ -23,6 +24,7 @@ public class ClassConstraint implements ConstraintFunction {
 	private MetaSetVariable chi_this;
 	private LinkedHashSet<MetaSetVariable> chi_typeVars;
 	private LinkedHashMap<JL5FieldInstance, MetaSetVariable> chi_fields;
+	private LinkedHashSet<Constraint> metaConstraints;
 	
 	/**
 	 * @param type Class Type
@@ -51,8 +53,12 @@ public class ClassConstraint implements ConstraintFunction {
 	}
 	
 	public ClassConstraint(MetaSetVariable chiThis) {
-		this.clz = (JL5ClassType) chiThis.getType();
-		this.chi_this = chiThis;
+		try {
+			this.clz = (JL5ClassType) chiThis.getType();
+			this.chi_this = chiThis;
+		} catch (ClassCastException e) {
+			throw new IllegalArgumentException("The type of MetaSetVariable is NOT class type. The type is " + chiThis.getType() + ".");
+		}
 	}
 	
 	public ClassConstraint(MetaSetVariable chiThis, Collection<MetaSetVariable> chiTypeVars) {
@@ -81,17 +87,26 @@ public class ClassConstraint implements ConstraintFunction {
 		
 		if(autoGen) {
 			if (type instanceof JL5ParsedClassType) {
-				this.chi_typeVars = new LinkedHashSet<>();
+				List<TypeVariable> typeVars = ((JL5ParsedClassType)type).typeVariables();
 				
-				for(TypeVariable tv : ((JL5ParsedClassType)type).typeVariables()) {
-					this.chi_typeVars.add(new MetaSetVariable(tv));	// field
+				if(!typeVars.isEmpty()) {
+					this.chi_typeVars = new LinkedHashSet<>();
+					
+					for(TypeVariable tv : typeVars) {
+						this.chi_typeVars.add(new MetaSetVariable(tv));	// field
+					}
 				}
 			}
 			
-			this.chi_fields = new LinkedHashMap<>();
-			for(FieldInstance field : type.fields()) {
-				this.chi_fields.put((JL5FieldInstance)field, new MetaSetVariable(field.type()));	// field
-				System.out.println(chi_fields.get(field).getType().getClass());
+			@SuppressWarnings("unchecked")
+			List<JL5FieldInstance> fields = (List<JL5FieldInstance>) type.fields();
+			
+			if(!fields.isEmpty()) {
+				this.chi_fields = new LinkedHashMap<>();
+				for(JL5FieldInstance field : fields) {
+					this.chi_fields.put(field, new MetaSetVariable(field.type()));	// field
+					System.out.println(chi_fields.get(field).getType().getClass());
+				}
 			}
 		}
 	}
@@ -136,11 +151,22 @@ public class ClassConstraint implements ConstraintFunction {
 	/**
 	 * @param chiTypeVars the chi_typeVars to set
 	 */
-	public void addChiTypeVars(Collection<MetaSetVariable> chiTypeVars) {
+	public void setChiTypeVars(Collection<MetaSetVariable> chiTypeVars) {
 		if(this.chi_typeVars == null) {
-			this.chi_typeVars = new LinkedHashSet<MetaSetVariable>(chiTypeVars);
+			this.chi_typeVars = new LinkedHashSet<>(chiTypeVars);
 		} else {
 			this.chi_typeVars.clear();
+			this.chi_typeVars.addAll(chiTypeVars);
+		}
+	}
+	
+	/**
+	 * @param chiTypeVars the chi_typeVars to add
+	 */
+	public void addChiTypeVars(Collection<MetaSetVariable> chiTypeVars) {
+		if(this.chi_typeVars == null) {
+			this.chi_typeVars = new LinkedHashSet<>(chiTypeVars);
+		} else {
 			this.chi_typeVars.addAll(chiTypeVars);
 		}
 	}
@@ -197,11 +223,22 @@ public class ClassConstraint implements ConstraintFunction {
 	/**
 	 * @param chiFields the chi_fields to set
 	 */
-	public void addChiFields(Map<JL5FieldInstance, MetaSetVariable> chiFields) {
+	public void setChiFields(Map<JL5FieldInstance, MetaSetVariable> chiFields) {
 		if(this.chi_fields == null) {
 			this.chi_fields = new LinkedHashMap<>(chiFields);
 		} else {
 			this.chi_fields.clear();
+			this.chi_fields.putAll(chiFields);
+		}
+	}
+	
+	/**
+	 * @param chiFields the chi_fields to add
+	 */
+	public void addChiFields(Map<JL5FieldInstance, MetaSetVariable> chiFields) {
+		if(this.chi_fields == null) {
+			this.chi_fields = new LinkedHashMap<>(chiFields);
+		} else {
 			this.chi_fields.putAll(chiFields);
 		}
 	}
@@ -218,6 +255,49 @@ public class ClassConstraint implements ConstraintFunction {
 			this.chi_fields.put(field, chiField);
 		}
 	}
+	
+	/**
+	 * @return the metaConstraints
+	 */
+	public LinkedHashSet<Constraint> getMetaConstraints() {
+		return new LinkedHashSet<>(metaConstraints);
+	}
+	
+	/**
+	 * @param metaConstraints the metaConstraints to set
+	 */
+	public void setMetaConstraints(Collection<Constraint> metaConstraints) {
+		if(this.metaConstraints == null) {
+			this.metaConstraints = new LinkedHashSet<>(metaConstraints);
+		} else {
+			this.metaConstraints.clear();
+			this.metaConstraints.addAll(metaConstraints);
+		}
+	}
+	
+	/**
+	 * @param metaConstraints the metaConstraints to add
+	 */
+	public void addMetaConstraints(Collection<Constraint> metaConstraints) {
+		if(this.metaConstraints == null) {
+			this.metaConstraints = new LinkedHashSet<>(metaConstraints);
+		} else {
+			this.metaConstraints.addAll(metaConstraints);
+		}
+	}
+	
+	/**
+	 * @param metaConstraint the metaConstraint to add
+	 */
+	public void addMetaConstraint(Constraint metaConstraint) {
+		try {
+			this.metaConstraints.add(metaConstraint);
+		} catch (NullPointerException e) {
+			this.metaConstraints = new LinkedHashSet<>();
+			this.metaConstraints.add(metaConstraint);
+		}
+	}
+	
 	
 	/**
 	 * @see java.lang.Object#toString()
@@ -244,6 +324,7 @@ public class ClassConstraint implements ConstraintFunction {
 		result = prime * result + ((chi_this == null) ? 0 : chi_this.hashCode());
 		result = prime * result + ((chi_typeVars == null) ? 0 : chi_typeVars.hashCode());
 		result = prime * result + ((chi_fields == null) ? 0 : chi_fields.hashCode());
+		result = prime * result + ((metaConstraints == null) ? 0 : metaConstraints.hashCode());
 		return result;
 	}
 	
@@ -288,6 +369,13 @@ public class ClassConstraint implements ConstraintFunction {
 				return false;
 			}
 		} else if (!chi_fields.equals(other.chi_fields)) {
+			return false;
+		}
+		if (metaConstraints == null) {
+			if (other.metaConstraints != null) {
+				return false;
+			}
+		} else if (!metaConstraints.equals(other.metaConstraints)) {
 			return false;
 		}
 		return true;

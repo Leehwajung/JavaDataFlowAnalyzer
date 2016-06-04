@@ -44,6 +44,7 @@ public class EquGenFieldAssignExt extends EquGenAssignExt {
 		if(!fldIns.flags().isStatic()) {
 			MetaSetVariable cchi1 = EquGenExt.MetaSetVar(lVal.target());
 			AssignField af = new AssignField(dchi2, cchi1, fldIns);
+			v.getCurrMC().addMetaConstraint(af);
 			v.addToSet(af);
 			Report.report(1, "[Leave] Field Assign: " + fasgn + "\n\t[AssignField] " + af);
 		}
@@ -52,6 +53,7 @@ public class EquGenFieldAssignExt extends EquGenAssignExt {
 		else {
 			AssignStaticField asf = new AssignStaticField(dchi2, fldIns);
 			v.addToSet(asf);
+			v.getCurrMC().addMetaConstraint(asf);
 			Report.report(1, "[Leave] Field Assign: " + fasgn + "\n\t[AssignStaticField] " + asf);
 		}
 		
