@@ -35,7 +35,6 @@ public class EquGenerator extends ContextVisitor {
 	
 	private static LinkedHashSet<ClassConstraint> classConstraintSet;
 	private static LinkedHashSet<MethodConstraint> methodConstraintSet;
-	private static LinkedHashSet<Constraint> constraintSet;
 	private static ClassConstraint currCC;
 	private static MethodConstraint currMC;
 	
@@ -55,7 +54,6 @@ public class EquGenerator extends ContextVisitor {
 		
 		classConstraintSet = new LinkedHashSet<>();
 		methodConstraintSet = new LinkedHashSet<>();
-		constraintSet = new LinkedHashSet<>();
 		
 		localEnv = new LocalEnv();
 		
@@ -186,14 +184,6 @@ public class EquGenerator extends ContextVisitor {
 	public void addToSet(MethodConstraint methodConstraint) {
 		methodConstraintSet.add(methodConstraint);
 		currMC = methodConstraint;
-	}
-	
-	/**
-	 * 제약식 집합에 추가
-	 * @param constraint
-	 */
-	public void addToSet(Constraint constraint) {
-		constraintSet.add(constraint);
 	}
 	
 	/**

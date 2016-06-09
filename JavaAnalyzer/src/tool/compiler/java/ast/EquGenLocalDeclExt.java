@@ -45,8 +45,7 @@ public class EquGenLocalDeclExt extends EquGenStmtExt {
 		}
 		
 		XSubseteqY xy = new XSubseteqY(dchi2, cchi1);
-		v.getCurrCC().addMetaConstraint(xy);
-		v.addToSet(xy);
+		v.getCurrMC().addMetaConstraint(xy);
 		Report.report(0, "[Leave] Local Declaration: " + lclDecl + "\n\t[XSubseteqY] " + xy);
 		
 		//   3. 리턴할 MataSetVar는 없음

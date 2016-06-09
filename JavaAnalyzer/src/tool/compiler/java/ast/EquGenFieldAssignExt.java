@@ -45,14 +45,12 @@ public class EquGenFieldAssignExt extends EquGenAssignExt {
 			MetaSetVariable cchi1 = EquGenExt.MetaSetVar(lVal.target());
 			AssignField af = new AssignField(dchi2, cchi1, fldIns);
 			v.getCurrMC().addMetaConstraint(af);
-			v.addToSet(af);
 			Report.report(1, "[Leave] Field Assign: " + fasgn + "\n\t[AssignField] " + af);
 		}
 		
 		//   2-2. D{Chi2} <: C.f 제약식을 추가 (static)
 		else {
 			AssignStaticField asf = new AssignStaticField(dchi2, fldIns);
-			v.addToSet(asf);
 			v.getCurrMC().addMetaConstraint(asf);
 			Report.report(1, "[Leave] Field Assign: " + fasgn + "\n\t[AssignStaticField] " + asf);
 		}

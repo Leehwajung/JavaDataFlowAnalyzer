@@ -48,14 +48,12 @@ public class EquGenFieldDeclExt extends EquGenExt {
 				MetaSetVariable cchi1 = v.getCurrCC().getChiThis();
 				AssignField af = new AssignField(dchi2, cchi1, fldIns);
 				v.getCurrCC().addMetaConstraint(af);
-				v.addToSet(af);
 				Report.report(1, "[Leave] Field Declaration: " + fldDecl + "\n\t[AssignField] " + af);
 			}
 			
 			//   2-2. D{Chi2} <: C.f 제약식을 추가 (static)
 			else {
 				AssignStaticField asf = new AssignStaticField(dchi2, fldIns);
-				v.addToSet(asf);
 				v.getCurrCC().addMetaConstraint(asf);
 				Report.report(1, "[Leave] Field Declaration: " + fldDecl + "\n\t[AssignStaticField] " + asf);
 			}

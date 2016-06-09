@@ -42,7 +42,6 @@ public class EquGenFieldExt extends EquGenExprExt {
 			MetaSetVariable cchi1 = EquGenExt.MetaSetVar(fld.target());
 			ReadField rf = new ReadField(cchi1, fldIns, dchi2);
 			v.getCurrMC().addMetaConstraint(rf);
-			v.addToSet(rf);
 			Report.report(1, "[Leave] Field: " + fld + "\n\t[ReadField] " + rf);
 		}
 		
@@ -50,7 +49,6 @@ public class EquGenFieldExt extends EquGenExprExt {
 		else {
 			ReadStaticField rsf = new ReadStaticField(fldIns, dchi2);
 			v.getCurrMC().addMetaConstraint(rsf);
-			v.addToSet(rsf);
 			Report.report(1, "[Leave] Field: " + fld + "\n\t[ReadStaticField] " + rsf);
 		}
 		

@@ -58,7 +58,6 @@ public class EquGenCallExt extends EquGenExprExt {
 			MetaSetVariable cchi0 = EquGenExt.MetaSetVar(call.target());
 			InvokeMth im = new InvokeMth(cchi0, mthIns, cschis, dchi);
 			v.getCurrMC().addMetaConstraint(im);
-			v.addToSet(im);
 			Report.report(1, "[Leave] Call: " + call + "\n\t[InvokeMth] " + im);
 		}
 		
@@ -66,7 +65,6 @@ public class EquGenCallExt extends EquGenExprExt {
 		else {
 			InvokeStaticMth ism = new InvokeStaticMth(mthIns, cschis, dchi);
 			v.getCurrMC().addMetaConstraint(ism);
-			v.addToSet(ism);
 			Report.report(1, "[Leave] Call: " + call + "\n\t[InvokeStaticMth] " + ism);
 		}
 		

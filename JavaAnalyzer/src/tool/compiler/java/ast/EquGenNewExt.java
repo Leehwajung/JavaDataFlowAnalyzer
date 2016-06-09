@@ -58,7 +58,6 @@ public class EquGenNewExt extends EquGenExprExt {
 		//  2-1. C<T1,...,Tn>{o} <: C<T1,...,Tn>{Chi}
 		ObjsSubseteqX ox = new ObjsSubseteqX(absObjInfo, ctschi);
 		v.getCurrMC().addMetaConstraint(ox);
-		v.addToSet(ox);
 		
 		// C(e1, ..., en)
 		//   2-2a. e1~en의 타입 Ci{Chii}를 가져온 다음
@@ -69,7 +68,6 @@ public class EquGenNewExt extends EquGenExprExt {
 		
 		//   2-2b. C<T1,...,Tn>{Chi}.C <: (C1{Chi1}, ... , Cn{Chin}) -> D{Chi} 제약식을 추가
 		InvokeMth im = new InvokeMth(ctschi, ctorIns, argSetVars, null);
-		v.addToSet(im);
 		v.getCurrMC().addMetaConstraint(im);
 		Report.report(0, "[Leave] New: " + nw + "\n\t[ObjsSubseteqX] " + ox + "\n\t[InvokeMth] " + im);
 		
