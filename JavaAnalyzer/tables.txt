@@ -4,6 +4,7 @@ F({}, X<>, o1<>, f) = Y{X2}
 F({}, X<>, o3<>, f) = Y{X4}
 F({T}, Z<T>, null, fX) = X{X7}
 F({T}, Z<T>, o4<java.lang.String>, fT) = T{X8}
+F({T}, Z<T>, o4<java.lang.String>, i) = int{X9}
 M({}, X<>, o1<>, X<>) = ()
 M({}, X<>, o3<>, X<>) = ()
 M({}, Y<>, o2<>, Y<>) = ()

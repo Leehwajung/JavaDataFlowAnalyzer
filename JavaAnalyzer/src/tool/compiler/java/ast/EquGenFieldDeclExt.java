@@ -5,8 +5,11 @@ import polyglot.ast.Node;
 import polyglot.ext.jl5.types.JL5FieldInstance;
 import polyglot.main.Report;
 import polyglot.util.SerialVersionUID;
+import tool.compiler.java.visit.AssignField;
+import tool.compiler.java.visit.AssignStaticField;
 import tool.compiler.java.visit.EquGenerator;
 import tool.compiler.java.visit.FieldInfo;
+import tool.compiler.java.visit.MetaSetVariable;
 
 /**
  * FieldDecl <: ClassMember <: Term <: Node	<br>
@@ -25,18 +28,38 @@ public class EquGenFieldDeclExt extends EquGenExt {
 		v.addToSet(fldInfo);
 		Report.report(0, "[Enter] Field Declaration: " + fldDecl + "\n\t[FieldInfo] " + fldInfo);
 		
-		// TODO: 필드 선언시 초기화 하는 경우에 대하여 제약식 추가
-		if(fldDecl.init() != null) {
-			
-		}
-		
 		return super.equGenEnter(v);
 	}
 	
 	@Override
 	public Node equGenLeave(EquGenerator v) {
 		FieldDecl fldDecl = (FieldDecl) this.node();
-		Report.report(0, "[Leave] Field Declaration: " + fldDecl/*.name()*/);
+		JL5FieldInstance fldIns = (JL5FieldInstance) fldDecl.fieldInstance();
+//		Report.report(0, "[Leave] Field Declaration: " + fldDecl/*.name()*/);
+		
+		// 필드 선언시 초기화 하는 경우
+		if(fldDecl.init() != null) {
+			// e1.f = e2 / C.f = e2
+			//   1. e2의 타입 D{Chi2}를 가져오고
+			MetaSetVariable dchi2 = EquGenExt.MetaSetVar(fldDecl.init());
+			
+			//   2-1. e1의 타입 C{Chi1}을 가져오고, D{Chi2} <: C{Chi1}.f 제약식을 추가 (non-static)
+			if(!fldIns.flags().isStatic()) {
+				MetaSetVariable cchi1 = v.getCurrCC().getChiThis();
+				AssignField af = new AssignField(dchi2, cchi1, fldIns);
+				v.getCurrCC().addMetaConstraint(af);
+				v.addToSet(af);
+				Report.report(1, "[Leave] Field Declaration: " + fldDecl + "\n\t[AssignField] " + af);
+			}
+			
+			//   2-2. D{Chi2} <: C.f 제약식을 추가 (static)
+			else {
+				AssignStaticField asf = new AssignStaticField(dchi2, fldIns);
+				v.addToSet(asf);
+				v.getCurrCC().addMetaConstraint(asf);
+				Report.report(1, "[Leave] Field Declaration: " + fldDecl + "\n\t[AssignStaticField] " + asf);
+			}
+		}
 		
 		return super.equGenLeave(v);
 	}

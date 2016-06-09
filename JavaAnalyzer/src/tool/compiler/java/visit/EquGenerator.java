@@ -33,8 +33,8 @@ public class EquGenerator extends ContextVisitor {
 	private static LinkedHashMap<MethodCallInfo, LinkedHashSet<MethodTableRow>> methodTableMap;
 	private static LinkedHashMap<FieldInfo, LinkedHashSet<FieldTableRow>> fieldTableMap;
 	
-	private static LinkedHashSet<ConstraintFunction> classConstraintSet;
-	private static LinkedHashSet<ConstraintFunction> methodConstraintSet;
+	private static LinkedHashSet<ClassConstraint> classConstraintSet;
+	private static LinkedHashSet<MethodConstraint> methodConstraintSet;
 	private static LinkedHashSet<Constraint> constraintSet;
 	private static ClassConstraint currCC;
 	private static MethodConstraint currMC;
@@ -274,7 +274,20 @@ public class EquGenerator extends ContextVisitor {
 		Report.report(1, CollUtil.getNLStringOf(methodConstraintSet));
 		
 		Report.report(1, "\n----- Constraints -----");
-		Report.report(1, CollUtil.getNLStringOf(constraintSet));
+		for(ClassConstraint cc : classConstraintSet) {
+			try {
+				Report.report(1, " - " + cc.getClassType());
+				Report.report(1, CollUtil.getNLStringOf(cc.getMetaConstraints()));
+			} catch (NullPointerException ignored) {}
+			Report.report(1, "");
+		}
+		for(MethodConstraint mc : methodConstraintSet) {
+			try {
+				Report.report(1, " - " + mc.getMethod());
+				Report.report(1, CollUtil.getNLStringOf(mc.getMetaConstraints()));
+			} catch (NullPointerException ignored) {}
+			Report.report(1, "");
+		}
 	}
 	
 	/**

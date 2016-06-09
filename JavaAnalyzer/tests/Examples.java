@@ -18,6 +18,7 @@ class X {					// CC
 class Z<T> {				// CC
 	static X fX;
 	T fT;
+	int i = 1;
 	
 	static void setX(X s) {	// MC
 		fX = s;				// ReadStaticField, AssignStaticField
