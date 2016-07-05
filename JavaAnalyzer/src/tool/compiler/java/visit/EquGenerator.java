@@ -2,9 +2,12 @@ package tool.compiler.java.visit;
 
 import polyglot.ast.Node;
 import polyglot.ast.NodeFactory;
+import polyglot.ext.jl5.types.JL5MethodInstance;
+import polyglot.ext.jl5.types.JL5ProcedureInstance;
 import polyglot.frontend.Job;
 import polyglot.main.Report;
 import polyglot.types.SemanticException;
+import polyglot.types.Type;
 import polyglot.types.TypeSystem;
 import polyglot.visit.ContextVisitor;
 import polyglot.visit.NodeVisitor;
@@ -15,6 +18,7 @@ import java.io.DataOutputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
@@ -83,7 +87,22 @@ public class EquGenerator extends ContextVisitor {
 		printTablesToConsole();
 		printConstraintsToConsole();
 		writeTablesToFile();
-		
+		Report.report(1,"aaaaaaaaaaaaaaaaaaaaaaaaa");
+		for (MethodConstraint mc : methodConstraintSet) {
+			ArrayList<TypedSetVariable> XFormals = new ArrayList<>();
+			JL5ProcedureInstance m = mc.getMethod();
+			for(Type type : m.formalTypes()) {
+				XFormals.add(new TypedSetVariable(type));
+			}
+			
+			try {
+//			Report.report(1, mc.apply(XFormals, new TypedSetVariable(((JL5MethodInstance)m).returnType())).toString());
+			Report.report(1, mc.toString());
+			
+			} catch(Exception e) {
+				
+			}
+		}
 //		FieldEquation fe = new FieldEquation(fieldTableMap.keySet().iterator().next(), fieldTableMap.values().iterator().next());
 		
 //		System.out.println(fe);

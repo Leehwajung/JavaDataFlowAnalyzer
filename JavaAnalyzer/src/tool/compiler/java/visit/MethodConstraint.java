@@ -3,6 +3,7 @@ package tool.compiler.java.visit;
 import polyglot.ext.jl5.types.JL5ProcedureInstance;
 import tool.compiler.java.util.CollUtil;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.LinkedHashSet;
 
@@ -40,8 +41,34 @@ public class MethodConstraint implements ConstraintFunction {
 	}
 	
 	
-	public ConstraintsPair apply() {
-		return null;
+	public Collection<Constraint> apply(Collection<TypedSetVariable> XFormals, TypedSetVariable XRet) {
+		ArrayList<TypedSetVariable> XFormalsArr = new ArrayList<>(XFormals);
+		ArrayList<MetaSetVariable> ChiFormalsArr = new ArrayList<>(chi_formals);
+		LinkedHashSet<Constraint> substConstraints = new LinkedHashSet<>();
+		
+		for(Constraint metaCon : metaConstraints) {
+			ArrayList<AbsObjSet> abss = metaCon.getAllAbsObjSet();
+			ArrayList<TypedSetVariable> tsvs = new ArrayList<>();
+			for(AbsObjSet abs : abss) {
+				if(abs instanceof MetaSetVariable) {
+					TypedSetVariable tsv;
+					
+					int index = ChiFormalsArr.indexOf(abs);
+					if(index != -1) {					// Formals
+						tsv = XFormalsArr.get(index);
+					} else if (chi_ret.equals(abs)) {	// Return
+						tsv = XRet;
+					} else {							// Locals
+						tsv = new TypedSetVariable(abs.getType());
+					}
+					tsvs.add(tsv);
+				}
+			}
+			substConstraints.add(metaCon.subst(tsvs));
+			
+		}
+		
+		return substConstraints;
 	}
 	
 	
