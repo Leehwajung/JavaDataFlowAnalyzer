@@ -18,7 +18,9 @@ class X {					// CC
 class Z<T> {				// CC
 	static X fX;
 	T fT;
-	int i = 1;
+	int i = 1;			// o3 (IntLit)
+	char c = 'c';		// o4 (CharLit)
+	double d = 1.23;	// o5 (FloatLit)
 	
 	static void setX(X s) {	// MC
 		fX = s;				// ReadStaticField, AssignStaticField
@@ -28,10 +30,12 @@ class Z<T> {				// CC
 		fT = t;				// ReadField, AssignField
 	}
 	
-	int run(String[] args, boolean b) {	// MC
-		X r = new X();		// o3, ObjsSubseteqX, InvokeMth
+	boolean run(String[] args, boolean b) {	// MC
+		X r = new X();		// o6, ObjsSubseteqX, InvokeMth
 		setX(r);			// InvokeStaticMth
-		return 0;
+		X n = null;		// o7 (NullLit)
+		Class<X> a = X.class;	// o8 (ClassLit)
+		return true;		// o9 (booleanLit)
 	}
 }							// MC (Default Constructor)
 
@@ -39,7 +43,7 @@ class C {					// CC
 	Z<String> z;
 	
 	C() {					// MC
-		z = new Z<>();		// o4, ObjsSubseteqX, InvokeMth
-		z.setT("abc");		// InvokeMth
+		z = new Z<>();		// o10, ObjsSubseteqX, InvokeMth
+		z.setT("abc");		// o11 (StringLit), InvokeMth
 	}
 }

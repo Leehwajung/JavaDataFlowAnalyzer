@@ -11,13 +11,14 @@ import tool.compiler.java.visit.EquGenerator;
  * ClassLit <: Lit <: Expr <: Receiver <: Prefix <: Node
  * @author LHJ
  */
+@Deprecated
 public class EquGenClassLitExt extends EquGenLitExt {
 	private static final long serialVersionUID = SerialVersionUID.generate();
 	
 	@Override
 	public EquGenerator equGenEnter(EquGenerator v) {
 		ClassLit clzLit = (ClassLit) this.node();
-		Report.report(0, "[Enter] Class Lit: " + clzLit/*.name()*/);
+		Report.report(0, "[Enter] Class Literal: " + clzLit/*.name()*/);
 		
 		return super.equGenEnter(v);
 	}
@@ -25,7 +26,7 @@ public class EquGenClassLitExt extends EquGenLitExt {
 	@Override
 	public Node equGenLeave(EquGenerator v) {
 		ClassLit clzLit = (ClassLit) this.node();
-		Report.report(0, "[Leave] Class Lit: " + clzLit/*.name()*/);
+		Report.report(0, "[Leave] Class Literal: " + clzLit/*.name()*/);
 		
 		return super.equGenLeave(v);
 	}

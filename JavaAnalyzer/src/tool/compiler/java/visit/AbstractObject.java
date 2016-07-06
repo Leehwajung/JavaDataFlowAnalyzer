@@ -4,6 +4,7 @@ import polyglot.ext.jl5.types.JL5ConstructorInstance;
 import polyglot.ext.jl5.types.JL5Subst;
 import polyglot.ext.jl5.types.JL5SubstClassType;
 import polyglot.types.ReferenceType;
+import polyglot.types.Type;
 
 import java.util.Collection;
 
@@ -20,6 +21,15 @@ public class AbstractObject extends AbsObjSet {
 		setType(constructorInstance.container());
 		generateID();
 		this.ctorIns = constructorInstance;
+	}
+	
+	/**
+	 * @param type
+	 */
+	public AbstractObject(Type type) {
+		setType(type);
+		generateID();
+		this.ctorIns = null;
 	}
 	
 	/**
@@ -48,6 +58,14 @@ public class AbstractObject extends AbsObjSet {
 	 */
 	public JL5ConstructorInstance getInstance() {
 		return ctorIns;
+	}
+	
+	public boolean isObject() {
+		return this.ctorIns != null;
+	}
+	
+	public boolean isLit() {
+		return !isObject();
 	}
 	
 	/**
