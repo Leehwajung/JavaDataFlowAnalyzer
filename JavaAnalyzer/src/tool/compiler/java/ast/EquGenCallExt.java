@@ -50,7 +50,7 @@ public class EquGenCallExt extends EquGenExprExt {
 			cschis.add(EquGenExt.MetaSetVar(arg));
 		}
 		
-		//   2. 리턴할 타입 D{Chi}를 만든다. (X는 새로 만들고 D는 이 노드 자신의 타입)
+		//   2. 리턴할 타입 D{Chi}를 만든다. (Chi는 새로 만들고 D는 이 노드 자신의 타입)
 		MetaSetVariable dchi = new MetaSetVariable(call.type());
 		
 		//   3-1. e의 타입 C{Chi0}를 가져오고, C{Chi0}.m <: (C1{Chi1}, ... , Cn{Chin}) -> D{Chi} 제약식을 추가

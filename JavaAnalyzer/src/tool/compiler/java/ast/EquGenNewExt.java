@@ -53,15 +53,14 @@ public class EquGenNewExt extends EquGenExprExt {
 		JL5ConstructorInstance ctorIns = (JL5ConstructorInstance) nw.constructorInstance();
 //		Report.report(0, "[Leave] New: " + nw);
 		
-		// C<T1,...,Tn>{o} <: C<T1,...,Tn>{Chi}
-		//  1. C<T1,...,Tn>{Chi} 변수 생성
+		// new C(e1, ..., en)
+		//   1. C<T1,...,Tn>{Chi} 변수 생성
 		MetaSetVariable ctschi = new MetaSetVariable(ctorIns.container());
 		
-		//  2-1. C<T1,...,Tn>{o} <: C<T1,...,Tn>{Chi}
+		//   2-1. C<T1,...,Tn>{o} <: C<T1,...,Tn>{Chi} 제약식을 추가
 		ObjsSubseteqX ox = new ObjsSubseteqX(absObj, ctschi);
 		v.getCurrMC().addMetaConstraint(ox);
 		
-		// C(e1, ..., en)
 		//   2-2a. e1~en의 타입 Ci{Chii}를 가져온 다음
 		ArrayList<MetaSetVariable> argSetVars = new ArrayList<>();
 		for(Expr arg: nw.arguments()) {

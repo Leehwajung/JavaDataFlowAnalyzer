@@ -11,13 +11,14 @@ import tool.compiler.java.visit.EquGenerator;
  * AmbExpr <: Expr <: Receiver <: Prefix <: Node
  * @author LHJ
  */
+@Deprecated
 public class EquGenAmbExprExt extends EquGenExprExt {
 	private static final long serialVersionUID = SerialVersionUID.generate();
 	
 	@Override
 	public EquGenerator equGenEnter(EquGenerator v) {
 		AmbExpr aexpr = (AmbExpr) this.node();
-		Report.report(0, "[Enter] Ambiguous Expression: " + aexpr);
+		Report.report(1, "[Enter] Ambiguous Expression: " + aexpr);
 		
 		return super.equGenEnter(v);
 	}
@@ -25,7 +26,7 @@ public class EquGenAmbExprExt extends EquGenExprExt {
 	@Override
 	public Node equGenLeave(EquGenerator v) {
 		AmbExpr aexpr = (AmbExpr) this.node();
-		Report.report(0, "[Leave] Ambiguous Expression: " + aexpr);
+		Report.report(1, "[Leave] Ambiguous Expression: " + aexpr);
 		
 		return super.equGenLeave(v);
 	}

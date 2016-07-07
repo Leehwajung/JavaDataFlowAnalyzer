@@ -13,6 +13,7 @@ public class EquGenExt extends Ext_c implements EquGenOps {	// TODO: Not JL7Ext,
 	private static final long serialVersionUID = SerialVersionUID.generate();
 	
 	private MetaSetVariable metaSetVar = null;
+//	private Effect effect = null;
 	private LocalEnv localEnv = new LocalEnv();
 	
 	@Override

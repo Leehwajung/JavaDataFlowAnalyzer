@@ -37,7 +37,7 @@ public class EquGenFieldDeclExt extends EquGenExt {
 		JL5FieldInstance fldIns = (JL5FieldInstance) fldDecl.fieldInstance();
 //		Report.report(0, "[Leave] Field Declaration: " + fldDecl/*.name()*/);
 		
-		// 필드 선언시 초기화 하는 경우
+		// 필드 선언시 초기화 하는 경우에 한해
 		if(fldDecl.init() != null) {
 			// e1.f = e2 / C.f = e2
 			//   1. e2의 타입 D{Chi2}를 가져오고
@@ -57,6 +57,9 @@ public class EquGenFieldDeclExt extends EquGenExt {
 				v.getCurrCC().addMetaConstraint(asf);
 				Report.report(1, "[Leave] Field Declaration: " + fldDecl + "\n\t[AssignStaticField] " + asf);
 			}
+		}
+		else {
+			Report.report(0, "[Leave] Field Declaration: " + fldDecl/*.name()*/);
 		}
 		
 		return super.equGenLeave(v);

@@ -38,17 +38,17 @@ public class EquGenLitExt extends EquGenExprExt {
 		Lit lit = (Lit) this.node();
 //		Report.report(0, "[Leave] Literal: " + lit);
 		
-		// T{o} <: T{Chi}
-		//  1. T{Chi} 변수 생성
+		// int / char / float / boolean / string / class / null
+		//   1. T{Chi} 변수 생성
 		MetaSetVariable tchi = new MetaSetVariable(lit.type());
 		
-		//  2. T{o} <: T{Chi}
+		//   2. T{o} <: T{Chi} 제약식을 추가
 		ObjsSubseteqX ox = new ObjsSubseteqX(absObj, tchi);
 		v.getCurrMC().addMetaConstraint(ox);
 		Report.report(0, "[Leave] Literal: " + lit + "\n"
 				+ "\t[ObjsSubseteqX] " + ox);
 		
-		//  3. return T{Chi}
+		//   3. return T{Chi}
 		setMetaSetVar(tchi);
 		
 		return super.equGenLeave(v);
