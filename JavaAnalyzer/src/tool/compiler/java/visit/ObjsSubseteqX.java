@@ -164,6 +164,7 @@ public class ObjsSubseteqX implements Constraint {
 	@Override
 	public ArrayList<AbsObjSet> getAllAbsObjSet() {
 		ArrayList<AbsObjSet> abss = new ArrayList<>();
+		abss.addAll(objs);
 		abss.add(x);
 		return abss;
 	}

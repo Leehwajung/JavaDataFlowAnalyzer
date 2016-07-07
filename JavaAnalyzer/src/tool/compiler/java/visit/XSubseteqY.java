@@ -79,8 +79,8 @@ public class XSubseteqY implements Constraint {
 		if(xy.size() != 2) {
 			throw new IllegalArgumentException("The Size of tsvs must be 2.");
 		}
-		TypedSetVariable[] xyArr = (TypedSetVariable[]) xy.toArray();
-		return subst(xyArr[0], xyArr[1]);
+		Object[] xyArr = xy.toArray();
+		return subst((TypedSetVariable)xyArr[0], (TypedSetVariable)xyArr[1]);
 	}
 	
 	

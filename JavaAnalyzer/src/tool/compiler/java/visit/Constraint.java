@@ -9,5 +9,6 @@ import java.util.Collection;
 public interface Constraint {
 	public Constraint subst(Collection<TypedSetVariable> tsvs);
 	public ArrayList<AbsObjSet> getAllAbsObjSet();
+//	public int size();
 	public boolean contains(AbsObjSet aos);
 }

@@ -96,21 +96,23 @@ public class InvokeMth implements Constraint {
 					+ "(orig: " + this.cx.getType() + ", subst: " + cx.getType() + ")");
 		}
 		
-		if(this.dxs.size() != dxs.size()) {
-			throw new IllegalArgumentException("The Size Mismatch for dxs.");
-		}
-		
-		int i = 0;
-		for(TypedSetVariable dx : dxs) {
-			AbsObjSet thisdx = this.dxs.get(i);
-			if(!thisdx.equalsForType(dx)) {
-				throw new IllegalArgumentException("The Type Mismatch for dx" + ++i + ". "
-						+ "(orig: " + thisdx.getType() + ", subst: " + dx.getType() + ")");
+		if(dxs != null) {
+			if(this.dxs.size() != dxs.size()) {
+				throw new IllegalArgumentException("The Size Mismatch for dxs.");
 			}
-			i++;
+			
+			int i = 0;
+			for(TypedSetVariable dx : dxs) {
+				AbsObjSet thisdx = this.dxs.get(i);
+				if(!thisdx.equalsForType(dx)) {
+					throw new IllegalArgumentException("The Type Mismatch for dx" + ++i + ". "
+							+ "(orig: " + thisdx.getType() + ", subst: " + dx.getType() + ")");
+				}
+				i++;
+			}
 		}
 		
-		if(!this.ey.equalsForType(ey)) {
+		if(ey != null && !this.ey.equalsForType(ey)) {
 			throw new IllegalArgumentException("The Type Mismatch for ey. "
 					+ "(orig: " + this.ey.getType() + ", subst: " + ey.getType() + ")");
 		}
@@ -126,13 +128,23 @@ public class InvokeMth implements Constraint {
 	 */
 	@Override
 	public Constraint subst(Collection<TypedSetVariable> cxdxsey) {
-		int size = 2 + this.dxs.size();
-		if(cxdxsey.size() != size) {
-			throw new IllegalArgumentException("The Size of tsvs must be " + size + ".");
+		int dxsSize = this.dxs != null ? this.dxs.size() : 0;
+		int diffSize = cxdxsey.size() - dxsSize;
+		
+		if(isConstructor() && diffSize != 1) {
+			throw new IllegalArgumentException("The size of tsvs must be " + (dxsSize + 1) + ". "
+					+ "(Current size is " + cxdxsey/*.size()*/ + ".)");
+		}
+		else if(isNormal() && diffSize != 2) {
+			throw new IllegalArgumentException("The size of tsvs must be " + (dxsSize + 2) + ". "
+					+ "(Current size is " + cxdxsey/*.size()*/ + ".)");
 		}
 		LinkedList<TypedSetVariable> dxs = new LinkedList<>(cxdxsey);
 		TypedSetVariable cx = dxs.removeFirst();
-		TypedSetVariable ey = dxs.removeLast();
+		TypedSetVariable ey = null;
+		if(diffSize == 2) {
+			ey = dxs.removeLast();
+		}
 		return subst(cx, dxs, ey);
 	}
 	
@@ -227,6 +239,18 @@ public class InvokeMth implements Constraint {
 		return false;
 	}
 	
+	protected final String getName() {
+		return getM() instanceof JL5MethodInstance ? ((JL5MethodInstance)getM()).name() : getM().container().toString();
+	}
+	
+	public boolean isConstructor() {
+		return m instanceof JL5ConstructorInstance;
+	}
+	
+	public boolean isNormal() {
+		return m instanceof JL5MethodInstance;
+	}
+	
 	
 	/**
 	 * Form:	C{X}.m <: (D1{X1}, ..., Dn{Xn}) -- effect --> E{Y}
@@ -300,14 +324,5 @@ public class InvokeMth implements Constraint {
 			return false;
 		}
 		return true;
-	}
-	
-	
-	protected final String getName() {
-		return getM() instanceof JL5MethodInstance ? ((JL5MethodInstance)getM()).name() : getM().container().toString();
-	}
-	
-	public boolean isConstructor() {
-		return m instanceof JL5ConstructorInstance;
 	}
 }

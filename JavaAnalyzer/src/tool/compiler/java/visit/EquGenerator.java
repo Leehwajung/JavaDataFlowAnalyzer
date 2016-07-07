@@ -96,11 +96,14 @@ public class EquGenerator extends ContextVisitor {
 			}
 			
 			try {
-//			Report.report(1, mc.apply(XFormals, new TypedSetVariable(((JL5MethodInstance)m).returnType())).toString());
-			Report.report(1, mc.toString());
-			
+				if(m instanceof JL5MethodInstance) {
+					Report.report(1, "\n" + mc.toString());
+			Report.report(1, CollUtil.getNLStringOf(mc.apply(XFormals, new TypedSetVariable(((JL5MethodInstance)m).returnType()))));
+//			Report.report(1, mc.toString());
+				}
 			} catch(Exception e) {
-				
+				e.printStackTrace();
+			//	Report.report(1, "=== " + mc.toString());
 			}
 		}
 //		FieldEquation fe = new FieldEquation(fieldTableMap.keySet().iterator().next(), fieldTableMap.values().iterator().next());

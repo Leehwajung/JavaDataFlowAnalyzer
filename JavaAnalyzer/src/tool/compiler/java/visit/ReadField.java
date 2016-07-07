@@ -78,8 +78,8 @@ public class ReadField implements Constraint {
 		if(cxdy.size() != 2) {
 			throw new IllegalArgumentException("The Size of tsvs must be 2.");
 		}
-		TypedSetVariable[] cxdyArr = (TypedSetVariable[]) cxdy.toArray();
-		return subst(cxdyArr[0], cxdyArr[1]);
+		Object[] cxdyArr = cxdy.toArray();
+		return subst((TypedSetVariable)cxdyArr[0], (TypedSetVariable)cxdyArr[1]);
 	}
 	
 	
