@@ -1,7 +1,5 @@
 package tool.compiler.java.ast;
 
-import java.util.ArrayList;
-
 import polyglot.ast.Formal;
 import polyglot.ast.Node;
 import polyglot.ast.ProcedureDecl;
@@ -10,6 +8,7 @@ import polyglot.main.Report;
 import polyglot.types.Type;
 import polyglot.util.SerialVersionUID;
 import tool.compiler.java.visit.EquGenerator;
+import tool.compiler.java.visit.LocalEnv;
 import tool.compiler.java.visit.MetaSetVariable;
 import tool.compiler.java.visit.MethodConstraint;
 import tool.compiler.java.visit.MethodInfo;
@@ -48,6 +47,9 @@ public class EquGenProcedureDeclExt extends EquGenExt {
 //			MethodConstraint mc = new MethodConstraint(caos, procIns, daoss, eaos)
 //		}
 		
+		// 로컬 환경 구성
+		v.setLocalEnv(new LocalEnv());
+		v.getLocalEnv().push();
 		
 		return super.equGenEnter(v);
 	}
@@ -56,6 +58,10 @@ public class EquGenProcedureDeclExt extends EquGenExt {
 	public Node equGenLeave(EquGenerator v) {
 		ProcedureDecl procDecl = (ProcedureDecl) this.node();
 		JL5ProcedureInstance procIns = (JL5ProcedureInstance) procDecl.procedureInstance();
+		
+		// 로컬 환경 해제
+		v.getLocalEnv().pop();
+		
 		Report.report(0, "[Leave] Procedure Declaration: " + procDecl/*.name()*/);
 		
 		// T m(T1 x1, ... Tn xn) { ... }ㅣ,
@@ -63,6 +69,8 @@ public class EquGenProcedureDeclExt extends EquGenExt {
 		//         X1~Xn은 method table에 기록된 TypedSetVariable들임
 		
 		// TODO: 구현 필요
+		
+		
 		
 		return super.equGenLeave(v);
 	}

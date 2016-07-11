@@ -15,3 +15,4 @@ M({}, X<>, o6<>, set<>) = (Y{X3}) -> void{}
 M({T}, Z<T>, null, setX<>) = (X{X5}) -> void{}
 M({T}, Z<T>, o10<java.lang.String>, Z<java.lang.String><>) = ()
 M({T}, Z<T>, o10<java.lang.String>, setT<>) = (java.lang.String{X6}) -> void{}
+M({}, CCC<>, o14<>, CCC<>) = ()

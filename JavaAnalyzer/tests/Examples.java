@@ -46,4 +46,24 @@ class C {						// CC
 		z = new Z<>();			// o10, ObjsSubseteqX, InvokeMth
 		z.setT("abc");			// o11 (StringLit), InvokeMth
 	}
+	
+	int mth() {
+		return 1;
+	}
+}
+
+class CC extends C {
+	int mth() {
+		return 2;
+	}
+}
+
+class CCC extends CC {
+}
+
+class CCCC extends CC {
+	void mm () {
+		CCC cc = new CCC();
+		cc.mth();
+	}
 }

@@ -59,8 +59,6 @@ public class EquGenerator extends ContextVisitor {
 		classConstraintSet = new LinkedHashSet<>();
 		methodConstraintSet = new LinkedHashSet<>();
 		
-		localEnv = new LocalEnv();
-		
 		fieldEquationSet = new LinkedHashSet<>();
 	}
 	
@@ -98,7 +96,7 @@ public class EquGenerator extends ContextVisitor {
 			try {
 				if(m instanceof JL5MethodInstance) {
 					Report.report(1, "\n" + mc.toString());
-			Report.report(1, CollUtil.getNLStringOf(mc.apply(XFormals, new TypedSetVariable(((JL5MethodInstance)m).returnType()))));
+					Report.report(1, CollUtil.getNLStringOf(mc.apply(XFormals, new TypedSetVariable(((JL5MethodInstance)m).returnType()))));
 //			Report.report(1, mc.toString());
 				}
 			} catch(Exception e) {
@@ -222,6 +220,20 @@ public class EquGenerator extends ContextVisitor {
 		return currMC;
 	}
 	
+	/**
+	 * @return the localEnv
+	 */
+	public LocalEnv getLocalEnv() {
+		return localEnv;
+	}
+
+	/**
+	 * @param localEnv the localEnv to set
+	 */
+	public void setLocalEnv(LocalEnv localEnv) {
+		EquGenerator.localEnv = localEnv;
+	}
+
 	/**
 	 * 테이블 생성 및 테이블 집합에 추가
 	 */

@@ -18,12 +18,19 @@ public class EquGenBlockExt extends EquGenStmtExt {
 		Block blk = (Block)this.node();
 		Report.report(0, "[Enter] Block: " + blk);
 		
+		// 로컬 환경 구성
+		v.getLocalEnv().push();
+		
 		return super.equGenEnter(v);
 	}
 	
 	@Override
 	public Node equGenLeave(EquGenerator v) {
 		Block blk = (Block)this.node();
+		
+		// 로컬 환경 해제
+		v.getLocalEnv().pop();
+		
 		Report.report(0, "[Leave] Block: " + blk);
 		
 		return super.equGenLeave(v);

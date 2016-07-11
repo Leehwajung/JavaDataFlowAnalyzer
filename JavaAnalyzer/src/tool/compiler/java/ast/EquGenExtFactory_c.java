@@ -65,6 +65,7 @@ public final class EquGenExtFactory_c extends EquGenAbstractExtFactory_c {
 	 * AmbExpr <: Expr <: Term <: Node	<br>
 	 * AmbExpr <: Expr <: Receiver <: Prefix <: Node
 	 */
+	@Deprecated
 	@Override
 	protected Ext extAmbExprImpl() {
 //		return super.extAmbExprImpl();
@@ -127,6 +128,7 @@ public final class EquGenExtFactory_c extends EquGenAbstractExtFactory_c {
 	 * Special <: Expr <: Term <: Node	<br>
 	 * Special <: Expr <: Receiver <: Prefix <: Node
 	 */
+	@Deprecated
 	@Override
 	protected Ext extSpecialImpl() {
 //		return super.extSpecialImpl();
@@ -187,6 +189,7 @@ public final class EquGenExtFactory_c extends EquGenAbstractExtFactory_c {
 	 * ClassLit <: Lit <: Expr <: Term <: Node	<br>
 	 * ClassLit <: Lit <: Expr <: Receiver <: Prefix <: Node
 	 */
+	@Deprecated
 	@Override
 	protected Ext extClassLitImpl() {
 //		return super.extClassLitImpl();
@@ -239,8 +242,18 @@ public final class EquGenExtFactory_c extends EquGenAbstractExtFactory_c {
 	 */
 	@Override
 	protected Ext extFieldAssignImpl() {
-//		return super.extAssignImpl();
+//		return super.extFieldAssignImpl();
 		return new EquGenFieldAssignExt();
+	}
+	
+	/**
+	 * LocalAssign <: Assign <: Expr <: Term <: Node	<br>
+	 * LocalAssign <: Assign <: Expr <: Receiver <: Prefix <: Node
+	 */
+	@Override
+	protected Ext extLocalAssignImpl() {
+//		return super.extLocalAssignImpl();
+		return new EquGenLocalAssignExt();
 	}
 	
 	/**

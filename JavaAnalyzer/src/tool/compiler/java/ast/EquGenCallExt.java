@@ -67,7 +67,7 @@ public class EquGenCallExt extends EquGenExprExt {
 			v.getCurrMC().addMetaConstraint(ism);
 			Report.report(1, "[Leave] Call: " + call + "\n\t[InvokeStaticMth] " + ism);
 		}
-		
+		System.out.println(mthIns + " :: " + mthIns.container());
 		//   4. D{Chi}를 리턴 타입으로 지정
 		setMetaSetVar(dchi);
 		

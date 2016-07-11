@@ -33,7 +33,7 @@ public class EquGenLocalDeclExt extends EquGenStmtExt {
 		// C x = e;
 		//   1. x : C{Chi1}을 현재 env에 추가 (X1은 새로운 변수)
 		MetaSetVariable cchi1 = new MetaSetVariable(lclDecl.type().type());
-		getLocalEnv().add((JL5LocalInstance) lclDecl.localInstance(), cchi1);
+		v.getLocalEnv().add((JL5LocalInstance) lclDecl.localInstance(), cchi1);
 		
 		//   2. e가 있는지 확인 후 e의 타입 D{Chi2}를 가져오고 D{Chi2} <: C{Chi1}을 제약식 집합에 추가 
 		//      e가 없으면 e의 타입은 C{Chi2} (Chi2는 새로운 변수)를 만들고 C{Chi2}<: C{Chi1}을 제약식 집합에 추가

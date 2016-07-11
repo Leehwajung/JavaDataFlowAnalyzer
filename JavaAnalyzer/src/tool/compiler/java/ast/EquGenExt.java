@@ -6,7 +6,6 @@ import polyglot.ast.Node;
 import polyglot.util.InternalCompilerError;
 import polyglot.util.SerialVersionUID;
 import tool.compiler.java.visit.EquGenerator;
-import tool.compiler.java.visit.LocalEnv;
 import tool.compiler.java.visit.MetaSetVariable;
 
 public class EquGenExt extends Ext_c implements EquGenOps {	// TODO: Not JL7Ext, but Ext_c to override lang()!!!
@@ -14,7 +13,6 @@ public class EquGenExt extends Ext_c implements EquGenOps {	// TODO: Not JL7Ext,
 	
 	private MetaSetVariable metaSetVar = null;
 //	private Effect effect = null;
-	private LocalEnv localEnv = new LocalEnv();
 	
 	@Override
 	protected Object clone() throws CloneNotSupportedException {
@@ -75,12 +73,5 @@ public class EquGenExt extends Ext_c implements EquGenOps {	// TODO: Not JL7Ext,
 	 */
 	protected final void setMetaSetVar(MetaSetVariable metaSetVar) {
 		this.metaSetVar = metaSetVar;
-	}
-	
-	/**
-	 * @return the localEnv
-	 */
-	public LocalEnv getLocalEnv() {
-		return localEnv;
 	}
 }
