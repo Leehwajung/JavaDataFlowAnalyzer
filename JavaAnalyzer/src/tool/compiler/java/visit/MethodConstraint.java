@@ -18,7 +18,6 @@ public class MethodConstraint implements ConstraintFunction {
 	
 	private JL5ProcedureInstance method;
 	private ArrayList<MetaSetVariable> chi_formals;
-	private ArrayList<MetaSetVariable> chi_locals;
 	private MetaSetVariable chi_ret;
 	private LinkedHashSet<Constraint> metaConstraints;
 	
@@ -39,11 +38,6 @@ public class MethodConstraint implements ConstraintFunction {
 		this.chi_ret = chiReturn;
 	}
 	
-	public MethodConstraint(JL5ProcedureInstance m, Collection<MetaSetVariable> chiFormals, Collection<MetaSetVariable> chiLocals, MetaSetVariable chiReturn) {
-		this(m, chiFormals, chiReturn);
-		this.chi_locals = new ArrayList<>(chiLocals);
-	}
-	
 	
 	public ConstraintsPair apply(Collection<TypedSetVariable> XFormals) {
 		
@@ -61,14 +55,8 @@ public class MethodConstraint implements ConstraintFunction {
 		}
 		
 		// 메소드 m을 실행할 때 생기는 자료흐름 CS2를 만든다.
-		HashMap<MetaSetVariable, TypedSetVariable> substLocals = new HashMap<>();
-		try {
-			for(MetaSetVariable msvLocal : chi_locals) {
-				substLocals.put(msvLocal, new TypedSetVariable(msvLocal.getType()));
-			}
-		} catch (NullPointerException ignored) {}	// chi_locals이 null인 경우 무시
-		
 		ArrayList<Constraint> cs2 = new ArrayList<>();
+		HashMap<MetaSetVariable, TypedSetVariable> substLocals = new HashMap<>();
 		for(Constraint metaCon : metaConstraints) {	// 가지고 있는 전체 제약식에 대해
 			ArrayList<TypedSetVariable> substs = new ArrayList<>();	// subst한 aos
 			// MetaSetVariable을 TypedSetVariable로 대치
@@ -87,7 +75,9 @@ public class MethodConstraint implements ConstraintFunction {
 						if(tsvLocal != null) {
 							substs.add(tsvLocal);
 						} else {
-							substs.add(new TypedSetVariable(aos.getType()));
+							tsvLocal = new TypedSetVariable(aos.getType());
+							substLocals.put((MetaSetVariable) aos, tsvLocal);
+							substs.add(tsvLocal);
 						}
 					}
 				}
@@ -99,7 +89,10 @@ public class MethodConstraint implements ConstraintFunction {
 		TypedSetVariable x_ret = null;
 		if(chi_ret != null) {
 			// Formal의 Chi인지 확인
-			int pos = chi_formals.indexOf(chi_ret);
+			int pos = -1;
+			if(chi_formals != null) {
+				pos = chi_formals.indexOf(chi_ret);
+			}
 			if(pos != -1) {						// Formal의 Chi이면 (chi_formals에 존재하면)
 				x_ret = (TypedSetVariable) cs1.get(pos).getX();
 			} else {
@@ -119,7 +112,6 @@ public class MethodConstraint implements ConstraintFunction {
 		cs.addAll(cs2);
 		
 		return new ConstraintsPair(cs, x_ret);
-		
 		
 //		ArrayList<Constraint> cs2 = new ArrayList<>();
 //		for(Constraint metaCon : metaConstraints) {
@@ -262,48 +254,6 @@ public class MethodConstraint implements ConstraintFunction {
 	}
 	
 	/**
-	 * @return the chi_locals
-	 */
-	public LinkedHashSet<MetaSetVariable> getChiLocals() {
-		return new LinkedHashSet<>(chi_locals);
-	}
-	
-	/**
-	 * @param chiLocals the chi_locals to set
-	 */
-	public void setChiLocals(Collection<MetaSetVariable> chiLocals) {
-		if(this.chi_locals == null) {
-			this.chi_locals = new ArrayList<MetaSetVariable>(chiLocals);
-		} else {
-			this.chi_locals.clear();
-			this.chi_locals.addAll(chiLocals);
-		}
-	}
-	
-	/**
-	 * @param chiLocals the chi_locals to add
-	 */
-	public void addChiLocals(Collection<MetaSetVariable> chiLocals) {
-		if(this.chi_locals == null) {
-			this.chi_locals = new ArrayList<MetaSetVariable>(chiLocals);
-		} else {
-			this.chi_locals.addAll(chiLocals);
-		}
-	}
-	
-	/**
-	 * @param chiLocal
-	 */
-	public void addChiLocal(MetaSetVariable chiLocal) {
-		try {
-			this.chi_locals.add(chiLocal);
-		} catch (NullPointerException e) {
-			this.chi_locals = new ArrayList<>();
-			this.chi_locals.add(chiLocal);
-		}
-	}
-	
-	/**
 	 * @return the chi_ret
 	 */
 	public MetaSetVariable getChiRet() {
@@ -390,7 +340,6 @@ public class MethodConstraint implements ConstraintFunction {
 		int result = 1;
 		result = prime * result + ((method == null) ? 0 : method.hashCode());
 		result = prime * result + ((chi_formals == null) ? 0 : chi_formals.hashCode());
-		result = prime * result + ((chi_locals == null) ? 0 : chi_locals.hashCode());
 		result = prime * result + ((chi_ret == null) ? 0 : chi_ret.hashCode());
 		result = prime * result + ((metaConstraints == null) ? 0 : metaConstraints.hashCode());
 		
@@ -424,13 +373,6 @@ public class MethodConstraint implements ConstraintFunction {
 				return false;
 			}
 		} else if (!chi_formals.equals(other.chi_formals)) {
-			return false;
-		}
-		if (chi_locals == null) {
-			if (other.chi_locals != null) {
-				return false;
-			}
-		} else if (!chi_locals.equals(other.chi_locals)) {
 			return false;
 		}
 		if (chi_ret == null) {
