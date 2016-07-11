@@ -98,7 +98,7 @@ public class EquGenerator extends ContextVisitor {
 			try {
 				if(m instanceof JL5MethodInstance) {
 					Report.report(1, "\n" + mc.toString());
-			Report.report(1, CollUtil.getNLStringOf(mc.apply(XFormals, new TypedSetVariable(((JL5MethodInstance)m).returnType()))));
+			Report.report(1, CollUtil.getNLStringOf(mc.apply(XFormals).getCS()));
 //			Report.report(1, mc.toString());
 				}
 			} catch(Exception e) {

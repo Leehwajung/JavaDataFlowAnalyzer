@@ -112,9 +112,9 @@ public class ClassConstraint implements ConstraintFunction {
 	}
 	
 	
-	public ConstraintsPair apply() {
-		return null;
-	}
+//	public ConstraintsPair apply() {
+//		return null;
+//	}
 	
 	
 	/**
