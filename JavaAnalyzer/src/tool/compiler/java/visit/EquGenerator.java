@@ -85,7 +85,8 @@ public class EquGenerator extends ContextVisitor {
 		printTablesToConsole();
 		printConstraintsToConsole();
 		writeTablesToFile();
-		Report.report(1,"aaaaaaaaaaaaaaaaaaaaaaaaa");
+		
+		Report.report(1,"\n----- MC Application Test -----");
 		for (MethodConstraint mc : methodConstraintSet) {
 			ArrayList<TypedSetVariable> XFormals = new ArrayList<>();
 			JL5ProcedureInstance m = mc.getMethod();
@@ -96,14 +97,13 @@ public class EquGenerator extends ContextVisitor {
 			try {
 				if(m instanceof JL5MethodInstance) {
 					Report.report(1, "\n" + mc.toString());
-					Report.report(1, CollUtil.getNLStringOf(mc.apply(XFormals, new TypedSetVariable(((JL5MethodInstance)m).returnType()))));
-//			Report.report(1, mc.toString());
+					Report.report(1, CollUtil.getNLStringOf(mc.apply(XFormals).getCS()));
 				}
 			} catch(Exception e) {
 				e.printStackTrace();
-			//	Report.report(1, "=== " + mc.toString());
 			}
 		}
+		
 //		FieldEquation fe = new FieldEquation(fieldTableMap.keySet().iterator().next(), fieldTableMap.values().iterator().next());
 		
 //		System.out.println(fe);
