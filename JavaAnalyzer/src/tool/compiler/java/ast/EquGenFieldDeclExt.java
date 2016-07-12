@@ -22,12 +22,12 @@ public class EquGenFieldDeclExt extends EquGenExt {
 	@Override
 	public EquGenerator equGenEnter(EquGenerator v) {
 		FieldDecl fldDecl = (FieldDecl) this.node();
-//		Report.report(0, "[Enter] Field Declaration: " + fldDecl/*.name()*/);
+		Report.report(2, "[Enter] Field Declaration: " + fldDecl/*.name()*/);
 		
 		FieldInfo fldInfo = new FieldInfo((JL5FieldInstance) fldDecl.fieldInstance());
 		v.addToSet(fldInfo);
-		Report.report(0, "[Enter] Field Declaration: " + fldDecl + "\n\t[FieldInfo] " + fldInfo);
 		
+		Report.report(3, "\t[FieldInfo] " + fldInfo);
 		return super.equGenEnter(v);
 	}
 	
@@ -35,7 +35,7 @@ public class EquGenFieldDeclExt extends EquGenExt {
 	public Node equGenLeave(EquGenerator v) {
 		FieldDecl fldDecl = (FieldDecl) this.node();
 		JL5FieldInstance fldIns = (JL5FieldInstance) fldDecl.fieldInstance();
-//		Report.report(0, "[Leave] Field Declaration: " + fldDecl/*.name()*/);
+		Report.report(2, "[Leave] Field Declaration: " + fldDecl/*.name()*/);
 		
 		// 필드 선언시 초기화 하는 경우에 한해
 		if(fldDecl.init() != null) {
@@ -48,18 +48,15 @@ public class EquGenFieldDeclExt extends EquGenExt {
 				MetaSetVariable cchi1 = v.getCurrCC().getChiThis();
 				AssignField af = new AssignField(dchi2, cchi1, fldIns);
 				v.getCurrCC().addMetaConstraint(af);
-				Report.report(1, "[Leave] Field Declaration: " + fldDecl + "\n\t[AssignField] " + af);
+				Report.report(3, "\t[AssignField] " + af);
 			}
 			
 			//   2-2. D{Chi2} <: C.f 제약식을 추가 (static)
 			else {
 				AssignStaticField asf = new AssignStaticField(dchi2, fldIns);
 				v.getCurrCC().addMetaConstraint(asf);
-				Report.report(1, "[Leave] Field Declaration: " + fldDecl + "\n\t[AssignStaticField] " + asf);
+				Report.report(3, "\t[AssignStaticField] " + asf);
 			}
-		}
-		else {
-			Report.report(0, "[Leave] Field Declaration: " + fldDecl/*.name()*/);
 		}
 		
 		return super.equGenLeave(v);

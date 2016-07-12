@@ -19,7 +19,7 @@ public class EquGenCastExt extends EquGenExprExt {
 	@Override
 	public EquGenerator equGenEnter(EquGenerator v) {
 		Cast cast = (Cast) this.node();
-		Report.report(0, "[Enter] Cast: " + cast);
+		Report.report(2, "[Enter] Cast: " + cast);
 		
 		return super.equGenEnter(v);
 	}
@@ -27,7 +27,7 @@ public class EquGenCastExt extends EquGenExprExt {
 	@Override
 	public Node equGenLeave(EquGenerator v) {
 		Cast cast = (Cast) this.node();
-//		Report.report(0, "[Leave] Cast: " + cast);
+		Report.report(2, "[Leave] Cast: " + cast);
 		
 		// (D) e
 		//   1. e의 타입 C{Chi}를 가져온 다음
@@ -39,12 +39,11 @@ public class EquGenCastExt extends EquGenExprExt {
 		//   3. C{Chix} <: D{Chiy} 제약식을 추가
 		XSubseteqY xy = new XSubseteqY(cchi, dchi);
 		v.getCurrMC().addMetaConstraint(xy);
-		Report.report(0, "[Leave] Cast: " + cast + "\n"
-				+ "\t[XSubseteqY] " + xy);
 		
 		//   4. D{Chi}를 리턴 타입으로 지정
 		setMetaSetVar(dchi);
 		
+		Report.report(3, "\t[XSubseteqY] " + xy);
 		return super.equGenLeave(v);
 	}
 }

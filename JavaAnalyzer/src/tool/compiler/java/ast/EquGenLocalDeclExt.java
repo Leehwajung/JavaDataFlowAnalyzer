@@ -20,7 +20,7 @@ public class EquGenLocalDeclExt extends EquGenStmtExt {
 	@Override
 	public EquGenerator equGenEnter(EquGenerator v) {
 		LocalDecl lclDecl = (LocalDecl) this.node();
-		Report.report(0, "[Enter] Local Declaration: " + lclDecl/*.name()*/);
+		Report.report(2, "[Enter] Local Declaration: " + lclDecl/*.name()*/);
 		
 		return super.equGenEnter(v);
 	}
@@ -28,7 +28,7 @@ public class EquGenLocalDeclExt extends EquGenStmtExt {
 	@Override
 	public Node equGenLeave(EquGenerator v) {
 		LocalDecl lclDecl = (LocalDecl) this.node();
-//		Report.report(0, "[Leave] Local Declaration: " + lclDecl/*.name()*/);
+		Report.report(2, "[Leave] Local Declaration: " + lclDecl/*.name()*/);
 		
 		// C x = e;
 		//   1. x : C{Chi1}을 현재 env에 추가 (X1은 새로운 변수)
@@ -46,10 +46,10 @@ public class EquGenLocalDeclExt extends EquGenStmtExt {
 		
 		XSubseteqY xy = new XSubseteqY(dchi2, cchi1);
 		v.getCurrMC().addMetaConstraint(xy);
-		Report.report(0, "[Leave] Local Declaration: " + lclDecl + "\n\t[XSubseteqY] " + xy);
 		
 		//   3. 리턴할 MataSetVar는 없음
 		
+		Report.report(3, "\t[XSubseteqY] " + xy);
 		return super.equGenLeave(v);
 	}
 }

@@ -16,7 +16,7 @@ public class EquGenReturnExt extends EquGenStmtExt {
 	@Override
 	public EquGenerator equGenEnter(EquGenerator v) {
 		Return rtn = (Return)this.node();
-		Report.report(0, "[Enter] Return: " + rtn/*.name()*/);
+		Report.report(2, "[Enter] Return: " + rtn/*.name()*/);
 		
 		return super.equGenEnter(v);
 	}
@@ -24,10 +24,10 @@ public class EquGenReturnExt extends EquGenStmtExt {
 	@Override
 	public Node equGenLeave(EquGenerator v) {
 		Return rtn = (Return)this.node();
-		Report.report(0, "[Leave] Return: " + rtn/*.name()*/);
 		
 		v.getCurrMC().setChiRet(MetaSetVar(rtn.expr()));
 		
+		Report.report(2, "[Leave] Return: " + rtn/*.name()*/);
 		return super.equGenLeave(v);
 	}
 }

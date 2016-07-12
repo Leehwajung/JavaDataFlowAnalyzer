@@ -22,21 +22,19 @@ public class EquGenInstanceofExt extends EquGenExprExt {
 	@Override
 	public EquGenerator equGenEnter(EquGenerator v) {
 		Instanceof insof = (Instanceof) this.node();
-//		Report.report(0, "[Enter] Instanceof: " + insof);
+		Report.report(2, "[Enter] Instanceof: " + insof);
 		
 		absObj = new AbstractObject(insof.type());
 		v.addToSet(absObj);
 		
-		Report.report(0, "[Enter] Instanceof: " + insof + "\n"
-				+ "\t[AbstractObject] " + absObj + ")");
-		
+		Report.report(3, "\t[AbstractObject] " + absObj + ")");
 		return super.equGenEnter(v);
 	}
 	
 	@Override
 	public Node equGenLeave(EquGenerator v) {
 		Instanceof insof = (Instanceof) this.node();
-//		Report.report(0, "[Leave] Instanceof: " + insof);
+		Report.report(2, "[Leave] Instanceof: " + insof);
 		
 		// instanceof
 		//   1. boolean{Chi} 변수 생성
@@ -45,12 +43,11 @@ public class EquGenInstanceofExt extends EquGenExprExt {
 		//   2. boolean{o} <: boolean{Chi} 제약식을 추가
 		ObjsSubseteqX ox = new ObjsSubseteqX(absObj, tchi);
 		v.getCurrMC().addMetaConstraint(ox);
-		Report.report(0, "[Leave] Instanceof: " + insof + "\n"
-				+ "\t[ObjsSubseteqX] " + ox);
 		
 		//   3. return boolean{Chi}
 		setMetaSetVar(tchi);
 		
+		Report.report(3, "\t[ObjsSubseteqX] " + ox);
 		return super.equGenLeave(v);
 	}
 }

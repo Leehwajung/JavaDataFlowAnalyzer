@@ -21,21 +21,19 @@ public class EquGenBinaryExt extends EquGenExprExt {
 	
 	public EquGenerator equGenEnter(EquGenerator v) {
 		Binary binary = (Binary) this.node();
-//		Report.report(0, "[Enter] Binary: " + binary);
+		Report.report(2, "[Enter] Binary: " + binary);
 		
 		absObj = new AbstractObject(binary.type());
 		v.addToSet(absObj);
 		
-		Report.report(0, "[Enter] Binary: " + binary + "\n"
-				+ "\t[AbstractObject] " + absObj + " (" + binary.getClass().getInterfaces()[0].getSimpleName() + ")");
-		
+		Report.report(3, "\t[AbstractObject] " + absObj + " (" + binary.getClass().getInterfaces()[0].getSimpleName() + ")");
 		return super.equGenEnter(v);
 	}
 	
 	@Override
 	public Node equGenLeave(EquGenerator v) {
 		Binary binary = (Binary) this.node();
-//		Report.report(0, "[Leave] Binary: " + binary);
+		Report.report(2, "[Leave] Binary: " + binary);
 		
 		// e1 > e2 / e1 < e2 / e1 == e2 / e1 <= e2 / e1 >= e2 / e1 != e2 /
 		// e1 || e2 / e1 && e2 / e1 + e2 / e1 - e2 / e1 * e2 / e1 / e2 / e1 % e2 /
@@ -46,12 +44,11 @@ public class EquGenBinaryExt extends EquGenExprExt {
 		//   2. T{o} <: T{Chi} 제약식을 추가
 		ObjsSubseteqX ox = new ObjsSubseteqX(absObj, tchi);
 		v.getCurrMC().addMetaConstraint(ox);
-		Report.report(0, "[Leave] Binary: " + binary + "\n"
-				+ "\t[ObjsSubseteqX] " + ox);
 		
 		//   3. return T{Chi}
 		setMetaSetVar(tchi);
 		
+		Report.report(3, "\t[ObjsSubseteqX] " + ox);
 		return super.equGenLeave(v);
 	}
 }

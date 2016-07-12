@@ -105,7 +105,6 @@ public class ClassConstraint implements ConstraintFunction {
 				this.chi_fields = new LinkedHashMap<>();
 				for(JL5FieldInstance field : fields) {
 					this.chi_fields.put(field, new MetaSetVariable(field.type()));	// field
-					System.out.println(chi_fields.get(field).getType().getClass());
 				}
 			}
 		}

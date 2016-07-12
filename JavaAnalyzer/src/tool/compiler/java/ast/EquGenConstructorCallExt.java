@@ -21,12 +21,11 @@ public class EquGenConstructorCallExt extends EquGenStmtExt {
 	public EquGenerator equGenEnter(EquGenerator v) {
 		ConstructorCall cc = (ConstructorCall) this.node();
 		JL5ProcedureInstance porcIns = (JL5ProcedureInstance) cc.procedureInstance();
-//		Report.report(0, "[Enter] Constructor Call: " + cc);
+		Report.report(2, "[Enter] Constructor Call: " + cc);
 		
 		// (호출) 메서드 인포 생성
 		MethodCallInfo mtdInfo = new MethodCallInfo(porcIns);
 		v.addToSet(mtdInfo);
-		Report.report(0, "[Enter] Constructor Call: " + cc + "\n\t[MethodCallInfo] " + mtdInfo);
 		
 //		ArrayList<TypedSetVariable> argSetVars = new ArrayList<>();
 //		for(Expr arg: cc.arguments()) {
@@ -36,6 +35,7 @@ public class EquGenConstructorCallExt extends EquGenStmtExt {
 //		JL5MethodInstance ins = (JL5MethodInstance) cc.methodInstance();
 //		v.addToSet(new InvokeMth(typedSetVar(), ins, argSetVars, new TypedSetVariable(call.type())));
 		
+		Report.report(3, "\t[MethodCallInfo] " + mtdInfo);
 		return super.equGenEnter(v);
 	}
 	
@@ -43,8 +43,8 @@ public class EquGenConstructorCallExt extends EquGenStmtExt {
 	public Node equGenLeave(EquGenerator v) {
 		ConstructorCall cc = (ConstructorCall) this.node();
 		JL5ConstructorInstance ctorIns = (JL5ConstructorInstance) cc.constructorInstance();
-		Report.report(0, "[Leave] Constructor Call: " + cc);
 		
+		Report.report(2, "[Leave] Constructor Call: " + cc);
 		return super.equGenLeave(v);
 	}
 }

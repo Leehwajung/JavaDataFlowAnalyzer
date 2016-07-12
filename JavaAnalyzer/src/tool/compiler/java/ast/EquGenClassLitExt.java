@@ -18,7 +18,7 @@ public class EquGenClassLitExt extends EquGenLitExt {
 	@Override
 	public EquGenerator equGenEnter(EquGenerator v) {
 		ClassLit clzLit = (ClassLit) this.node();
-		Report.report(0, "[Enter] Class Literal: " + clzLit/*.name()*/);
+		Report.report(2, "[Enter] Class Literal: " + clzLit/*.name()*/);
 		
 		return super.equGenEnter(v);
 	}
@@ -26,8 +26,8 @@ public class EquGenClassLitExt extends EquGenLitExt {
 	@Override
 	public Node equGenLeave(EquGenerator v) {
 		ClassLit clzLit = (ClassLit) this.node();
-		Report.report(0, "[Leave] Class Literal: " + clzLit/*.name()*/);
 		
+		Report.report(2, "[Leave] Class Literal: " + clzLit/*.name()*/);
 		return super.equGenLeave(v);
 	}
 }

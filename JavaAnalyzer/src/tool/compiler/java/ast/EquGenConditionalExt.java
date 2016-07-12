@@ -19,7 +19,7 @@ public class EquGenConditionalExt extends EquGenExprExt {
 	@Override
 	public EquGenerator equGenEnter(EquGenerator v) {
 		Conditional cond = (Conditional) this.node();
-		Report.report(0, "[Enter] Conditional: " + cond);
+		Report.report(2, "[Enter] Conditional: " + cond);
 		
 		return super.equGenEnter(v);
 	}
@@ -27,7 +27,7 @@ public class EquGenConditionalExt extends EquGenExprExt {
 	@Override
 	public Node equGenLeave(EquGenerator v) {
 		Conditional cond = (Conditional) this.node();
-//		Report.report(0, "[Leave] Conditional: " + cond);
+		Report.report(2, "[Leave] Conditional: " + cond);
 		
 		// e ? e1 : e2
 		//   1. e1의 타입 T1{Chi}와 e2의 타입 T2{Chi}를 가져온 다음
@@ -42,13 +42,12 @@ public class EquGenConditionalExt extends EquGenExprExt {
 		XSubseteqY xy2 = new XSubseteqY(t2chi, tchi);
 		v.getCurrMC().addMetaConstraint(xy1);
 		v.getCurrMC().addMetaConstraint(xy2);
-		Report.report(0, "[Leave] Cast: " + cond + "\n"
-				+ "\t[XSubseteqY] " + xy1 + "\n"
-				+ "\t[XSubseteqY] " + xy2);
 		
 		//   4. T{Chi}를 리턴 타입으로 지정
 		setMetaSetVar(tchi);
 		
+		Report.report(3, "\t[XSubseteqY] " + xy1);
+		Report.report(3, "\t[XSubseteqY] " + xy2);
 		return super.equGenLeave(v);
 	}
 }

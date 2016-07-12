@@ -18,7 +18,7 @@ public class EquGenAmbExprExt extends EquGenExprExt {
 	@Override
 	public EquGenerator equGenEnter(EquGenerator v) {
 		AmbExpr aexpr = (AmbExpr) this.node();
-		Report.report(1, "[Enter] Ambiguous Expression: " + aexpr);
+		Report.report(2, "[Enter] Ambiguous Expression: " + aexpr);
 		
 		return super.equGenEnter(v);
 	}
@@ -26,8 +26,8 @@ public class EquGenAmbExprExt extends EquGenExprExt {
 	@Override
 	public Node equGenLeave(EquGenerator v) {
 		AmbExpr aexpr = (AmbExpr) this.node();
-		Report.report(1, "[Leave] Ambiguous Expression: " + aexpr);
 		
+		Report.report(2, "[Leave] Ambiguous Expression: " + aexpr);
 		return super.equGenLeave(v);
 	}
 }

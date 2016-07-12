@@ -22,21 +22,19 @@ public class EquGenLitExt extends EquGenExprExt {
 	@Override
 	public EquGenerator equGenEnter(EquGenerator v) {
 		Lit lit = (Lit) this.node();
-//		Report.report(0, "[Enter] Literal: " + lit);
+		Report.report(2, "[Enter] Literal: " + lit);
 		
 		absObj = new AbstractObject(lit.type());
 		v.addToSet(absObj);
 		
-		Report.report(0, "[Enter] Literal: " + lit + "\n"
-				+ "\t[AbstractObject] " + absObj + " (" + lit.getClass().getInterfaces()[0].getSimpleName() + ")");
-		
+		Report.report(3, "\t[AbstractObject] " + absObj + " (" + lit.getClass().getInterfaces()[0].getSimpleName() + ")");
 		return super.equGenEnter(v);
 	}
 	
 	@Override
 	public Node equGenLeave(EquGenerator v) {
 		Lit lit = (Lit) this.node();
-//		Report.report(0, "[Leave] Literal: " + lit);
+		Report.report(2, "[Leave] Literal: " + lit);
 		
 		// int / char / float / boolean / string / class / null
 		//   1. T{Chi} 변수 생성
@@ -45,12 +43,11 @@ public class EquGenLitExt extends EquGenExprExt {
 		//   2. T{o} <: T{Chi} 제약식을 추가
 		ObjsSubseteqX ox = new ObjsSubseteqX(absObj, tchi);
 		v.getCurrMC().addMetaConstraint(ox);
-		Report.report(0, "[Leave] Literal: " + lit + "\n"
-				+ "\t[ObjsSubseteqX] " + ox);
 		
 		//   3. return T{Chi}
 		setMetaSetVar(tchi);
 		
+		Report.report(3, "\t[ObjsSubseteqX] " + ox);
 		return super.equGenLeave(v);
 	}
 }

@@ -23,7 +23,7 @@ public class EquGenFieldAssignExt extends EquGenAssignExt {
 	@Override
 	public EquGenerator equGenEnter(EquGenerator v) {
 		FieldAssign fasgn = (FieldAssign) this.node();
-		Report.report(0, "[Enter] Field Assign: " + fasgn);
+		Report.report(2, "[Enter] Field Assign: " + fasgn);
 		
 		return super.equGenEnter(v);
 	}
@@ -34,7 +34,7 @@ public class EquGenFieldAssignExt extends EquGenAssignExt {
 		Field lVal = fasgn.left();
 		Expr rVal = fasgn.right();
 		JL5FieldInstance fldIns = (JL5FieldInstance) fasgn.left().fieldInstance();
-//		Report.report(0, "[Leave] Field Assign: " + fasgn);
+		Report.report(2, "[Leave] Field Assign: " + fasgn);
 		
 		// e1.f = e2 / C.f = e2
 		//   1. e2의 타입 D{Chi2}를 가져오고
@@ -45,14 +45,14 @@ public class EquGenFieldAssignExt extends EquGenAssignExt {
 			MetaSetVariable cchi1 = EquGenExt.MetaSetVar(lVal.target());
 			AssignField af = new AssignField(dchi2, cchi1, fldIns);
 			v.getCurrMC().addMetaConstraint(af);
-			Report.report(1, "[Leave] Field Assign: " + fasgn + "\n\t[AssignField] " + af);
+			Report.report(3, "\t[AssignField] " + af);
 		}
 		
 		//   2-2. D{Chi2} <: C.f 제약식을 추가 (static)
 		else {
 			AssignStaticField asf = new AssignStaticField(dchi2, fldIns);
 			v.getCurrMC().addMetaConstraint(asf);
-			Report.report(1, "[Leave] Field Assign: " + fasgn + "\n\t[AssignStaticField] " + asf);
+			Report.report(3, "\t[AssignStaticField] " + asf);
 		}
 		
 		//   4. e1.f의 타입을 리턴할 타입으로 지정

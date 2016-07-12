@@ -22,22 +22,19 @@ public class EquGenUnaryExt extends EquGenExprExt {
 	@Override
 	public EquGenerator equGenEnter(EquGenerator v) {
 		Unary unary = (Unary) this.node();
-		Report.report(0, "[Enter] Unary: " + unary);
+		Report.report(2, "[Enter] Unary: " + unary);
 		
 		absObj = new AbstractObject(unary.type());
 		v.addToSet(absObj);
 		
-		Report.report(0, "[Enter] Unary: " + unary + "\n"
-				+ "\t[AbstractObject] " + absObj + " (" + unary.getClass().getInterfaces()[0].getSimpleName() + ")");
-		
-		
+		Report.report(3, "\t[AbstractObject] " + absObj + " (" + unary.getClass().getInterfaces()[0].getSimpleName() + ")");
 		return super.equGenEnter(v);
 	}
 	
 	@Override
 	public Node equGenLeave(EquGenerator v) {
 		Unary unary = (Unary) this.node();
-		Report.report(0, "[Leave] Unary: " + unary);
+		Report.report(2, "[Leave] Unary: " + unary);
 		
 		// +e / -e / ++e / --e / e++ / e-- / !e / ~e
 		//   1. T{Chi} 변수 생성
@@ -46,12 +43,11 @@ public class EquGenUnaryExt extends EquGenExprExt {
 		//   2. T{o} <: T{Chi} 제약식을 추가
 		ObjsSubseteqX ox = new ObjsSubseteqX(absObj, tchi);
 		v.getCurrMC().addMetaConstraint(ox);
-		Report.report(0, "[Leave] Unary: " + unary + "\n"
-				+ "\t[ObjsSubseteqX] " + ox);
 		
 		//   3. return T{Chi}
 		setMetaSetVar(tchi);
 		
+		Report.report(3, "\t[ObjsSubseteqX] " + ox);
 		return super.equGenLeave(v);
 	}
 }

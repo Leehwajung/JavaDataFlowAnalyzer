@@ -1,15 +1,12 @@
 package tool.compiler.java.ast;
 
-import polyglot.ast.Formal;
 import polyglot.ast.Node;
 import polyglot.ast.ProcedureDecl;
 import polyglot.ext.jl5.types.JL5ProcedureInstance;
 import polyglot.main.Report;
-import polyglot.types.Type;
 import polyglot.util.SerialVersionUID;
 import tool.compiler.java.visit.EquGenerator;
 import tool.compiler.java.visit.LocalEnv;
-import tool.compiler.java.visit.MetaSetVariable;
 import tool.compiler.java.visit.MethodConstraint;
 import tool.compiler.java.visit.MethodInfo;
 
@@ -26,7 +23,7 @@ public class EquGenProcedureDeclExt extends EquGenExt {
 	public EquGenerator equGenEnter(EquGenerator v) {
 		ProcedureDecl procDecl = (ProcedureDecl) this.node();
 		JL5ProcedureInstance procIns = (JL5ProcedureInstance) procDecl.procedureInstance();
-//		Report.report(0, "[Enter] Procedure Declaration: " + procDecl/*.name()*/);
+		Report.report(2, "[Enter] Procedure Declaration: " + procDecl/*.name()*/);
 		
 		// (선언) 메서드 인포 생성
 		MethodInfo mtdInfo = new MethodInfo(procIns);
@@ -39,7 +36,6 @@ public class EquGenProcedureDeclExt extends EquGenExt {
 //		}
 		mc = new MethodConstraint(procIns/*, chiFormals*/);
 		v.addToSet(mc);
-		Report.report(0, "[Enter] Procedure Declaration: " + procDecl + "\n\t[MethodConstraint] " + mc + "\n\t[MethodInfo] " + mtdInfo);
 		
 //		if(procIns.flags().isStatic()) {
 //			MethodConstraint mc = new MethodConstraint(procIns, daoss, eaos);
@@ -51,6 +47,8 @@ public class EquGenProcedureDeclExt extends EquGenExt {
 		v.setLocalEnv(new LocalEnv());
 		v.getLocalEnv().push();
 		
+		Report.report(3, "\t[MethodConstraint] " + mc);
+		Report.report(3, "\t[MethodInfo] " + mtdInfo);
 		return super.equGenEnter(v);
 	}
 	
@@ -62,7 +60,7 @@ public class EquGenProcedureDeclExt extends EquGenExt {
 		// 로컬 환경 해제
 		v.getLocalEnv().pop();
 		
-		Report.report(0, "[Leave] Procedure Declaration: " + procDecl/*.name()*/);
+		Report.report(2, "[Leave] Procedure Declaration: " + procDecl/*.name()*/);
 		
 		// T m(T1 x1, ... Tn xn) { ... }ㅣ,
 		//   1. local env를 x1:T1{X1}, xn:Tn{Xn}으로 초기화
