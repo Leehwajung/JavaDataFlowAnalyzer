@@ -54,6 +54,7 @@ public class EquGenFieldExt extends EquGenExprExt {
 		
 		//   3. D{Chi2}를 e.f의 타입으로 리턴
 		setMetaSetVar(dchi2);
+		Report.report(3, "\t[MetaSetVariable] " + dchi2 + " (new)");
 		
 		return super.equGenLeave(v);
 	}

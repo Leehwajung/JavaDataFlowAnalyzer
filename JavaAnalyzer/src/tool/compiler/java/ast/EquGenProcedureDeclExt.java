@@ -11,7 +11,7 @@ import tool.compiler.java.visit.MethodConstraint;
 import tool.compiler.java.visit.MethodInfo;
 
 /**
- * ProcedureDecl <: CodeDecl <: ClassMember <: Term <: Node	<br>
+ * ProcedureDecl <: CodeDecl <: ClassMember <: Term <: Node				<br>
  * ProcedureDecl <: CodeDecl <: CodeBlock <: CodeNode <: Term <: Node
  * @author LHJ
  */

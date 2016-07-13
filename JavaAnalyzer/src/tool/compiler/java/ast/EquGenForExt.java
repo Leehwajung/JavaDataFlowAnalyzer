@@ -1,33 +1,31 @@
 package tool.compiler.java.ast;
 
-import polyglot.ast.ClassLit;
+import polyglot.ast.For;
 import polyglot.ast.Node;
 import polyglot.main.Report;
 import polyglot.util.SerialVersionUID;
 import tool.compiler.java.visit.EquGenerator;
 
 /**
- * ClassLit <: Lit <: Expr <: Term <: Node					<br>
- * ClassLit <: Lit <: Expr <: Receiver <: Prefix <: Node
+ * For <: Loop <: CompoundStmt <: Stmt <: Term <: Node
  * @author LHJ
  */
-@Deprecated
-public class EquGenClassLitExt extends EquGenLitExt {
+public class EquGenForExt extends EquGenStmtExt {
 	private static final long serialVersionUID = SerialVersionUID.generate();
 	
 	@Override
 	public EquGenerator equGenEnter(EquGenerator v) {
-		ClassLit clzLit = (ClassLit) this.node();
-		Report.report(2, "[Enter] Class Literal: " + clzLit/*.name()*/);
+		For forLoop = (For)this.node();
+		Report.report(2, "[Enter] For: " + forLoop);
 		
 		return super.equGenEnter(v);
 	}
 	
 	@Override
 	public Node equGenLeave(EquGenerator v) {
-		ClassLit clzLit = (ClassLit) this.node();
+		For forLoop = (For)this.node();
 		
-		Report.report(2, "[Leave] Class Literal: " + clzLit/*.name()*/);
+		Report.report(2, "[Leave] For: " + forLoop);
 		return super.equGenLeave(v);
 	}
 }

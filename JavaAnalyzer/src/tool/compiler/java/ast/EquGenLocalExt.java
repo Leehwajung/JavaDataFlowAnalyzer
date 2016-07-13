@@ -27,11 +27,12 @@ public class EquGenLocalExt extends EquGenExprExt {
 	@Override
 	public Node equGenLeave(EquGenerator v) {
 		Local lcl = (Local)this.node();
-		
-		MetaSetVariable msv = v.getLocalEnv().lookUp((JL5LocalInstance) lcl.localInstance());
-		setMetaSetVar(msv);
-		
 		Report.report(2, "[Leave] Local: " + lcl/*.name()*/);
+		
+		MetaSetVariable rtnMsv = v.getLocalEnv().lookUp((JL5LocalInstance) lcl.localInstance());
+		setMetaSetVar(rtnMsv);
+		
+		Report.report(3, "\t[MetaSetVariable] " + rtnMsv);
 		return super.equGenLeave(v);
 	}
 }

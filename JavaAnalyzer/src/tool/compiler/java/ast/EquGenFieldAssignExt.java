@@ -33,7 +33,7 @@ public class EquGenFieldAssignExt extends EquGenAssignExt {
 		FieldAssign fasgn = (FieldAssign) this.node();
 		Field lVal = fasgn.left();
 		Expr rVal = fasgn.right();
-		JL5FieldInstance fldIns = (JL5FieldInstance) fasgn.left().fieldInstance();
+		JL5FieldInstance fldIns = (JL5FieldInstance) lVal.fieldInstance();
 		Report.report(2, "[Leave] Field Assign: " + fasgn);
 		
 		// e1.f = e2 / C.f = e2
@@ -56,7 +56,9 @@ public class EquGenFieldAssignExt extends EquGenAssignExt {
 		}
 		
 		//   4. e1.f의 타입을 리턴할 타입으로 지정
-		setMetaSetVar(EquGenExt.MetaSetVar(lVal));
+		MetaSetVariable rtnMsv = EquGenExt.MetaSetVar(lVal);
+		setMetaSetVar(rtnMsv);
+		Report.report(3, "\t[MetaSetVariable] " + rtnMsv);
 		
 		return super.equGenLeave(v);
 	}

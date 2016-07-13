@@ -19,9 +19,9 @@ public class EquGenConstructorCallExt extends EquGenStmtExt {
 	
 	@Override
 	public EquGenerator equGenEnter(EquGenerator v) {
-		ConstructorCall cc = (ConstructorCall) this.node();
-		JL5ProcedureInstance porcIns = (JL5ProcedureInstance) cc.procedureInstance();
-		Report.report(2, "[Enter] Constructor Call: " + cc);
+		ConstructorCall ctorCall = (ConstructorCall) this.node();
+		JL5ProcedureInstance porcIns = (JL5ProcedureInstance) ctorCall.procedureInstance();
+		Report.report(2, "[Enter] Constructor Call: " + ctorCall);
 		
 		// (호출) 메서드 인포 생성
 		MethodCallInfo mtdInfo = new MethodCallInfo(porcIns);
@@ -41,10 +41,10 @@ public class EquGenConstructorCallExt extends EquGenStmtExt {
 	
 	@Override
 	public Node equGenLeave(EquGenerator v) {
-		ConstructorCall cc = (ConstructorCall) this.node();
-		JL5ConstructorInstance ctorIns = (JL5ConstructorInstance) cc.constructorInstance();
+		ConstructorCall ctorCall = (ConstructorCall) this.node();
+		JL5ConstructorInstance ctorIns = (JL5ConstructorInstance) ctorCall.constructorInstance();
 		
-		Report.report(2, "[Leave] Constructor Call: " + cc);
+		Report.report(2, "[Leave] Constructor Call: " + ctorCall);
 		return super.equGenLeave(v);
 	}
 }

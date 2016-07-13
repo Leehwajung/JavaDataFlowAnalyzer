@@ -1,6 +1,5 @@
 package tool.compiler.java.ast;
 
-
 import polyglot.ast.ClassDecl;
 import polyglot.ast.Node;
 import polyglot.ext.jl5.types.JL5ParsedClassType;

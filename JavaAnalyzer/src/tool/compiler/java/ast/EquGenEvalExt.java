@@ -1,33 +1,31 @@
 package tool.compiler.java.ast;
 
+import polyglot.ast.Eval;
 import polyglot.ast.Node;
-import polyglot.ast.Return;
 import polyglot.main.Report;
 import polyglot.util.SerialVersionUID;
 import tool.compiler.java.visit.EquGenerator;
 
 /**
- * Return <: Stmt <: Term <: Node
+ * Eval <: Stmt <: Term <: Node
  * @author LHJ
  */
-public class EquGenReturnExt extends EquGenStmtExt {
+public class EquGenEvalExt extends EquGenStmtExt {
 	private static final long serialVersionUID = SerialVersionUID.generate();
 	
 	@Override
 	public EquGenerator equGenEnter(EquGenerator v) {
-		Return returnStmt = (Return)this.node();
-		Report.report(2, "[Enter] Return: " + returnStmt);
+		Eval eval = (Eval)this.node();
+		Report.report(2, "[Enter] Evaluation: " + eval);
 		
 		return super.equGenEnter(v);
 	}
 	
 	@Override
 	public Node equGenLeave(EquGenerator v) {
-		Return returnStmt = (Return)this.node();
+		Eval eval = (Eval)this.node();
 		
-		v.getCurrMC().setChiRet(MetaSetVar(returnStmt.expr()));
-		
-		Report.report(2, "[Leave] Return: " + returnStmt);
+		Report.report(2, "[Leave] Evaluation: " + eval);
 		return super.equGenLeave(v);
 	}
 }

@@ -70,6 +70,7 @@ public class EquGenCallExt extends EquGenExprExt {
 		
 		//   4. D{Chi}를 리턴 타입으로 지정
 		setMetaSetVar(dchi);
+		Report.report(3, "\t[MetaSetVariable] " + dchi + " (new)");
 		
 		return super.equGenLeave(v);
 	}

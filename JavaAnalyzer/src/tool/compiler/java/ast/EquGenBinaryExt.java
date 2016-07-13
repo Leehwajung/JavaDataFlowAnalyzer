@@ -44,11 +44,12 @@ public class EquGenBinaryExt extends EquGenExprExt {
 		//   2. T{o} <: T{Chi} 제약식을 추가
 		ObjsSubseteqX ox = new ObjsSubseteqX(absObj, tchi);
 		v.getCurrMC().addMetaConstraint(ox);
+		Report.report(3, "\t[ObjsSubseteqX] " + ox);
 		
 		//   3. return T{Chi}
 		setMetaSetVar(tchi);
+		Report.report(3, "\t[MetaSetVariable] " + tchi + " (new)");
 		
-		Report.report(3, "\t[ObjsSubseteqX] " + ox);
 		return super.equGenLeave(v);
 	}
 }

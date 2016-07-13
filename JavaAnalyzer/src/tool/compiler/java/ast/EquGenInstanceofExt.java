@@ -43,11 +43,12 @@ public class EquGenInstanceofExt extends EquGenExprExt {
 		//   2. boolean{o} <: boolean{Chi} 제약식을 추가
 		ObjsSubseteqX ox = new ObjsSubseteqX(absObj, tchi);
 		v.getCurrMC().addMetaConstraint(ox);
+		Report.report(3, "\t[ObjsSubseteqX] " + ox);
 		
 		//   3. return boolean{Chi}
 		setMetaSetVar(tchi);
+		Report.report(3, "\t[MetaSetVariable] " + tchi + " (new)");
 		
-		Report.report(3, "\t[ObjsSubseteqX] " + ox);
 		return super.equGenLeave(v);
 	}
 }

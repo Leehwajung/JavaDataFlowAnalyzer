@@ -1,37 +1,31 @@
 package tool.compiler.java.ast;
 
-import polyglot.ast.Block;
+import polyglot.ast.If;
 import polyglot.ast.Node;
 import polyglot.main.Report;
 import polyglot.util.SerialVersionUID;
 import tool.compiler.java.visit.EquGenerator;
 
 /**
- * Block <: CompoundStmt <: Stmt <: Term <: Node
+ * If <: CompoundStmt <: Stmt <: Term <: Node
  * @author LHJ
  */
-public class EquGenBlockExt extends EquGenStmtExt {
+public class EquGenIfExt extends EquGenStmtExt {
 	private static final long serialVersionUID = SerialVersionUID.generate();
 	
 	@Override
 	public EquGenerator equGenEnter(EquGenerator v) {
-		Block block = (Block)this.node();
-		Report.report(2, "[Enter] Block: " + block);
-		
-		// 로컬 환경 구성
-		v.getLocalEnv().push();
+		If ifStmt = (If)this.node();
+		Report.report(2, "[Enter] If: " + ifStmt);
 		
 		return super.equGenEnter(v);
 	}
 	
 	@Override
 	public Node equGenLeave(EquGenerator v) {
-		Block block = (Block)this.node();
+		If ifStmt = (If)this.node();
 		
-		// 로컬 환경 해제
-		v.getLocalEnv().pop();
-		
-		Report.report(2, "[Leave] Block: " + block);
+		Report.report(2, "[Leave] If: " + ifStmt);
 		return super.equGenLeave(v);
 	}
 }

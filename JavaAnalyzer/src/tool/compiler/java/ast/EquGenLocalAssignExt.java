@@ -28,21 +28,23 @@ public class EquGenLocalAssignExt extends EquGenAssignExt {
 	@Override
 	public Node equGenLeave(EquGenerator v) {
 		LocalAssign lasgn = (LocalAssign) this.node();
+		JL5LocalInstance localIns = (JL5LocalInstance) lasgn.left().localInstance();
 		Report.report(2, "[Leave] Local Assign: " + lasgn);
 		
 		// l = e
 		//   1. l의 타입 C{Chi1}와 e의 타입 D{Chi2}를 가져오고
-		MetaSetVariable cchi1 = v.getLocalEnv().lookUp((JL5LocalInstance) lasgn.left().localInstance());
+		MetaSetVariable cchi1 = v.getLocalEnv().lookUp(localIns);
 		MetaSetVariable dchi2 = MetaSetVar(lasgn.right());
 		
 		//   2. D{Chi2} <: C{Chi1} 제약식을 추가
 		XSubseteqY xy = new XSubseteqY(dchi2, cchi1);
 		v.getCurrMC().addMetaConstraint(xy);
+		Report.report(3, "\t[XSubseteqY] " + xy);
 		
 		//   3. C{Chi1}을 리턴할 타입으로 지정
 		setMetaSetVar(cchi1);
+		Report.report(3, "\t[MetaSetVariable] " + cchi1);
 		
-		Report.report(3, "\t[XSubseteqY] " + xy);
 		return super.equGenLeave(v);
 	}
 }

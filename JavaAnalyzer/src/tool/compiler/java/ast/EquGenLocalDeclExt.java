@@ -19,29 +19,29 @@ public class EquGenLocalDeclExt extends EquGenStmtExt {
 	
 	@Override
 	public EquGenerator equGenEnter(EquGenerator v) {
-		LocalDecl lclDecl = (LocalDecl) this.node();
-		Report.report(2, "[Enter] Local Declaration: " + lclDecl/*.name()*/);
+		LocalDecl localDecl = (LocalDecl) this.node();
+		Report.report(2, "[Enter] Local Declaration: " + localDecl/*.name()*/);
 		
 		return super.equGenEnter(v);
 	}
 	
 	@Override
 	public Node equGenLeave(EquGenerator v) {
-		LocalDecl lclDecl = (LocalDecl) this.node();
-		Report.report(2, "[Leave] Local Declaration: " + lclDecl/*.name()*/);
+		LocalDecl localDecl = (LocalDecl) this.node();
+		Report.report(2, "[Leave] Local Declaration: " + localDecl/*.name()*/);
 		
 		// C x = e;
 		//   1. x : C{Chi1}을 현재 env에 추가 (X1은 새로운 변수)
-		MetaSetVariable cchi1 = new MetaSetVariable(lclDecl.type().type());
-		v.getLocalEnv().add((JL5LocalInstance) lclDecl.localInstance(), cchi1);
+		MetaSetVariable cchi1 = new MetaSetVariable(localDecl.type().type());
+		v.getLocalEnv().add((JL5LocalInstance) localDecl.localInstance(), cchi1);
 		
 		//   2. e가 있는지 확인 후 e의 타입 D{Chi2}를 가져오고 D{Chi2} <: C{Chi1}을 제약식 집합에 추가 
 		//      e가 없으면 e의 타입은 C{Chi2} (Chi2는 새로운 변수)를 만들고 C{Chi2}<: C{Chi1}을 제약식 집합에 추가
 		MetaSetVariable dchi2;
-		if(lclDecl.init() != null) {
-			dchi2 = EquGenExt.MetaSetVar(lclDecl.init());
+		if(localDecl.init() != null) {
+			dchi2 = EquGenExt.MetaSetVar(localDecl.init());
 		} else {
-			dchi2 = new MetaSetVariable(lclDecl.type().type());
+			dchi2 = new MetaSetVariable(localDecl.type().type());
 		}
 		
 		XSubseteqY xy = new XSubseteqY(dchi2, cchi1);
