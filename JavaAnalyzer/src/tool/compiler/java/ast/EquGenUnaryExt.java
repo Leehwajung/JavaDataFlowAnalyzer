@@ -24,7 +24,7 @@ public class EquGenUnaryExt extends EquGenExprExt {
 		Unary unary = (Unary) this.node();
 		Report.report(2, "[Enter] Unary: " + unary);
 		
-		absObj = new AbstractObject(unary.type());
+		absObj = new AbstractObject(unary);
 		v.addToSet(absObj);
 		
 		Report.report(3, "\t[AbstractObject] " + absObj + " (" + unary.getClass().getInterfaces()[0].getSimpleName() + ")");

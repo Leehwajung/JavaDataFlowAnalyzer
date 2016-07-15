@@ -24,7 +24,7 @@ public class EquGenInstanceofExt extends EquGenExprExt {
 		Instanceof insof = (Instanceof) this.node();
 		Report.report(2, "[Enter] Instanceof: " + insof);
 		
-		absObj = new AbstractObject(insof.type());
+		absObj = new AbstractObject(insof);
 		v.addToSet(absObj);
 		
 		Report.report(3, "\t[AbstractObject] " + absObj + ")");

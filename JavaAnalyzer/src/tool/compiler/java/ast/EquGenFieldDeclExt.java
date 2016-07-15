@@ -76,7 +76,7 @@ public class EquGenFieldDeclExt extends EquGenExt {
 					dichi = (ArrayMetaSetVariable)dichi_base;	// 현재 Di{Chi} 갱신
 					eichi = (ArrayMetaSetVariable)eichi_base;	// 현재 Ei{Chi} 갱신
 					
-					// (Di{Chi}의 int{Chi}) <: (Ei{Chi}의 int{Chi}) 제약식 추가 (각각의 length)
+					// (Ei{Chi}의 int{Chi}) <: (Di{Chi}의 int{Chi}) 제약식 추가 (각각의 length)
 					xy = new XSubseteqY(eichi.length(), dichi.length());
 					v.getCurrCC().addMetaConstraint(xy);
 					Report.report(3, "\t[XSubseteqY] " + xy);
@@ -85,7 +85,7 @@ public class EquGenFieldDeclExt extends EquGenExt {
 					dichi_base = dichi.base();	// Di{Chi}의 base
 					eichi_base = eichi.base();	// Ei{Chi}의 base
 					
-					// Di_base{Chi} <: Ei_base{Chi} 제약식 추가
+					// Ei_base{Chi} <: Di_base{Chi} 제약식 추가
 					xy = new XSubseteqY(eichi_base, dichi_base);
 					v.getCurrCC().addMetaConstraint(xy);
 					Report.report(3, "\t[XSubseteqY] " + xy);
@@ -95,6 +95,7 @@ public class EquGenFieldDeclExt extends EquGenExt {
 				// ArrayMetaSetVariable가 되는 경우가 발생하는가
 			}
 		}
+		
 		return super.equGenLeave(v);
 	}
 }

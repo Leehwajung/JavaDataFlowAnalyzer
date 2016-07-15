@@ -19,11 +19,12 @@ public class EquGenBinaryExt extends EquGenExprExt {
 	
 	private AbstractObject absObj;
 	
+	@Override
 	public EquGenerator equGenEnter(EquGenerator v) {
 		Binary binary = (Binary) this.node();
 		Report.report(2, "[Enter] Binary: " + binary);
 		
-		absObj = new AbstractObject(binary.type());
+		absObj = new AbstractObject(binary);
 		v.addToSet(absObj);
 		
 		Report.report(3, "\t[AbstractObject] " + absObj + " (" + binary.getClass().getInterfaces()[0].getSimpleName() + ")");
