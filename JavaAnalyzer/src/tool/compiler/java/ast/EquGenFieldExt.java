@@ -33,9 +33,9 @@ public class EquGenFieldExt extends EquGenExprExt {
 		Report.report(2, "[Leave] Field: " + fld/*.name()*/);
 		
 		// e.f / C.f
-		//   1. f의 타입 D를 가지오고, 새로운 집합변수 Chi2를 생성해서 D{Chi2}를 만들기
+		//   1. f의 타입 D를 가지오고, 새로운 집합변수 Chi2를 생성해서 D{Chi2}를 만들기 (구현은 CC에서 가져오도록 되어 있음)
 //		MetaSetVariable dchi2 = new MetaSetVariable(fld.type());
-		MetaSetVariable dchi2 = v.getCurrCC().getChiField(fldIns);
+		MetaSetVariable dchi2 = v.getCurrCC().getField(fldIns);
 		
 		//   2-1. e의 타입 C{Chi1}을 가져오고, C{Chi1}.f <: D{Chi2}를 제약식 집합에 추가 (non-static)
 		if(!fldIns.flags().isStatic()) {

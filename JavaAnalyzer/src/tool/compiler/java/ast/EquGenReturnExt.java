@@ -25,7 +25,7 @@ public class EquGenReturnExt extends EquGenStmtExt {
 	public Node equGenLeave(EquGenerator v) {
 		Return returnStmt = (Return)this.node();
 		
-		v.getCurrMC().setChiRet(MetaSetVar(returnStmt.expr()));
+		v.getCurrMC().setReturn(MetaSetVar(returnStmt.expr()));
 		
 		Report.report(2, "[Leave] Return: " + returnStmt);
 		return super.equGenLeave(v);

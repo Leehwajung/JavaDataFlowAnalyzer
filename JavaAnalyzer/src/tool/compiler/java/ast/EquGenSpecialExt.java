@@ -22,7 +22,7 @@ public class EquGenSpecialExt extends EquGenExprExt {
 		Report.report(2, "[Enter] Special: " + spc);
 		
 		if(spc.kind() == Special.THIS) {
-			setMetaSetVar(v.getCurrCC().getChiThis());
+			setMetaSetVar(v.getCurrCC().getThis());
 		} else {	// TODO: 이 프로그램을 위해, super의 타입은 무엇으로 봐야 하는가? (자식 클래스? 부모 클래스?)
 			setMetaSetVar(new MetaSetVariable(spc.type()));
 		}

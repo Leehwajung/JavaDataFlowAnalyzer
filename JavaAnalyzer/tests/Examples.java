@@ -16,11 +16,7 @@ class X {						// CC
 }								// MC (Default Constructor)
 
 class Z<T> {					// CC
-	static X fX;
-	T fT;
-	int i = 1;					// o3 (IntLit)
-	char c = 'c';				// o4 (CharLit)
-	double d = 1.23;			// o5 (FloatLit)
+
 	
 	static void setX(X s) {		// MC
 		fX = s;					// ReadStaticField, AssignStaticField
@@ -37,6 +33,12 @@ class Z<T> {					// CC
 		Class<X> a = X.class;	// o8 (ClassLit)
 		return true;			// o9 (booleanLit)
 	}
+	static X fX;
+	T fT;
+	int i = 1;					// o3 (IntLit)
+	char c = 'c';				// o4 (CharLit)
+	double d = 1.23;			// o5 (FloatLit)
+	int ii = 22;
 }								// MC (Default Constructor)
 
 class C {						// CC
@@ -65,5 +67,12 @@ class CCCC extends CC {
 	void mm () {
 		CCC cc = new CCC();
 		cc.mth();
+		
+		int[] intArr1 = {1, 2, 3};	// ArrayInit
+		int[] intArr2 = new int[3];	// NewArray
+		int[][] intArr3 = {{1, 1}, {2, 2}, {3, 3}};
+		int[][] intArr4 = new int[3][4];	// NewArray
+		
+//		int leng = intArr.length;
 	}
 }

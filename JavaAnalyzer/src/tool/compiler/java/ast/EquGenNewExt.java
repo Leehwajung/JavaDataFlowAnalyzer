@@ -30,10 +30,9 @@ public class EquGenNewExt extends EquGenExprExt {
 	@Override
 	public EquGenerator equGenEnter(EquGenerator v) {
 		New nw = (New) this.node();
-		JL5ConstructorInstance ctorIns = (JL5ConstructorInstance) nw.constructorInstance();
 		Report.report(2, "[Enter] New: " + nw);
 		
-		absObj = new AbstractObject(ctorIns);
+		absObj = new AbstractObject(nw);
 		v.addToSet(absObj);
 		
 		// (호출) 메서드 인포 생성

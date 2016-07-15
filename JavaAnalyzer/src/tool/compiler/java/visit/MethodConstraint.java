@@ -39,6 +39,7 @@ public class MethodConstraint implements ConstraintFunction {
 	}
 	
 	
+	// TODO: 제네릭 메서드 대응 필요: 현재 구현은, 타입 변수의 경우에 일치하는 타입이 없을 것이므로, subst 되지 않는 경우가 발생할 것 (제네릭 클래스는?)
 	public ConstraintsPair apply(Collection<TypedSetVariable> XFormals) {
 		
 		// 앞에서 만든 X1~Xn과 X_e1~X_en을 자료흐름 관계를 제약식 집합 CS1으로 만든다.
@@ -124,14 +125,14 @@ public class MethodConstraint implements ConstraintFunction {
 	/**
 	 * @return the chi_formals
 	 */
-	public LinkedHashSet<MetaSetVariable> getChiFormals() {
+	public LinkedHashSet<MetaSetVariable> getFormals() {
 		return new LinkedHashSet<>(chi_formals);
 	}
 	
 	/**
 	 * @param chiFormals the chi_formals to set
 	 */
-	public void setChiFormals(Collection<MetaSetVariable> chiFormals) {
+	public void setFormals(Collection<MetaSetVariable> chiFormals) {
 		if(this.chi_formals == null) {
 			this.chi_formals = new ArrayList<MetaSetVariable>(chiFormals);
 		} else {
@@ -143,7 +144,7 @@ public class MethodConstraint implements ConstraintFunction {
 	/**
 	 * @param chiFormals the chi_formals to add
 	 */
-	public void addChiFormals(Collection<MetaSetVariable> chiFormals) {
+	public void addFormals(Collection<MetaSetVariable> chiFormals) {
 		if(this.chi_formals == null) {
 			this.chi_formals = new ArrayList<MetaSetVariable>(chiFormals);
 		} else {
@@ -154,7 +155,7 @@ public class MethodConstraint implements ConstraintFunction {
 	/**
 	 * @param chiFormal
 	 */
-	public void addChiFormal(MetaSetVariable chiFormal) {
+	public void addFormal(MetaSetVariable chiFormal) {
 		try {
 			this.chi_formals.add(chiFormal);
 		} catch (NullPointerException e) {
@@ -166,14 +167,14 @@ public class MethodConstraint implements ConstraintFunction {
 	/**
 	 * @return the chi_ret
 	 */
-	public MetaSetVariable getChiRet() {
+	public MetaSetVariable getReturn() {
 		return chi_ret;
 	}
 	
 	/**
 	 * @param chiRet the chi_ret to set
 	 */
-	public void setChiRet(MetaSetVariable chiRet) {
+	public void setReturn(MetaSetVariable chiRet) {
 		this.chi_ret = chiRet;
 	}
 	

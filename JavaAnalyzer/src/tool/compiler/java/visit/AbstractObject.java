@@ -1,5 +1,10 @@
 package tool.compiler.java.visit;
 
+import polyglot.ast.Expr;
+import polyglot.ast.Lit;
+import polyglot.ast.New;
+import polyglot.ast.Term;
+import polyglot.ast.TypeNode;
 import polyglot.ext.jl5.types.JL5ConstructorInstance;
 import polyglot.ext.jl5.types.JL5Subst;
 import polyglot.ext.jl5.types.JL5SubstClassType;
@@ -11,16 +16,39 @@ import java.util.Collection;
 public class AbstractObject extends AbsObjSet {
 	
 	public static final String KIND = "o";
+	@Deprecated
 	private JL5ConstructorInstance ctorIns;
+	private Term term;		// Expr or TypeNode
 	private static long idGen = 1;
 	
 	/**
 	 * @param JL5 Constructor Instance
 	 */
+	@Deprecated
 	public AbstractObject(JL5ConstructorInstance constructorInstance) {
 		setType(constructorInstance.container());
 		generateID();
 		this.ctorIns = constructorInstance;
+	}
+	
+	public AbstractObject(New newNode) {
+		this((Expr)newNode);
+	}
+	
+	public AbstractObject(Lit litNode) {
+		this((Expr)litNode);
+	}
+	
+	private AbstractObject(Expr expr) {
+		this.term = expr;
+		setType(expr.type());
+		generateID();
+	}
+	
+	public AbstractObject(TypeNode typeNode) {
+		this.term = typeNode;
+		setType(typeNode.type());
+		generateID();
 	}
 	
 	/**
@@ -56,16 +84,17 @@ public class AbstractObject extends AbsObjSet {
 	/**
 	 * @return	JL5 Constructor Instance
 	 */
+	@Deprecated
 	public JL5ConstructorInstance getInstance() {
 		return ctorIns;
 	}
 	
 	public boolean isObject() {
-		return this.ctorIns != null;
+		return term instanceof New;	// TODO: TypeNode를 반영하여 수정 필요
 	}
 	
 	public boolean isLit() {
-		return !isObject();
+		return term instanceof Lit;	// TODO: TypeNode를 반영하여 수정 필요
 	}
 	
 	/**
