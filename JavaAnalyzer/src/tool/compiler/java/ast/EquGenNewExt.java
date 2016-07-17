@@ -62,7 +62,7 @@ public class EquGenNewExt extends EquGenExprExt {
 		//   2-2a. e1~en의 타입 Ci{Chii}를 가져온 다음
 		ArrayList<MetaSetVariable> argSetVars = new ArrayList<>();
 		for(Expr arg: nw.arguments()) {
-			argSetVars.add(EquGenExt.MetaSetVar(arg));
+			argSetVars.add(EquGenExt.metaSetVar(arg));
 		}
 		
 		//   2-2b. C<T1,...,Tn>{Chi}.C <: (C1{Chi1}, ... , Cn{Chin}) -> D{Chi} 제약식을 추가

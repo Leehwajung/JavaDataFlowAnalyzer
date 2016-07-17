@@ -39,7 +39,7 @@ public class EquGenFieldExt extends EquGenExprExt {
 		
 		//   2-1. e의 타입 C{Chi1}을 가져오고, C{Chi1}.f <: D{Chi2}를 제약식 집합에 추가 (non-static)
 		if(!fldIns.flags().isStatic()) {
-			MetaSetVariable cchi1 = EquGenExt.MetaSetVar(fld.target());
+			MetaSetVariable cchi1 = EquGenExt.metaSetVar(fld.target());
 			ReadField rf = new ReadField(cchi1, fldIns, dchi2);
 			v.getCurrMC().addMetaConstraint(rf);
 			Report.report(3, "\t[ReadField] " + rf);

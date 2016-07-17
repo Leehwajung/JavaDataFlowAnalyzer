@@ -61,7 +61,7 @@ public class MethodConstraint implements ConstraintFunction {
 		for(Constraint metaCon : metaConstraints) {	// 가지고 있는 전체 제약식에 대해
 			ArrayList<TypedSetVariable> substs = new ArrayList<>();	// subst한 aos
 			// MetaSetVariable을 TypedSetVariable로 대치
-			for(AbsObjSet aos : metaCon.getAllAbsObjSet()) {
+			for(AbsObjSet aos : metaCon.getAllAbsObjSets()) {
 				if (aos instanceof MetaSetVariable) {
 					// Formal의 Chi인지 확인
 					int pos = -1;
@@ -81,9 +81,11 @@ public class MethodConstraint implements ConstraintFunction {
 							substs.add(tsvLocal);
 						}
 					}
+				} else if (aos instanceof TypedSetVariable) {
+					substs.add((TypedSetVariable) aos);
 				}
 			}
-			cs2.add(metaCon.subst(substs));
+			cs2.add(metaCon.substitute(substs));
 		}
 		
 		// Return의 Chi에 대한 새로운 TypedSetVariable을 생성한다.

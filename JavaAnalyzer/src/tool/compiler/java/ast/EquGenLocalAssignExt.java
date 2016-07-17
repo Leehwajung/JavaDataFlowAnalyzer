@@ -34,7 +34,7 @@ public class EquGenLocalAssignExt extends EquGenAssignExt {
 		// l = e
 		//   1. l의 타입 C{Chi1}와 e의 타입 D{Chi2}를 가져오고
 		MetaSetVariable cchi1 = v.getLocalEnv().lookUp(localIns);
-		MetaSetVariable dchi2 = MetaSetVar(lasgn.right());
+		MetaSetVariable dchi2 = metaSetVar(lasgn.right());
 		
 		//   2. D{Chi2} <: C{Chi1} 제약식을 추가
 		XSubseteqY xy = new XSubseteqY(dchi2, cchi1);

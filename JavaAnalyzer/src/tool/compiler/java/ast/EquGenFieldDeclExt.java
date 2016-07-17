@@ -46,7 +46,7 @@ public class EquGenFieldDeclExt extends EquGenExt {
 		if(fldDecl.init() != null) {
 			// D f = e2 / static D f = e2
 			//   1. e2의 타입 E{Chi3}를 가져오고
-			MetaSetVariable echi3 = EquGenExt.MetaSetVar(fldDecl.init());
+			MetaSetVariable echi3 = EquGenExt.metaSetVar(fldDecl.init());
 			
 			//   2. 스칼라 변수 또는 배열 변수의 Top Level의 MetaSetVariable의 데이터 플로우
 			//   2-1. e1(this)의 타입 C{Chi1}을 가져오고, E{Chi3} <: C{Chi1}.f 제약식을 추가 (non-static)

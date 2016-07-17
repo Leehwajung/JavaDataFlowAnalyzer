@@ -31,8 +31,8 @@ public class EquGenConditionalExt extends EquGenExprExt {
 		
 		// e ? e1 : e2
 		//   1. e1의 타입 T1{Chi1}와 e2의 타입 T2{Chi2}를 가져온 다음
-		MetaSetVariable t1chi1 = MetaSetVar(cond.consequent());
-		MetaSetVariable t2chi2 = MetaSetVar(cond.alternative());
+		MetaSetVariable t1chi1 = metaSetVar(cond.consequent());
+		MetaSetVariable t2chi2 = metaSetVar(cond.alternative());
 		
 		//   2. 리턴할 타입 T{Chi}를 만든다. (Chi는 새로 만들고 T는 이 노드 자신의 타입)
 		MetaSetVariable tchi = new MetaSetVariable(cond.type());

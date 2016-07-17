@@ -49,7 +49,7 @@ public class EquGenLocalDeclExt extends EquGenStmtExt {
 		
 		//   2. e가 있는지 확인 후 e의 타입 D{Chi2}를 가져오고 D{Chi2} <: C{Chi1}을 제약식 집합에 추가 
 		if(localDecl.init() != null) {
-			MetaSetVariable dchi2 = EquGenExt.MetaSetVar(localDecl.init());
+			MetaSetVariable dchi2 = EquGenExt.metaSetVar(localDecl.init());
 			XSubseteqY xy = new XSubseteqY(dchi2, cchi1);
 			v.getCurrMC().addMetaConstraint(xy);
 			Report.report(3, "\t[XSubseteqY] " + xy);
