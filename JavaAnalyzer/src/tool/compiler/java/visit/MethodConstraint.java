@@ -183,14 +183,14 @@ public class MethodConstraint implements ConstraintFunction {
 	/**
 	 * @return the metaConstraints
 	 */
-	public LinkedHashSet<Constraint> getMetaConstraints() {
+	public LinkedHashSet<? extends Constraint> getMetaConstraints() {
 		return new LinkedHashSet<>(metaConstraints);
 	}
 	
 	/**
 	 * @param metaConstraints the metaConstraints to set
 	 */
-	public void setMetaConstraints(Collection<Constraint> metaConstraints) {
+	public void setMetaConstraints(Collection<? extends Constraint> metaConstraints) {
 		if(this.metaConstraints == null) {
 			this.metaConstraints = new LinkedHashSet<>(metaConstraints);
 		} else {
@@ -202,7 +202,7 @@ public class MethodConstraint implements ConstraintFunction {
 	/**
 	 * @param metaConstraints the metaConstraints to add
 	 */
-	public void addMetaConstraints(Collection<Constraint> metaConstraints) {
+	public void addMetaConstraints(Collection<? extends Constraint> metaConstraints) {
 		if(this.metaConstraints == null) {
 			this.metaConstraints = new LinkedHashSet<>(metaConstraints);
 		} else {
@@ -307,14 +307,14 @@ public class MethodConstraint implements ConstraintFunction {
 	
 	public static class ConstraintsPair {
 		
-		private Collection<Constraint> cs;
+		private Collection<? extends Constraint> cs;
 		private TypedSetVariable xret;
 		
 		/**
 		 * @param cs
 		 * @param xret
 		 */
-		public ConstraintsPair(Collection<Constraint> cs, TypedSetVariable xret) {
+		protected ConstraintsPair(Collection<? extends Constraint> cs, TypedSetVariable xret) {
 			super();
 			this.cs = cs;
 			this.xret = xret;
@@ -323,7 +323,7 @@ public class MethodConstraint implements ConstraintFunction {
 		/**
 		 * @return the cs
 		 */
-		public Collection<Constraint> getCS() {
+		public Collection<? extends Constraint> getCS() {
 			return cs;
 		}
 		
