@@ -39,12 +39,11 @@ public class EquGenLocalDeclExt extends EquGenStmtExt {
 		JL5LocalInstance localIns = (JL5LocalInstance) localDecl.localInstance();
 		Report.report(2, "[Leave] Local Declaration: " + localDecl/*.name()*/);
 		
-		// C x = e || C[] x = e;
-		//   1. x : C{Chi1} || C[]{Chi1(base, elem)}을 현재 env에 추가 (X1은 새로운 변수)
-		MetaSetVariable cchi1 = 		// C 또는 C[]에 대한 MetaSetVariable
-				!EquGenUtil.isArray(localDeclType) ? 						// 배열 타입이 아니면
-					new MetaSetVariable(localDeclType) : 					// C x: C{Chi1}
-					new ArrayMetaSetVariable((JL5ArrayType) localDeclType);	// C[] x: C[]{Chi1(base, elem)}
+		// C x = e / C[] x = e;
+		//   1. x : C{Chi1} / C[]{Chi1(base, elem)}을 현재 env에 추가 (Chi1은 새로운 변수)
+		MetaSetVariable cchi1 = !EquGenUtil.isArray(localDeclType) ?	// C 또는 C[]에 대한 MetaSetVariable
+				new MetaSetVariable(localDeclType) : 					// C x: C{Chi1}
+				new ArrayMetaSetVariable((JL5ArrayType) localDeclType);	// C[] x: C[]{Chi1(base, elem)}
 		v.getLocalEnv().add(localIns, cchi1);
 		Report.report(3, "\t[MetaSetVariable] " + cchi1 + " (For Env.: New)");
 		
