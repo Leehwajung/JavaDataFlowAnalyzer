@@ -25,6 +25,7 @@ public class EquGenArrayInitExt extends EquGenExprExt {
 	private static final long serialVersionUID = SerialVersionUID.generate();
 	
 	private AbstractObject absObj;
+	private AbstractObject length;
 	
 	@Override
 	public EquGenerator equGenEnter(EquGenerator v) {
@@ -33,6 +34,12 @@ public class EquGenArrayInitExt extends EquGenExprExt {
 		
 		absObj = new AbstractObject(arrInit);
 		v.addToSet(absObj);
+		Report.report(3, "\t[AbstractObject] "  + absObj + " (Object " + absObj.getType() + ")");
+		
+		length = new AbstractObject(arrInit);
+		// TODO: ArrayInit에 대한 길이 정보를 AbstractObject 내에서 표현해야 함.
+		v.addToSet(length);
+		Report.report(3, "\t[AbstractObject] "  + length + " (Object " + length.getType() + " (length Field))");
 		
 		return super.equGenEnter(v);
 	}
@@ -45,38 +52,42 @@ public class EquGenArrayInitExt extends EquGenExprExt {
 		// {e1, ... , en}
 		//   1. C[]{Chi} 변수 생성
 		ArrayMetaSetVariable cchi = new ArrayMetaSetVariable((JL5ArrayType) arrInit.type());
+		Report.report(3, "\t[MetaSetVariable] " + cchi + " (For return: New)");
 		
 		//   2-1. C[]{o} <: C[]{Chi} 제약식을 추가
 		ObjsSubseteqX ox = new ObjsSubseteqX(absObj, cchi);
 		v.getCurrMC().addMetaConstraint(ox);
 		Report.report(3, "\t[ObjsSubseteqX] " + ox);
 		
-		//   2-2. C[]{o} <: C[]{Chi}의 하위 레벨 제약식을 집합에 추가
-		//        (elements에 대한 데이터 플로우)
+		//   2-2. elements에 대한 데이터 플로우
 		for(Expr ei : arrInit.elements()) {
-			//   2-2a.C[]{Chi}의 base의 타입 C[]{Chi}.base와 ei의 타입 Ci{Chi}를 가져온 다음
+			//   2-2a.C[]{Chi}의 base의 타입 C[]{Chi}.base와 ei의 타입 Ci{Chii}를 가져온 다음
 			//         (element의 타입에 대한 MSV)
 			MetaSetVariable cchi_base = cchi.base();
-			MetaSetVariable cichi = metaSetVar(ei);
+			MetaSetVariable cichii = metaSetVar(ei);
 			
-			//   2-2b. Ci{Chi} <: C[]{Chi}.base 제약식을 추가 (element에 대한 Top Level)
-			XSubseteqY xy = new XSubseteqY(cichi, cchi_base);
+			//   2-2b. Ci{Chii} <: C[]{Chi}.base 제약식을 추가 (element에 대한 Top Level)
+			XSubseteqY xy = new XSubseteqY(cichii, cchi_base);
 			v.getCurrMC().addMetaConstraint(xy);
 			Report.report(3, "\t[XSubseteqY] " + xy);
 			
-			//   2-2c. ei가 배열인 경우, Ci{Chi} <: C[]{Chi}.base의 하위 레벨 제약식을 집합에 추가
+			//   2-2c. ei가 배열인 경우, Ci{Chii} <: C[]{Chi}.base의 하위 레벨 제약식을 집합에 추가
 			//         (Top Level 아래의 MetaSetVariable의 데이터 플로우)
 			if(EquGenUtil.isArray(ei.type())) {
 				Collection<XSubseteqY> xys = EquGenUtil.constrain(
-						(ArrayMetaSetVariable) cichi, 
+						(ArrayMetaSetVariable) cichii, 
 						(ArrayMetaSetVariable) cchi_base);
 				v.getCurrMC().addMetaConstraints(xys);
 			}
 		}
 		
+		//   2-3. C{Chi}.length에 대한 제약식 생성
+		ox = new ObjsSubseteqX(length, cchi.length());
+		v.getCurrMC().addMetaConstraint(ox);
+		Report.report(3, "\t[ObjsSubseteqX] " + ox);
+		
 		//   3. return C[]{Chi}
 		setMetaSetVar(cchi);
-		Report.report(3, "\t[MetaSetVariable] " + cchi + " (new)");
 		
 		return super.equGenLeave(v);
 	}

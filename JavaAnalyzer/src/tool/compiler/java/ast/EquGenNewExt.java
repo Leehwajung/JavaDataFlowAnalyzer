@@ -34,13 +34,13 @@ public class EquGenNewExt extends EquGenExprExt {
 		
 		absObj = new AbstractObject(nw);
 		v.addToSet(absObj);
+		Report.report(3, "\t[AbstractObject] "  + absObj + " (Object " + absObj.getType() + ")");
 		
 		// (호출) 메서드 인포 생성
 		MethodCallInfo mtdInfo = new MethodCallInfo((JL5ProcedureInstance) nw.procedureInstance());
 		v.addToSet(mtdInfo);
-		
-		Report.report(3, "\t[AbstractObject] "  + absObj + " (Object " + nw.type() + ")");
 		Report.report(3, "\t[MethodCallInfo] " + mtdInfo);
+		
 		return super.equGenEnter(v);
 	}
 	
@@ -53,6 +53,7 @@ public class EquGenNewExt extends EquGenExprExt {
 		// new C(e1, ..., en)
 		//   1. C<T1,...,Tn>{Chi} 변수 생성
 		MetaSetVariable ctschi = new MetaSetVariable(ctorIns.container());
+		Report.report(3, "\t[MetaSetVariable] " + ctschi + " (For return: New)");
 		
 		//   2-1. C<T1,...,Tn>{o} <: C<T1,...,Tn>{Chi} 제약식을 추가
 		ObjsSubseteqX ox = new ObjsSubseteqX(absObj, ctschi);
@@ -72,7 +73,6 @@ public class EquGenNewExt extends EquGenExprExt {
 		
 		//  3. return C<T1,...,Tn>{Chi}
 		setMetaSetVar(ctschi);
-		Report.report(3, "\t[MetaSetVariable] " + ctschi + " (new)");
 		
 		return super.equGenLeave(v);
 	}

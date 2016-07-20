@@ -32,6 +32,7 @@ public class EquGenNewArrayExt extends EquGenExprExt {
 		
 		absObj = new AbstractObject(nwArr);
 		v.addToSet(absObj);
+		Report.report(3, "\t[AbstractObject] "  + absObj + " (Object " + absObj.getType() + ")");
 		
 		return super.equGenEnter(v);
 	}
@@ -39,11 +40,11 @@ public class EquGenNewArrayExt extends EquGenExprExt {
 	@Override
 	public Node equGenLeave(EquGenerator v) {
 		NewArray nwArr = (NewArray) this.node();
-		Report.report(2, "[Leave] New Array: " + nwArr);
 		
-		// new C[n] || new C[]{e1, ... , en}
+		// new C[n] / new C[]{e1, ... , en}
 		//   1. C[]{Chi1} 변수 생성 (NewArray의 타입에 대한 MSV)
 		ArrayMetaSetVariable cchi1 = new ArrayMetaSetVariable((JL5ArrayType) nwArr.type());
+		Report.report(3, "\t[MetaSetVariable] " + cchi1 + " (For return: New)");
 		
 		//   2-1. C[]{o} <: C[]{Chi1} 제약식을 추가
 		ObjsSubseteqX ox = new ObjsSubseteqX(absObj, cchi1);
@@ -71,7 +72,6 @@ public class EquGenNewArrayExt extends EquGenExprExt {
 		
 		//   3. return C[]{Chi1}
 		setMetaSetVar(cchi1);
-		Report.report(3, "\t[MetaSetVariable] " + cchi1 + " (new)");
 		
 		return super.equGenLeave(v);
 	}

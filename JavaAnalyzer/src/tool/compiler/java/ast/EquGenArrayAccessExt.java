@@ -33,9 +33,10 @@ public class EquGenArrayAccessExt extends EquGenExprExt {
 		// TODO: arrAccess.array()을 Local로 캐스팅할 때 캐스팅 익셉션이 발생하는지 확인 필요
 		JL5LocalInstance localInst = (JL5LocalInstance) ((Local)arrAccess.array()).localInstance();
 		MetaSetVariable rtnMsv = v.getLocalEnv().lookUp(localInst);
+		Report.report(3, "\t[MetaSetVariable] " + rtnMsv + " (For return: From Local Env.)");
+		
 		setMetaSetVar(rtnMsv);
 		
-		Report.report(3, "\t[MetaSetVariable] " + rtnMsv);
 		return super.equGenLeave(v);
 	}
 }

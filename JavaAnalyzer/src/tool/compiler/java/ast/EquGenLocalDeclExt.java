@@ -41,15 +41,12 @@ public class EquGenLocalDeclExt extends EquGenStmtExt {
 		
 		// C x = e || C[] x = e;
 		//   1. x : C{Chi1} || C[]{Chi1(base, elem)}을 현재 env에 추가 (X1은 새로운 변수)
-		MetaSetVariable cchi1;	// C 또는 C[]에 대한 MetaSetVariable
-		if(EquGenUtil.isArray(localDeclType)) {
-			// C[] x: C[]{Chi1(base, elem)}
-			cchi1 = new ArrayMetaSetVariable((JL5ArrayType) localDeclType);
-		} else {
-			// C x: C{Chi1}
-			cchi1 = new MetaSetVariable(localDeclType);
-		}
+		MetaSetVariable cchi1 = 		// C 또는 C[]에 대한 MetaSetVariable
+				!EquGenUtil.isArray(localDeclType) ? 						// 배열 타입이 아니면
+					new MetaSetVariable(localDeclType) : 					// C x: C{Chi1}
+					new ArrayMetaSetVariable((JL5ArrayType) localDeclType);	// C[] x: C[]{Chi1(base, elem)}
 		v.getLocalEnv().add(localIns, cchi1);
+		Report.report(3, "\t[MetaSetVariable] " + cchi1 + " (For Env.: New)");
 		
 		//   2. e가 있는지 확인 후
 		Expr e = localDecl.init();
