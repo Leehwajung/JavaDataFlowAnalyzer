@@ -1,5 +1,6 @@
 package tool.compiler.java.visit;
 
+import polyglot.ext.jl5.types.JL5ArrayType;
 import polyglot.types.Type;
 
 public class MetaSetVariable extends SetVariable {
@@ -27,6 +28,10 @@ public class MetaSetVariable extends SetVariable {
 	public MetaSetVariable(Type type) {
 		super(type);
 //		this(type, false);
+	}
+	
+	public static MetaSetVariable create(Type type) {
+		return type instanceof JL5ArrayType ? new ArrayMetaSetVariable((JL5ArrayType) type) : new MetaSetVariable(type);
 	}
 	
 	/**

@@ -44,7 +44,8 @@ public final class EquGenUtil {
 	
 	/**
 	 * X[] <: Y[]		<br>
-	 * 주의! Top Level에 대한 제약식은 생성하지 않음!
+	 * 주의! Top Level의 배열 타입에 대한 제약식은 생성하지 않음!
+	 *      Top Level의 length에 대한 제약식은 생성함!
 	 * @param x	set X[]
 	 * @param y	set Y[]
 	 * @return	Generated Constraints for Array (XSubseteqY)

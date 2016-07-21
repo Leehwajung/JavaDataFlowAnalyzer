@@ -1,8 +1,5 @@
 package tool.compiler.java.ast;
 
-import java.util.Collection;
-import java.util.Iterator;
-
 import polyglot.ast.ArrayInit;
 import polyglot.ast.Expr;
 import polyglot.ast.NewArray;
@@ -10,7 +7,6 @@ import polyglot.ast.Node;
 import polyglot.ext.jl5.types.JL5ArrayType;
 import polyglot.main.Report;
 import polyglot.util.SerialVersionUID;
-import tool.compiler.java.util.EquGenUtil;
 import tool.compiler.java.visit.AbstractObject;
 import tool.compiler.java.visit.ArrayMetaSetVariable;
 import tool.compiler.java.visit.EquGenerator;
@@ -75,19 +71,19 @@ public class EquGenNewArrayExt extends EquGenExprExt {
 			MetaSetVariable cichii_base = cchi;
 			
 			for(Expr ns : nwArr.dims()) {
-				//   현재 레벨 갱신
+				//   1A-3a. 현재 레벨 갱신
 				cichii = (ArrayMetaSetVariable) cichii_base;	// 현재 Ci{Chii} 갱신
 				tjchij = metaSetVar(ns);						// 현재 int{Chij} 갱신
 				
-				//   int{Chij} <: Ci{Chii}.length 제약식을 추가 (각각 int 타입)
+				//   1A-3b. int{Chij} <: Ci{Chii}.length 제약식을 추가 (각각 int 타입)
 				xy = new XSubseteqY(tjchij, cichii.length());
 				v.getCurrMC().addMetaConstraint(xy);
 				Report.report(3, "\t[XSubseteqY] " + xy);
 				
-				//   Ci{Chii}의 base를 가져옴
+				//   1A-3c. Ci{Chii}의 base를 가져옴
 				cichii_base = cichii.base();	// Ci{Chii}의 base
 				
-				//   base가 Array가 아니면 종료
+				//   1A-3d. base가 Array가 아니면 종료
 				// TODO: dims 리스트의 크기와 cchi의 차원이 다른 경우가 발생하는가
 				// 발생하면 안되며, 발생하지 않는다면 아래의 if 블록은 지울 수 있다.
 //				if(!(cichi_base instanceof ArrayMetaSetVariable)) {
@@ -99,7 +95,6 @@ public class EquGenNewArrayExt extends EquGenExprExt {
 		//   1B. new C[]{e1, ... , en}
 		//       {e1, ... , en}의 타입 C[]{Chi1}을 가져오기
 		else {
-			absObj = ((EquGenArrayInitExt) EquGenExt.ext(es)).absObj();	// TODO: 가져와도 사용 안할 것으로 예상되므로 지워도 되는지 확인
 			cchi = (ArrayMetaSetVariable) metaSetVar(es);
 			Report.report(3, "\t[MetaSetVariable] " + cchi + " (For return: From init)");
 		}

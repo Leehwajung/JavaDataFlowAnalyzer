@@ -8,6 +8,7 @@ import polyglot.main.Report;
 import polyglot.util.SerialVersionUID;
 import tool.compiler.java.util.EquGenUtil;
 import tool.compiler.java.visit.AbstractObject;
+import tool.compiler.java.visit.AbstractObject.Info;
 import tool.compiler.java.visit.ArrayMetaSetVariable;
 import tool.compiler.java.visit.EquGenerator;
 import tool.compiler.java.visit.MetaSetVariable;
@@ -36,8 +37,7 @@ public class EquGenArrayInitExt extends EquGenExprExt {
 		v.addToSet(absObj);
 		Report.report(3, "\t[AbstractObject] "  + absObj + " (Object " + absObj.getType() + ")");
 		
-		length = new AbstractObject(arrInit);
-		// TODO: ArrayInit에 대한 길이 정보를 AbstractObject 내에서 표현해야 함.
+		length = new AbstractObject(arrInit, Info.ArrayInitLength);
 		v.addToSet(length);
 		Report.report(3, "\t[AbstractObject] "  + length + " (Object " + length.getType() + " (length Field))");
 		
@@ -90,13 +90,5 @@ public class EquGenArrayInitExt extends EquGenExprExt {
 		setMetaSetVar(cchi);
 		
 		return super.equGenLeave(v);
-	}
-	
-	public AbstractObject absObj() {
-		return absObj;
-	}
-	
-	public AbstractObject absObjLength() {
-		return length;
 	}
 }
