@@ -26,7 +26,7 @@ public class EquGenUnaryExt extends EquGenExprExt {
 		
 		absObj = new AbstractObject(unary);
 		v.addToSet(absObj);
-		Report.report(3, "\t[AbstractObject] "  + absObj + " (Object " + absObj.getType() + ")");
+		Report.report(3, "\t[AbstractObject] "  + absObj + " ( " + absObj.getType() + " )");
 		
 		return super.equGenEnter(v);
 	}

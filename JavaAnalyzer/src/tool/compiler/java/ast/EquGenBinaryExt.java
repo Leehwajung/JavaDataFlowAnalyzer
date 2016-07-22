@@ -26,7 +26,7 @@ public class EquGenBinaryExt extends EquGenExprExt {
 		
 		absObj = new AbstractObject(binary);
 		v.addToSet(absObj);
-		Report.report(3, "\t[AbstractObject] " + absObj + " (" + absObj.getType() + ")");
+		Report.report(3, "\t[AbstractObject] " + absObj + " (" + absObj.getType() + " )");
 		
 		return super.equGenEnter(v);
 	}

@@ -26,7 +26,7 @@ public class EquGenInstanceofExt extends EquGenExprExt {
 		
 		absObj = new AbstractObject(insof);
 		v.addToSet(absObj);
-		Report.report(3, "\t[AbstractObject] "  + absObj + " (Object " + absObj.getType() + ")");
+		Report.report(3, "\t[AbstractObject] "  + absObj + " ( " + absObj.getType() + " )");
 		
 		return super.equGenEnter(v);
 	}

@@ -67,6 +67,8 @@ class CCC extends CC {
 class CCCC extends CC {
 	void mm () {
 		CCC cc = new CCC();
+		cc.ii += 3;
+		
 		cc.mth();
 		
 		int[] intArr1 = {1, 2, 3};	// ArrayInit
@@ -74,6 +76,13 @@ class CCCC extends CC {
 		int[][] intArr3 = {{1, 1}, {2, 2}, {3, 3}};	// ArrayInit
 		int[][] intArr4 = new int[3][4];	// NewArray
 		int[] intArr5 = new int[]{1,2,3};
+		
+		int aa;
+		aa = intArr1[3];
+		intArr1[2] = 4;
+		intArr1[1] += 5;
+		aa += 3;
+		aa = 2;
 		
 		int iii = cc.ii;
 		int leng = intArr4.length;

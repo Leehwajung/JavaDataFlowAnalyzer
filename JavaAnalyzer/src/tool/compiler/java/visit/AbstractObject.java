@@ -33,14 +33,14 @@ public class AbstractObject extends AbsObjSet {
 	 * 
 	 * ArrayInitLength:		Node가 {e1, ... , ek}를 가리킨다. k라고 해석.<br>
 	 * FieldAssignOp:		Node가 o.f op= e를 가리킨다. o.f op e라고 해석.<br>
-	 * LocapAssignOp:		Node가 x op= e를 가리킨다. x op e라고 해석.<br>
+	 * LocalAssignOp:		Node가 x op= e를 가리킨다. x op e라고 해석.<br>
 	 * ArrayAccessAssignOp:	Node가 o.f[idx] op= e를 가리킨다. o.f[idx] op e라고 해석.
 	 * 						Node가 x[idx] op= e를 가리킨다. x[idx] op e라고 해석.
 	 */
 	public static enum Info {
 		ArrayInitLength,		// Node가 {e1, ... , ek}를 가리킨다. k라고 해석.
 		FieldAssignOp,			// Node가 o.f op= e를 가리킨다. o.f op e라고 해석.
-		LocapAssignOp,			// Node가 x op= e를 가리킨다. x op e라고 해석.
+		LocalAssignOp,			// Node가 x op= e를 가리킨다. x op e라고 해석.
 		ArrayAccessAssignOp		// Node가 o.f[idx] op= e를 가리킨다. o.f[idx] op e라고 해석.
 								// Node가 x[idx] op= e를 가리킨다. x[idx] op e라고 해석.
 	}
@@ -97,7 +97,7 @@ public class AbstractObject extends AbsObjSet {
 				setType(lengthType.lengthField().type());
 				break;
 			case FieldAssignOp:
-			case LocapAssignOp:
+			case LocalAssignOp:
 			case ArrayAccessAssignOp:
 				Assign lasgn = (Assign) expr;
 				setType(lasgn.left().type());

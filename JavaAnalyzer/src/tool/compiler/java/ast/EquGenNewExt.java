@@ -34,7 +34,7 @@ public class EquGenNewExt extends EquGenExprExt {
 		
 		absObj = new AbstractObject(nw);
 		v.addToSet(absObj);
-		Report.report(3, "\t[AbstractObject] "  + absObj + " (Object " + absObj.getType() + ")");
+		Report.report(3, "\t[AbstractObject] "  + absObj + " ( " + absObj.getType() + " )");
 		
 		// (호출) 메서드 인포 생성
 		MethodCallInfo mtdInfo = new MethodCallInfo((JL5ProcedureInstance) nw.procedureInstance());

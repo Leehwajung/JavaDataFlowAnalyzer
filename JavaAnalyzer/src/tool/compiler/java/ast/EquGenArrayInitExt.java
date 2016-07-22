@@ -35,11 +35,11 @@ public class EquGenArrayInitExt extends EquGenExprExt {
 		
 		absObj = new AbstractObject(arrInit);
 		v.addToSet(absObj);
-		Report.report(3, "\t[AbstractObject] "  + absObj + " (Object " + absObj.getType() + ")");
+		Report.report(3, "\t[AbstractObject] "  + absObj + " ( " + absObj.getType() + ")");
 		
 		length = new AbstractObject(arrInit, Info.ArrayInitLength);
 		v.addToSet(length);
-		Report.report(3, "\t[AbstractObject] "  + length + " (Object " + length.getType() + " (length Field))");
+		Report.report(3, "\t[AbstractObject] "  + length + " ( " + length.getType() + " ): length Field of Array");
 		
 		return super.equGenEnter(v);
 	}

@@ -26,8 +26,8 @@ public class EquGenLitExt extends EquGenExprExt {
 		
 		absObj = new AbstractObject(lit);
 		v.addToSet(absObj);
-		Report.report(3, "\t[AbstractObject] " + absObj + " (" + lit.getClass().getInterfaces()[0].getSimpleName() + ")");
-//		Report.report(3, "\t[AbstractObject] "  + absObj + " (Object " + absObj.getType() + ")");
+		Report.report(3, "\t[AbstractObject] " + absObj + " ( " + lit.getClass().getInterfaces()[0].getSimpleName() + " )");
+//		Report.report(3, "\t[AbstractObject] "  + absObj + " ( " + absObj.getType() + " )");
 		
 		return super.equGenEnter(v);
 	}

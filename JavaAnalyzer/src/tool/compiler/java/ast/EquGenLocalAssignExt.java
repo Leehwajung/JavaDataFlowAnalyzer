@@ -28,9 +28,9 @@ public class EquGenLocalAssignExt extends EquGenAssignExt {
 		Report.report(2, "[Enter] Local Assign: " + lasgn);
 		
 		if(lasgn.operator() != Assign.ASSIGN) {
-			absObj = new AbstractObject(lasgn, Info.LocapAssignOp);
+			absObj = new AbstractObject(lasgn, Info.LocalAssignOp);
 			v.addToSet(absObj);
-			Report.report(3, "\t[AbstractObject] "  + absObj + " (Object " + absObj.getType() + ")");
+			Report.report(3, "\t[AbstractObject] "  + absObj + " ( " + absObj.getType() + " )");
 		}
 		
 		return super.equGenEnter(v);

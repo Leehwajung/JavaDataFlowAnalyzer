@@ -32,7 +32,7 @@ public class EquGenNewArrayExt extends EquGenExprExt {
 		if(nwArr.init() == null) {
 			absObj = new AbstractObject(nwArr);
 			v.addToSet(absObj);
-			Report.report(3, "\t[AbstractObject] "  + absObj + " (Object " + absObj.getType() + ")");
+			Report.report(3, "\t[AbstractObject] "  + absObj + " ( " + absObj.getType() + " )");
 		}
 		// else{}에 대한 주
 		//   여기는 ArrayInit 노드를 방문하기 전이라 그 노드의 absObj가 아직 null이므로, 
