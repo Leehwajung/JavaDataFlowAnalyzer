@@ -65,6 +65,7 @@ class CCC extends CC {
 }
 
 class CCCC extends CC {
+	
 	void mm () {
 		CCC cc = new CCC();
 		cc.ii += 3;
@@ -83,6 +84,8 @@ class CCCC extends CC {
 		intArr1[1] += 5;
 		aa += 3;
 		aa = 2;
+		intArr3[2][3] = 8;
+		
 		
 		int iii = cc.ii;
 		int leng = intArr4.length;

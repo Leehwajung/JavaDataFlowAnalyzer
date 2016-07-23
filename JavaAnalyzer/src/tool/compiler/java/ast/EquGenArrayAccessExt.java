@@ -6,6 +6,7 @@ import polyglot.main.Report;
 import polyglot.util.SerialVersionUID;
 import tool.compiler.java.visit.ArrayMetaSetVariable;
 import tool.compiler.java.visit.EquGenerator;
+import tool.compiler.java.visit.MetaSetVariable;
 
 /**
  * ArrayAccess <: Variable <: Expr <: Term <: Node				<br>
@@ -30,9 +31,10 @@ public class EquGenArrayAccessExt extends EquGenExprExt {
 		
 		// arr[idx] (ArrayAccess의 index는 하나임)
 		ArrayMetaSetVariable arr = (ArrayMetaSetVariable) metaSetVar(arrAccess.array());
-		Report.report(3, "\t[MetaSetVariable] " + arr + " (For return: From array)");
+		MetaSetVariable tchi = arr.base();
+		Report.report(3, "\t[MetaSetVariable] " + tchi + " (For return: From array base)");
 		
-		setMetaSetVar(arr.base());
+		setMetaSetVar(tchi);
 		
 		return super.equGenLeave(v);
 	}
