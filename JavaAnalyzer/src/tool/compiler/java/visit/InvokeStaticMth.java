@@ -189,6 +189,10 @@ public class InvokeStaticMth implements Constraint {
 		return false;
 	}
 	
+	@Override
+	public String getKind() {
+		return this.getClass().getSimpleName();
+	}
 	
 	/**
 	 * Form:	C.m <: (D1{X1}, ..., Dn{Xn}) -- effect --> E{Y}

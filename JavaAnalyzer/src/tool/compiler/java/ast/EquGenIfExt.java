@@ -1,9 +1,8 @@
 package tool.compiler.java.ast;
 
-import polyglot.ast.If;
 import polyglot.ast.Node;
-import polyglot.main.Report;
 import polyglot.util.SerialVersionUID;
+import tool.compiler.java.util.ReportUtil;
 import tool.compiler.java.visit.EquGenerator;
 
 /**
@@ -12,20 +11,26 @@ import tool.compiler.java.visit.EquGenerator;
  */
 public class EquGenIfExt extends EquGenStmtExt {
 	private static final long serialVersionUID = SerialVersionUID.generate();
+	public static final String KIND = "If";
 	
 	@Override
 	public EquGenerator equGenEnter(EquGenerator v) {
-		If ifStmt = (If)this.node();
-		Report.report(2, "[Enter] If: " + ifStmt);
+		ReportUtil.enterReport(this);
+//		If ifStmt = (If)this.node();
 		
 		return super.equGenEnter(v);
 	}
 	
 	@Override
 	public Node equGenLeave(EquGenerator v) {
-		If ifStmt = (If)this.node();
-		Report.report(2, "[Leave] If: " + ifStmt);
+		ReportUtil.leaveReport(this);
+//		If ifStmt = (If)this.node();
 		
 		return super.equGenLeave(v);
+	}
+	
+	@Override
+	public String getKind() {
+		return KIND;
 	}
 }

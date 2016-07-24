@@ -10,20 +10,26 @@ import tool.compiler.java.visit.EquGenerator;
  */
 public class EquGenStmtExt extends EquGenExt {
 	private static final long serialVersionUID = SerialVersionUID.generate();
+	public static final String KIND = "Statement";
 	
 	@Override
 	public EquGenerator equGenEnter(EquGenerator v) {
+//		ReportUtil.enterReport(this);
 //		Stmt stmt = (Stmt)this.node();
-//		Report.report(0, "[Enter] Statement: " + stmt);
 		
 		return super.equGenEnter(v);
 	}
 	
 	@Override
 	public Node equGenLeave(EquGenerator v) {
+//		ReportUtil.leaveReport(this);
 //		Stmt stmt = (Stmt)this.node();
-//		Report.report(0, "[Leave] Statement: " + stmt);
 		
 		return super.equGenLeave(v);
+	}
+	
+	@Override
+	public String getKind() {
+		return KIND;
 	}
 }

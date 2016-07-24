@@ -143,6 +143,11 @@ public class ObjsSubseteqX implements Constraint {
 		return false;
 	}
 	
+	@Override
+	public String getKind() {
+		return this.getClass().getSimpleName();
+	}
+	
 	
 	/**
 	 * Form:	{ context1, ..., contextk } <: X

@@ -1,9 +1,8 @@
 package tool.compiler.java.ast;
 
 import polyglot.ast.Node;
-import polyglot.ast.Switch;
-import polyglot.main.Report;
 import polyglot.util.SerialVersionUID;
+import tool.compiler.java.util.ReportUtil;
 import tool.compiler.java.visit.EquGenerator;
 
 /**
@@ -12,20 +11,26 @@ import tool.compiler.java.visit.EquGenerator;
  */
 public class EquGenSwitchExt extends EquGenStmtExt {
 	private static final long serialVersionUID = SerialVersionUID.generate();
+	public static final String KIND = "Switch";
 	
 	@Override
 	public EquGenerator equGenEnter(EquGenerator v) {
-		Switch switchStmt = (Switch)this.node();
-		Report.report(2, "[Enter] Switch: " + switchStmt);
+		ReportUtil.enterReport(this);
+//		Switch switchStmt = (Switch)this.node();
 		
 		return super.equGenEnter(v);
 	}
 	
 	@Override
 	public Node equGenLeave(EquGenerator v) {
-		Switch switchStmt = (Switch)this.node();
-		Report.report(2, "[Leave] Switch: " + switchStmt);
+		ReportUtil.leaveReport(this);
+//		Switch switchStmt = (Switch)this.node();
 		
 		return super.equGenLeave(v);
+	}
+	
+	@Override
+	public String getKind() {
+		return KIND;
 	}
 }

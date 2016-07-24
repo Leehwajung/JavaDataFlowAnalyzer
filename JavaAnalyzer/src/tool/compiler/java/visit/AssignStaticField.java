@@ -136,6 +136,10 @@ public class AssignStaticField implements Constraint {
 		return false;
 	}
 	
+	@Override
+	public String getKind() {
+		return this.getClass().getSimpleName();
+	}
 	
 	/**
 	 * Form:	C{X} <: D.f

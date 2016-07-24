@@ -242,6 +242,11 @@ public class InvokeMth implements Constraint {
 		return false;
 	}
 	
+	@Override
+	public String getKind() {
+		return this.getClass().getSimpleName();
+	}
+	
 	protected final String getName() {
 		return getM() instanceof JL5MethodInstance ? ((JL5MethodInstance)getM()).name() : getM().container().toString();
 	}

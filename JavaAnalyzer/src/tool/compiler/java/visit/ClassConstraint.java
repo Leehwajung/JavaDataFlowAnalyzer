@@ -322,6 +322,11 @@ public class ClassConstraint implements ConstraintFunction {
 		}
 	}
 	
+	@Override
+	public String getKind() {
+		return this.getClass().getSimpleName();
+	}
+	
 	
 	/**
 	 * @see java.lang.Object#toString()

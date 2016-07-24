@@ -50,7 +50,10 @@ public class EquGenExt extends Ext_c implements EquGenOps {	// TODO: Not JL7Ext,
 		return node();
 	}
 	
-	
+	@Override
+	public String getKind() {
+		return "Node";
+	}
 	
 	/**
 	 * @return the MetaSetVariable

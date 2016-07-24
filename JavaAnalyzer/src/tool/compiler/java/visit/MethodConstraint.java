@@ -230,6 +230,11 @@ public class MethodConstraint implements ConstraintFunction {
 		return method instanceof JL5MethodInstance;
 	}
 	
+	@Override
+	public String getKind() {
+		return this.getClass().getSimpleName();
+	}
+	
 	
 	/**
 	 * @see java.lang.Object#toString()

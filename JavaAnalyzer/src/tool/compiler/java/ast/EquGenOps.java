@@ -9,6 +9,7 @@ public interface EquGenOps extends NodeOps {
 	
 	EquGenerator equGenEnter(EquGenerator v);
 	Node equGenLeave(EquGenerator v);
+	public String getKind();
 	AbsObjSet metaSetVar();
 	
 }

@@ -31,7 +31,9 @@ public class MetaSetVariable extends SetVariable {
 	}
 	
 	public static MetaSetVariable create(Type type) {
-		return type instanceof JL5ArrayType ? new ArrayMetaSetVariable((JL5ArrayType) type) : new MetaSetVariable(type);
+		return type instanceof JL5ArrayType ? 	// C 또는 C[]에 대한 MetaSetVariable
+				new ArrayMetaSetVariable((JL5ArrayType) type) : 	// C[] x: C[]{Chi1(base, elem)}
+				new MetaSetVariable(type); 					// C x: C{Chi1}
 	}
 	
 	/**

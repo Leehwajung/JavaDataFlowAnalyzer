@@ -3,8 +3,10 @@ package tool.compiler.java.ast;
 import polyglot.ast.ArrayAccessAssign;
 import polyglot.ast.Assign;
 import polyglot.ast.Node;
-import polyglot.main.Report;
 import polyglot.util.SerialVersionUID;
+import tool.compiler.java.util.ReportUtil;
+import tool.compiler.java.util.ReportUtil.MetaSetVarGoal;
+import tool.compiler.java.util.ReportUtil.MetaSetVarSource;
 import tool.compiler.java.visit.AbstractObject;
 import tool.compiler.java.visit.EquGenerator;
 import tool.compiler.java.visit.MetaSetVariable;
@@ -19,17 +21,19 @@ import tool.compiler.java.visit.AbstractObject.Info;
  */
 public class EquGenArrayAccessAssignExt extends EquGenAssignExt {
 	private static final long serialVersionUID = SerialVersionUID.generate();
+	public static final String KIND = "Array Access Assign";
+	
 	private AbstractObject absObj;
 	
 	@Override
 	public EquGenerator equGenEnter(EquGenerator v) {
+		ReportUtil.enterReport(this);
 		ArrayAccessAssign aasgn = (ArrayAccessAssign) this.node();
-		Report.report(2, "[Enter] Array Access Assign: " + aasgn);
 		
 		if(aasgn.operator() != Assign.ASSIGN) {
 			absObj = new AbstractObject(aasgn, Info.ArrayAccessAssignOp);
 			v.addToSet(absObj);
-			Report.report(3, "\t[AbstractObject] "  + absObj + " ( " + absObj.getType() + " )");
+			ReportUtil.report(absObj);
 		}
 		
 		return super.equGenEnter(v);
@@ -37,23 +41,24 @@ public class EquGenArrayAccessAssignExt extends EquGenAssignExt {
 	
 	@Override
 	public Node equGenLeave(EquGenerator v) {
+		ReportUtil.leaveReport(this);
 		ArrayAccessAssign aasgn = (ArrayAccessAssign) this.node();
-		Report.report(2, "[Leave] Array Access Assign: " + aasgn);
 		
 		// a[i] = e / a[i] op= e
 		//   1. a[i]의 타입 C{Chi1}을 가져오고
 		MetaSetVariable cchi1 = metaSetVar(aasgn.left());
-		Report.report(3, "\t[MetaSetVariable] " + cchi1 + " (For return: From array access)");
+		ReportUtil.report(cchi1, MetaSetVarSource.Lvalue, MetaSetVarGoal.Return);
 		
 		//   2A. a[i] = e
 		if(aasgn.operator() == Assign.ASSIGN) {
 			//   2A-1. e의 타입 D{Chi2}를 가져오고
 			MetaSetVariable dchi2 = metaSetVar(aasgn.right());
+			ReportUtil.report(dchi2, MetaSetVarSource.Rvalue, MetaSetVarGoal.Flow);
 			
 			//   2A-2. D{Chi2} <: C{Chi1} 제약식을 추가
 			XSubseteqY xy = new XSubseteqY(dchi2, cchi1);
 			v.getCurrMC().addMetaConstraint(xy);
-			Report.report(3, "\t[XSubseteqY] " + xy);
+			ReportUtil.report(xy);
 		}
 		
 		//   2B. a[i] op= e	(e.g. a[i] += e)
@@ -61,7 +66,7 @@ public class EquGenArrayAccessAssignExt extends EquGenAssignExt {
 			//   2B-1. C{o} <: C{Chi1} 제약식을 추가
 			ObjsSubseteqX ox = new ObjsSubseteqX(absObj, cchi1);
 			v.getCurrMC().addMetaConstraint(ox);
-			Report.report(3, "\t[ObjsSubseteqX] " + ox);
+			ReportUtil.report(ox);
 			
 			//   2B-2. TODO: aasgn.rignt()와 absObj의 관계를 표현해야 함.
 		}
@@ -70,5 +75,10 @@ public class EquGenArrayAccessAssignExt extends EquGenAssignExt {
 		setMetaSetVar(cchi1);
 		
 		return super.equGenLeave(v);
+	}
+	
+	@Override
+	public String getKind() {
+		return KIND;
 	}
 }

@@ -1,9 +1,8 @@
 package tool.compiler.java.ast;
 
-import polyglot.ast.Block;
 import polyglot.ast.Node;
-import polyglot.main.Report;
 import polyglot.util.SerialVersionUID;
+import tool.compiler.java.util.ReportUtil;
 import tool.compiler.java.visit.EquGenerator;
 
 /**
@@ -12,11 +11,12 @@ import tool.compiler.java.visit.EquGenerator;
  */
 public class EquGenBlockExt extends EquGenStmtExt {
 	private static final long serialVersionUID = SerialVersionUID.generate();
+	public static final String KIND = "Block";
 	
 	@Override
 	public EquGenerator equGenEnter(EquGenerator v) {
-		Block block = (Block)this.node();
-		Report.report(2, "[Enter] Block: " + block);
+		ReportUtil.enterReport(this);
+//		Block block = (Block)this.node();
 		
 		// 로컬 환경 구성
 		v.getLocalEnv().push();
@@ -26,12 +26,17 @@ public class EquGenBlockExt extends EquGenStmtExt {
 	
 	@Override
 	public Node equGenLeave(EquGenerator v) {
-		Block block = (Block)this.node();
-		Report.report(2, "[Leave] Block: " + block);
+		ReportUtil.leaveReport(this);
+//		Block block = (Block)this.node();
 		
 		// 로컬 환경 해제
 		v.getLocalEnv().pop();
 		
 		return super.equGenLeave(v);
+	}
+	
+	@Override
+	public String getKind() {
+		return KIND;
 	}
 }
