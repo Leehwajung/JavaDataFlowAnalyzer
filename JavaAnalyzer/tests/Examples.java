@@ -89,5 +89,11 @@ class CCCC extends CC {
 		
 		int iii = cc.ii;
 		int leng = intArr4.length;
+		
+		if((iii = leng) != 100000) {
+			int iiii = 1;
+		}
+		
+		
 	}
 }

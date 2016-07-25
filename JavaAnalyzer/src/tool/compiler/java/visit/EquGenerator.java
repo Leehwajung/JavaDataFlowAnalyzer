@@ -39,7 +39,7 @@ public class EquGenerator extends ContextVisitor {
 	private static ClassConstraint currCC;
 	private static MethodConstraint currMC;
 	
-	private static LocalEnv localEnv;
+	private static LocalEnvironment localEnv;
 	
 	@Deprecated
 	private static LinkedHashSet<FieldTableRow> fieldEquationSet;
@@ -220,14 +220,14 @@ public class EquGenerator extends ContextVisitor {
 	/**
 	 * @return the localEnv
 	 */
-	public LocalEnv getLocalEnv() {
+	public LocalEnvironment getLocalEnv() {
 		return localEnv;
 	}
 
 	/**
 	 * @param localEnv the localEnv to set
 	 */
-	public void setLocalEnv(LocalEnv localEnv) {
+	public void setLocalEnv(LocalEnvironment localEnv) {
 		EquGenerator.localEnv = localEnv;
 	}
 

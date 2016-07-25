@@ -1,18 +1,17 @@
 package tool.compiler.java.visit;
 
-import java.util.HashMap;
 import java.util.LinkedList;
 
 import polyglot.ext.jl5.types.JL5LocalInstance;
 
-public class LocalEnv {
+public class LocalEnvironment {
 	
-	private HashMap<JL5LocalInstance, MetaSetVariable> currEnv;		// 현재 환경
-	private LinkedList<HashMap<JL5LocalInstance, MetaSetVariable>> envStack;
+	private TypeEnvironment currEnv;		// 현재 환경
+	private LinkedList<TypeEnvironment> envStack;
 	
 	/**
 	 */
-	public LocalEnv() {
+	public LocalEnvironment() {
 		envStack = new LinkedList<>();
 	}
 	
@@ -22,7 +21,7 @@ public class LocalEnv {
 	
 	public MetaSetVariable lookUp(JL5LocalInstance x) {
 		MetaSetVariable msv = null;
-		for (HashMap<JL5LocalInstance, MetaSetVariable> tmpenv : envStack) {
+		for (TypeEnvironment tmpenv : envStack) {
 			msv = tmpenv.get(x);
 			if (msv != null) {
 				break;
@@ -39,7 +38,7 @@ public class LocalEnv {
 //	}
 	
 	public void push() {
-		currEnv = new HashMap<>();
+		currEnv = new TypeEnvironment();
 		envStack.push(currEnv);
 	}
 	

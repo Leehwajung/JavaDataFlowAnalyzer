@@ -10,6 +10,7 @@ import tool.compiler.java.visit.MetaSetVariable;
 
 public class EquGenExt extends Ext_c implements EquGenOps {	// TODO: Not JL7Ext, but Ext_c to override lang()!!!
 	private static final long serialVersionUID = SerialVersionUID.generate();
+	public static final String KIND = "Node";
 	
 	private MetaSetVariable metaSetVar = null;
 //	private Effect effect = null;
@@ -52,7 +53,7 @@ public class EquGenExt extends Ext_c implements EquGenOps {	// TODO: Not JL7Ext,
 	
 	@Override
 	public String getKind() {
-		return "Node";
+		return KIND;
 	}
 	
 	/**
