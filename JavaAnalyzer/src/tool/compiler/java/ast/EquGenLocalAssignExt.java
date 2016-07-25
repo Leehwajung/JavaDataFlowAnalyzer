@@ -1,13 +1,17 @@
 package tool.compiler.java.ast;
 
+import java.util.Collection;
+
 import polyglot.ast.Assign;
 import polyglot.ast.LocalAssign;
 import polyglot.ast.Node;
 import polyglot.util.SerialVersionUID;
+import tool.compiler.java.util.EquGenUtil;
 import tool.compiler.java.util.ReportUtil;
 import tool.compiler.java.util.ReportUtil.MetaSetVarGoal;
 import tool.compiler.java.util.ReportUtil.MetaSetVarSource;
 import tool.compiler.java.visit.AbstractObject;
+import tool.compiler.java.visit.ArrayMetaSetVariable;
 import tool.compiler.java.visit.AbstractObject.Info;
 import tool.compiler.java.visit.EquGenerator;
 import tool.compiler.java.visit.MetaSetVariable;
@@ -59,6 +63,14 @@ public class EquGenLocalAssignExt extends EquGenAssignExt {
 			XSubseteqY xy = new XSubseteqY(dchi2, cchi1);
 			v.getCurrMC().addMetaConstraint(xy);
 			ReportUtil.report(xy);
+			
+			//   2A-3. 배열 변수인 경우, Top Level 아래의 MetaSetVariable의 데이터 플로우
+			if(EquGenUtil.isArray(cchi1)) {
+				Collection<XSubseteqY> xys = EquGenUtil.constrain(
+						(ArrayMetaSetVariable) dchi2, 
+						(ArrayMetaSetVariable) cchi1);
+				v.getCurrMC().addMetaConstraints(xys);
+			}
 		}
 		
 		//   2B. l op= e	(e.g. l += e)

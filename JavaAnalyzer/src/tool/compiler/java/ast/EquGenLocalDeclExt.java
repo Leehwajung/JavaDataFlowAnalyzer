@@ -50,16 +50,16 @@ public class EquGenLocalDeclExt extends EquGenStmtExt {
 		//   2. e가 있는지 확인 후
 		Expr e = localDecl.init();
 		if(e != null) {
-			//   2a. e의 타입 D{Chi2}를 가져오고
+			//   2-1. e의 타입 D{Chi2}를 가져오고
 			MetaSetVariable dchi2 = EquGenExt.metaSetVar(e);
 			ReportUtil.report(dchi2, MetaSetVarSource.Rvalue, MetaSetVarGoal.Flow);
 			
-			//   2b. D{Chi2} <: C{Chi1}을 제약식 집합에 추가
+			//   2-2. D{Chi2} <: C{Chi1}을 제약식 집합에 추가
 			XSubseteqY xy = new XSubseteqY(dchi2, cchi1);
 			v.getCurrMC().addMetaConstraint(xy);
 			ReportUtil.report(xy);
 			
-			//   2c. 배열 변수인 경우, Top Level 아래의 MetaSetVariable의 데이터 플로우
+			//   2-3. 배열 변수인 경우, Top Level 아래의 MetaSetVariable의 데이터 플로우
 			if(EquGenUtil.isArray(localDeclType)) {
 				Collection<XSubseteqY> xys = EquGenUtil.constrain(
 						(ArrayMetaSetVariable) dchi2, 

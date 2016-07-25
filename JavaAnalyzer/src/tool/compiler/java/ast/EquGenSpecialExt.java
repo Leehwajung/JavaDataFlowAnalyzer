@@ -34,11 +34,11 @@ public class EquGenSpecialExt extends EquGenExprExt {
 		
 		MetaSetVariable cchi;
 		if(spc.kind() == Special.THIS) {
-			cchi = v.getCurrCC().getThis();
+			cchi = v.getCurrCC().getThis(spc.qualifier());
 			ReportUtil.report(cchi, MetaSetVarSource.Environment, MetaSetVarGoal.Return);
 		} else {	// TODO: 이 프로그램을 위해, super의 타입은 무엇으로 봐야 하는가? (자식 클래스? 부모 클래스?)
-			cchi = new MetaSetVariable(spc.type());
-			ReportUtil.report(cchi, MetaSetVarSource.New, MetaSetVarGoal.Return);
+			cchi = v.getCurrCC().getSuper(spc.qualifier());
+			ReportUtil.report(cchi, MetaSetVarSource.Environment, MetaSetVarGoal.Return);
 		}
 		
 		setMetaSetVar(cchi);

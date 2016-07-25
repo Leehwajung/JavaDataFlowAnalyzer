@@ -132,37 +132,37 @@ public class MethodConstraint implements ConstraintFunction {
 	}
 	
 	/**
-	 * @param chiFormals the chi_formals to set
+	 * @param chi_formals the chi_formals to set
 	 */
-	public void setFormals(Collection<MetaSetVariable> chiFormals) {
+	public void setFormals(Collection<MetaSetVariable> chi_formals) {
 		if(this.chi_formals == null) {
-			this.chi_formals = new ArrayList<MetaSetVariable>(chiFormals);
+			this.chi_formals = new ArrayList<MetaSetVariable>(chi_formals);
 		} else {
 			this.chi_formals.clear();
-			this.chi_formals.addAll(chiFormals);
+			this.chi_formals.addAll(chi_formals);
 		}
 	}
 	
 	/**
-	 * @param chiFormals the chi_formals to add
+	 * @param chi_formals the chi_formals to add
 	 */
-	public void addFormals(Collection<MetaSetVariable> chiFormals) {
+	public void addFormals(Collection<MetaSetVariable> chi_formals) {
 		if(this.chi_formals == null) {
-			this.chi_formals = new ArrayList<MetaSetVariable>(chiFormals);
+			this.chi_formals = new ArrayList<MetaSetVariable>(chi_formals);
 		} else {
-			this.chi_formals.addAll(chiFormals);
+			this.chi_formals.addAll(chi_formals);
 		}
 	}
 	
 	/**
-	 * @param chiFormal
+	 * @param chi_formal
 	 */
-	public void addFormal(MetaSetVariable chiFormal) {
+	public void addFormal(MetaSetVariable chi_formal) {
 		try {
-			this.chi_formals.add(chiFormal);
+			this.chi_formals.add(chi_formal);
 		} catch (NullPointerException e) {
 			this.chi_formals = new ArrayList<>();
-			this.chi_formals.add(chiFormal);
+			this.chi_formals.add(chi_formal);
 		}
 	}
 	
@@ -176,8 +176,8 @@ public class MethodConstraint implements ConstraintFunction {
 	/**
 	 * @param chiRet the chi_ret to set
 	 */
-	public void setReturn(MetaSetVariable chiRet) {
-		this.chi_ret = chiRet;
+	public void setReturn(MetaSetVariable chi_return) {
+		this.chi_ret = chi_return;
 	}
 	
 	/**
