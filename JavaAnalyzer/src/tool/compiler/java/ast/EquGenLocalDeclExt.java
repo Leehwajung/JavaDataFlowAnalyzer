@@ -51,7 +51,7 @@ public class EquGenLocalDeclExt extends EquGenStmtExt {
 		Expr e = localDecl.init();
 		if(e != null) {
 			//   2-1. e의 타입 D{Chi2}를 가져오고
-			MetaSetVariable dchi2 = EquGenExt.metaSetVar(e);
+			MetaSetVariable dchi2 = EquGenExprExt.metaSetVar(e);
 			ReportUtil.report(dchi2, MetaSetVarSource.Rvalue, MetaSetVarGoal.Flow);
 			
 			//   2-2. D{Chi2} <: C{Chi1}을 제약식 집합에 추가

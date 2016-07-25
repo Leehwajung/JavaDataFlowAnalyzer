@@ -51,7 +51,7 @@ public class EquGenFieldDeclExt extends EquGenExt {
 		if(e2 != null) {
 			// D f = e2 / static D f = e2
 			//   1. e2의 타입 E{Chi3}를 가져오고
-			MetaSetVariable echi3 = EquGenExt.metaSetVar(e2);
+			MetaSetVariable echi3 = EquGenExprExt.metaSetVar(e2);
 			ReportUtil.report(echi3, MetaSetVarSource.Rvalue, MetaSetVarGoal.Flow);
 			
 			//   2-1. 스칼라 변수, 또는 배열 변수의 Top Level의 MetaSetVariable의 데이터 플로우

@@ -58,7 +58,7 @@ public class EquGenFieldAssignExt extends EquGenAssignExt {
 		
 		// e1.f = e2 / C.f = e2 / e1.f op= e2 / C.f op= e2
 		//   1. e1.f / C.f의 타입 D{Chi2}를 가져오고
-		MetaSetVariable dchi2 = EquGenExt.metaSetVar(f);
+		MetaSetVariable dchi2 = EquGenExprExt.metaSetVar(f);
 		ReportUtil.report(dchi2, MetaSetVarSource.Lvalue, MetaSetVarGoal.Return);
 		
 		//   2-1. r-value의 타입 E{Chi3}를 가져온다
@@ -67,7 +67,7 @@ public class EquGenFieldAssignExt extends EquGenAssignExt {
 		//   2-1A. e1.f = e2 / C.f = e2
 		//         e2의 타입 E{Chi3}를 가져옴
 		if(fasgn.operator() == Assign.ASSIGN) {
-			echi3 = EquGenExt.metaSetVar(e2);
+			echi3 = EquGenExprExt.metaSetVar(e2);
 			ReportUtil.report(echi3, MetaSetVarSource.Rvalue, MetaSetVarGoal.Flow);
 		}
 		
@@ -89,7 +89,7 @@ public class EquGenFieldAssignExt extends EquGenAssignExt {
 		//   2-2A. e1.f = e2 / e1.f op= e2	(non-static)
 		//         e1의 타입 C{Chi1}을 가져오고, E{Chi3} <: C{Chi1}.f 제약식을 추가
 		if(!fldIns.flags().isStatic()) {
-			MetaSetVariable cchi1 = EquGenExt.metaSetVar(f.target());
+			MetaSetVariable cchi1 = EquGenExprExt.metaSetVar((Expr)f.target());
 			ReportUtil.report(cchi1, MetaSetVarSource.Receiver, MetaSetVarGoal.Flow);
 			
 			AssignField af = new AssignField(echi3, cchi1, fldIns);

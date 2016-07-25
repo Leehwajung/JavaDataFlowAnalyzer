@@ -31,7 +31,7 @@ public class EquGenReturnExt extends EquGenStmtExt {
 		Return returnStmt = (Return)this.node();
 		
 		// TODO: 제대로 했는지 확인 필요
-		MetaSetVariable tchi = metaSetVar(returnStmt.expr());
+		MetaSetVariable tchi = EquGenExprExt.metaSetVar(returnStmt.expr());
 		v.getCurrMC().setReturn(tchi);
 		ReportUtil.report(tchi, MetaSetVarSource.SubExpression, MetaSetVarGoal.Environment);
 		

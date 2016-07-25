@@ -67,7 +67,7 @@ public class EquGenNewExt extends EquGenExprExt {
 		ArrayList<MetaSetVariable> cschis = new ArrayList<>();
 		MetaSetVariable cichii;
 		for(Expr ei: nw.arguments()) {
-			cichii = EquGenExt.metaSetVar(ei);
+			cichii = EquGenExprExt.metaSetVar(ei);
 			cschis.add(cichii);
 			ReportUtil.report(cichii, MetaSetVarSource.Argument, MetaSetVarGoal.Flow);
 		}
