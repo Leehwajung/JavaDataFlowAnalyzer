@@ -4,7 +4,7 @@ import polyglot.ast.Node;
 import polyglot.ast.Stmt;
 import polyglot.util.SerialVersionUID;
 import tool.compiler.java.visit.EquGenerator;
-import tool.compiler.java.visit.TypeEnvironment;
+import tool.compiler.java.visit.LocalEnvironment;
 
 /**
  * Stmt <: Term <: Node
@@ -14,7 +14,7 @@ public class EquGenStmtExt extends EquGenExt {
 	private static final long serialVersionUID = SerialVersionUID.generate();
 	public static final String KIND = "Statement";
 	
-	private TypeEnvironment typeEnv = null;
+	private LocalEnvironment localEnv = null;
 	
 	@Override
 	public EquGenerator equGenEnter(EquGenerator v) {
@@ -39,24 +39,24 @@ public class EquGenStmtExt extends EquGenExt {
 	
 	
 	/**
-	 * @return the TypeEnvironment
+	 * @return the LocalEnvironment
 	 */
-	public final TypeEnvironment typeEnv() {
-		return typeEnv;
+	public final LocalEnvironment localEnv() {
+		return localEnv;
 	}
 	
 	/**
 	 * @param n node
-	 * @return the TypeEnvironment of node n
+	 * @return the LocalEnvironment of node n
 	 */
-	public static final TypeEnvironment typeEnv(Stmt n) {
-		return ((EquGenStmtExt)EquGenExt.ext(n)).typeEnv();
+	public static final LocalEnvironment localEnv(Stmt n) {
+		return ((EquGenStmtExt)EquGenExt.ext(n)).localEnv();
 	}
 	
 	/**
-	 * @param typeEnv the TypeEnvironment to set
+	 * @param localEnv the LocalEnvironment to set
 	 */
-	protected final void setTypeEnv(TypeEnvironment typeEnv) {
-		this.typeEnv = typeEnv;
+	protected final void setLocalEnv(LocalEnvironment localEnv) {
+		this.localEnv = localEnv;
 	}
 }

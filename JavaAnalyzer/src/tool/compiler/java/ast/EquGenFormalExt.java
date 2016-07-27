@@ -34,7 +34,7 @@ public class EquGenFormalExt extends EquGenExt {
 		// TODO: CC의 Field처럼, 구별을 위해 타입인스턴스도 Map으로 함께 저장할 필요가 있을 것도 같음
 		MetaSetVariable msv = new MetaSetVariable(fm.type().type());
 		v.getCurrMC().addFormal(msv);
-		v.getLocalEnv().add((JL5LocalInstance) fm.localInstance(), msv);
+		v.getTypeEnv().add((JL5LocalInstance) fm.localInstance(), msv);
 		ReportUtil.report(msv, MetaSetVarSource.New, MetaSetVarGoal.Environment);
 		
 		return super.equGenLeave(v);

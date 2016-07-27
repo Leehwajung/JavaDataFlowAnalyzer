@@ -92,8 +92,15 @@ class CCCC extends CC {
 		
 		if((iii = leng) != 100000) {
 			int iiii = 1;
+			iii = 11;
+		} else {
+			int iiii = 2;
+			iii = 22;
 		}
 		
-		
+		int a = 1;
+		while(iii == 33) {
+			a++;
+		}
 	}
 }

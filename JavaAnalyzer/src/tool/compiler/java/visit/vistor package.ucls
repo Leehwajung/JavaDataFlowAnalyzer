@@ -109,8 +109,8 @@
       <operations public="false" package="false" protected="false" private="false" static="false"/>    
     </display>  
   </class>  
-  <class id="13" language="java" name="tool.compiler.java.visit.LocalEnvironment" project="JavaAnalyzer" 
-    file="/JavaAnalyzer/src/tool/compiler/java/visit/LocalEnvironment.java" binary="false" corner="BOTTOM_RIGHT">    
+  <class id="13" language="java" name="tool.compiler.java.visit.TypeEnvironment" project="JavaAnalyzer" 
+    file="/JavaAnalyzer/src/tool/compiler/java/visit/TypeEnvironment.java" binary="false" corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="249" y="65"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      

@@ -6,7 +6,7 @@ import polyglot.ext.jl5.types.JL5ProcedureInstance;
 import polyglot.util.SerialVersionUID;
 import tool.compiler.java.util.ReportUtil;
 import tool.compiler.java.visit.EquGenerator;
-import tool.compiler.java.visit.LocalEnvironment;
+import tool.compiler.java.visit.TypeEnvironment;
 import tool.compiler.java.visit.MethodConstraint;
 import tool.compiler.java.visit.MethodInfo;
 
@@ -26,8 +26,8 @@ public class EquGenProcedureDeclExt extends EquGenExt {
 		JL5ProcedureInstance procIns = (JL5ProcedureInstance) procDecl.procedureInstance();
 		
 		// 로컬 환경 구성
-		v.setLocalEnv(new LocalEnvironment());
-		v.getLocalEnv().push();
+		v.setTypeEnv(new TypeEnvironment());
+		v.getTypeEnv().push();
 		
 		// MethodConstraint
 		MethodConstraint mc = new MethodConstraint(procIns);
@@ -49,7 +49,7 @@ public class EquGenProcedureDeclExt extends EquGenExt {
 		JL5ProcedureInstance procIns = (JL5ProcedureInstance) procDecl.procedureInstance();
 		
 		// 로컬 환경 해제
-		v.getLocalEnv().pop();
+		v.getTypeEnv().pop();
 		
 		// T m(T1 x1, ... Tn xn) { ... }ㅣ,
 		//   1. local env를 x1:T1{X1}, xn:Tn{Xn}으로 초기화

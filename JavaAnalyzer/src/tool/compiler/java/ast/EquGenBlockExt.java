@@ -4,6 +4,7 @@ import polyglot.ast.Node;
 import polyglot.util.SerialVersionUID;
 import tool.compiler.java.util.ReportUtil;
 import tool.compiler.java.visit.EquGenerator;
+import tool.compiler.java.visit.LocalEnvironment;
 
 /**
  * Block <: CompoundStmt <: Stmt <: Term <: Node
@@ -19,7 +20,7 @@ public class EquGenBlockExt extends EquGenStmtExt {
 //		Block block = (Block)this.node();
 		
 		// 로컬 환경 구성
-		v.getLocalEnv().push();
+		v.getTypeEnv().push();
 		
 		return super.equGenEnter(v);
 	}
@@ -30,7 +31,8 @@ public class EquGenBlockExt extends EquGenStmtExt {
 //		Block block = (Block)this.node();
 		
 		// 로컬 환경 해제
-		v.getLocalEnv().pop();
+		LocalEnvironment typeEnv = v.getTypeEnv().pop();
+		setLocalEnv(typeEnv);
 		
 		return super.equGenLeave(v);
 	}

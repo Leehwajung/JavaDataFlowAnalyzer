@@ -44,7 +44,7 @@ public class EquGenLocalDeclExt extends EquGenStmtExt {
 		// C x = e / C[] x = e;
 		//   1. x : C{Chi1} / C[]{Chi1(base, elem)}을 현재 env에 추가 (Chi1은 새로운 변수)
 		MetaSetVariable cchi1 = MetaSetVariable.create(localDeclType);
-		v.getLocalEnv().add(localIns, cchi1);
+		v.getTypeEnv().add(localIns, cchi1);
 		ReportUtil.report(cchi1, MetaSetVarSource.New, MetaSetVarGoal.Environment);
 		
 		//   2. e가 있는지 확인 후

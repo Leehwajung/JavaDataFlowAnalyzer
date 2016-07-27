@@ -1,9 +1,11 @@
 package tool.compiler.java.ast;
 
+import polyglot.ast.If;
 import polyglot.ast.Node;
 import polyglot.util.SerialVersionUID;
 import tool.compiler.java.util.ReportUtil;
 import tool.compiler.java.visit.EquGenerator;
+import tool.compiler.java.visit.LocalEnvironment;
 
 /**
  * If <: CompoundStmt <: Stmt <: Term <: Node
@@ -24,7 +26,14 @@ public class EquGenIfExt extends EquGenStmtExt {
 	@Override
 	public Node equGenLeave(EquGenerator v) {
 		ReportUtil.leaveReport(this);
-//		If ifStmt = (If)this.node();
+		If ifStmt = (If)this.node();
+		
+		// if (condition) {consequent} else {alternative}
+		LocalEnvironment cons = EquGenStmtExt.localEnv(ifStmt.consequent());
+		LocalEnvironment altr = EquGenStmtExt.localEnv(ifStmt.alternative());
+		
+		// TODO: environment의 합집합을 구하는 동작이 필요 없음?
+		setLocalEnv(v.getTypeEnv().getCurrEnv());
 		
 		return super.equGenLeave(v);
 	}
