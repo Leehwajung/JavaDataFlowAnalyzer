@@ -35,6 +35,8 @@ public class EquGenReturnExt extends EquGenStmtExt {
 		v.getCurrMC().setReturn(tchi);
 		ReportUtil.report(tchi, MetaSetVarSource.SubExpression, MetaSetVarGoal.Environment);
 		
+		setLocalEnv(v.getTypeEnv().getCurrEnv());
+		
 		return super.equGenLeave(v);
 	}
 	

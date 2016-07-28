@@ -46,6 +46,8 @@ public class EquGenConstructorCallExt extends EquGenStmtExt {
 //		ConstructorCall ctorCall = (ConstructorCall) this.node();
 //		JL5ConstructorInstance ctorIns = (JL5ConstructorInstance) ctorCall.constructorInstance();
 		
+		setLocalEnv(v.getTypeEnv().getCurrEnv());
+		
 		return super.equGenLeave(v);
 	}
 	

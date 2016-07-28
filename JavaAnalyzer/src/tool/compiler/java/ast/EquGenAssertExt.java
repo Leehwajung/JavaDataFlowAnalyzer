@@ -26,6 +26,8 @@ public class EquGenAssertExt extends EquGenStmtExt {
 		ReportUtil.leaveReport(this);
 //		Assert assertStmt = (Assert)this.node();
 		
+		setLocalEnv(v.getTypeEnv().getCurrEnv());
+		
 		return super.equGenLeave(v);
 	}
 	

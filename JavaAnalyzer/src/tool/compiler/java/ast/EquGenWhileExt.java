@@ -26,6 +26,9 @@ public class EquGenWhileExt extends EquGenStmtExt {
 		ReportUtil.leaveReport(this);
 //		While whileLoop = (While)this.node();
 		
+		// TODO: environment의 합집합을 구하는 동작이 필요 없음?
+		setLocalEnv(v.getTypeEnv().getCurrEnv());
+		
 		return super.equGenLeave(v);
 	}
 	

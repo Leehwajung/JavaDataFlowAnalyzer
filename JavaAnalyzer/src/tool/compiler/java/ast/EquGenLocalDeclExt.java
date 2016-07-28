@@ -69,6 +69,7 @@ public class EquGenLocalDeclExt extends EquGenStmtExt {
 		}
 		
 		//   3. 리턴할 MataSetVar는 없음
+		setLocalEnv(v.getTypeEnv().getCurrEnv());
 		
 		return super.equGenLeave(v);
 	}

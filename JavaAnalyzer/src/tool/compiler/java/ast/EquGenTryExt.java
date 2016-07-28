@@ -26,6 +26,8 @@ public class EquGenTryExt extends EquGenStmtExt {
 		ReportUtil.leaveReport(this);
 //		Try tryStmt = (Try)this.node();
 		
+		setLocalEnv(v.getTypeEnv().getCurrEnv());
+		
 		return super.equGenLeave(v);
 	}
 	

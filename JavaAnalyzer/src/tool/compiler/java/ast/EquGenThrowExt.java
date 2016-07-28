@@ -26,6 +26,8 @@ public class EquGenThrowExt extends EquGenStmtExt {
 		ReportUtil.leaveReport(this);
 //		Throw throwStmt = (Throw)this.node();
 		
+		setLocalEnv(v.getTypeEnv().getCurrEnv());
+		
 		return super.equGenLeave(v);
 	}
 	
