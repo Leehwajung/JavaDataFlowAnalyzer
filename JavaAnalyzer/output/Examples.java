@@ -3,7 +3,7 @@ class Y {
     public Y() { super(); }
     
     public static final String jlc$CompilerVersion$jl7 = "2.7.0";
-    public static final long jlc$SourceLastModified$jl7 = 1469018118000L;
+    public static final long jlc$SourceLastModified$jl7 = 1469582526000L;
     public static final String jlc$ClassType$jl7 =
       ("H4sIAAAAAAAAALVWXWwURRyfu37Xwl0LFEQopRwm5eMWopiYYqScxbYetKGA" +
        "UpVjujt3t+3c7jI7R69FFEwMPBESPsQHeIKYGBViJPqCqTFRDMYEQ4yaiD5q" +
@@ -54,7 +54,7 @@ class X {
     public X() { super(); }
     
     public static final String jlc$CompilerVersion$jl7 = "2.7.0";
-    public static final long jlc$SourceLastModified$jl7 = 1469018118000L;
+    public static final long jlc$SourceLastModified$jl7 = 1469582526000L;
     public static final String jlc$ClassType$jl7 =
       ("H4sIAAAAAAAAALVXa2wUVRS+u33RWuhSHiJCy6NiCroDKiamiODSSnGhDS0I" +
        "62O5nbnbDp2dGWfutku1PkgMxB+EaFFMlF8YHwExRiKJwdQYBYIxwRCjJorx" +
@@ -124,7 +124,7 @@ class Z<T> {
     public Z() { super(); }
     
     public static final String jlc$CompilerVersion$jl7 = "2.7.0";
-    public static final long jlc$SourceLastModified$jl7 = 1469018118000L;
+    public static final long jlc$SourceLastModified$jl7 = 1469582526000L;
     public static final String jlc$ClassType$jl7 =
       ("H4sIAAAAAAAAALVYfWwcRxWfW387/ordmDTE+bKT4rS5a4CAwG0a+2LHdi62" +
        "ZV+NY2gu6905e+O93e3unn1x6nxJVSL+iNrihtCmUSslQCunKUhVkaDIqII2" +
@@ -193,7 +193,7 @@ class C {
     int mth() { return 1; }
     
     public static final String jlc$CompilerVersion$jl7 = "2.7.0";
-    public static final long jlc$SourceLastModified$jl7 = 1469018118000L;
+    public static final long jlc$SourceLastModified$jl7 = 1469582526000L;
     public static final String jlc$ClassType$jl7 =
       ("H4sIAAAAAAAAALVYfWwcxRWf+/BnHN/FJk6aJo6dOEgOyS1JE6TKNOAcNna4" +
        "xFbOuORKuYx353wb7+0uu3P2xcGBRKoSIZGi1kAqgv8KaotCgxBRK1VUrlBL" +
@@ -252,7 +252,7 @@ class CC extends C {
     public CC() { super(); }
     
     public static final String jlc$CompilerVersion$jl7 = "2.7.0";
-    public static final long jlc$SourceLastModified$jl7 = 1469018118000L;
+    public static final long jlc$SourceLastModified$jl7 = 1469582526000L;
     public static final String jlc$ClassType$jl7 =
       ("H4sIAAAAAAAAALVXW2wUVRg+u73XwvYCBRHaAgVTLjs0igkWkbq2tHWhDQXU" +
        "qiynM2e7087ODDNn222xCiQG4gMhWhAT4QniJSDESDQatMZEIKgJBg2aCL6J" +
@@ -299,7 +299,7 @@ class CCC extends CC {
     public CCC() { super(); }
     
     public static final String jlc$CompilerVersion$jl7 = "2.7.0";
-    public static final long jlc$SourceLastModified$jl7 = 1469018118000L;
+    public static final long jlc$SourceLastModified$jl7 = 1469582526000L;
     public static final String jlc$ClassType$jl7 =
       ("H4sIAAAAAAAAALVXfWwURRSf2/b6ZeGuhZaKUEo5NOXjFlRMTFGoZ2tbD9pQ" +
        "qHoqx3R3rt12b3fZnWuvxSqQGIh/EBILYgL8BdEQEGIkmhhMjVExGBMMMWoi" +
@@ -345,56 +345,73 @@ class CCCC extends CC {
     
     void mm() {
         CCC cc = new CCC();
+        cc.ii += 3;
         cc.mth();
         int[] intArr1 = { 1, 2, 3 };
         int[] intArr2 = new int[3];
         int[][] intArr3 = { { 1, 1 }, { 2, 2 }, { 3, 3 } };
         int[][] intArr4 = new int[3][4];
         int[] intArr5 = new int[] { 1, 2, 3 };
+        int aa;
+        aa = intArr1[3];
+        intArr1[2] = 4;
+        intArr1[1] += 5;
+        aa += 3;
+        aa = 2;
+        intArr3[2][3] = 8;
         int iii = cc.ii;
         int leng = intArr4.length;
+        if ((iii = leng) != 100000) {
+            int iiii = 1;
+            iii = 11;
+        } else {
+            int iiii = 2;
+            iii = 22;
+        }
+        int a = 1;
+        while (iii == 33) { a++; }
     }
     
     public CCCC() { super(); }
     
     public static final String jlc$CompilerVersion$jl7 = "2.7.0";
-    public static final long jlc$SourceLastModified$jl7 = 1469018118000L;
+    public static final long jlc$SourceLastModified$jl7 = 1469582526000L;
     public static final String jlc$ClassType$jl7 =
-      ("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");
+      ("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");
 }

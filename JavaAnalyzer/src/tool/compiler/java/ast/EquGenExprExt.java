@@ -1,8 +1,10 @@
 package tool.compiler.java.ast;
 
+import polyglot.ast.Expr;
 import polyglot.ast.Node;
 import polyglot.util.SerialVersionUID;
 import tool.compiler.java.visit.EquGenerator;
+import tool.compiler.java.visit.MetaSetVariable;
 
 /**
  * Expr <: Term <: Node					<br>
@@ -11,20 +13,52 @@ import tool.compiler.java.visit.EquGenerator;
  */
 public class EquGenExprExt extends EquGenExt {
 	private static final long serialVersionUID = SerialVersionUID.generate();
+	public static final String KIND = "Expression";
 	
+	private MetaSetVariable metaSetVar = null;
+//	private Effect effect = null;	// TODO: 관리 책임은 Expr or Node 전체?
+
 	@Override
 	public EquGenerator equGenEnter(EquGenerator v) {
+//		ReportUtil.enterReport(this);
 //		Expr expr = (Expr)this.node();
-//		Report.report(2, "[Enter] Expression: " + expr);
 		
 		return super.equGenEnter(v);
 	}
 	
 	@Override
 	public Node equGenLeave(EquGenerator v) {
+//		ReportUtil.leaveReport(this);
 //		Expr expr = (Expr)this.node();
-//		Report.report(2, "[Leave] Expression: " + expr);
 		
 		return super.equGenLeave(v);
+	}
+	
+	@Override
+	public String getKind() {
+		return KIND;
+	}
+	
+	
+	/**
+	 * @return the MetaSetVariable
+	 */
+	public final MetaSetVariable metaSetVar() {
+		return metaSetVar;
+	}
+	
+	/**
+	 * @param n node
+	 * @return the MetaSetVariable of node n
+	 */
+	public static final MetaSetVariable metaSetVar(Expr n) {
+		return ((EquGenExprExt)EquGenExt.ext(n)).metaSetVar();
+	}
+	
+	/**
+	 * @param metaSetVar the MetaSetVariable to set
+	 */
+	protected final void setMetaSetVar(MetaSetVariable metaSetVar) {
+		this.metaSetVar = metaSetVar;
 	}
 }

@@ -136,6 +136,11 @@ public class ReadStaticField implements Constraint {
 		return false;
 	}
 	
+	@Override
+	public String getKind() {
+		return this.getClass().getSimpleName();
+	}
+	
 	
 	/**
 	 * Form:	C.f <: D{X}

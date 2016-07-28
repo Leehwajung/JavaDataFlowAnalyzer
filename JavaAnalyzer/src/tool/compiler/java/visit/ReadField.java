@@ -165,6 +165,11 @@ public class ReadField implements Constraint {
 		return false;
 	}
 	
+	@Override
+	public String getKind() {
+		return this.getClass().getSimpleName();
+	}
+	
 	
 	/**
 	 * Form:	C{X}.f <: D{Y}

@@ -266,6 +266,10 @@ public class MthToMth implements Constraint {
 		return false;
 	}
 	
+	@Override
+	public String getKind() {
+		return this.getClass().getSimpleName();
+	}
 	
 	/**
 	 * Form:	(C1{X1}, ..., Cn{Xn}) -- effect1 --> E1{X} 

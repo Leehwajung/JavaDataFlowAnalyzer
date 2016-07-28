@@ -113,6 +113,11 @@ public class XSubseteqY implements Constraint {
 		return false;
 	}
 	
+	@Override
+	public String getKind() {
+		return this.getClass().getSimpleName();
+	}
+	
 	
 	/**
 	 * Form:	X <: Y

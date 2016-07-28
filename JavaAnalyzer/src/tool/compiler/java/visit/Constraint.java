@@ -12,4 +12,5 @@ public interface Constraint {
 	public int substitutableSize();
 	public ArrayList<? extends AbsObjSet> getAllAbsObjSets();
 	public boolean contains(AbsObjSet aos);
+	public String getKind();
 }

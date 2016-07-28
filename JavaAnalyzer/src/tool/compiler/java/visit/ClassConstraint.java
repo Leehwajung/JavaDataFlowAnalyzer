@@ -1,5 +1,6 @@
 package tool.compiler.java.visit;
 
+import polyglot.ast.TypeNode;
 import polyglot.ext.jl5.types.JL5ArrayType;
 import polyglot.ext.jl5.types.JL5ClassType;
 import polyglot.ext.jl5.types.JL5FieldInstance;
@@ -21,6 +22,7 @@ import java.util.Map.Entry;
  */
 public class ClassConstraint implements ConstraintFunction {
 	
+	private ClassConstraint parent;	// Not inheritance, but containment relationship
 	private JL5ClassType clz;
 	private MetaSetVariable chi_this;
 	private LinkedHashSet<MetaSetVariable> chi_typeVars;
@@ -153,13 +155,50 @@ public class ClassConstraint implements ConstraintFunction {
 	}
 	
 	/**
-	 * @param chiThis the chi_this to set
+	 * @return the chi_this
 	 */
-	public void setThis(MetaSetVariable chiThis) {
-		if(!chiThis.getType().equals(clz)) {
-			this.clz = (JL5ClassType) chiThis.getType();
+	public MetaSetVariable getThis(TypeNode qualifier) {
+		if(qualifier == null) {
+			return getThis();
 		}
-		this.chi_this = chiThis;
+		if(qualifier.type().equals(chi_this.getType())) {
+			return chi_this;
+		} else {
+			return parent.getThis(qualifier);
+		}
+	}
+	
+	/**
+	 * @param chi_this the chi_this to set
+	 */
+	public void setThis(MetaSetVariable chi_this) {
+		if(!chi_this.getType().equals(clz)) {
+			this.clz = (JL5ClassType) chi_this.getType();
+		}
+		this.chi_this = chi_this;
+	}
+	
+	/**
+	 * @return the chi_this
+	 */
+	public MetaSetVariable getSuper() {
+		return chi_this;
+	}
+	
+	/**
+	 * TODO: 미완성, spuer에 대하여 대응 필요
+	 * @param qualifier
+	 * @return
+	 */
+	public MetaSetVariable getSuper(TypeNode qualifier) {
+		if(qualifier == null) {
+			return getSuper();
+		}
+		if(qualifier.type().equals(chi_this.getType())) {
+			return chi_this;
+		} else {
+			return parent.getSuper(qualifier);
+		}
 	}
 	
 	/**
@@ -170,37 +209,37 @@ public class ClassConstraint implements ConstraintFunction {
 	}
 	
 	/**
-	 * @param chiTypeVars the chi_typeVars to set
+	 * @param chi_typeVars the chi_typeVars to set
 	 */
-	public void setTypeVars(Collection<MetaSetVariable> chiTypeVars) {
+	public void setTypeVars(Collection<MetaSetVariable> chi_typeVars) {
 		if(this.chi_typeVars == null) {
-			this.chi_typeVars = new LinkedHashSet<>(chiTypeVars);
+			this.chi_typeVars = new LinkedHashSet<>(chi_typeVars);
 		} else {
 			this.chi_typeVars.clear();
-			this.chi_typeVars.addAll(chiTypeVars);
+			this.chi_typeVars.addAll(chi_typeVars);
 		}
 	}
 	
 	/**
-	 * @param chiTypeVars the chi_typeVars to add
+	 * @param chi_typeVars the chi_typeVars to add
 	 */
-	public void addTypeVars(Collection<MetaSetVariable> chiTypeVars) {
+	public void addTypeVars(Collection<MetaSetVariable> chi_typeVars) {
 		if(this.chi_typeVars == null) {
-			this.chi_typeVars = new LinkedHashSet<>(chiTypeVars);
+			this.chi_typeVars = new LinkedHashSet<>(chi_typeVars);
 		} else {
-			this.chi_typeVars.addAll(chiTypeVars);
+			this.chi_typeVars.addAll(chi_typeVars);
 		}
 	}
 	
 	/**
-	 * @param chiTypeVar
+	 * @param chi_typeVar
 	 */
-	public void addTypeVar(MetaSetVariable chiTypeVar) {
+	public void addTypeVar(MetaSetVariable chi_typeVar) {
 		try {
-			this.chi_typeVars.add(chiTypeVar);
+			this.chi_typeVars.add(chi_typeVar);
 		} catch (NullPointerException e) {
 			this.chi_typeVars = new LinkedHashSet<>();
-			this.chi_typeVars.add(chiTypeVar);
+			this.chi_typeVars.add(chi_typeVar);
 		}
 	}
 	
@@ -228,10 +267,10 @@ public class ClassConstraint implements ConstraintFunction {
 	/**
 	 * @return the chi_fields
 	 */
-	public JL5FieldInstance getField(MetaSetVariable chiField) {
-		if(chi_fields.containsValue(chiField)) {
+	public JL5FieldInstance getField(MetaSetVariable chi_field) {
+		if(chi_fields.containsValue(chi_field)) {
 			for(Entry<JL5FieldInstance, MetaSetVariable> entry : chi_fields.entrySet()) {
-				if(entry.getValue() == chiField) {
+				if(entry.getValue() == chi_field) {
 					return entry.getKey();
 				}
 			}
@@ -242,41 +281,41 @@ public class ClassConstraint implements ConstraintFunction {
 	}
 	
 	/**
-	 * @param chiFields the chi_fields to set
+	 * @param chi_fields the chi_fields to set
 	 */
 	@Deprecated
-	public void setFields(Map<JL5FieldInstance, MetaSetVariable> chiFields) {
+	public void setFields(Map<JL5FieldInstance, MetaSetVariable> chi_fields) {
 		if(this.chi_fields == null) {
-			this.chi_fields = new LinkedHashMap<>(chiFields);
+			this.chi_fields = new LinkedHashMap<>(chi_fields);
 		} else {
 			this.chi_fields.clear();
-			this.chi_fields.putAll(chiFields);
+			this.chi_fields.putAll(chi_fields);
 		}
 	}
 	
 	/**
-	 * @param chiFields the chi_fields to add
+	 * @param chi_fields the chi_fields to add
 	 */
 	@Deprecated
-	public void addFields(Map<JL5FieldInstance, MetaSetVariable> chiFields) {
+	public void addFields(Map<JL5FieldInstance, MetaSetVariable> chi_fields) {
 		if(this.chi_fields == null) {
-			this.chi_fields = new LinkedHashMap<>(chiFields);
+			this.chi_fields = new LinkedHashMap<>(chi_fields);
 		} else {
-			this.chi_fields.putAll(chiFields);
+			this.chi_fields.putAll(chi_fields);
 		}
 	}
 	
 	/**
 	 * @param field
-	 * @param chiField
+	 * @param chi_field
 	 */
 	@Deprecated
-	public void addField(JL5FieldInstance field, MetaSetVariable chiField) {
+	public void addField(JL5FieldInstance field, MetaSetVariable chi_field) {
 		try {
-			this.chi_fields.put(field, chiField);
+			this.chi_fields.put(field, chi_field);
 		} catch (NullPointerException e) {
 			this.chi_fields = new LinkedHashMap<>();
-			this.chi_fields.put(field, chiField);
+			this.chi_fields.put(field, chi_field);
 		}
 	}
 	
@@ -320,6 +359,11 @@ public class ClassConstraint implements ConstraintFunction {
 			this.metaConstraints = new LinkedHashSet<>();
 			this.metaConstraints.add(metaConstraint);
 		}
+	}
+	
+	@Override
+	public String getKind() {
+		return this.getClass().getSimpleName();
 	}
 	
 	

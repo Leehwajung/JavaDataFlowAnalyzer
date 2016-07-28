@@ -6,13 +6,12 @@ import polyglot.ast.Node;
 import polyglot.util.InternalCompilerError;
 import polyglot.util.SerialVersionUID;
 import tool.compiler.java.visit.EquGenerator;
-import tool.compiler.java.visit.MetaSetVariable;
 
 public class EquGenExt extends Ext_c implements EquGenOps {	// TODO: Not JL7Ext, but Ext_c to override lang()!!!
 	private static final long serialVersionUID = SerialVersionUID.generate();
+	public static final String KIND = "Node";
 	
-	private MetaSetVariable metaSetVar = null;
-//	private Effect effect = null;
+//	private Effect effect = null;	// TODO: 관리 책임은 Expr or Node 전체?
 	
 	@Override
 	protected Object clone() throws CloneNotSupportedException {
@@ -50,28 +49,8 @@ public class EquGenExt extends Ext_c implements EquGenOps {	// TODO: Not JL7Ext,
 		return node();
 	}
 	
-	
-	
-	/**
-	 * @return the MetaSetVariable
-	 */
 	@Override
-	public final MetaSetVariable metaSetVar() {
-		return metaSetVar;
-	}
-	
-	/**
-	 * @param n node
-	 * @return the MetaSetVariable of node n
-	 */
-	public static final MetaSetVariable metaSetVar(Node n) {
-		return EquGenExt.ext(n).metaSetVar();
-	}
-	
-	/**
-	 * @param metaSetVar the MetaSetVariable to set
-	 */
-	protected final void setMetaSetVar(MetaSetVariable metaSetVar) {
-		this.metaSetVar = metaSetVar;
+	public String getKind() {
+		return KIND;
 	}
 }
