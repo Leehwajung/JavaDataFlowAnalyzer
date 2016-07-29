@@ -6,14 +6,14 @@ import polyglot.ast.Node;
 import polyglot.ext.jl5.types.JL5MethodInstance;
 import polyglot.ext.jl5.types.JL5ProcedureInstance;
 import polyglot.util.SerialVersionUID;
+import tool.compiler.java.aos.MetaSetVariable;
+import tool.compiler.java.constraint.InvokeMth;
+import tool.compiler.java.constraint.InvokeStaticMth;
+import tool.compiler.java.info.MethodCallInfo;
 import tool.compiler.java.util.ReportUtil;
 import tool.compiler.java.util.ReportUtil.MetaSetVarGoal;
 import tool.compiler.java.util.ReportUtil.MetaSetVarSource;
 import tool.compiler.java.visit.EquGenerator;
-import tool.compiler.java.visit.InvokeMth;
-import tool.compiler.java.visit.InvokeStaticMth;
-import tool.compiler.java.visit.MetaSetVariable;
-import tool.compiler.java.visit.MethodCallInfo;
 
 import java.util.ArrayList;
 

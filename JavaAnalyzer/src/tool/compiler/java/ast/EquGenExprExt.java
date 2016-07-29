@@ -3,8 +3,8 @@ package tool.compiler.java.ast;
 import polyglot.ast.Expr;
 import polyglot.ast.Node;
 import polyglot.util.SerialVersionUID;
+import tool.compiler.java.aos.MetaSetVariable;
 import tool.compiler.java.visit.EquGenerator;
-import tool.compiler.java.visit.MetaSetVariable;
 
 /**
  * Expr <: Term <: Node					<br>

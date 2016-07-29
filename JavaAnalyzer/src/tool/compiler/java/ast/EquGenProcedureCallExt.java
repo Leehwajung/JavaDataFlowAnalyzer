@@ -4,9 +4,9 @@ import polyglot.ast.Node;
 import polyglot.ast.ProcedureCall;
 import polyglot.ext.jl5.types.JL5ProcedureInstance;
 import polyglot.util.SerialVersionUID;
+import tool.compiler.java.info.MethodCallInfo;
 import tool.compiler.java.util.ReportUtil;
 import tool.compiler.java.visit.EquGenerator;
-import tool.compiler.java.visit.MethodCallInfo;
 
 /**
  * ProcedureCall <: Term <: Node

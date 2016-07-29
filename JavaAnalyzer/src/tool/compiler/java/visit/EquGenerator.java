@@ -11,7 +11,17 @@ import polyglot.types.Type;
 import polyglot.types.TypeSystem;
 import polyglot.visit.ContextVisitor;
 import polyglot.visit.NodeVisitor;
+import tool.compiler.java.aos.AbstractObject;
+import tool.compiler.java.aos.TypedSetVariable;
 import tool.compiler.java.ast.EquGenLang;
+import tool.compiler.java.env.ClassConstraint;
+import tool.compiler.java.env.MethodConstraint;
+import tool.compiler.java.env.TypeEnvironment;
+import tool.compiler.java.info.FieldInfo;
+import tool.compiler.java.info.MethodCallInfo;
+import tool.compiler.java.info.MethodInfo;
+import tool.compiler.java.table.FieldTableRow;
+import tool.compiler.java.table.MethodTableRow;
 import tool.compiler.java.util.CollUtil;
 
 import java.io.DataOutputStream;

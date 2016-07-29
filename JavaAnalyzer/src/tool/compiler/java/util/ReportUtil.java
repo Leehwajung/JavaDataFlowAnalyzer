@@ -5,12 +5,12 @@ import java.util.Collection;
 import polyglot.ast.Expr;
 import polyglot.ast.Node;
 import polyglot.main.Report;
+import tool.compiler.java.aos.AbstractObject;
+import tool.compiler.java.aos.MetaSetVariable;
 import tool.compiler.java.ast.EquGenExt;
-import tool.compiler.java.visit.AbstractObject;
-import tool.compiler.java.visit.Constraint;
-import tool.compiler.java.visit.ConstraintFunction;
-import tool.compiler.java.visit.Info;
-import tool.compiler.java.visit.MetaSetVariable;
+import tool.compiler.java.constraint.Constraint;
+import tool.compiler.java.env.ConstraintFunction;
+import tool.compiler.java.info.Info;
 
 public final class ReportUtil {
 	/**
