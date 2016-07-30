@@ -99,7 +99,7 @@ public class XSubseteqY implements Constraint {
 	}
 	
 	@Override
-	public ArrayList<? extends SetVariable> getAllAbsObjSets() {
+	public List<? extends AbsObjSet> getAllAbsObjSets() {
 		ArrayList<SetVariable> abss = new ArrayList<>();
 		abss.add(x);
 		abss.add(y);

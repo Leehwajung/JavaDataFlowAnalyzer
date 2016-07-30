@@ -125,7 +125,7 @@ public class ReadStaticField implements Constraint {
 	}
 	
 	@Override
-	public ArrayList<? extends AbsObjSet> getAllAbsObjSets() {
+	public List<? extends AbsObjSet> getAllAbsObjSets() {
 		ArrayList<AbsObjSet> abss = new ArrayList<>();
 		abss.add(dx);
 		return abss;

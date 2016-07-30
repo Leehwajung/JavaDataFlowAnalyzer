@@ -319,7 +319,7 @@ public class InvokeMth implements Constraint {
 	}
 	
 	@Override
-	public ArrayList<AbsObjSet> getAllAbsObjSets() {
+	public List<? extends AbsObjSet> getAllAbsObjSets() {
 		ArrayList<AbsObjSet> abss = new ArrayList<>();
 		abss.add(cx);
 		abss.addAll(dxs);
@@ -339,6 +339,14 @@ public class InvokeMth implements Constraint {
 			return true;
 		}
 		return false;
+	}
+	
+	public boolean contains(Effect effect) {
+		return effects.containsValue(effect);
+	}
+	
+	public boolean contains(EffectName type) {
+		return effects.containsKey(type);
 	}
 	
 	@Override
@@ -366,7 +374,7 @@ public class InvokeMth implements Constraint {
 	public String toString() {
 		return getCX() + "." + getName()
 				+ " <: " + CollUtil.getStringOf(getDXs(), '(', ')') 
-				+ " -- " + effects + " --> "	+ getEY();
+				+ " --" + (effects != null ? " " + effects + " " : "") + "--> "	+ getEY();
 	}
 	
 	/**

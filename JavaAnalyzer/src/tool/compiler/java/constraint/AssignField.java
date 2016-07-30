@@ -150,7 +150,7 @@ public class AssignField implements Constraint {
 	}
 	
 	@Override
-	public ArrayList<AbsObjSet> getAllAbsObjSets() {
+	public List<? extends AbsObjSet> getAllAbsObjSets() {
 		ArrayList<AbsObjSet> abss = new ArrayList<>();
 		abss.add(cx);
 		abss.add(dy);

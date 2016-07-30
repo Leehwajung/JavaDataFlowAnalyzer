@@ -363,7 +363,7 @@ public class MthToMth implements Constraint {
 	}
 	
 	@Override
-	public ArrayList<? extends SetVariable> getAllAbsObjSets() {
+	public List<? extends AbsObjSet> getAllAbsObjSets() {
 		ArrayList<SetVariable> abss = new ArrayList<>();
 		abss.addAll(cxs);
 		abss.add(e1x);
@@ -389,6 +389,26 @@ public class MthToMth implements Constraint {
 		return false;
 	}
 	
+	public boolean contains(Effect effect) {
+		if (effects1.containsValue(effect)) {
+			return true;
+		}
+		if (effects2.containsValue(effect)) {
+			return true;
+		}
+		return false;
+	}
+	
+	public boolean contains(EffectName type) {
+		if (effects1.containsKey(type)) {
+			return true;
+		}
+		if (effects2.containsKey(type)) {
+			return true;
+		}
+		return false;
+	}
+	
 	@Override
 	public String getKind() {
 		return this.getClass().getSimpleName();
@@ -400,8 +420,8 @@ public class MthToMth implements Constraint {
 	 */
 	@Override
 	public String toString() {
-		return CollUtil.getStringOf(getCXs(), '{', '}') + " -- " + effects1 + " --> "	+ getE1X() 
-				+ " <: " + CollUtil.getStringOf(getDYs(), '{', '}') + " -- " + effects2 + " --> "	+ getE2Y();
+		return CollUtil.getStringOf(getCXs(), '{', '}') + " --" + (effects1 != null ? " " + effects1 + " " : "") + "--> "	+ getE1X() 
+				+ " <: " + CollUtil.getStringOf(getDYs(), '{', '}') + " --" + (effects2 != null ? " " + effects2 + " " : "") + "--> "	+ getE2Y();
 	}
 	
 	/**

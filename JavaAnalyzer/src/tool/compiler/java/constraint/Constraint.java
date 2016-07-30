@@ -1,6 +1,5 @@
 package tool.compiler.java.constraint;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import tool.compiler.java.aos.AbsObjSet;
@@ -13,7 +12,7 @@ public interface Constraint {
 	public Constraint substitute(List<TypedSetVariable> tsvs);
 	public int absObjSetSize();
 	public int substitutableSize();
-	public ArrayList<? extends AbsObjSet> getAllAbsObjSets();
+	public List<? extends AbsObjSet> getAllAbsObjSets();
 	public boolean contains(AbsObjSet aos);
 	public String getKind();
 }

@@ -150,7 +150,7 @@ public class ReadField implements Constraint {
 	}
 	
 	@Override
-	public ArrayList<? extends AbsObjSet> getAllAbsObjSets() {
+	public List<? extends AbsObjSet> getAllAbsObjSets() {
 		ArrayList<AbsObjSet> abss = new ArrayList<>();
 		abss.add(cx);
 		abss.add(dy);

@@ -244,7 +244,7 @@ public class InvokeStaticMth implements Constraint {
 	}
 	
 	@Override
-	public ArrayList<AbsObjSet> getAllAbsObjSets() {
+	public List<? extends AbsObjSet> getAllAbsObjSets() {
 		ArrayList<AbsObjSet> abss = new ArrayList<>();
 		abss.addAll(dxs);
 		abss.add(ey);
@@ -262,6 +262,14 @@ public class InvokeStaticMth implements Constraint {
 		return false;
 	}
 	
+	public boolean contains(Effect effect) {
+		return effects.containsValue(effect);
+	}
+	
+	public boolean contains(EffectName type) {
+		return effects.containsKey(type);
+	}
+	
 	@Override
 	public String getKind() {
 		return this.getClass().getSimpleName();
@@ -273,7 +281,7 @@ public class InvokeStaticMth implements Constraint {
 	@Override
 	public String toString() {
 		return getC() + "." + getM().name() + " <: " + CollUtil.getStringOf(getDXs(), '(', ')') 
-				+ " -- " + effects + " --> "	+ getEY();
+				+ " --" + (effects != null ? " " + effects + " " : "") + "--> "	+ getEY();
 	}
 	
 	/**
