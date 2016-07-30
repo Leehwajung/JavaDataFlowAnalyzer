@@ -1,7 +1,7 @@
 package tool.compiler.java.constraint;
 
 import java.util.ArrayList;
-import java.util.Collection;
+import java.util.List;
 
 import polyglot.types.Type;
 import tool.compiler.java.aos.AbsObjSet;
@@ -72,7 +72,7 @@ public class VarToVar implements Constraint {
 	 * @return		Substituted New Constraint
 	 */
 	@Override
-	public Constraint substitute(Collection<TypedSetVariable> cxdy) {
+	public Constraint substitute(List<TypedSetVariable> cxdy) {
 		if(cxdy.size() != substitutableSize()) {
 			throw new IllegalArgumentException("The Size of tsvs must be " + substitutableSize() + ". "
 					+ "(Current size is " + cxdy.size() + ".)");

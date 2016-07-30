@@ -5,12 +5,16 @@ import polyglot.types.Type;
 import tool.compiler.java.aos.AbsObjSet;
 import tool.compiler.java.aos.SetVariable;
 import tool.compiler.java.aos.TypedSetVariable;
+import tool.compiler.java.effect.Effect;
+import tool.compiler.java.effect.EffectName;
 import tool.compiler.java.util.CollUtil;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * C.m <: (D1{X1}, ..., Dn{Xn}) -- effect --> E{Y}
@@ -32,6 +36,7 @@ public class InvokeStaticMth implements Constraint {
 	/* ### Actual Fields ### */
 	private JL5MethodInstance cm;		// C, m (NOT null)
 	private ArrayList<? extends SetVariable> dxs;	// Ds, Xs ( D1{X1}, ..., Dn{Xn} ) (nullable)
+	private HashMap<EffectName, Effect> effects;	// (effect) (nullable)
 	private SetVariable ey;				// E, Y (nullable)
 	
 	
@@ -43,7 +48,7 @@ public class InvokeStaticMth implements Constraint {
 	 * @param dxs	set Ds, Xs	( D1{X1}, ..., Dn{Xn} )
 	 * @param ey	set E, Y	( E{Y} )
 	 */
-	public InvokeStaticMth(JL5MethodInstance cm, Collection<? extends SetVariable> dxs, SetVariable ey) {
+	public InvokeStaticMth(JL5MethodInstance cm, List<? extends SetVariable> dxs, SetVariable ey) {
 		super();
 		this.cm = cm;
 		if(dxs != null) {
@@ -52,6 +57,41 @@ public class InvokeStaticMth implements Constraint {
 			this.dxs = null;
 		}
 		this.ey = ey;
+	}
+	
+	/**
+	 * C.m <: (D1{X1}, ..., Dn{Xn}) -- effect --> E{Y}
+	 * @param cm	set C, m	( C.m )
+	 * @param dxs	set Ds, Xs	( D1{X1}, ..., Dn{Xn} )
+	 * @param effects	set effects
+	 * @param ey	set E, Y	( E{Y} )
+	 */
+	public InvokeStaticMth(JL5MethodInstance cm, List<? extends SetVariable> dxs, Collection<Effect> effects, SetVariable ey) {
+		this(cm, dxs, ey);
+		if(effects != null) {
+			this.effects = new HashMap<>();
+			for(Effect effect : effects) {
+				this.effects.put(effect.getType(), effect);
+			}
+		} else {
+			this.effects = null;
+		}
+	}
+	
+	/**
+	 * C.m <: (D1{X1}, ..., Dn{Xn}) -- effect --> E{Y}
+	 * @param cm	set C, m	( C.m )
+	 * @param dxs	set Ds, Xs	( D1{X1}, ..., Dn{Xn} )
+	 * @param effects	set effects
+	 * @param ey	set E, Y	( E{Y} )
+	 */
+	private InvokeStaticMth(JL5MethodInstance cm, List<? extends SetVariable> dxs, Map<EffectName, Effect> effects, SetVariable ey) {
+		this(cm, dxs, ey);
+		if(effects != null) {
+			this.effects = new HashMap<>(effects);
+		} else {
+			this.effects = null;
+		}
 	}
 	
 	
@@ -64,7 +104,7 @@ public class InvokeStaticMth implements Constraint {
 	 * @param ey	set E, Y	( E{Y} )
 	 * @return		Substituted New Constraint
 	 */
-	public InvokeStaticMth substitute(Collection<TypedSetVariable> dxs, TypedSetVariable ey) {
+	public InvokeStaticMth substitute(List<TypedSetVariable> dxs, TypedSetVariable ey) {
 		if(dxs != null) {
 			if(this.dxs.size() != dxs.size()) {
 				throw new IllegalArgumentException("The Size Mismatch for dxs.");
@@ -86,7 +126,7 @@ public class InvokeStaticMth implements Constraint {
 					+ "(orig: " + this.ey.getType() + ", subst: " + ey.getType() + ")");
 		}
 		
-		return new InvokeStaticMth(this.cm, dxs, ey);
+		return new InvokeStaticMth(this.cm, dxs, effects, ey);
 	}
 	
 	/**
@@ -96,7 +136,7 @@ public class InvokeStaticMth implements Constraint {
 	 * @return		Substituted New Constraint
 	 */
 	@Override
-	public Constraint substitute(Collection<TypedSetVariable> dxsey) {
+	public Constraint substitute(List<TypedSetVariable> dxsey) {
 		if(dxsey.size() != substitutableSize()) {
 			throw new IllegalArgumentException("The Size of tsvs must be " + substitutableSize() + ". "
 					+ "(Current size is " + dxsey.size() + ".)");
@@ -139,6 +179,36 @@ public class InvokeStaticMth implements Constraint {
 	 */
 	public SetVariable getDX(int i) {
 		return dxs.get(i);
+	}
+	
+	/**
+	 * @return effects
+	 */
+	public final List<Effect> getEffects() {
+		try {
+			ArrayList<Effect> result =  new ArrayList<>();
+			for(EffectName type : EffectName.values()) {
+				Effect effect = effects.get(type);
+				if (effect != null) {
+					result.add(effect);
+				}
+			}
+			return result;
+		} catch(NullPointerException e) {
+			return null;
+		}
+	}
+	
+	/**
+	 * @param type	Effect Type
+	 * @return effect
+	 */
+	public final Effect getEffect(EffectName type) {
+		try {
+			return effects.get(type);
+		} catch(NullPointerException e) {
+			return null;
+		}
 	}
 	
 	/**
@@ -203,7 +273,7 @@ public class InvokeStaticMth implements Constraint {
 	@Override
 	public String toString() {
 		return getC() + "." + getM().name() + " <: " + CollUtil.getStringOf(getDXs(), '(', ')') 
-				+ " -- " + "effect" + " --> "	+ getEY();
+				+ " -- " + effects + " --> "	+ getEY();
 	}
 	
 	/**

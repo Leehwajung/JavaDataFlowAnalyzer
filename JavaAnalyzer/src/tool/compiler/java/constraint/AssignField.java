@@ -1,7 +1,7 @@
 package tool.compiler.java.constraint;
 
 import java.util.ArrayList;
-import java.util.Collection;
+import java.util.List;
 
 import polyglot.ext.jl5.types.JL5FieldInstance;
 import polyglot.types.Type;
@@ -77,7 +77,7 @@ public class AssignField implements Constraint {
 	 * @return		Substituted New Constraint
 	 */
 	@Override
-	public Constraint substitute(Collection<TypedSetVariable> cxdy) {
+	public Constraint substitute(List<TypedSetVariable> cxdy) {
 		if(cxdy.size() != substitutableSize()) {
 			throw new IllegalArgumentException("The Size of tsvs must be " + substitutableSize() + ". "
 					+ "(Current size is " + cxdy.size() + ".)");

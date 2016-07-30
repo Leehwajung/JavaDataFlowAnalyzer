@@ -92,7 +92,7 @@ public class ObjsSubseteqX implements Constraint {
 	 * @return		Substituted New Constraint
 	 */
 	@Override
-	public Constraint substitute(Collection<TypedSetVariable> x) {
+	public Constraint substitute(List<TypedSetVariable> x) {
 		if(x.size() != substitutableSize()) {
 			throw new IllegalArgumentException("The Size of tsvs must be " + substitutableSize() + ". "
 					+ "(Current size is " + x.size() + ".)");

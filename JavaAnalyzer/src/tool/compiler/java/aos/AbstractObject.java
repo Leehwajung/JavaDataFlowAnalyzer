@@ -23,7 +23,7 @@ public class AbstractObject extends AbsObjSet {
 	private Expr expr;		// 생성 위치 노드
 	private static long idGen = 1;
 	/**
-	 * info == null => Abstract Object에 해당하는 프로그램 택스트 상의 Node기ㅏ 있는 경우
+	 * info == null => Abstract Object에 해당하는 프로그램 택스트 상의 Node가 있는 경우
 	 * info != null => Node와 Type을 아래 Info에 따라 해석
 	 */
 	private Info info = null;
@@ -93,14 +93,14 @@ public class AbstractObject extends AbsObjSet {
 		} else {
 			switch (info) {
 			case ArrayInitLength:
-				JL5ArrayType lengthType = (JL5ArrayType)((ArrayInit) expr).type();
-				setType(lengthType.lengthField().type());
+				JL5ArrayType arrType = (JL5ArrayType)((ArrayInit) expr).type();
+				setType(arrType.lengthField().type());
 				break;
 			case FieldAssignOp:
 			case LocalAssignOp:
 			case ArrayAccessAssignOp:
-				Assign lasgn = (Assign) expr;
-				setType(lasgn.left().type());
+				Assign asgn = (Assign) expr;
+				setType(asgn.left().type());
 				break;
 			}
 		}

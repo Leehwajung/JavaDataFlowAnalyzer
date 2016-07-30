@@ -4,12 +4,16 @@ import polyglot.types.Type;
 import tool.compiler.java.aos.AbsObjSet;
 import tool.compiler.java.aos.SetVariable;
 import tool.compiler.java.aos.TypedSetVariable;
+import tool.compiler.java.effect.Effect;
+import tool.compiler.java.effect.EffectName;
 import tool.compiler.java.util.CollUtil;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * (C1{X1}, ..., Cn{Xn}) -- effect1 --> E1{X} 
@@ -36,8 +40,10 @@ public class MthToMth implements Constraint {
 	
 	/* ### Actual Fields ### */
 	private ArrayList<? extends SetVariable> cxs;	// Cs, Xs ( C1{X1}, ..., Cn{Xn} )
+	private HashMap<EffectName, Effect> effects1;	// (effect1) (nullable)
 	private SetVariable e1x;				// E1, X
 	private ArrayList<? extends SetVariable> dys;	// Ds, Ys ( D1{Y1}, ..., Dn{Yn} )
+	private HashMap<EffectName, Effect> effects2;	// (effect2) (nullable)
 	private SetVariable e2y;				// E2, Y
 	
 	
@@ -51,7 +57,7 @@ public class MthToMth implements Constraint {
 	 * @param dys	set Ds, Ys	( D1{Y1}, ..., Dn{Yn} )
 	 * @param e2y	set E2, Y	( E2{Y} )
 	 */
-	public MthToMth(Collection<? extends SetVariable> cxs, SetVariable e1x, Collection<? extends SetVariable> dys, SetVariable e2y) {
+	public MthToMth(List<? extends SetVariable> cxs, SetVariable e1x, List<? extends SetVariable> dys, SetVariable e2y) {
 		super();
 		try {
 			this.cxs = new ArrayList<>(cxs);
@@ -67,6 +73,60 @@ public class MthToMth implements Constraint {
 		this.e2y = e2y;
 	}
 	
+	/**
+	 * (C1{X1}, ..., Cn{Xn}) -- effect1 --> E1{X} 
+	 * 	<: (D1{Y1}, ..., Dn{Ym}) -- effect2 --> E2{Y}
+	 * @param cxs	set Cs, Xs	( C1{X1}, ..., Cn{Xn} )
+	 * @param effects1	set effects1
+	 * @param e1x	set E1, X	( E1{X} )
+	 * @param dys	set Ds, Ys	( D1{Y1}, ..., Dn{Yn} )
+	 * @param effects2	set effects2
+	 * @param e2y	set E2, Y	( E2{Y} )
+	 */
+	public MthToMth(List<? extends SetVariable> cxs, Collection<Effect> effects1, SetVariable e1x, List<? extends SetVariable> dys, Collection<Effect> effects2, SetVariable e2y) {
+		this(cxs, e1x, dys, e2y);
+		if(effects1 != null) {
+			this.effects1 = new HashMap<>();
+			for(Effect effect : effects1) {
+				this.effects1.put(effect.getType(), effect);
+			}
+		} else {
+			this.effects1 = null;
+		}
+		if(effects2 != null) {
+			this.effects2 = new HashMap<>();
+			for(Effect effect : effects2) {
+				this.effects2.put(effect.getType(), effect);
+			}
+		} else {
+			this.effects2 = null;
+		}
+	}
+	
+	/**
+	 * (C1{X1}, ..., Cn{Xn}) -- effect1 --> E1{X} 
+	 * 	<: (D1{Y1}, ..., Dn{Ym}) -- effect2 --> E2{Y}
+	 * @param cxs	set Cs, Xs	( C1{X1}, ..., Cn{Xn} )
+	 * @param effects1	set effects1
+	 * @param e1x	set E1, X	( E1{X} )
+	 * @param dys	set Ds, Ys	( D1{Y1}, ..., Dn{Yn} )
+	 * @param effects2	set effects2
+	 * @param e2y	set E2, Y	( E2{Y} )
+	 */
+	private MthToMth(List<? extends SetVariable> cxs, Map<EffectName, Effect> effects1, SetVariable e1x, List<? extends SetVariable> dys, Map<EffectName, Effect> effects2, SetVariable e2y) {
+		this(cxs, e1x, dys, e2y);
+		if(effects1 != null) {
+			this.effects1 = new HashMap<>(effects1);
+		} else {
+			this.effects1 = null;
+		}
+		if(effects2 != null) {
+			this.effects2 = new HashMap<>(effects2);
+		} else {
+			this.effects2 = null;
+		}
+	}
+	
 	
 	// substitution methods
 	
@@ -80,7 +140,7 @@ public class MthToMth implements Constraint {
 	 * @param e2y	set E2, Y	( E2{Y} )
 	 * @return		Substituted New Constraint
 	 */
-	public MthToMth substitute(Collection<TypedSetVariable> cxs, TypedSetVariable e1x, Collection<TypedSetVariable> dys, TypedSetVariable e2y) {
+	public MthToMth substitute(List<TypedSetVariable> cxs, TypedSetVariable e1x, List<TypedSetVariable> dys, TypedSetVariable e2y) {
 		if(cxs != null) {
 			if(this.cxs.size() != cxs.size()) {
 				throw new IllegalArgumentException("The Size Mismatch for cxs.");
@@ -123,7 +183,7 @@ public class MthToMth implements Constraint {
 					+ "(orig: " + this.e2y.getType() + ", subst: " + e2y.getType() + ")");
 		}
 		
-		return new MthToMth(cxs, e1x, dys, e2y);
+		return new MthToMth(cxs, effects1, e1x, dys, effects2, e2y);
 	}
 	
 	/**
@@ -134,7 +194,7 @@ public class MthToMth implements Constraint {
 	 * @return				Substituted New Constraint
 	 */
 	@Override
-	public Constraint substitute(Collection<TypedSetVariable> cxse1xdyse2y) {
+	public Constraint substitute(List<TypedSetVariable> cxse1xdyse2y) {
 		if(cxse1xdyse2y.size() != substitutableSize()) {
 			throw new IllegalArgumentException("The size of tsvs must be " + substitutableSize() + ". "
 					+ "(Current size is " + cxse1xdyse2y.size() + ".)");
@@ -173,6 +233,36 @@ public class MthToMth implements Constraint {
 	}
 	
 	/**
+	 * @return effects1
+	 */
+	public final List<Effect> getEffects1() {
+		try {
+			ArrayList<Effect> result =  new ArrayList<>();
+			for(EffectName type : EffectName.values()) {
+				Effect effect = effects1.get(type);
+				if (effect != null) {
+					result.add(effect);
+				}
+			}
+			return result;
+		} catch(NullPointerException e) {
+			return null;
+		}
+	}
+	
+	/**
+	 * @param type	Effect Type
+	 * @return effect of effects1
+	 */
+	public final Effect getEffect1(EffectName type) {
+		try {
+			return effects1.get(type);
+		} catch(NullPointerException e) {
+			return null;
+		}
+	}
+	
+	/**
 	 * @return the E1{X}
 	 */
 	public SetVariable getE1X() {
@@ -206,6 +296,36 @@ public class MthToMth implements Constraint {
 	 */
 	public SetVariable getDY(int i) {
 		return dys.get(i);
+	}
+	
+	/**
+	 * @return effects2
+	 */
+	public final List<Effect> getEffects2() {
+		try {
+			ArrayList<Effect> result =  new ArrayList<>();
+			for(EffectName type : EffectName.values()) {
+				Effect effect = effects2.get(type);
+				if (effect != null) {
+					result.add(effect);
+				}
+			}
+			return result;
+		} catch(NullPointerException e) {
+			return null;
+		}
+	}
+	
+	/**
+	 * @param type	Effect Type
+	 * @return effect of effects2
+	 */
+	public final Effect getEffect2(EffectName type) {
+		try {
+			return effects2.get(type);
+		} catch(NullPointerException e) {
+			return null;
+		}
 	}
 	
 	/**
@@ -280,8 +400,8 @@ public class MthToMth implements Constraint {
 	 */
 	@Override
 	public String toString() {
-		return CollUtil.getStringOf(getCXs(), '{', '}') + " -- " + "effect1" + " --> "	+ getE1X() 
-				+ " <: " + CollUtil.getStringOf(getDYs(), '{', '}') + " -- " + "effect2" + " --> "	+ getE2Y();
+		return CollUtil.getStringOf(getCXs(), '{', '}') + " -- " + effects1 + " --> "	+ getE1X() 
+				+ " <: " + CollUtil.getStringOf(getDYs(), '{', '}') + " -- " + effects2 + " --> "	+ getE2Y();
 	}
 	
 	/**

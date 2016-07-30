@@ -5,32 +5,37 @@ import java.util.Iterator;
 import java.util.LinkedHashSet;
 
 import polyglot.ext.jl5.types.JL5ClassType;
+import tool.compiler.java.util.CollUtil;
 
 /**
  * Exception Effect
  */
 public class ExnEffect implements Effect, Iterable<JL5ClassType> {
 	
-	private LinkedHashSet<JL5ClassType> Exceptions;
+	private LinkedHashSet<JL5ClassType> exceptions;
 	
 	public ExnEffect() {
-		Exceptions = new LinkedHashSet<>();
+		exceptions = new LinkedHashSet<>();
 	}
 
 	public void add(JL5ClassType exceptionClass) {
-		Exceptions.add(exceptionClass);
+		exceptions.add(exceptionClass);
 	}
 	
 	public void addAll(Collection<JL5ClassType> exceptionClasses) {
-		Exceptions.addAll(exceptionClasses);
+		exceptions.addAll(exceptionClasses);
 	}
 	
 	public JL5ClassType get(int index) {
-		return (JL5ClassType) Exceptions.toArray()[index];
+		return (JL5ClassType) exceptions.toArray()[index];
 	}
 	
 	public Collection<JL5ClassType> getAll() {
-		return new LinkedHashSet<>(Exceptions);
+		return new LinkedHashSet<>(exceptions);
+	}
+	
+	public int size() {
+		return exceptions.size();
 	}
 	
 	@Override
@@ -40,6 +45,18 @@ public class ExnEffect implements Effect, Iterable<JL5ClassType> {
 
 	@Override
 	public Iterator<JL5ClassType> iterator() {
-		return Exceptions.iterator();
+		return exceptions.iterator();
+	}
+	
+	/**
+	 * @see java.lang.Object#toString()
+	 */
+	@Override
+	public String toString() {
+		try {
+			return CollUtil.getStringOf(exceptions);
+		} catch(NullPointerException e) {
+			return null;
+		}
 	}
 }

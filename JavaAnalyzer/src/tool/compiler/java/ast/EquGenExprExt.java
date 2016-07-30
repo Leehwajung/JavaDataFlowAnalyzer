@@ -16,8 +16,7 @@ public class EquGenExprExt extends EquGenExt {
 	public static final String KIND = "Expression";
 	
 	private MetaSetVariable metaSetVar = null;
-//	private Effect effect = null;	// TODO: 관리 책임은 Expr or Node 전체?
-
+	
 	@Override
 	public EquGenerator equGenEnter(EquGenerator v) {
 //		ReportUtil.enterReport(this);

@@ -1,7 +1,7 @@
 package tool.compiler.java.constraint;
 
 import java.util.ArrayList;
-import java.util.Collection;
+import java.util.List;
 
 import tool.compiler.java.aos.AbsObjSet;
 import tool.compiler.java.aos.SetVariable;
@@ -61,7 +61,7 @@ public class XSubseteqY implements Constraint {
 	 * @return		Substituted New Constraint
 	 */
 	@Override
-	public Constraint substitute(Collection<TypedSetVariable> xy) {
+	public Constraint substitute(List<TypedSetVariable> xy) {
 		if(xy.size() != substitutableSize()) {
 			throw new IllegalArgumentException("The Size of tsvs must be " + substitutableSize() + ". "
 					+ "(Current size is " + xy.size() + ".)");
