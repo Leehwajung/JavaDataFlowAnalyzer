@@ -5,13 +5,13 @@ import polyglot.ast.Field;
 import polyglot.ast.Node;
 import polyglot.ext.jl5.types.JL5FieldInstance;
 import polyglot.util.SerialVersionUID;
+import tool.compiler.java.aos.MetaSetVariable;
+import tool.compiler.java.constraint.ReadField;
+import tool.compiler.java.constraint.ReadStaticField;
 import tool.compiler.java.util.ReportUtil;
 import tool.compiler.java.util.ReportUtil.MetaSetVarGoal;
 import tool.compiler.java.util.ReportUtil.MetaSetVarSource;
 import tool.compiler.java.visit.EquGenerator;
-import tool.compiler.java.visit.ReadField;
-import tool.compiler.java.visit.ReadStaticField;
-import tool.compiler.java.visit.MetaSetVariable;
 
 /**
  * Field <: NamedVariable <: Variable <: Expr <: Term <: Node					<br>

@@ -3,9 +3,9 @@ package tool.compiler.java.ast;
 import polyglot.ast.If;
 import polyglot.ast.Node;
 import polyglot.util.SerialVersionUID;
+import tool.compiler.java.env.LocalEnvironment;
 import tool.compiler.java.util.ReportUtil;
 import tool.compiler.java.visit.EquGenerator;
-import tool.compiler.java.visit.LocalEnvironment;
 
 /**
  * If <: CompoundStmt <: Stmt <: Term <: Node

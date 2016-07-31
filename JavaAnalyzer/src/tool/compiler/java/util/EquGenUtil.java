@@ -13,11 +13,11 @@ import polyglot.ext.jl5.types.inference.InferenceSolver;
 import polyglot.ext.jl5.types.inference.InferenceSolver_c;
 import polyglot.types.ReferenceType;
 import polyglot.types.Type;
+import tool.compiler.java.aos.ArrayMetaSetVariable;
+import tool.compiler.java.aos.MetaSetVariable;
+import tool.compiler.java.constraint.XSubseteqY;
 import tool.compiler.java.util.ReportUtil.MetaSetVarGoal;
 import tool.compiler.java.util.ReportUtil.MetaSetVarSource;
-import tool.compiler.java.visit.ArrayMetaSetVariable;
-import tool.compiler.java.visit.MetaSetVariable;
-import tool.compiler.java.visit.XSubseteqY;
 
 public final class EquGenUtil {
 	

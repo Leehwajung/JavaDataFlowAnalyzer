@@ -3,11 +3,11 @@ package tool.compiler.java.ast;
 import polyglot.ast.Node;
 import polyglot.ast.Return;
 import polyglot.util.SerialVersionUID;
+import tool.compiler.java.aos.MetaSetVariable;
 import tool.compiler.java.util.ReportUtil;
 import tool.compiler.java.util.ReportUtil.MetaSetVarGoal;
 import tool.compiler.java.util.ReportUtil.MetaSetVarSource;
 import tool.compiler.java.visit.EquGenerator;
-import tool.compiler.java.visit.MetaSetVariable;
 
 /**
  * Return <: Stmt <: Term <: Node

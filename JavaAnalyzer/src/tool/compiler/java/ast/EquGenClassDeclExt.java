@@ -4,8 +4,8 @@ import polyglot.ast.ClassDecl;
 import polyglot.ast.Node;
 import polyglot.ext.jl5.types.JL5ParsedClassType;
 import polyglot.util.SerialVersionUID;
+import tool.compiler.java.env.ClassConstraint;
 import tool.compiler.java.util.ReportUtil;
-import tool.compiler.java.visit.ClassConstraint;
 import tool.compiler.java.visit.EquGenerator;
 
 /**

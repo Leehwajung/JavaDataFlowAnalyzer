@@ -3,12 +3,12 @@ package tool.compiler.java.ast;
 import polyglot.ast.Cast;
 import polyglot.ast.Node;
 import polyglot.util.SerialVersionUID;
+import tool.compiler.java.aos.MetaSetVariable;
+import tool.compiler.java.constraint.XSubseteqY;
 import tool.compiler.java.util.ReportUtil;
 import tool.compiler.java.util.ReportUtil.MetaSetVarGoal;
 import tool.compiler.java.util.ReportUtil.MetaSetVarSource;
 import tool.compiler.java.visit.EquGenerator;
-import tool.compiler.java.visit.MetaSetVariable;
-import tool.compiler.java.visit.XSubseteqY;
 
 /**
  * Cast <: Expr <: Term <: Node					<br>

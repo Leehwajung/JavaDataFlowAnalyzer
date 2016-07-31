@@ -4,11 +4,11 @@ import polyglot.ast.Node;
 import polyglot.ast.ProcedureDecl;
 import polyglot.ext.jl5.types.JL5ProcedureInstance;
 import polyglot.util.SerialVersionUID;
+import tool.compiler.java.env.MethodConstraint;
+import tool.compiler.java.env.TypeEnvironment;
+import tool.compiler.java.info.MethodInfo;
 import tool.compiler.java.util.ReportUtil;
 import tool.compiler.java.visit.EquGenerator;
-import tool.compiler.java.visit.TypeEnvironment;
-import tool.compiler.java.visit.MethodConstraint;
-import tool.compiler.java.visit.MethodInfo;
 
 /**
  * ProcedureDecl <: CodeDecl <: ClassMember <: Term <: Node				<br>

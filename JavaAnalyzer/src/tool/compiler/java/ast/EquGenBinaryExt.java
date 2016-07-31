@@ -3,13 +3,13 @@ package tool.compiler.java.ast;
 import polyglot.ast.Binary;
 import polyglot.ast.Node;
 import polyglot.util.SerialVersionUID;
+import tool.compiler.java.aos.AbstractObject;
+import tool.compiler.java.aos.MetaSetVariable;
+import tool.compiler.java.constraint.ObjsSubseteqX;
 import tool.compiler.java.util.ReportUtil;
 import tool.compiler.java.util.ReportUtil.MetaSetVarGoal;
 import tool.compiler.java.util.ReportUtil.MetaSetVarSource;
-import tool.compiler.java.visit.AbstractObject;
 import tool.compiler.java.visit.EquGenerator;
-import tool.compiler.java.visit.MetaSetVariable;
-import tool.compiler.java.visit.ObjsSubseteqX;
 
 /**
  * Binary <: Expr <: Term <: Node				<br>
