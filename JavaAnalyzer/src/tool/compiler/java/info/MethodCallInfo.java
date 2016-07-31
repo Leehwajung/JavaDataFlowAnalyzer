@@ -5,8 +5,10 @@ import polyglot.ext.jl5.types.JL5Subst;
 import polyglot.ext.jl5.types.JL5TypeSystem;
 import polyglot.ext.jl5.types.TypeVariable;
 import polyglot.types.ReferenceType;
+import tool.compiler.java.effect.Effect;
 import tool.compiler.java.util.EquGenUtil;
 
+import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -17,7 +19,11 @@ public class MethodCallInfo extends AbstractMethodInfo {
 	private List<ReferenceType> substitutionTypes = null;
 	
 	public MethodCallInfo(JL5ProcedureInstance procedureInstance) {
-		super(procedureInstance);
+		this(procedureInstance, null);
+	}
+	
+	public MethodCallInfo(JL5ProcedureInstance procedureInstance, Collection<Effect> effects) {
+		super(procedureInstance, effects);
 		this.origProcIns = getOrigInstanceOf(getTypeInstance());
 		if(isGenericMethod()) {
 			this.typeArgs = inferTypeArgs();
@@ -58,7 +64,7 @@ public class MethodCallInfo extends AbstractMethodInfo {
 			substitutionTypes = null;
 		}
 	}
-
+	
 	/**
 	 * Infer type arguments for origProcIns, when it is called with arguments of type argTypes.
 	 */

@@ -3,7 +3,9 @@ package tool.compiler.java.info;
 import polyglot.ext.jl5.types.JL5ProcedureInstance;
 import polyglot.ext.jl5.types.TypeVariable;
 import polyglot.types.ReferenceType;
+import tool.compiler.java.effect.Effect;
 
+import java.util.Collection;
 import java.util.List;
 
 public class MethodInfo extends AbstractMethodInfo {
@@ -12,7 +14,11 @@ public class MethodInfo extends AbstractMethodInfo {
 	 * @param procedureInstance
 	 */
 	public MethodInfo(JL5ProcedureInstance procedureInstance) {
-		super(procedureInstance);
+		this(procedureInstance, null);
+	}
+	
+	public MethodInfo(JL5ProcedureInstance procedureInstance, Collection<Effect> effects) {
+		super(procedureInstance, effects);
 	}
 	
 	@Override
