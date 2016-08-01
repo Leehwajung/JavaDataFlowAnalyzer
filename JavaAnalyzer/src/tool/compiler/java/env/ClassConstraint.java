@@ -17,7 +17,6 @@ import java.util.Collection;
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Map.Entry;
 
 /**
@@ -40,79 +39,29 @@ public class ClassConstraint implements ConstraintFunction {
 	 */
 	public ClassConstraint(JL5ClassType type) {
 		this.clz = type;
-		this.chi_this = new MetaSetVariable(type);
-	}
-	
-	public ClassConstraint(JL5ClassType type, Collection<MetaSetVariable> chiTypeVars) {
-		this(type);
-		if(chiTypeVars == null) {
-			this.chi_typeVars = null;
-		} else {
-			this.chi_typeVars = new LinkedHashSet<>(chiTypeVars);
-		}
-	}
-	
-	public ClassConstraint(JL5ClassType type, Collection<MetaSetVariable> chiTypeVars, Map<JL5FieldInstance, MetaSetVariable> chiFields) {
-		this(type, chiTypeVars);
-		if(chiFields == null) {
-			this.chi_fields = null;
-		} else {
-			this.chi_fields = new LinkedHashMap<>(chiFields);
-		}
-	}
-	
-	@Deprecated
-	public ClassConstraint(MetaSetVariable chiThis) {
-		try {
-			this.clz = (JL5ClassType) chiThis.getType();
-			this.chi_this = chiThis;
-		} catch (ClassCastException e) {
-			throw new IllegalArgumentException("The type of MetaSetVariable is NOT class type. The type is " + chiThis.getType() + ".");
-		}
-	}
-	
-	@Deprecated
-	public ClassConstraint(MetaSetVariable chiThis, Collection<MetaSetVariable> chiTypeVars) {
-		this(chiThis);
-		if(chiTypeVars == null) {
-			this.chi_typeVars = null;
-		} else {
-			this.chi_typeVars = new LinkedHashSet<>(chiTypeVars);
-		}
-	}
-	
-	@Deprecated
-	public ClassConstraint(MetaSetVariable chiThis, Collection<MetaSetVariable> chiTypeVars, Map<JL5FieldInstance, MetaSetVariable> chiFields) {
-		this(chiThis, chiTypeVars);
-		if(chiFields == null) {
-			this.chi_fields = null;
-		} else {
-			this.chi_fields = new LinkedHashMap<>(chiFields);
-		}
-	}
-	
-	/**
-	 * @param type Class Type
-	 */
-	public ClassConstraint(JL5ClassType type, boolean autoGenerate) {
-		this(type);		// this
+		generateThis(type);
 		
-		if(autoGenerate) {
-			if (type instanceof JL5ParsedClassType) {
-				generateTypeVars((JL5ParsedClassType) type);
-			}
-			
-			generateFields(type);
+		if (type instanceof JL5ParsedClassType) {
+			generateTypeVars((JL5ParsedClassType) type);
+		}
+		generateFields(type);
+	}
+	
+	private void generateThis(JL5ClassType type) {
+		if (!type.flags().isStatic()) {	// Dynamic
+			this.chi_this = new MetaSetVariable(type);
+		} else {	// Static
+			this.chi_this = null;
 		}
 	}
 	
 	private void generateTypeVars(JL5ParsedClassType type) {
 		List<TypeVariable> typeVars = type.typeVariables();
 		
-		if(!typeVars.isEmpty()) {
+		if (!typeVars.isEmpty()) {
 			this.chi_typeVars = new LinkedHashSet<>();
 			
-			for(TypeVariable tv : typeVars) {
+			for (TypeVariable tv : typeVars) {
 				this.chi_typeVars.add(new MetaSetVariable(tv));	// type Var
 			}
 		} else {
@@ -123,12 +72,12 @@ public class ClassConstraint implements ConstraintFunction {
 	private void generateFields(JL5ClassType type) {
 		List<? extends FieldInstance> fields = type.fields();
 		
-		if(!fields.isEmpty()) {
+		if (!fields.isEmpty()) {
 			this.chi_fields = new LinkedHashMap<>();
-			for(FieldInstance field : fields) {
+			for (FieldInstance field : fields) {
 				Type fieldType = field.type();
 				MetaSetVariable fieldMSV;
-				if(!(fieldType instanceof JL5ArrayType)) {	// For Scalar Type Field
+				if (!(fieldType instanceof JL5ArrayType)) {	// For Scalar Type Field
 					fieldMSV = new MetaSetVariable(fieldType);
 				} else {									// For Array Type Field
 					fieldMSV = new ArrayMetaSetVariable((JL5ArrayType) fieldType);
@@ -164,10 +113,10 @@ public class ClassConstraint implements ConstraintFunction {
 	 * @return the chi_this
 	 */
 	public MetaSetVariable getThis(TypeNode qualifier) {
-		if(qualifier == null) {
+		if (qualifier == null) {
 			return getThis();
 		}
-		if(qualifier.type().equals(chi_this.getType())) {
+		if (qualifier.type().equals(chi_this.getType())) {
 			return chi_this;
 		} else {
 			return outerClassConstraint.getThis(qualifier);
@@ -187,10 +136,10 @@ public class ClassConstraint implements ConstraintFunction {
 	 * @return
 	 */
 	public MetaSetVariable getSuper(TypeNode qualifier) {
-		if(qualifier == null) {
+		if (qualifier == null) {
 			return getSuper();
 		}
-		if(qualifier.type().equals(chi_this.getType())) {
+		if (qualifier.type().equals(chi_this.getType())) {
 			return chi_this;
 		} else {
 			return outerClassConstraint.getSuper(qualifier);
@@ -202,41 +151,6 @@ public class ClassConstraint implements ConstraintFunction {
 	 */
 	public LinkedHashSet<MetaSetVariable> getTypeVars() {
 		return chi_typeVars;
-	}
-	
-	/**
-	 * @param chi_typeVars the chi_typeVars to set
-	 */
-	public void setTypeVars(Collection<MetaSetVariable> chi_typeVars) {
-		if(this.chi_typeVars == null) {
-			this.chi_typeVars = new LinkedHashSet<>(chi_typeVars);
-		} else {
-			this.chi_typeVars.clear();
-			this.chi_typeVars.addAll(chi_typeVars);
-		}
-	}
-	
-	/**
-	 * @param chi_typeVars the chi_typeVars to add
-	 */
-	public void addTypeVars(Collection<MetaSetVariable> chi_typeVars) {
-		if(this.chi_typeVars == null) {
-			this.chi_typeVars = new LinkedHashSet<>(chi_typeVars);
-		} else {
-			this.chi_typeVars.addAll(chi_typeVars);
-		}
-	}
-	
-	/**
-	 * @param chi_typeVar
-	 */
-	public void addTypeVar(MetaSetVariable chi_typeVar) {
-		try {
-			this.chi_typeVars.add(chi_typeVar);
-		} catch (NullPointerException e) {
-			this.chi_typeVars = new LinkedHashSet<>();
-			this.chi_typeVars.add(chi_typeVar);
-		}
 	}
 	
 	/**
@@ -264,54 +178,15 @@ public class ClassConstraint implements ConstraintFunction {
 	 * @return the chi_fields
 	 */
 	public JL5FieldInstance getField(MetaSetVariable chi_field) {
-		if(chi_fields.containsValue(chi_field)) {
-			for(Entry<JL5FieldInstance, MetaSetVariable> entry : chi_fields.entrySet()) {
-				if(entry.getValue() == chi_field) {
+		if (chi_fields.containsValue(chi_field)) {
+			for (Entry<JL5FieldInstance, MetaSetVariable> entry : chi_fields.entrySet()) {
+				if (entry.getValue() == chi_field) {
 					return entry.getKey();
 				}
 			}
 			return null;
 		} else {
 			return null;
-		}
-	}
-	
-	/**
-	 * @param chi_fields the chi_fields to set
-	 */
-	@Deprecated
-	public void setFields(Map<JL5FieldInstance, MetaSetVariable> chi_fields) {
-		if(this.chi_fields == null) {
-			this.chi_fields = new LinkedHashMap<>(chi_fields);
-		} else {
-			this.chi_fields.clear();
-			this.chi_fields.putAll(chi_fields);
-		}
-	}
-	
-	/**
-	 * @param chi_fields the chi_fields to add
-	 */
-	@Deprecated
-	public void addFields(Map<JL5FieldInstance, MetaSetVariable> chi_fields) {
-		if(this.chi_fields == null) {
-			this.chi_fields = new LinkedHashMap<>(chi_fields);
-		} else {
-			this.chi_fields.putAll(chi_fields);
-		}
-	}
-	
-	/**
-	 * @param field
-	 * @param chi_field
-	 */
-	@Deprecated
-	public void addField(JL5FieldInstance field, MetaSetVariable chi_field) {
-		try {
-			this.chi_fields.put(field, chi_field);
-		} catch (NullPointerException e) {
-			this.chi_fields = new LinkedHashMap<>();
-			this.chi_fields.put(field, chi_field);
 		}
 	}
 	
@@ -345,8 +220,8 @@ public class ClassConstraint implements ConstraintFunction {
 	 * @param innerClassConstraints innerClassConstraints to set
 	 */
 	public void setInners(Collection<ClassConstraint> innerClassConstraints) {
-		if(innerClassConstraints != null) {
-			if(this.innerClassConstraints == null) {
+		if (innerClassConstraints != null) {
+			if (this.innerClassConstraints == null) {
 				this.innerClassConstraints = new LinkedHashSet<>(innerClassConstraints);
 			} else {
 				this.innerClassConstraints.clear();
@@ -361,8 +236,8 @@ public class ClassConstraint implements ConstraintFunction {
 	 * @param innerClassConstraints innerClassConstraints to add
 	 */
 	public void addInners(Collection<ClassConstraint> innerClassConstraints) {
-		if(innerClassConstraints != null) {
-			if(this.innerClassConstraints == null) {
+		if (innerClassConstraints != null) {
+			if (this.innerClassConstraints == null) {
 				this.innerClassConstraints = new LinkedHashSet<>(innerClassConstraints);
 			} else {
 				this.innerClassConstraints.addAll(innerClassConstraints);
@@ -374,7 +249,7 @@ public class ClassConstraint implements ConstraintFunction {
 	 * @param innerClassConstraint the innerClassConstraint to add
 	 */
 	public void addInner(ClassConstraint innerClassConstraint) {
-		if(innerClassConstraint != null) {
+		if (innerClassConstraint != null) {
 			try {
 				this.innerClassConstraints.add(innerClassConstraint);
 			} catch (NullPointerException e) {
@@ -399,8 +274,8 @@ public class ClassConstraint implements ConstraintFunction {
 	 * @param codeConstraints MethodConstraints and/or InitializerConstraints to set
 	 */
 	public void setCodeConstraints(Collection<? extends CodeConstraint> codeConstraints) {
-		if(codeConstraints != null) {
-			if(this.codeConstraints == null) {
+		if (codeConstraints != null) {
+			if (this.codeConstraints == null) {
 				this.codeConstraints = new LinkedHashSet<>(codeConstraints);
 			} else {
 				this.codeConstraints.clear();
@@ -415,8 +290,8 @@ public class ClassConstraint implements ConstraintFunction {
 	 * @param codeConstraints MethodConstraints and/or InitializerConstraints to add
 	 */
 	public void addCodeConstraints(Collection<? extends CodeConstraint> codeConstraints) {
-		if(codeConstraints != null) {
-			if(this.codeConstraints == null) {
+		if (codeConstraints != null) {
+			if (this.codeConstraints == null) {
 				this.codeConstraints = new LinkedHashSet<>(codeConstraints);
 			} else {
 				this.codeConstraints.addAll(codeConstraints);
@@ -428,7 +303,7 @@ public class ClassConstraint implements ConstraintFunction {
 	 * @param codeConstraint MethodConstraint or InitializerConstraint to add
 	 */
 	public void addCodeConstraint(CodeConstraint codeConstraint) {
-		if(codeConstraint != null) {
+		if (codeConstraint != null) {
 			try {
 				this.codeConstraints.add(codeConstraint);
 			} catch (NullPointerException e) {
@@ -455,8 +330,8 @@ public class ClassConstraint implements ConstraintFunction {
 	 */
 	@Override
 	public void setMetaConstraints(Collection<? extends Constraint> fieldConstraints) {
-		if(fieldConstraints != null) {
-			if(this.fieldConstraints == null) {
+		if (fieldConstraints != null) {
+			if (this.fieldConstraints == null) {
 				this.fieldConstraints = new LinkedHashSet<>(fieldConstraints);
 			} else {
 				this.fieldConstraints.clear();
@@ -472,8 +347,8 @@ public class ClassConstraint implements ConstraintFunction {
 	 */
 	@Override
 	public void addMetaConstraints(Collection<? extends Constraint> fieldConstraints) {
-		if(fieldConstraints != null) {
-			if(this.fieldConstraints == null) {
+		if (fieldConstraints != null) {
+			if (this.fieldConstraints == null) {
 				this.fieldConstraints = new LinkedHashSet<>(fieldConstraints);
 			} else {
 				this.fieldConstraints.addAll(fieldConstraints);
@@ -486,7 +361,7 @@ public class ClassConstraint implements ConstraintFunction {
 	 */
 	@Override
 	public void addMetaConstraint(Constraint fieldConstraint) {
-		if(fieldConstraint != null) {
+		if (fieldConstraint != null) {
 			try {
 				this.fieldConstraints.add(fieldConstraint);
 			} catch (NullPointerException e) {
@@ -527,6 +402,9 @@ public class ClassConstraint implements ConstraintFunction {
 		result = prime * result + ((chi_this == null) ? 0 : chi_this.hashCode());
 		result = prime * result + ((chi_typeVars == null) ? 0 : chi_typeVars.hashCode());
 		result = prime * result + ((chi_fields == null) ? 0 : chi_fields.hashCode());
+		result = prime * result + ((outerClassConstraint == null) ? 0 : outerClassConstraint.hashCode());
+		result = prime * result + ((innerClassConstraints == null) ? 0 : innerClassConstraints.hashCode());
+		result = prime * result + ((codeConstraints == null) ? 0 : codeConstraints.hashCode());
 		result = prime * result + ((fieldConstraints == null) ? 0 : fieldConstraints.hashCode());
 		return result;
 	}
@@ -546,13 +424,6 @@ public class ClassConstraint implements ConstraintFunction {
 			return false;
 		}
 		ClassConstraint other = (ClassConstraint) obj;
-		if (clz == null) {
-			if (other.clz != null) {
-				return false;
-			}
-		} else if (!clz.equals(other.clz)) {
-			return false;
-		}
 		if (chi_this == null) {
 			if (other.chi_this != null) {
 				return false;
@@ -572,6 +443,34 @@ public class ClassConstraint implements ConstraintFunction {
 				return false;
 			}
 		} else if (!chi_fields.equals(other.chi_fields)) {
+			return false;
+		}
+		if (clz == null) {
+			if (other.clz != null) {
+				return false;
+			}
+		} else if (!clz.equals(other.clz)) {
+			return false;
+		}
+		if (outerClassConstraint == null) {
+			if (other.outerClassConstraint != null) {
+				return false;
+			}
+		} else if (!outerClassConstraint.equals(other.outerClassConstraint)) {
+			return false;
+		}
+		if (innerClassConstraints == null) {
+			if (other.innerClassConstraints != null) {
+				return false;
+			}
+		} else if (!innerClassConstraints.equals(other.innerClassConstraints)) {
+			return false;
+		}
+		if (codeConstraints == null) {
+			if (other.codeConstraints != null) {
+				return false;
+			}
+		} else if (!codeConstraints.equals(other.codeConstraints)) {
 			return false;
 		}
 		if (fieldConstraints == null) {

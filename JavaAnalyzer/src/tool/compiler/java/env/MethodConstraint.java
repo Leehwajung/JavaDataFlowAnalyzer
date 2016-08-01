@@ -21,31 +21,19 @@ import java.util.LinkedHashSet;
  */
 public class MethodConstraint extends CodeConstraint {
 	
-	private ArrayList<MetaSetVariable> chi_formals;
-	private MetaSetVariable chi_ret;
+	private ArrayList<MetaSetVariable> chi_formals = null;
+	private MetaSetVariable chi_ret = null;
 	
 	/**
 	 * @param m
 	 */
 	public MethodConstraint(JL5ProcedureInstance m) {
 		super(m);
-		if(m instanceof JL5MethodInstance) {
+		if (m instanceof JL5MethodInstance) {
 			this.chi_ret = new MetaSetVariable(((JL5MethodInstance) m).returnType());
-		} else/* if(m instanceof JL5ConstructorInstance)*/ {	//JL5ConstructorInstance
+		} else/* if (m instanceof JL5ConstructorInstance)*/ {	//JL5ConstructorInstance
 			this.chi_ret = null;
 		}
-	}
-	
-	@Deprecated
-	public MethodConstraint(JL5ProcedureInstance m, Collection<MetaSetVariable> chiFormals) {
-		this(m);
-		this.chi_formals = new ArrayList<>(chiFormals);
-	}
-	
-	@Deprecated
-	public MethodConstraint(JL5ProcedureInstance m, Collection<MetaSetVariable> chiFormals, MetaSetVariable chiReturn) {
-		this(m, chiFormals);
-		this.chi_ret = chiReturn;
 	}
 	
 	
@@ -54,12 +42,12 @@ public class MethodConstraint extends CodeConstraint {
 		
 		// 앞에서 만든 X1~Xn과 X_e1~X_en을 자료흐름 관계를 제약식 집합 CS1으로 만든다.
 		ArrayList<XSubseteqY> cs1 = new ArrayList<>();
-		if(chi_formals != null && XFormals != null) {
-			if(chi_formals.size() != XFormals.size()) {
+		if (chi_formals != null && XFormals != null) {
+			if (chi_formals.size() != XFormals.size()) {
 				throw new IllegalArgumentException("XFormals size must be " + chi_formals.size() + ".");
 			}
 			Iterator<TypedSetVariable> iterator = XFormals.iterator();
-			for(MetaSetVariable msvFormal : chi_formals) {
+			for (MetaSetVariable msvFormal : chi_formals) {
 				TypedSetVariable tsvFormal = new TypedSetVariable(msvFormal.getType());
 				cs1.add(new XSubseteqY(tsvFormal, iterator.next()));
 			}
@@ -68,22 +56,22 @@ public class MethodConstraint extends CodeConstraint {
 		// 메소드 m을 실행할 때 생기는 자료흐름 CS2를 만든다.
 		ArrayList<Constraint> cs2 = new ArrayList<>();
 		HashMap<MetaSetVariable, TypedSetVariable> substLocals = new HashMap<>();
-		for(Constraint metaCon : getMetaConstraints()) {	// 가지고 있는 전체 제약식에 대해
+		for (Constraint metaCon : getMetaConstraints()) {	// 가지고 있는 전체 제약식에 대해
 			ArrayList<TypedSetVariable> substs = new ArrayList<>();	// subst한 aos
 			// MetaSetVariable을 TypedSetVariable로 대치
-			for(AbsObjSet aos : metaCon.getAllAbsObjSets()) {
+			for (AbsObjSet aos : metaCon.getAllAbsObjSets()) {
 				if (aos instanceof MetaSetVariable) {
 					// Formal의 Chi인지 확인
 					int pos = -1;
-					if(chi_formals != null) {
+					if (chi_formals != null) {
 						pos = chi_formals.indexOf(aos);
 					}
-					if(pos != -1) {						// Formal의 Chi이면 (chi_formals에 존재하면)
+					if (pos != -1) {						// Formal의 Chi이면 (chi_formals에 존재하면)
 						substs.add((TypedSetVariable) cs1.get(pos).getX());
 					} else {
 					// Local의 Chi인지 확인
 						TypedSetVariable tsvLocal = substLocals.get(aos);
-						if(tsvLocal != null) {
+						if (tsvLocal != null) {
 							substs.add(tsvLocal);
 						} else {
 							tsvLocal = new TypedSetVariable(aos.getType());
@@ -100,18 +88,18 @@ public class MethodConstraint extends CodeConstraint {
 		
 		// Return의 Chi에 대한 새로운 TypedSetVariable을 생성한다.
 		TypedSetVariable x_ret = null;
-		if(chi_ret != null) {
+		if (chi_ret != null) {
 			// Formal의 Chi인지 확인
 			int pos = -1;
-			if(chi_formals != null) {
+			if (chi_formals != null) {
 				pos = chi_formals.indexOf(chi_ret);
 			}
-			if(pos != -1) {						// Formal의 Chi이면 (chi_formals에 존재하면)
+			if (pos != -1) {						// Formal의 Chi이면 (chi_formals에 존재하면)
 				x_ret = (TypedSetVariable) cs1.get(pos).getX();
 			} else {
 			// Local의 Chi인지 확인
 				TypedSetVariable tsvLocal = substLocals.get(chi_ret);
-				if(tsvLocal != null) {
+				if (tsvLocal != null) {
 					x_ret = tsvLocal;
 				} else {
 					x_ret = new TypedSetVariable(chi_ret.getType());
@@ -140,31 +128,6 @@ public class MethodConstraint extends CodeConstraint {
 	 */
 	public LinkedHashSet<MetaSetVariable> getFormals() {
 		return new LinkedHashSet<>(chi_formals);
-	}
-	
-	/**
-	 * @param chi_formals the chi_formals to set
-	 */
-	@Deprecated
-	public void setFormals(Collection<MetaSetVariable> chi_formals) {
-		if(this.chi_formals == null) {
-			this.chi_formals = new ArrayList<MetaSetVariable>(chi_formals);
-		} else {
-			this.chi_formals.clear();
-			this.chi_formals.addAll(chi_formals);
-		}
-	}
-	
-	/**
-	 * @param chi_formals the chi_formals to add
-	 */
-	@Deprecated
-	public void addFormals(Collection<MetaSetVariable> chi_formals) {
-		if(this.chi_formals == null) {
-			this.chi_formals = new ArrayList<MetaSetVariable>(chi_formals);
-		} else {
-			this.chi_formals.addAll(chi_formals);
-		}
 	}
 	
 	/**

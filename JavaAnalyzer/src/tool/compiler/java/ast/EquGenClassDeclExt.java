@@ -24,13 +24,8 @@ public class EquGenClassDeclExt extends EquGenClassMemberExt {
 		ClassDecl clzDecl = (ClassDecl)this.node();
 		JL5ParsedClassType classType = (JL5ParsedClassType) clzDecl.type();
 		
-//		ArrayList<MetaSetVariable> chiFields = new ArrayList<>();
-//		for(FieldInstance field : classType.fields()) {
-//			chiFields.add(new MetaSetVariable(field.type()));
-//		}
-		
 		// Class Constraint
-		cc = new ClassConstraint(classType, true);
+		cc = new ClassConstraint(classType);
 		ClassConstraint outerCC = v.getCurrCC();
 		if (outerCC != null) {
 			cc.setOuter(outerCC);	// Outer Class 설정
