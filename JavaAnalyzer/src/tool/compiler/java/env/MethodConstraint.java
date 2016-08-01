@@ -19,25 +19,30 @@ import java.util.LinkedHashSet;
 /**
  * lam (Chi1, ..., Chin, Chi_ret). Constraint Set
  */
-public class MethodConstraint implements ConstraintFunction {
+public class MethodConstraint extends CodeConstraint {
 	
-	private JL5ProcedureInstance method;
 	private ArrayList<MetaSetVariable> chi_formals;
 	private MetaSetVariable chi_ret;
-	private LinkedHashSet<Constraint> metaConstraints;
 	
 	/**
 	 * @param 
 	 */
 	public MethodConstraint(JL5ProcedureInstance m) {
-		this.method = m;
+		super(m);
+		if(m instanceof JL5MethodInstance) {
+			this.chi_ret = new MetaSetVariable(((JL5MethodInstance) m).returnType());
+		} else {	//JL5ConstructorInstance
+			this.chi_ret = null;
+		}
 	}
 	
+	@Deprecated
 	public MethodConstraint(JL5ProcedureInstance m, Collection<MetaSetVariable> chiFormals) {
 		this(m);
 		this.chi_formals = new ArrayList<>(chiFormals);
 	}
 	
+	@Deprecated
 	public MethodConstraint(JL5ProcedureInstance m, Collection<MetaSetVariable> chiFormals, MetaSetVariable chiReturn) {
 		this(m, chiFormals);
 		this.chi_ret = chiReturn;
@@ -63,7 +68,7 @@ public class MethodConstraint implements ConstraintFunction {
 		// 메소드 m을 실행할 때 생기는 자료흐름 CS2를 만든다.
 		ArrayList<Constraint> cs2 = new ArrayList<>();
 		HashMap<MetaSetVariable, TypedSetVariable> substLocals = new HashMap<>();
-		for(Constraint metaCon : metaConstraints) {	// 가지고 있는 전체 제약식에 대해
+		for(Constraint metaCon : getMetaConstraints()) {	// 가지고 있는 전체 제약식에 대해
 			ArrayList<TypedSetVariable> substs = new ArrayList<>();	// subst한 aos
 			// MetaSetVariable을 TypedSetVariable로 대치
 			for(AbsObjSet aos : metaCon.getAllAbsObjSets()) {
@@ -125,8 +130,9 @@ public class MethodConstraint implements ConstraintFunction {
 	/**
 	 * @return the method
 	 */
-	public JL5ProcedureInstance getMethod() {
-		return method;
+	@Override
+	public JL5ProcedureInstance getInstance() {
+		return (JL5ProcedureInstance) super.getInstance();
 	}
 	
 	/**
@@ -139,6 +145,7 @@ public class MethodConstraint implements ConstraintFunction {
 	/**
 	 * @param chi_formals the chi_formals to set
 	 */
+	@Deprecated
 	public void setFormals(Collection<MetaSetVariable> chi_formals) {
 		if(this.chi_formals == null) {
 			this.chi_formals = new ArrayList<MetaSetVariable>(chi_formals);
@@ -151,6 +158,7 @@ public class MethodConstraint implements ConstraintFunction {
 	/**
 	 * @param chi_formals the chi_formals to add
 	 */
+	@Deprecated
 	public void addFormals(Collection<MetaSetVariable> chi_formals) {
 		if(this.chi_formals == null) {
 			this.chi_formals = new ArrayList<MetaSetVariable>(chi_formals);
@@ -178,66 +186,12 @@ public class MethodConstraint implements ConstraintFunction {
 		return chi_ret;
 	}
 	
-	/**
-	 * @param chiRet the chi_ret to set
-	 */
-	public void setReturn(MetaSetVariable chi_return) {
-		this.chi_ret = chi_return;
-	}
-	
-	/**
-	 * @return the metaConstraints
-	 */
-	public LinkedHashSet<? extends Constraint> getMetaConstraints() {
-		return new LinkedHashSet<>(metaConstraints);
-	}
-	
-	/**
-	 * @param metaConstraints the metaConstraints to set
-	 */
-	public void setMetaConstraints(Collection<? extends Constraint> metaConstraints) {
-		if(this.metaConstraints == null) {
-			this.metaConstraints = new LinkedHashSet<>(metaConstraints);
-		} else {
-			this.metaConstraints.clear();
-			this.metaConstraints.addAll(metaConstraints);
-		}
-	}
-	
-	/**
-	 * @param metaConstraints the metaConstraints to add
-	 */
-	public void addMetaConstraints(Collection<? extends Constraint> metaConstraints) {
-		if(this.metaConstraints == null) {
-			this.metaConstraints = new LinkedHashSet<>(metaConstraints);
-		} else {
-			this.metaConstraints.addAll(metaConstraints);
-		}
-	}
-	
-	/**
-	 * @param metaConstraint the metaConstraint to add
-	 */
-	public void addMetaConstraint(Constraint metaConstraint) {
-		try {
-			this.metaConstraints.add(metaConstraint);
-		} catch (NullPointerException e) {
-			this.metaConstraints = new LinkedHashSet<>();
-			this.metaConstraints.add(metaConstraint);
-		}
-	}
-	
 	public boolean isConstructor() {
-		return method instanceof JL5ConstructorInstance;
+		return getInstance() instanceof JL5ConstructorInstance;
 	}
 	
 	public boolean isNormal() {
-		return method instanceof JL5MethodInstance;
-	}
-	
-	@Override
-	public String getKind() {
-		return this.getClass().getSimpleName();
+		return getInstance() instanceof JL5MethodInstance;
 	}
 	
 	
@@ -246,7 +200,7 @@ public class MethodConstraint implements ConstraintFunction {
 	 */
 	@Override
 	public String toString() {
-		String result =  "MC " + method + ": λ(";
+		String result =  "MC " + getInstance() + ": λ(";
 		result += chi_formals != null ? CollUtil.getStringOf(chi_formals) : "";
 		result += chi_ret != null ? (chi_formals != null ? ", " : "") + chi_ret : "";
 		result += ")";
@@ -260,12 +214,9 @@ public class MethodConstraint implements ConstraintFunction {
 	@Override
 	public int hashCode() {
 		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((method == null) ? 0 : method.hashCode());
+		int result = super.hashCode();
 		result = prime * result + ((chi_formals == null) ? 0 : chi_formals.hashCode());
 		result = prime * result + ((chi_ret == null) ? 0 : chi_ret.hashCode());
-		result = prime * result + ((metaConstraints == null) ? 0 : metaConstraints.hashCode());
-		
 		return result;
 	}
 	
@@ -277,20 +228,13 @@ public class MethodConstraint implements ConstraintFunction {
 		if (this == obj) {
 			return true;
 		}
-		if (obj == null) {
+		if (!super.equals(obj)) {
 			return false;
 		}
 		if (getClass() != obj.getClass()) {
 			return false;
 		}
 		MethodConstraint other = (MethodConstraint) obj;
-		if (method == null) {
-			if (other.method != null) {
-				return false;
-			}
-		} else if (!method.equals(other.method)) {
-			return false;
-		}
 		if (chi_formals == null) {
 			if (other.chi_formals != null) {
 				return false;
@@ -305,15 +249,9 @@ public class MethodConstraint implements ConstraintFunction {
 		} else if (!chi_ret.equals(other.chi_ret)) {
 			return false;
 		}
-		if (metaConstraints == null) {
-			if (other.metaConstraints != null) {
-				return false;
-			}
-		} else if (!metaConstraints.equals(other.metaConstraints)) {
-			return false;
-		}
 		return true;
 	}
+	
 	
 	public static class ConstraintsPair {
 		

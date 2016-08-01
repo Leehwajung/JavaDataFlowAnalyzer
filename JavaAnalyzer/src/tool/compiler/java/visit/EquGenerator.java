@@ -15,6 +15,8 @@ import tool.compiler.java.aos.AbstractObject;
 import tool.compiler.java.aos.TypedSetVariable;
 import tool.compiler.java.ast.EquGenLang;
 import tool.compiler.java.env.ClassConstraint;
+import tool.compiler.java.env.CodeConstraint;
+import tool.compiler.java.env.InitializerConstraint;
 import tool.compiler.java.env.MethodConstraint;
 import tool.compiler.java.env.TypeEnvironment;
 import tool.compiler.java.info.FieldInfo;
@@ -45,9 +47,9 @@ public class EquGenerator extends ContextVisitor {
 	private static LinkedHashMap<FieldInfo, LinkedHashSet<FieldTableRow>> fieldTableMap;
 	
 	private static LinkedHashSet<ClassConstraint> classConstraintSet;
-	private static LinkedHashSet<MethodConstraint> methodConstraintSet;
+	private static LinkedHashSet<CodeConstraint> methodConstraintSet;
 	private static ClassConstraint currCC;
-	private static MethodConstraint currMC;
+	private static CodeConstraint currMC;	// MethodConstraint or InitializerConstraint
 	
 	private static TypeEnvironment typeEnv;
 	
@@ -94,20 +96,31 @@ public class EquGenerator extends ContextVisitor {
 		writeTablesToFile();
 		
 		Report.report(1,"\n----- MC Application Test -----");
-		for (MethodConstraint mc : methodConstraintSet) {
-			ArrayList<TypedSetVariable> XFormals = new ArrayList<>();
-			JL5ProcedureInstance m = mc.getMethod();
-			for(Type type : m.formalTypes()) {
-				XFormals.add(new TypedSetVariable(type));
-			}
-			
-			try {
-				if(m instanceof JL5MethodInstance) {
-					Report.report(1, "\n" + mc.toString());
-					Report.report(1, CollUtil.getNLStringOf(mc.apply(XFormals).getCS()));
+		for (CodeConstraint codeConst : methodConstraintSet) {
+			if(codeConst instanceof MethodConstraint) {
+				MethodConstraint mc = (MethodConstraint) codeConst;
+				ArrayList<TypedSetVariable> XFormals = new ArrayList<>();
+				JL5ProcedureInstance m = ((MethodConstraint)mc).getInstance();
+				for(Type type : m.formalTypes()) {
+					XFormals.add(new TypedSetVariable(type));
 				}
-			} catch(Exception e) {
-				e.printStackTrace();
+				
+				try {
+					if(m instanceof JL5MethodInstance) {
+						Report.report(1, "\n" + mc.toString());
+						Report.report(1, CollUtil.getNLStringOf(mc.apply(XFormals).getCS()));
+					}
+				} catch(Exception e) {
+					e.printStackTrace();
+				}
+			} else if (codeConst instanceof InitializerConstraint) {
+				InitializerConstraint ic = (InitializerConstraint)codeConst;
+				try {
+					Report.report(1, "\n" + ic.toString());
+					Report.report(1, CollUtil.getNLStringOf(ic.apply()));
+				} catch(Exception e) {
+					e.printStackTrace();
+				}
 			}
 		}
 		
@@ -206,11 +219,11 @@ public class EquGenerator extends ContextVisitor {
 	
 	/**
 	 * 제약식 함수 집합에 추가
-	 * @param methodConstraint
+	 * @param codeConstraint	MethodConstraint or InitializerConstraint
 	 */
-	public void addToSet(MethodConstraint methodConstraint) {
-		methodConstraintSet.add(methodConstraint);
-		currMC = methodConstraint;
+	public void addToSet(CodeConstraint codeConstraint) {
+		methodConstraintSet.add(codeConstraint);
+		currMC = codeConstraint;
 	}
 	
 	/**
@@ -223,7 +236,7 @@ public class EquGenerator extends ContextVisitor {
 	/**
 	 * @return the currMC
 	 */
-	public MethodConstraint getCurrMC() {
+	public CodeConstraint getCurrMC() {
 		return currMC;
 	}
 	
@@ -312,9 +325,9 @@ public class EquGenerator extends ContextVisitor {
 			} catch (NullPointerException ignored) {}
 			Report.report(1, "");
 		}
-		for(MethodConstraint mc : methodConstraintSet) {
+		for(CodeConstraint mc : methodConstraintSet) {
 			try {
-				Report.report(1, " - " + mc.getMethod());
+				Report.report(1, " - " + mc.getInstance());
 				Report.report(1, CollUtil.getNLStringOf(mc.getMetaConstraints()));
 			} catch (NullPointerException ignored) {}
 			Report.report(1, "");

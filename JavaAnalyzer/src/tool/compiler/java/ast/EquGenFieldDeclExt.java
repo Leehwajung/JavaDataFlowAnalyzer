@@ -24,7 +24,7 @@ import tool.compiler.java.visit.EquGenerator;
  * FieldDecl <: CodeNode <: Term <: Node
  * @author LHJ
  */
-public class EquGenFieldDeclExt extends EquGenExt {
+public class EquGenFieldDeclExt extends EquGenClassMemberExt {
 	private static final long serialVersionUID = SerialVersionUID.generate();
 	public static final String KIND = "Field Declaration";
 	

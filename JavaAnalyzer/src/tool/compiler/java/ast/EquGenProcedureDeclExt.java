@@ -15,7 +15,7 @@ import tool.compiler.java.visit.EquGenerator;
  * ProcedureDecl <: CodeDecl <: CodeBlock <: CodeNode <: Term <: Node
  * @author LHJ
  */
-public class EquGenProcedureDeclExt extends EquGenExt {
+public class EquGenProcedureDeclExt extends EquGenClassMemberExt {
 	private static final long serialVersionUID = SerialVersionUID.generate();
 	public static final String KIND = "Procedure Declaration";
 	
@@ -45,19 +45,10 @@ public class EquGenProcedureDeclExt extends EquGenExt {
 	@Override
 	public Node equGenLeave(EquGenerator v) {
 		ReportUtil.leaveReport(this);
-		ProcedureDecl procDecl = (ProcedureDecl) this.node();
-		JL5ProcedureInstance procIns = (JL5ProcedureInstance) procDecl.procedureInstance();
+//		ProcedureDecl procDecl = (ProcedureDecl) this.node();
 		
 		// 로컬 환경 해제
 		v.getTypeEnv().pop();
-		
-		// T m(T1 x1, ... Tn xn) { ... }ㅣ,
-		//   1. local env를 x1:T1{X1}, xn:Tn{Xn}으로 초기화
-		//         X1~Xn은 method table에 기록된 TypedSetVariable들임
-		
-		// TODO: 구현 필요
-		
-		
 		
 		return super.equGenLeave(v);
 	}

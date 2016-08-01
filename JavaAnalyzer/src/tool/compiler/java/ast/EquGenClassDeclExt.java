@@ -12,7 +12,7 @@ import tool.compiler.java.visit.EquGenerator;
  * ClassDecl <: ClassMember <: Term <: Node	<br>
  * ClassDecl <: CodeNode <: Term <: Node
  */
-public class EquGenClassDeclExt extends EquGenExt {
+public class EquGenClassDeclExt extends EquGenClassMemberExt {
 	private static final long serialVersionUID = SerialVersionUID.generate();
 	public static final String KIND = "Class Declaration";
 	

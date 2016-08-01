@@ -42,6 +42,10 @@ class Z<T> {					// CC
 }								// MC (Default Constructor)
 
 class C {						// CC
+	int i;
+	{
+		i = 1;
+	}
 	Z<String> z;
 	
 	C() {						// MC
