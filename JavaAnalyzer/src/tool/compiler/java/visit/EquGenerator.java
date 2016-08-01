@@ -227,6 +227,13 @@ public class EquGenerator extends ContextVisitor {
 	}
 	
 	/**
+	 * leave inner ClassConstraint (renew current CC)
+	 */
+	public void leaveInnerCC() {
+		currCC = currCC.getOuter();
+	}
+
+	/**
 	 * @return the currCC
 	 */
 	public ClassConstraint getCurrCC() {

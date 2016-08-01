@@ -56,6 +56,10 @@ class C {						// CC
 	int mth() {
 		return 1;
 	}
+	
+	private class Inner {
+		
+	}
 }
 
 class CC extends C {

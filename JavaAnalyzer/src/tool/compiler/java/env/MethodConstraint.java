@@ -25,13 +25,13 @@ public class MethodConstraint extends CodeConstraint {
 	private MetaSetVariable chi_ret;
 	
 	/**
-	 * @param 
+	 * @param m
 	 */
 	public MethodConstraint(JL5ProcedureInstance m) {
 		super(m);
 		if(m instanceof JL5MethodInstance) {
 			this.chi_ret = new MetaSetVariable(((JL5MethodInstance) m).returnType());
-		} else {	//JL5ConstructorInstance
+		} else/* if(m instanceof JL5ConstructorInstance)*/ {	//JL5ConstructorInstance
 			this.chi_ret = null;
 		}
 	}

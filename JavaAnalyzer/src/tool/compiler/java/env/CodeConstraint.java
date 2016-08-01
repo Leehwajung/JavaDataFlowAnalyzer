@@ -29,18 +29,26 @@ public abstract class CodeConstraint implements ConstraintFunction {
 	 * @return the metaConstraints
 	 */
 	public LinkedHashSet<? extends Constraint> getMetaConstraints() {
-		return new LinkedHashSet<>(metaConstraints);
+		try {
+			return new LinkedHashSet<>(metaConstraints);
+		} catch (NullPointerException e) {
+			return null;
+		}
 	}
 	
 	/**
 	 * @param metaConstraints the metaConstraints to set
 	 */
 	public void setMetaConstraints(Collection<? extends Constraint> metaConstraints) {
-		if(this.metaConstraints == null) {
-			this.metaConstraints = new LinkedHashSet<>(metaConstraints);
+		if(metaConstraints != null) {
+			if(this.metaConstraints == null) {
+				this.metaConstraints = new LinkedHashSet<>(metaConstraints);
+			} else {
+				this.metaConstraints.clear();
+				this.metaConstraints.addAll(metaConstraints);
+			}
 		} else {
-			this.metaConstraints.clear();
-			this.metaConstraints.addAll(metaConstraints);
+			this.metaConstraints = null;
 		}
 	}
 	
@@ -48,10 +56,12 @@ public abstract class CodeConstraint implements ConstraintFunction {
 	 * @param metaConstraints the metaConstraints to add
 	 */
 	public void addMetaConstraints(Collection<? extends Constraint> metaConstraints) {
-		if(this.metaConstraints == null) {
-			this.metaConstraints = new LinkedHashSet<>(metaConstraints);
-		} else {
-			this.metaConstraints.addAll(metaConstraints);
+		if(metaConstraints != null) {
+			if(this.metaConstraints == null) {
+				this.metaConstraints = new LinkedHashSet<>(metaConstraints);
+			} else {
+				this.metaConstraints.addAll(metaConstraints);
+			}
 		}
 	}
 	
@@ -59,11 +69,13 @@ public abstract class CodeConstraint implements ConstraintFunction {
 	 * @param metaConstraint the metaConstraint to add
 	 */
 	public void addMetaConstraint(Constraint metaConstraint) {
-		try {
-			this.metaConstraints.add(metaConstraint);
-		} catch (NullPointerException e) {
-			this.metaConstraints = new LinkedHashSet<>();
-			this.metaConstraints.add(metaConstraint);
+		if(metaConstraint != null) {
+			try {
+				this.metaConstraints.add(metaConstraint);
+			} catch (NullPointerException e) {
+				this.metaConstraints = new LinkedHashSet<>();
+				this.metaConstraints.add(metaConstraint);
+			}
 		}
 	}
 	

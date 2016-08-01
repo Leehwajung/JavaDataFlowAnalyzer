@@ -5,7 +5,7 @@ import polyglot.util.SerialVersionUID;
 import tool.compiler.java.visit.EquGenerator;
 
 /**
- * ClassDecl <: ClassMember <: Term <: Node
+ * ClassMember <: Term <: Node
  * @author LHJ
  */
 public class EquGenClassMemberExt extends EquGenExt {

@@ -31,6 +31,7 @@ public class EquGenProcedureDeclExt extends EquGenClassMemberExt {
 		
 		// MethodConstraint
 		MethodConstraint mc = new MethodConstraint(procIns);
+		v.getCurrCC().addCodeConstraint(mc);
 		v.addToSet(mc);
 		ReportUtil.report(mc);
 		

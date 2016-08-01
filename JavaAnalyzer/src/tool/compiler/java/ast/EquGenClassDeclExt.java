@@ -31,7 +31,12 @@ public class EquGenClassDeclExt extends EquGenClassMemberExt {
 		
 		// Class Constraint
 		cc = new ClassConstraint(classType, true);
-		v.addToSet(cc);
+		ClassConstraint outerCC = v.getCurrCC();
+		if (outerCC != null) {
+			cc.setOuter(outerCC);	// Outer Class 설정
+			outerCC.addInner(cc);	// Inner Class 설정
+		}
+		v.addToSet(cc);				// Vistor에, CC를 keep하고 현재 CC를 갱신
 		ReportUtil.report(cc);
 		
 		return super.equGenEnter(v);
@@ -41,6 +46,9 @@ public class EquGenClassDeclExt extends EquGenClassMemberExt {
 	public Node equGenLeave(EquGenerator v) {
 		ReportUtil.leaveReport(this);
 //		ClassDecl clzDecl = (ClassDecl)this.node();
+		
+		// Inner Class 탈출 (현재 CC 갱신)
+		v.leaveInnerCC();
 		
 		return super.equGenLeave(v);
 	}

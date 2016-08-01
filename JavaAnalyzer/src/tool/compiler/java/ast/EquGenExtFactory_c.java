@@ -23,7 +23,7 @@ public final class EquGenExtFactory_c extends EquGenAbstractExtFactory_c {
 	// extension.
 	
 	/**
-	 * ClassDecl <: ClassMember <: Term <: Node
+	 * ClassMember <: Term <: Node
 	 */
 	@Override
 	protected Ext extClassMemberImpl() {

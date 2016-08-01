@@ -21,16 +21,19 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 /**
- * lam (Y1,..., Yl, Chi_this,Chi_f1,...,Chi_fj). env_C
+ * lam (Y1, ..., Yl, Chi_this, Chi_f1, ..., Chi_fj). env_C
  */
 public class ClassConstraint implements ConstraintFunction {
 	
-	private ClassConstraint parent;	// Not inheritance, but containment relationship
 	private JL5ClassType clz;
 	private MetaSetVariable chi_this;
 	private LinkedHashSet<MetaSetVariable> chi_typeVars;
 	private LinkedHashMap<JL5FieldInstance, MetaSetVariable> chi_fields;
-	private LinkedHashSet<Constraint> fieldConstraints;
+	
+	private ClassConstraint outerClassConstraint = null;	// Not inheritance, but containment relationship
+	private LinkedHashSet<ClassConstraint> innerClassConstraints;
+	private LinkedHashSet<CodeConstraint> codeConstraints;	// MethodConstraint / InitializerConstraint
+	private LinkedHashSet<Constraint> fieldConstraints;		// for Field Initialization
 	
 	/**
 	 * @param type Class Type
@@ -167,18 +170,8 @@ public class ClassConstraint implements ConstraintFunction {
 		if(qualifier.type().equals(chi_this.getType())) {
 			return chi_this;
 		} else {
-			return parent.getThis(qualifier);
+			return outerClassConstraint.getThis(qualifier);
 		}
-	}
-	
-	/**
-	 * @param chi_this the chi_this to set
-	 */
-	public void setThis(MetaSetVariable chi_this) {
-		if(!chi_this.getType().equals(clz)) {
-			this.clz = (JL5ClassType) chi_this.getType();
-		}
-		this.chi_this = chi_this;
 	}
 	
 	/**
@@ -200,7 +193,7 @@ public class ClassConstraint implements ConstraintFunction {
 		if(qualifier.type().equals(chi_this.getType())) {
 			return chi_this;
 		} else {
-			return parent.getSuper(qualifier);
+			return outerClassConstraint.getSuper(qualifier);
 		}
 	}
 	
@@ -322,45 +315,184 @@ public class ClassConstraint implements ConstraintFunction {
 		}
 	}
 	
+	
 	/**
-	 * @return the metaConstraints
+	 * @return the outerClassConstraint
 	 */
-	public LinkedHashSet<Constraint> getMetaConstraints() {
-		return new LinkedHashSet<>(fieldConstraints);
+	public ClassConstraint getOuter() {
+		return outerClassConstraint;
 	}
 	
 	/**
-	 * @param metaConstraints the metaConstraints to set
+	 * @param outerClassConstraint the outerClassConstraint to set
 	 */
-	public void setMetaConstraints(Collection<Constraint> metaConstraints) {
-		if(this.fieldConstraints == null) {
-			this.fieldConstraints = new LinkedHashSet<>(metaConstraints);
-		} else {
-			this.fieldConstraints.clear();
-			this.fieldConstraints.addAll(metaConstraints);
-		}
+	public void setOuter(ClassConstraint outerClassConstraint) {
+		this.outerClassConstraint = outerClassConstraint;
 	}
 	
 	/**
-	 * @param metaConstraints the metaConstraints to add
+	 * @return innerClassConstraints
 	 */
-	public void addMetaConstraints(Collection<Constraint> metaConstraints) {
-		if(this.fieldConstraints == null) {
-			this.fieldConstraints = new LinkedHashSet<>(metaConstraints);
-		} else {
-			this.fieldConstraints.addAll(metaConstraints);
-		}
-	}
-	
-	/**
-	 * @param metaConstraint the metaConstraint to add
-	 */
-	public void addMetaConstraint(Constraint metaConstraint) {
+	public LinkedHashSet<ClassConstraint> getInners() {
 		try {
-			this.fieldConstraints.add(metaConstraint);
+			return new LinkedHashSet<>(innerClassConstraints);
 		} catch (NullPointerException e) {
-			this.fieldConstraints = new LinkedHashSet<>();
-			this.fieldConstraints.add(metaConstraint);
+			return null;
+		}
+	}
+	
+	/**
+	 * @param innerClassConstraints innerClassConstraints to set
+	 */
+	public void setInners(Collection<ClassConstraint> innerClassConstraints) {
+		if(innerClassConstraints != null) {
+			if(this.innerClassConstraints == null) {
+				this.innerClassConstraints = new LinkedHashSet<>(innerClassConstraints);
+			} else {
+				this.innerClassConstraints.clear();
+				this.innerClassConstraints.addAll(innerClassConstraints);
+			}
+		} else {
+			this.fieldConstraints = null;
+		}
+	}
+	
+	/**
+	 * @param innerClassConstraints innerClassConstraints to add
+	 */
+	public void addInners(Collection<ClassConstraint> innerClassConstraints) {
+		if(innerClassConstraints != null) {
+			if(this.innerClassConstraints == null) {
+				this.innerClassConstraints = new LinkedHashSet<>(innerClassConstraints);
+			} else {
+				this.innerClassConstraints.addAll(innerClassConstraints);
+			}
+		}
+	}
+	
+	/**
+	 * @param innerClassConstraint the innerClassConstraint to add
+	 */
+	public void addInner(ClassConstraint innerClassConstraint) {
+		if(innerClassConstraint != null) {
+			try {
+				this.innerClassConstraints.add(innerClassConstraint);
+			} catch (NullPointerException e) {
+				this.innerClassConstraints = new LinkedHashSet<>();
+				this.innerClassConstraints.add(innerClassConstraint);
+			}
+		}
+	}
+	
+	/**
+	 * @return MethodConstraints and/or InitializerConstraints
+	 */
+	public LinkedHashSet<? extends CodeConstraint> getCodeConstraints() {
+		try {
+			return new LinkedHashSet<>(codeConstraints);
+		} catch (NullPointerException e) {
+			return null;
+		}
+	}
+	
+	/**
+	 * @param codeConstraints MethodConstraints and/or InitializerConstraints to set
+	 */
+	public void setCodeConstraints(Collection<? extends CodeConstraint> codeConstraints) {
+		if(codeConstraints != null) {
+			if(this.codeConstraints == null) {
+				this.codeConstraints = new LinkedHashSet<>(codeConstraints);
+			} else {
+				this.codeConstraints.clear();
+				this.codeConstraints.addAll(codeConstraints);
+			}
+		} else {
+			this.codeConstraints = null;
+		}
+	}
+	
+	/**
+	 * @param codeConstraints MethodConstraints and/or InitializerConstraints to add
+	 */
+	public void addCodeConstraints(Collection<? extends CodeConstraint> codeConstraints) {
+		if(codeConstraints != null) {
+			if(this.codeConstraints == null) {
+				this.codeConstraints = new LinkedHashSet<>(codeConstraints);
+			} else {
+				this.codeConstraints.addAll(codeConstraints);
+			}
+		}
+	}
+	
+	/**
+	 * @param codeConstraint MethodConstraint or InitializerConstraint to add
+	 */
+	public void addCodeConstraint(CodeConstraint codeConstraint) {
+		if(codeConstraint != null) {
+			try {
+				this.codeConstraints.add(codeConstraint);
+			} catch (NullPointerException e) {
+				this.codeConstraints = new LinkedHashSet<>();
+				this.codeConstraints.add(codeConstraint);
+			}
+		}
+	}
+	
+	/**
+	 * @return fieldConstraints
+	 */
+	@Override
+	public LinkedHashSet<Constraint> getMetaConstraints() {
+		try {
+			return new LinkedHashSet<>(fieldConstraints);
+		} catch (NullPointerException e) {
+			return null;
+		}
+	}
+	
+	/**
+	 * @param fieldConstraints fieldConstraints to set
+	 */
+	@Override
+	public void setMetaConstraints(Collection<? extends Constraint> fieldConstraints) {
+		if(fieldConstraints != null) {
+			if(this.fieldConstraints == null) {
+				this.fieldConstraints = new LinkedHashSet<>(fieldConstraints);
+			} else {
+				this.fieldConstraints.clear();
+				this.fieldConstraints.addAll(fieldConstraints);
+			}
+		} else {
+			this.fieldConstraints = null;
+		}
+	}
+	
+	/**
+	 * @param fieldConstraints fieldConstraints to add
+	 */
+	@Override
+	public void addMetaConstraints(Collection<? extends Constraint> fieldConstraints) {
+		if(fieldConstraints != null) {
+			if(this.fieldConstraints == null) {
+				this.fieldConstraints = new LinkedHashSet<>(fieldConstraints);
+			} else {
+				this.fieldConstraints.addAll(fieldConstraints);
+			}
+		}
+	}
+	
+	/**
+	 * @param fieldConstraint the fieldConstraint to add
+	 */
+	@Override
+	public void addMetaConstraint(Constraint fieldConstraint) {
+		if(fieldConstraint != null) {
+			try {
+				this.fieldConstraints.add(fieldConstraint);
+			} catch (NullPointerException e) {
+				this.fieldConstraints = new LinkedHashSet<>();
+				this.fieldConstraints.add(fieldConstraint);
+			}
 		}
 	}
 	
