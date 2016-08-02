@@ -4,7 +4,6 @@ import polyglot.ast.Initializer;
 import polyglot.ast.Node;
 import polyglot.util.SerialVersionUID;
 import tool.compiler.java.env.InitializerConstraint;
-import tool.compiler.java.env.TypeEnvironment;
 import tool.compiler.java.util.ReportUtil;
 import tool.compiler.java.visit.EquGenerator;
 
@@ -21,14 +20,15 @@ public class EquGenInitializerExt extends EquGenClassMemberExt {
 		ReportUtil.enterReport(this);
 		Initializer init = (Initializer)this.node();
 		
-		// 로컬 환경 구성
-		v.setTypeEnv(new TypeEnvironment());
-		
 		// InitializerConstraint
 		InitializerConstraint mc = new InitializerConstraint(init.initializerInstance());
+		mc.setOuter(v.getCurrCC());
 		v.getCurrCC().addCodeConstraint(mc);
 		v.addToSet(mc);
 		ReportUtil.report(mc);
+		
+		// 로컬 환경 구성
+		v.pushTypeEnv();
 		
 		return super.equGenEnter(v);
 	}
@@ -37,6 +37,11 @@ public class EquGenInitializerExt extends EquGenClassMemberExt {
 	public Node equGenLeave(EquGenerator v) {
 		ReportUtil.leaveReport(this);
 //		Initializer init = (Initializer)this.node();
+		
+		// 로컬 환경 해제
+		v.popTypeEnv();
+		
+		v.leaveInnerCF();
 		
 		return super.equGenLeave(v);
 	}

@@ -5,7 +5,6 @@ import polyglot.ast.ProcedureDecl;
 import polyglot.ext.jl5.types.JL5ProcedureInstance;
 import polyglot.util.SerialVersionUID;
 import tool.compiler.java.env.MethodConstraint;
-import tool.compiler.java.env.TypeEnvironment;
 import tool.compiler.java.info.MethodInfo;
 import tool.compiler.java.util.ReportUtil;
 import tool.compiler.java.visit.EquGenerator;
@@ -25,12 +24,9 @@ public class EquGenProcedureDeclExt extends EquGenClassMemberExt {
 		ProcedureDecl procDecl = (ProcedureDecl) this.node();
 		JL5ProcedureInstance procIns = (JL5ProcedureInstance) procDecl.procedureInstance();
 		
-		// 로컬 환경 구성
-		v.setTypeEnv(new TypeEnvironment());
-		v.getTypeEnv().push();
-		
 		// MethodConstraint
 		MethodConstraint mc = new MethodConstraint(procIns);
+		mc.setOuter(v.getCurrCC());
 		v.getCurrCC().addCodeConstraint(mc);
 		v.addToSet(mc);
 		ReportUtil.report(mc);
@@ -39,6 +35,9 @@ public class EquGenProcedureDeclExt extends EquGenClassMemberExt {
 		MethodInfo mtdInfo = new MethodInfo(procIns);
 		v.addToSet(mtdInfo);
 		ReportUtil.report(mtdInfo);
+		
+		// 로컬 환경 구성
+		v.pushTypeEnv().push();
 		
 		return super.equGenEnter(v);
 	}
@@ -49,7 +48,9 @@ public class EquGenProcedureDeclExt extends EquGenClassMemberExt {
 //		ProcedureDecl procDecl = (ProcedureDecl) this.node();
 		
 		// 로컬 환경 해제
-		v.getTypeEnv().pop();
+		v.popTypeEnv().pop();
+		
+		v.leaveInnerCF();
 		
 		return super.equGenLeave(v);
 	}

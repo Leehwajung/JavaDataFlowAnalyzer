@@ -26,7 +26,7 @@ public class EquGenEmptyExt extends EquGenStmtExt {
 		ReportUtil.leaveReport(this);
 //		Empty empty = (Empty)this.node();
 		
-		setLocalEnv(v.getTypeEnv().getCurrEnv());
+		setLocalEnv(v.peekTypeEnv().getCurrEnv());
 		
 		return super.equGenLeave(v);
 	}

@@ -16,6 +16,7 @@ import tool.compiler.java.aos.TypedSetVariable;
 import tool.compiler.java.ast.EquGenLang;
 import tool.compiler.java.env.ClassConstraint;
 import tool.compiler.java.env.CodeConstraint;
+import tool.compiler.java.env.ConstraintFunction;
 import tool.compiler.java.env.InitializerConstraint;
 import tool.compiler.java.env.MethodConstraint;
 import tool.compiler.java.env.TypeEnvironment;
@@ -33,9 +34,18 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
+import java.util.LinkedList;
 import java.util.Map.Entry;
 
 public class EquGenerator extends ContextVisitor {
+	
+	private static LinkedHashSet<ClassConstraint> classConstraintSet;
+	private static LinkedHashSet<CodeConstraint> methodConstraintSet;
+	private static ConstraintFunction currCF;
+	private static ClassConstraint currCC;
+	private static CodeConstraint currMC;	// MethodConstraint or InitializerConstraint
+	
+	private static LinkedList<TypeEnvironment> typeEnv;
 	
 	// TODO: 인포와 테이블을 저장하는 자료구조 정하기
 	// 후보1 LinkedHashSet/LinkedHashMap: hashCode()메서드와 equals() 메서드 오버라이딩으로 중복 제거 가능.
@@ -46,27 +56,22 @@ public class EquGenerator extends ContextVisitor {
 	private static LinkedHashMap<MethodCallInfo, LinkedHashSet<MethodTableRow>> methodTableMap;
 	private static LinkedHashMap<FieldInfo, LinkedHashSet<FieldTableRow>> fieldTableMap;
 	
-	private static LinkedHashSet<ClassConstraint> classConstraintSet;
-	private static LinkedHashSet<CodeConstraint> methodConstraintSet;
-	private static ClassConstraint currCC;
-	private static CodeConstraint currMC;	// MethodConstraint or InitializerConstraint
-	
-	private static TypeEnvironment typeEnv;
-	
 	@Deprecated
 	private static LinkedHashSet<FieldTableRow> fieldEquationSet;
 	
 	private static final String OutputFileName = "tables.txt";
 	
 	static {
+		classConstraintSet = new LinkedHashSet<>();
+		methodConstraintSet = new LinkedHashSet<>();
+		
+		typeEnv = new LinkedList<>();
+		
 		methodDeclInfoSet = new LinkedHashSet<>();
 		abstractObjectInfoSet = new LinkedHashSet<>();
 		
 		methodTableMap = new LinkedHashMap<>();
 		fieldTableMap = new LinkedHashMap<>();
-		
-		classConstraintSet = new LinkedHashSet<>();
-		methodConstraintSet = new LinkedHashSet<>();
 		
 		fieldEquationSet = new LinkedHashSet<>();
 	}
@@ -214,6 +219,7 @@ public class EquGenerator extends ContextVisitor {
 	 */
 	public void addToSet(ClassConstraint classConstraint) {
 		classConstraintSet.add(classConstraint);
+		currCF = classConstraint;
 		currCC = classConstraint;
 	}
 	
@@ -223,16 +229,31 @@ public class EquGenerator extends ContextVisitor {
 	 */
 	public void addToSet(CodeConstraint codeConstraint) {
 		methodConstraintSet.add(codeConstraint);
+		currCF = codeConstraint;
 		currMC = codeConstraint;
 	}
 	
 	/**
-	 * leave inner ClassConstraint (renew current CC)
+	 * leave inner ConstraintFunction (renew current CF)
 	 */
-	public void leaveInnerCC() {
-		currCC = currCC.getOuter();
+	public void leaveInnerCF() {
+		currCF = currCF.getOuter();
+		if (currCF instanceof ClassConstraint) {
+			currCC = (ClassConstraint) currCF;
+			currMC = null;
+		} else if (currCF instanceof CodeConstraint) {
+			currCC = (ClassConstraint) currCF.getOuter();
+			currMC = (CodeConstraint) currCF;
+		}
 	}
-
+	
+	/**
+	 * @return the currCF
+	 */
+	public ConstraintFunction getCurrCF() {
+		return currCF;
+	}
+	
 	/**
 	 * @return the currCC
 	 */
@@ -250,17 +271,22 @@ public class EquGenerator extends ContextVisitor {
 	/**
 	 * @return the localEnv
 	 */
-	public TypeEnvironment getTypeEnv() {
-		return typeEnv;
+	public TypeEnvironment peekTypeEnv() {
+		return typeEnv.peek();
 	}
 
 	/**
-	 * @param typeEnv the typeEnv to set
 	 */
-	public void setTypeEnv(TypeEnvironment typeEnv) {
-		EquGenerator.typeEnv = typeEnv;
+	public TypeEnvironment pushTypeEnv() {
+		TypeEnvironment currEnv = new TypeEnvironment();
+		typeEnv.push(currEnv);
+		return currEnv;
 	}
-
+	
+	public TypeEnvironment popTypeEnv() {
+		return typeEnv.pop();
+	}
+	
 	/**
 	 * 테이블 생성 및 테이블 집합에 추가
 	 */

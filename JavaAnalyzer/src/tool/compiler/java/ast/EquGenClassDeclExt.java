@@ -5,6 +5,7 @@ import polyglot.ast.Node;
 import polyglot.ext.jl5.types.JL5ParsedClassType;
 import polyglot.util.SerialVersionUID;
 import tool.compiler.java.env.ClassConstraint;
+import tool.compiler.java.env.ConstraintFunction;
 import tool.compiler.java.util.ReportUtil;
 import tool.compiler.java.visit.EquGenerator;
 
@@ -26,10 +27,10 @@ public class EquGenClassDeclExt extends EquGenClassMemberExt {
 		
 		// Class Constraint
 		cc = new ClassConstraint(classType);
-		ClassConstraint outerCC = v.getCurrCC();
-		if (outerCC != null) {
-			cc.setOuter(outerCC);	// Outer Class 설정
-			outerCC.addInner(cc);	// Inner Class 설정
+		ConstraintFunction outerCF = v.getCurrCF();
+		if (outerCF != null) {
+			cc.setOuter(outerCF);	// Outer Class/Method 설정
+			outerCF.addInner(cc);	// Inner/Local Class 설정
 		}
 		v.addToSet(cc);				// Vistor에, CC를 keep하고 현재 CC를 갱신
 		ReportUtil.report(cc);
@@ -43,7 +44,7 @@ public class EquGenClassDeclExt extends EquGenClassMemberExt {
 //		ClassDecl clzDecl = (ClassDecl)this.node();
 		
 		// Inner Class 탈출 (현재 CC 갱신)
-		v.leaveInnerCC();
+		v.leaveInnerCF();
 		
 		return super.equGenLeave(v);
 	}

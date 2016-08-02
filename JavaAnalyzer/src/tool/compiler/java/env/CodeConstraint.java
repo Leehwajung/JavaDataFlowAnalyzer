@@ -9,6 +9,8 @@ import tool.compiler.java.constraint.Constraint;
 public abstract class CodeConstraint implements ConstraintFunction {
 	
 	private CodeInstance instance;
+	private ClassConstraint containerClassConstraint = null;	// Not inheritance, but containment relationship
+	private LinkedHashSet<ClassConstraint> localClassConstraints;
 	private LinkedHashSet<Constraint> metaConstraints;
 	
 	/**
@@ -26,8 +28,82 @@ public abstract class CodeConstraint implements ConstraintFunction {
 	}
 	
 	/**
+	 * @return the containerClassConstraint
+	 */
+	@Override
+	public ClassConstraint getOuter() {
+		return containerClassConstraint;
+	}
+	
+	/**
+	 * @param containerClassConstraint the containerClassConstraint to set
+	 */
+	public void setOuter(ClassConstraint containerClassConstraint) {
+		this.containerClassConstraint = containerClassConstraint;
+	}
+	
+	/**
+	 * @return localClassConstraints
+	 */
+	@Override
+	public LinkedHashSet<ClassConstraint> getInners() {
+		try {
+			return new LinkedHashSet<>(localClassConstraints);
+		} catch (NullPointerException e) {
+			return null;
+		}
+	}
+	
+	/**
+	 * @param localClassConstraints localClassConstraints to set
+	 */
+	@Override
+	public void setInners(Collection<ClassConstraint> localClassConstraints) {
+		if (localClassConstraints != null) {
+			if (this.localClassConstraints == null) {
+				this.localClassConstraints = new LinkedHashSet<>(localClassConstraints);
+			} else {
+				this.localClassConstraints.clear();
+				this.localClassConstraints.addAll(localClassConstraints);
+			}
+		} else {
+			this.localClassConstraints = null;
+		}
+	}
+	
+	/**
+	 * @param localClassConstraints localClassConstraints to add
+	 */
+	@Override
+	public void addInners(Collection<ClassConstraint> localClassConstraints) {
+		if (localClassConstraints != null) {
+			if (this.localClassConstraints == null) {
+				this.localClassConstraints = new LinkedHashSet<>(localClassConstraints);
+			} else {
+				this.localClassConstraints.addAll(localClassConstraints);
+			}
+		}
+	}
+	
+	/**
+	 * @param localClassConstraint the localClassConstraint to add
+	 */
+	@Override
+	public void addInner(ClassConstraint localClassConstraint) {
+		if (localClassConstraint != null) {
+			try {
+				this.localClassConstraints.add(localClassConstraint);
+			} catch (NullPointerException e) {
+				this.localClassConstraints = new LinkedHashSet<>();
+				this.localClassConstraints.add(localClassConstraint);
+			}
+		}
+	}
+	
+	/**
 	 * @return the metaConstraints
 	 */
+	@Override
 	public LinkedHashSet<? extends Constraint> getMetaConstraints() {
 		try {
 			return new LinkedHashSet<>(metaConstraints);
@@ -39,9 +115,10 @@ public abstract class CodeConstraint implements ConstraintFunction {
 	/**
 	 * @param metaConstraints the metaConstraints to set
 	 */
+	@Override
 	public void setMetaConstraints(Collection<? extends Constraint> metaConstraints) {
-		if(metaConstraints != null) {
-			if(this.metaConstraints == null) {
+		if (metaConstraints != null) {
+			if (this.metaConstraints == null) {
 				this.metaConstraints = new LinkedHashSet<>(metaConstraints);
 			} else {
 				this.metaConstraints.clear();
@@ -55,9 +132,10 @@ public abstract class CodeConstraint implements ConstraintFunction {
 	/**
 	 * @param metaConstraints the metaConstraints to add
 	 */
+	@Override
 	public void addMetaConstraints(Collection<? extends Constraint> metaConstraints) {
-		if(metaConstraints != null) {
-			if(this.metaConstraints == null) {
+		if (metaConstraints != null) {
+			if (this.metaConstraints == null) {
 				this.metaConstraints = new LinkedHashSet<>(metaConstraints);
 			} else {
 				this.metaConstraints.addAll(metaConstraints);
@@ -68,8 +146,9 @@ public abstract class CodeConstraint implements ConstraintFunction {
 	/**
 	 * @param metaConstraint the metaConstraint to add
 	 */
+	@Override
 	public void addMetaConstraint(Constraint metaConstraint) {
-		if(metaConstraint != null) {
+		if (metaConstraint != null) {
 			try {
 				this.metaConstraints.add(metaConstraint);
 			} catch (NullPointerException e) {

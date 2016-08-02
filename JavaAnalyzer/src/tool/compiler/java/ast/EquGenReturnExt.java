@@ -35,14 +35,14 @@ public class EquGenReturnExt extends EquGenStmtExt {
 		MetaSetVariable tchi = EquGenExprExt.metaSetVar(returnStmt.expr());
 		ReportUtil.report(tchi, MetaSetVarSource.SubExpression, MetaSetVarGoal.Flow);
 		
-		MetaSetVariable ret_chi = ((MethodConstraint) v.getCurrMC()).getReturn();
+		MetaSetVariable ret_chi = ((MethodConstraint) v.getCurrCF()).getReturn();
 		ReportUtil.report(tchi, MetaSetVarSource.Environment, MetaSetVarGoal.Flow);
 		
 		XSubseteqY xy = new XSubseteqY(tchi, ret_chi);
-		v.getCurrMC().addMetaConstraint(xy);
+		v.getCurrCF().addMetaConstraint(xy);
 		ReportUtil.report(xy);
 		
-		setLocalEnv(v.getTypeEnv().getCurrEnv());
+		setLocalEnv(v.peekTypeEnv().getCurrEnv());
 		
 		return super.equGenLeave(v);
 	}

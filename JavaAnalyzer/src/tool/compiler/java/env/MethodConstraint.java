@@ -56,36 +56,38 @@ public class MethodConstraint extends CodeConstraint {
 		// 메소드 m을 실행할 때 생기는 자료흐름 CS2를 만든다.
 		ArrayList<Constraint> cs2 = new ArrayList<>();
 		HashMap<MetaSetVariable, TypedSetVariable> substLocals = new HashMap<>();
-		for (Constraint metaCon : getMetaConstraints()) {	// 가지고 있는 전체 제약식에 대해
-			ArrayList<TypedSetVariable> substs = new ArrayList<>();	// subst한 aos
-			// MetaSetVariable을 TypedSetVariable로 대치
-			for (AbsObjSet aos : metaCon.getAllAbsObjSets()) {
-				if (aos instanceof MetaSetVariable) {
-					// Formal의 Chi인지 확인
-					int pos = -1;
-					if (chi_formals != null) {
-						pos = chi_formals.indexOf(aos);
-					}
-					if (pos != -1) {						// Formal의 Chi이면 (chi_formals에 존재하면)
-						substs.add((TypedSetVariable) cs1.get(pos).getX());
-					} else {
-					// Local의 Chi인지 확인
-						TypedSetVariable tsvLocal = substLocals.get(aos);
-						if (tsvLocal != null) {
-							substs.add(tsvLocal);
-						} else {
-							tsvLocal = new TypedSetVariable(aos.getType());
-							substLocals.put((MetaSetVariable) aos, tsvLocal);
-							substs.add(tsvLocal);
+		LinkedHashSet<? extends Constraint> metaConstraints = getMetaConstraints();
+		if (metaConstraints != null) {
+			for (Constraint metaCon : metaConstraints) { // 가지고 있는 전체 제약식에 대해
+				ArrayList<TypedSetVariable> substs = new ArrayList<>(); // subst한 aos
+				// MetaSetVariable을 TypedSetVariable로 대치
+				for (AbsObjSet aos : metaCon.getAllAbsObjSets()) {
+					if (aos instanceof MetaSetVariable) {
+						// Formal의 Chi인지 확인
+						int pos = -1;
+						if (chi_formals != null) {
+							pos = chi_formals.indexOf(aos);
 						}
+						if (pos != -1) { // Formal의 Chi이면 (chi_formals에 존재하면)
+							substs.add((TypedSetVariable) cs1.get(pos).getX());
+						} else {
+							// Local의 Chi인지 확인
+							TypedSetVariable tsvLocal = substLocals.get(aos);
+							if (tsvLocal != null) {
+								substs.add(tsvLocal);
+							} else {
+								tsvLocal = new TypedSetVariable(aos.getType());
+								substLocals.put((MetaSetVariable) aos, tsvLocal);
+								substs.add(tsvLocal);
+							}
+						}
+					} else if (aos instanceof TypedSetVariable) {
+						substs.add((TypedSetVariable) aos);
 					}
-				} else if (aos instanceof TypedSetVariable) {
-					substs.add((TypedSetVariable) aos);
 				}
-			}
-			cs2.add(metaCon.substitute(substs));
+				cs2.add(metaCon.substitute(substs));
+			} 
 		}
-		
 		// Return의 Chi에 대한 새로운 TypedSetVariable을 생성한다.
 		TypedSetVariable x_ret = null;
 		if (chi_ret != null) {

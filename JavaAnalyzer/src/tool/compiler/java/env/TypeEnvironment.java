@@ -5,7 +5,6 @@ import java.util.Collection;
 import java.util.LinkedList;
 
 import polyglot.ext.jl5.types.JL5LocalInstance;
-import polyglot.main.Report;
 import tool.compiler.java.aos.MetaSetVariable;
 
 public class TypeEnvironment {
@@ -50,7 +49,6 @@ public class TypeEnvironment {
 	}
 	
 	public void push() {
-		Report.report(0, "PUSH");
 		currEnv = new LocalEnvironment();
 		envStack.push(currEnv);
 	}

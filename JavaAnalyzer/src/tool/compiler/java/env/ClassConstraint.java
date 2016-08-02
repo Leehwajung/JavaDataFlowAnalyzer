@@ -29,7 +29,7 @@ public class ClassConstraint implements ConstraintFunction {
 	private LinkedHashSet<MetaSetVariable> chi_typeVars;
 	private LinkedHashMap<JL5FieldInstance, MetaSetVariable> chi_fields;
 	
-	private ClassConstraint outerClassConstraint = null;	// Not inheritance, but containment relationship
+	private ConstraintFunction outerConstraint = null;		// Not inheritance, but containment relationship
 	private LinkedHashSet<ClassConstraint> innerClassConstraints;
 	private LinkedHashSet<CodeConstraint> codeConstraints;	// MethodConstraint / InitializerConstraint
 	private LinkedHashSet<Constraint> fieldConstraints;		// for Field Initialization
@@ -118,12 +118,16 @@ public class ClassConstraint implements ConstraintFunction {
 		}
 		if (qualifier.type().equals(chi_this.getType())) {
 			return chi_this;
-		} else {
-			return outerClassConstraint.getThis(qualifier);
+		} else if (outerConstraint instanceof ClassConstraint) {
+			return ((ClassConstraint)outerConstraint).getThis(qualifier);
+		} else/* if (outerConstraint instanceof CodeConstraint)*/ {
+			return ((CodeConstraint)outerConstraint).getOuter().getThis(qualifier);
 		}
 	}
 	
 	/**
+	 * TODO: 미완성, spuer에 대하여 대응 필요
+	 * 잘못 구현한 듯? super는 상속관계에서 사용하는 것이 아닌가?
 	 * @return the chi_this
 	 */
 	public MetaSetVariable getSuper() {
@@ -132,6 +136,7 @@ public class ClassConstraint implements ConstraintFunction {
 	
 	/**
 	 * TODO: 미완성, spuer에 대하여 대응 필요
+	 * 잘못 구현한 듯? super는 상속관계에서 사용하는 것이 아닌가?
 	 * @param qualifier
 	 * @return
 	 */
@@ -141,8 +146,10 @@ public class ClassConstraint implements ConstraintFunction {
 		}
 		if (qualifier.type().equals(chi_this.getType())) {
 			return chi_this;
-		} else {
-			return outerClassConstraint.getSuper(qualifier);
+		} else if (outerConstraint instanceof ClassConstraint) {
+			return ((ClassConstraint) outerConstraint).getSuper(qualifier);
+		} else/* if (outerConstraint instanceof CodeConstraint)*/ {
+			return ((CodeConstraint)outerConstraint).getOuter().getSuper(qualifier);
 		}
 	}
 	
@@ -192,22 +199,24 @@ public class ClassConstraint implements ConstraintFunction {
 	
 	
 	/**
-	 * @return the outerClassConstraint
+	 * @return the outerConstraintFunction
 	 */
-	public ClassConstraint getOuter() {
-		return outerClassConstraint;
+	@Override
+	public ConstraintFunction getOuter() {
+		return outerConstraint;
 	}
 	
 	/**
-	 * @param outerClassConstraint the outerClassConstraint to set
+	 * @param outerConstraintFunction the outerClassConstraint to set
 	 */
-	public void setOuter(ClassConstraint outerClassConstraint) {
-		this.outerClassConstraint = outerClassConstraint;
+	public void setOuter(ConstraintFunction outerConstraintFunction) {
+		this.outerConstraint = outerConstraintFunction;
 	}
 	
 	/**
 	 * @return innerClassConstraints
 	 */
+	@Override
 	public LinkedHashSet<ClassConstraint> getInners() {
 		try {
 			return new LinkedHashSet<>(innerClassConstraints);
@@ -219,6 +228,7 @@ public class ClassConstraint implements ConstraintFunction {
 	/**
 	 * @param innerClassConstraints innerClassConstraints to set
 	 */
+	@Override
 	public void setInners(Collection<ClassConstraint> innerClassConstraints) {
 		if (innerClassConstraints != null) {
 			if (this.innerClassConstraints == null) {
@@ -228,13 +238,14 @@ public class ClassConstraint implements ConstraintFunction {
 				this.innerClassConstraints.addAll(innerClassConstraints);
 			}
 		} else {
-			this.fieldConstraints = null;
+			this.innerClassConstraints = null;
 		}
 	}
 	
 	/**
 	 * @param innerClassConstraints innerClassConstraints to add
 	 */
+	@Override
 	public void addInners(Collection<ClassConstraint> innerClassConstraints) {
 		if (innerClassConstraints != null) {
 			if (this.innerClassConstraints == null) {
@@ -248,6 +259,7 @@ public class ClassConstraint implements ConstraintFunction {
 	/**
 	 * @param innerClassConstraint the innerClassConstraint to add
 	 */
+	@Override
 	public void addInner(ClassConstraint innerClassConstraint) {
 		if (innerClassConstraint != null) {
 			try {
@@ -400,12 +412,12 @@ public class ClassConstraint implements ConstraintFunction {
 		int result = 1;
 		result = prime * result + ((clz == null) ? 0 : clz.hashCode());
 		result = prime * result + ((chi_this == null) ? 0 : chi_this.hashCode());
-		result = prime * result + ((chi_typeVars == null) ? 0 : chi_typeVars.hashCode());
-		result = prime * result + ((chi_fields == null) ? 0 : chi_fields.hashCode());
-		result = prime * result + ((outerClassConstraint == null) ? 0 : outerClassConstraint.hashCode());
-		result = prime * result + ((innerClassConstraints == null) ? 0 : innerClassConstraints.hashCode());
-		result = prime * result + ((codeConstraints == null) ? 0 : codeConstraints.hashCode());
-		result = prime * result + ((fieldConstraints == null) ? 0 : fieldConstraints.hashCode());
+//		result = prime * result + ((chi_typeVars == null) ? 0 : chi_typeVars.hashCode());
+//		result = prime * result + ((chi_fields == null) ? 0 : chi_fields.hashCode());
+//		result = prime * result + ((outerConstraint == null) ? 0 : outerConstraint.hashCode());
+//		result = prime * result + ((innerClassConstraints == null) ? 0 : innerClassConstraints.hashCode());
+//		result = prime * result + ((codeConstraints == null) ? 0 : codeConstraints.hashCode());
+//		result = prime * result + ((fieldConstraints == null) ? 0 : fieldConstraints.hashCode());
 		return result;
 	}
 	
@@ -424,27 +436,6 @@ public class ClassConstraint implements ConstraintFunction {
 			return false;
 		}
 		ClassConstraint other = (ClassConstraint) obj;
-		if (chi_this == null) {
-			if (other.chi_this != null) {
-				return false;
-			}
-		} else if (!chi_this.equals(other.chi_this)) {
-			return false;
-		}
-		if (chi_typeVars == null) {
-			if (other.chi_typeVars != null) {
-				return false;
-			}
-		} else if (!chi_typeVars.equals(other.chi_typeVars)) {
-			return false;
-		}
-		if (chi_fields == null) {
-			if (other.chi_fields != null) {
-				return false;
-			}
-		} else if (!chi_fields.equals(other.chi_fields)) {
-			return false;
-		}
 		if (clz == null) {
 			if (other.clz != null) {
 				return false;
@@ -452,34 +443,55 @@ public class ClassConstraint implements ConstraintFunction {
 		} else if (!clz.equals(other.clz)) {
 			return false;
 		}
-		if (outerClassConstraint == null) {
-			if (other.outerClassConstraint != null) {
+		if (chi_this == null) {
+			if (other.chi_this != null) {
 				return false;
 			}
-		} else if (!outerClassConstraint.equals(other.outerClassConstraint)) {
+		} else if (!chi_this.equals(other.chi_this)) {
 			return false;
 		}
-		if (innerClassConstraints == null) {
-			if (other.innerClassConstraints != null) {
-				return false;
-			}
-		} else if (!innerClassConstraints.equals(other.innerClassConstraints)) {
-			return false;
-		}
-		if (codeConstraints == null) {
-			if (other.codeConstraints != null) {
-				return false;
-			}
-		} else if (!codeConstraints.equals(other.codeConstraints)) {
-			return false;
-		}
-		if (fieldConstraints == null) {
-			if (other.fieldConstraints != null) {
-				return false;
-			}
-		} else if (!fieldConstraints.equals(other.fieldConstraints)) {
-			return false;
-		}
+//		if (chi_typeVars == null) {
+//			if (other.chi_typeVars != null) {
+//				return false;
+//			}
+//		} else if (!chi_typeVars.equals(other.chi_typeVars)) {
+//			return false;
+//		}
+//		if (chi_fields == null) {
+//			if (other.chi_fields != null) {
+//				return false;
+//			}
+//		} else if (!chi_fields.equals(other.chi_fields)) {
+//			return false;
+//		}
+//		if (outerConstraint == null) {
+//			if (other.outerConstraint != null) {
+//				return false;
+//			}
+//		} else if (!outerConstraint.equals(other.outerConstraint)) {
+//			return false;
+//		}
+//		if (innerClassConstraints == null) {
+//			if (other.innerClassConstraints != null) {
+//				return false;
+//			}
+//		} else if (!innerClassConstraints.equals(other.innerClassConstraints)) {
+//			return false;
+//		}
+//		if (codeConstraints == null) {
+//			if (other.codeConstraints != null) {
+//				return false;
+//			}
+//		} else if (!codeConstraints.equals(other.codeConstraints)) {
+//			return false;
+//		}
+//		if (fieldConstraints == null) {
+//			if (other.fieldConstraints != null) {
+//				return false;
+//			}
+//		} else if (!fieldConstraints.equals(other.fieldConstraints)) {
+//			return false;
+//		}
 		return true;
 	}
 }
