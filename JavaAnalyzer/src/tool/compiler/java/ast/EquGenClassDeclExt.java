@@ -30,7 +30,7 @@ public class EquGenClassDeclExt extends EquGenClassMemberExt {
 		ConstraintFunction outerCF = v.getCurrCF();
 		if (outerCF != null) {
 			cc.setOuter(outerCF);	// Outer Class/Method 설정
-			outerCF.addInner(cc);	// Inner/Local Class 설정
+			outerCF.addInner(cc);	// Inner Class 설정
 		}
 		v.addToSet(cc);				// Vistor에, CC를 keep하고 현재 CC를 갱신
 		ReportUtil.report(cc);

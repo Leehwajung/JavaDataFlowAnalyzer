@@ -48,7 +48,7 @@ public class EquGenNewExt extends EquGenExprExt {
 		v.addToSet(mtdInfo);
 		ReportUtil.report(mtdInfo);
 		
-		// Class Constraint
+		// Class Constraint (For Method Local Class)
 		if (nw.body() != null) {
 			cc = new ClassConstraint((JL5ParsedClassType) nw.anonType());
 			CodeConstraint outerMC = v.getCurrMC();
@@ -67,6 +67,7 @@ public class EquGenNewExt extends EquGenExprExt {
 		New nw = (New) this.node();
 		JL5ConstructorInstance ctorIns = (JL5ConstructorInstance) nw.constructorInstance();
 		
+		// Leave Method Local Class
 		if (nw.body() != null) {
 			v.leaveInnerCF();
 		}

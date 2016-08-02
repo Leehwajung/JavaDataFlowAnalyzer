@@ -24,26 +24,21 @@ import java.util.Map.Entry;
  */
 public class ClassConstraint implements ConstraintFunction {
 	
-	private JL5ClassType clz;
+	private JL5ParsedClassType clz;
 	private MetaSetVariable chi_this;
-	private LinkedHashSet<MetaSetVariable> chi_typeVars;
 	private LinkedHashMap<JL5FieldInstance, MetaSetVariable> chi_fields;
 	
 	private ConstraintFunction outerConstraint = null;		// Not inheritance, but containment relationship
 	private LinkedHashSet<ClassConstraint> innerClassConstraints;
 	private LinkedHashSet<CodeConstraint> codeConstraints;	// MethodConstraint / InitializerConstraint
-	private LinkedHashSet<Constraint> fieldConstraints;		// for Field Initialization
+	private LinkedHashSet<Constraint> fieldConstraints;		// for Field Initialization (contain sub-nodes' constraints)
 	
 	/**
 	 * @param type Class Type
 	 */
-	public ClassConstraint(JL5ClassType type) {
+	public ClassConstraint(JL5ParsedClassType type) {
 		this.clz = type;
 		generateThis(type);
-		
-		if (type instanceof JL5ParsedClassType) {
-			generateTypeVars((JL5ParsedClassType) type);
-		}
 		generateFields(type);
 	}
 	
@@ -52,20 +47,6 @@ public class ClassConstraint implements ConstraintFunction {
 			this.chi_this = new MetaSetVariable(type);
 		} else {	// Static
 			this.chi_this = null;
-		}
-	}
-	
-	private void generateTypeVars(JL5ParsedClassType type) {
-		List<TypeVariable> typeVars = type.typeVariables();
-		
-		if (!typeVars.isEmpty()) {
-			this.chi_typeVars = new LinkedHashSet<>();
-			
-			for (TypeVariable tv : typeVars) {
-				this.chi_typeVars.add(new MetaSetVariable(tv));	// type Var
-			}
-		} else {
-			this.chi_typeVars = null;
 		}
 	}
 	
@@ -154,10 +135,10 @@ public class ClassConstraint implements ConstraintFunction {
 	}
 	
 	/**
-	 * @return the chi_typeVars
+	 * @return the typeVars
 	 */
-	public LinkedHashSet<MetaSetVariable> getTypeVars() {
-		return chi_typeVars;
+	public List<TypeVariable> getTypeVars() {
+		return clz.typeVariables();
 	}
 	
 	/**
@@ -395,7 +376,6 @@ public class ClassConstraint implements ConstraintFunction {
 	@Override
 	public String toString() {
 		String result =  "CC " + clz + ": λ(";
-		result += (chi_typeVars != null && !chi_typeVars.isEmpty()) ? (CollUtil.getStringOf(chi_typeVars) + ", ") : "";
 		result += chi_this;
 		result += (chi_fields != null && !chi_fields.isEmpty()) ? (", " + CollUtil.getStringOf(chi_fields.values())) : "";
 		result += ")";
@@ -412,7 +392,6 @@ public class ClassConstraint implements ConstraintFunction {
 		int result = 1;
 		result = prime * result + ((clz == null) ? 0 : clz.hashCode());
 		result = prime * result + ((chi_this == null) ? 0 : chi_this.hashCode());
-//		result = prime * result + ((chi_typeVars == null) ? 0 : chi_typeVars.hashCode());
 //		result = prime * result + ((chi_fields == null) ? 0 : chi_fields.hashCode());
 //		result = prime * result + ((outerConstraint == null) ? 0 : outerConstraint.hashCode());
 //		result = prime * result + ((innerClassConstraints == null) ? 0 : innerClassConstraints.hashCode());
@@ -450,13 +429,6 @@ public class ClassConstraint implements ConstraintFunction {
 		} else if (!chi_this.equals(other.chi_this)) {
 			return false;
 		}
-//		if (chi_typeVars == null) {
-//			if (other.chi_typeVars != null) {
-//				return false;
-//			}
-//		} else if (!chi_typeVars.equals(other.chi_typeVars)) {
-//			return false;
-//		}
 //		if (chi_fields == null) {
 //			if (other.chi_fields != null) {
 //				return false;

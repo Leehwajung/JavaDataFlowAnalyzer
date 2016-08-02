@@ -3,6 +3,7 @@ package tool.compiler.java.env;
 import polyglot.ext.jl5.types.JL5ConstructorInstance;
 import polyglot.ext.jl5.types.JL5MethodInstance;
 import polyglot.ext.jl5.types.JL5ProcedureInstance;
+import polyglot.ext.jl5.types.TypeVariable;
 import tool.compiler.java.aos.AbsObjSet;
 import tool.compiler.java.aos.MetaSetVariable;
 import tool.compiler.java.aos.TypedSetVariable;
@@ -15,6 +16,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedHashSet;
+import java.util.List;
 
 /**
  * lam (Chi1, ..., Chin, Chi_ret). Constraint Set
@@ -123,6 +125,10 @@ public class MethodConstraint extends CodeConstraint {
 	@Override
 	public JL5ProcedureInstance getInstance() {
 		return (JL5ProcedureInstance) super.getInstance();
+	}
+	
+	public List<TypeVariable> getTypeParams() {
+		return getInstance().typeParams();
 	}
 	
 	/**
