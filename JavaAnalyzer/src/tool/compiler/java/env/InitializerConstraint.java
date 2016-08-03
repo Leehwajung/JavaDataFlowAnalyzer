@@ -28,7 +28,7 @@ public class InitializerConstraint extends CodeConstraint {
 	
 	public ArrayList<Constraint> apply() {
 		
-		// Initializer를 실행할 때 생기는 자료흐름 CS를 만든다.
+		// Initializer를 수행할 때 생기는 자료흐름 CS를 만든다.
 		ArrayList<Constraint> cs = new ArrayList<>();
 		HashMap<MetaSetVariable, TypedSetVariable> substLocals = new HashMap<>();
 		for(Constraint metaCon : getMetaConstraints()) {	// 가지고 있는 전체 제약식에 대해

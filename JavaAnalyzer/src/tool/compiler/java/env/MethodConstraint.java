@@ -19,7 +19,7 @@ import java.util.LinkedHashSet;
 import java.util.List;
 
 /**
- * lam (Chi1, ..., Chin, Chi_ret). Constraint Set
+ * lam (Y1, ..., Yl, Chi1, ..., Chin, Chi_ret). Constraint Set
  */
 public class MethodConstraint extends CodeConstraint {
 	
@@ -171,12 +171,21 @@ public class MethodConstraint extends CodeConstraint {
 	 */
 	@Override
 	public String toString() {
-		String result =  "MC " + getInstance() + ": λ(";
-		result += chi_formals != null ? CollUtil.getStringOf(chi_formals) : "";
-		result += chi_ret != null ? (chi_formals != null ? ", " : "") + chi_ret : "";
-		result += ")";
-		
-		return result;
+		List<TypeVariable> typeParams = getTypeParams();
+		ArrayList<String> subResult = new ArrayList<>();
+		if (typeParams != null && !typeParams.isEmpty()) {
+			subResult.add(CollUtil.getStringOf(typeParams));
+		}
+		if (chi_formals != null && !chi_formals.isEmpty()) {
+			subResult.add(CollUtil.getStringOf(chi_formals));
+		}
+		if (chi_ret != null) {
+			subResult.add(chi_ret.toString());
+		}
+		StringBuilder result = new StringBuilder();
+		result.append('M').append('C').append(' ').append(getInstance()).append(':').append(' ')
+			.append('λ').append('(').append(CollUtil.getStringOf(subResult)).append(')');
+		return result.toString();
 	}
 	
 	/**

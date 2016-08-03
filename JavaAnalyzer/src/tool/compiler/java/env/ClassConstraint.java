@@ -13,6 +13,7 @@ import tool.compiler.java.aos.MetaSetVariable;
 import tool.compiler.java.constraint.Constraint;
 import tool.compiler.java.util.CollUtil;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
@@ -375,12 +376,21 @@ public class ClassConstraint implements ConstraintFunction {
 	 */
 	@Override
 	public String toString() {
-		String result =  "CC " + clz + ": λ(";
-		result += chi_this;
-		result += (chi_fields != null && !chi_fields.isEmpty()) ? (", " + CollUtil.getStringOf(chi_fields.values())) : "";
-		result += ")";
-		
-		return result;
+		List<TypeVariable> typeVars = getTypeVars();
+		ArrayList<String> subResult = new ArrayList<>();
+		if (typeVars != null && !typeVars.isEmpty()) {
+			subResult.add(CollUtil.getStringOf(typeVars));
+		}
+		if (chi_this != null) {
+			subResult.add(chi_this.toString());
+		}
+		if (chi_fields != null && !chi_fields.isEmpty()) {
+			subResult.add(CollUtil.getStringOf(chi_fields.values()));
+		}
+		StringBuilder result = new StringBuilder();
+		result.append('C').append('C').append(' ').append(clz).append(':').append(' ')
+			.append('λ').append('(').append(CollUtil.getStringOf(subResult)).append(')');
+		return result.toString();
 	}
 	
 	/**

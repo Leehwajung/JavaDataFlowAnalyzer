@@ -393,19 +393,4 @@ public class EquGenerator extends ContextVisitor {
 			e.printStackTrace();
 		}
 	}
-	
-//	public static <E extends Constraint> String getNLStringOf(Collection<E> collection) {
-//		Iterator<E> it = collection.iterator();
-//		if (!it.hasNext())
-//			return "";
-//		
-//		StringBuilder sb = new StringBuilder();
-//		for (;;) {
-//			Constraint e = it.next();
-//			sb.append(e).append(":\t").append();
-//			if (!it.hasNext())
-//				return sb.toString();
-//			sb.append('\n');
-//		}
-//	}
 }
