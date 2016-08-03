@@ -4,9 +4,9 @@ import polyglot.ast.ConstructorCall;
 import polyglot.ast.Node;
 import polyglot.ext.jl5.types.JL5ProcedureInstance;
 import polyglot.util.SerialVersionUID;
+import tool.compiler.java.info.MethodCallInfo;
 import tool.compiler.java.util.ReportUtil;
 import tool.compiler.java.visit.EquGenerator;
-import tool.compiler.java.visit.MethodCallInfo;
 
 /**
  * ConstructorCall <: Stmt <: Term <: Node	<br>
@@ -46,7 +46,7 @@ public class EquGenConstructorCallExt extends EquGenStmtExt {
 //		ConstructorCall ctorCall = (ConstructorCall) this.node();
 //		JL5ConstructorInstance ctorIns = (JL5ConstructorInstance) ctorCall.constructorInstance();
 		
-		setLocalEnv(v.getTypeEnv().getCurrEnv());
+		setLocalEnv(v.peekTypeEnv().getCurrEnv());
 		
 		return super.equGenLeave(v);
 	}

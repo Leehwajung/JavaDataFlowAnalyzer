@@ -6,17 +6,17 @@ import polyglot.ast.Assign;
 import polyglot.ast.LocalAssign;
 import polyglot.ast.Node;
 import polyglot.util.SerialVersionUID;
+import tool.compiler.java.aos.AbstractObject;
+import tool.compiler.java.aos.ArrayMetaSetVariable;
+import tool.compiler.java.aos.MetaSetVariable;
+import tool.compiler.java.aos.AbstractObject.Info;
+import tool.compiler.java.constraint.ObjsSubseteqX;
+import tool.compiler.java.constraint.XSubseteqY;
 import tool.compiler.java.util.EquGenUtil;
 import tool.compiler.java.util.ReportUtil;
 import tool.compiler.java.util.ReportUtil.MetaSetVarGoal;
 import tool.compiler.java.util.ReportUtil.MetaSetVarSource;
-import tool.compiler.java.visit.AbstractObject;
-import tool.compiler.java.visit.ArrayMetaSetVariable;
-import tool.compiler.java.visit.AbstractObject.Info;
 import tool.compiler.java.visit.EquGenerator;
-import tool.compiler.java.visit.MetaSetVariable;
-import tool.compiler.java.visit.ObjsSubseteqX;
-import tool.compiler.java.visit.XSubseteqY;
 
 /**
  * LocalAssign <: Assign <: Expr <: Term <: Node				<br>
@@ -61,7 +61,7 @@ public class EquGenLocalAssignExt extends EquGenAssignExt {
 			
 			//   2A-2. D{Chi2} <: C{Chi1} 제약식을 추가
 			XSubseteqY xy = new XSubseteqY(dchi2, cchi1);
-			v.getCurrMC().addMetaConstraint(xy);
+			v.getCurrCF().addMetaConstraint(xy);
 			ReportUtil.report(xy);
 			
 			//   2A-3. 배열 변수인 경우, Top Level 아래의 MetaSetVariable의 데이터 플로우
@@ -69,7 +69,7 @@ public class EquGenLocalAssignExt extends EquGenAssignExt {
 				Collection<XSubseteqY> xys = EquGenUtil.constrain(
 						(ArrayMetaSetVariable) dchi2, 
 						(ArrayMetaSetVariable) cchi1);
-				v.getCurrMC().addMetaConstraints(xys);
+				v.getCurrCF().addMetaConstraints(xys);
 			}
 		}
 		
@@ -77,7 +77,7 @@ public class EquGenLocalAssignExt extends EquGenAssignExt {
 		else {
 			//   2B-1. C{o} <: C{Chi1} 제약식을 추가
 			ObjsSubseteqX ox = new ObjsSubseteqX(absObj, cchi1);
-			v.getCurrMC().addMetaConstraint(ox);
+			v.getCurrCF().addMetaConstraint(ox);
 			ReportUtil.report(ox);
 			
 			//   2B-2. TODO: lasgn.rignt()와 absObj의 관계를 표현해야 함.

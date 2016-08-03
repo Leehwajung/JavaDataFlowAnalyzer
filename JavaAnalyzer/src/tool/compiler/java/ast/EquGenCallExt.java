@@ -6,14 +6,14 @@ import polyglot.ast.Node;
 import polyglot.ext.jl5.types.JL5MethodInstance;
 import polyglot.ext.jl5.types.JL5ProcedureInstance;
 import polyglot.util.SerialVersionUID;
+import tool.compiler.java.aos.MetaSetVariable;
+import tool.compiler.java.constraint.InvokeMth;
+import tool.compiler.java.constraint.InvokeStaticMth;
+import tool.compiler.java.info.MethodCallInfo;
 import tool.compiler.java.util.ReportUtil;
 import tool.compiler.java.util.ReportUtil.MetaSetVarGoal;
 import tool.compiler.java.util.ReportUtil.MetaSetVarSource;
 import tool.compiler.java.visit.EquGenerator;
-import tool.compiler.java.visit.InvokeMth;
-import tool.compiler.java.visit.InvokeStaticMth;
-import tool.compiler.java.visit.MetaSetVariable;
-import tool.compiler.java.visit.MethodCallInfo;
 
 import java.util.ArrayList;
 
@@ -65,7 +65,7 @@ public class EquGenCallExt extends EquGenExprExt {
 		if(!mthIns.flags().isStatic()) {
 			MetaSetVariable cchi0 = EquGenExprExt.metaSetVar((Expr)call.target());
 			InvokeMth im = new InvokeMth(cchi0, mthIns, cschis, dchi);
-			v.getCurrMC().addMetaConstraint(im);
+			v.getCurrCF().addMetaConstraint(im);
 			ReportUtil.report(im);
 		}
 		
@@ -73,7 +73,7 @@ public class EquGenCallExt extends EquGenExprExt {
 		//       C.m <: (C1{Chi1}, ... , Cn{Chin}) -> D{Chi} 제약식을 추가
 		else {
 			InvokeStaticMth ism = new InvokeStaticMth(mthIns, cschis, dchi);
-			v.getCurrMC().addMetaConstraint(ism);
+			v.getCurrCF().addMetaConstraint(ism);
 			ReportUtil.report(ism);
 		}
 		

@@ -3,12 +3,12 @@ package tool.compiler.java.ast;
 import polyglot.ast.Conditional;
 import polyglot.ast.Node;
 import polyglot.util.SerialVersionUID;
+import tool.compiler.java.aos.MetaSetVariable;
+import tool.compiler.java.constraint.XSubseteqY;
 import tool.compiler.java.util.ReportUtil;
 import tool.compiler.java.util.ReportUtil.MetaSetVarGoal;
 import tool.compiler.java.util.ReportUtil.MetaSetVarSource;
 import tool.compiler.java.visit.EquGenerator;
-import tool.compiler.java.visit.MetaSetVariable;
-import tool.compiler.java.visit.XSubseteqY;
 
 /**
  * Conditional <: Expr <: Term <: Node					<br>
@@ -46,8 +46,8 @@ public class EquGenConditionalExt extends EquGenExprExt {
 		//   3. T1{Chi1} <: T{Chi}와 T2{Chi2} <: T{Chi} 제약식을 추가
 		XSubseteqY xy1 = new XSubseteqY(t1chi1, tchi);
 		XSubseteqY xy2 = new XSubseteqY(t2chi2, tchi);
-		v.getCurrMC().addMetaConstraint(xy1);
-		v.getCurrMC().addMetaConstraint(xy2);
+		v.getCurrCF().addMetaConstraint(xy1);
+		v.getCurrCF().addMetaConstraint(xy2);
 		ReportUtil.report(xy1);
 		ReportUtil.report(xy2);
 		

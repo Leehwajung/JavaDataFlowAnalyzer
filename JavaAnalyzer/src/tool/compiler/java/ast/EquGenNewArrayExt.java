@@ -6,15 +6,15 @@ import polyglot.ast.NewArray;
 import polyglot.ast.Node;
 import polyglot.ext.jl5.types.JL5ArrayType;
 import polyglot.util.SerialVersionUID;
+import tool.compiler.java.aos.AbstractObject;
+import tool.compiler.java.aos.ArrayMetaSetVariable;
+import tool.compiler.java.aos.MetaSetVariable;
+import tool.compiler.java.constraint.ObjsSubseteqX;
+import tool.compiler.java.constraint.XSubseteqY;
 import tool.compiler.java.util.ReportUtil;
 import tool.compiler.java.util.ReportUtil.MetaSetVarGoal;
 import tool.compiler.java.util.ReportUtil.MetaSetVarSource;
-import tool.compiler.java.visit.AbstractObject;
-import tool.compiler.java.visit.ArrayMetaSetVariable;
 import tool.compiler.java.visit.EquGenerator;
-import tool.compiler.java.visit.MetaSetVariable;
-import tool.compiler.java.visit.ObjsSubseteqX;
-import tool.compiler.java.visit.XSubseteqY;
 
 /**
  * NewArray <: Expr <: Term <: Node					<br>
@@ -59,7 +59,7 @@ public class EquGenNewArrayExt extends EquGenExprExt {
 			
 			//   1A-2. C[]{o} <: C[]{Chi} 제약식을 추가
 			ObjsSubseteqX ox = new ObjsSubseteqX(absObj, cchi);
-			v.getCurrMC().addMetaConstraint(ox);
+			v.getCurrCF().addMetaConstraint(ox);
 			ReportUtil.report(ox);
 			
 			//   1A-3. n의 타입 int{Chij}을 가져와 int{Chij} <: Ci{Chii}.length 제약식을 추가
@@ -80,7 +80,7 @@ public class EquGenNewArrayExt extends EquGenExprExt {
 				
 				//   1A-3b. int{Chij} <: Ci{Chii}.length 제약식을 추가 (각각 int 타입)
 				xy = new XSubseteqY(tjchij, cichii_length);
-				v.getCurrMC().addMetaConstraint(xy);
+				v.getCurrCF().addMetaConstraint(xy);
 				ReportUtil.report(xy);
 				
 				//   1A-3c. Ci{Chii}의 base를 가져옴

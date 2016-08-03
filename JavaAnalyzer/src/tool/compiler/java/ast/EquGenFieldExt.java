@@ -5,13 +5,13 @@ import polyglot.ast.Field;
 import polyglot.ast.Node;
 import polyglot.ext.jl5.types.JL5FieldInstance;
 import polyglot.util.SerialVersionUID;
+import tool.compiler.java.aos.MetaSetVariable;
+import tool.compiler.java.constraint.ReadField;
+import tool.compiler.java.constraint.ReadStaticField;
 import tool.compiler.java.util.ReportUtil;
 import tool.compiler.java.util.ReportUtil.MetaSetVarGoal;
 import tool.compiler.java.util.ReportUtil.MetaSetVarSource;
 import tool.compiler.java.visit.EquGenerator;
-import tool.compiler.java.visit.ReadField;
-import tool.compiler.java.visit.ReadStaticField;
-import tool.compiler.java.visit.MetaSetVariable;
 
 /**
  * Field <: NamedVariable <: Variable <: Expr <: Term <: Node					<br>
@@ -51,7 +51,7 @@ public class EquGenFieldExt extends EquGenExprExt {
 			ReportUtil.report(cchi1, MetaSetVarSource.Receiver, MetaSetVarGoal.Flow);
 			
 			ReadField rf = new ReadField(cchi1, fldIns, dchi2);
-			v.getCurrMC().addMetaConstraint(rf);
+			v.getCurrCF().addMetaConstraint(rf);
 			ReportUtil.report(rf);
 		}
 		
@@ -59,7 +59,7 @@ public class EquGenFieldExt extends EquGenExprExt {
 		//       C.f <: D{Chi2}를 제약식 집합에 추가
 		else {
 			ReadStaticField rsf = new ReadStaticField(fldIns, dchi2);
-			v.getCurrMC().addMetaConstraint(rsf);
+			v.getCurrCF().addMetaConstraint(rsf);
 			ReportUtil.report(rsf);
 		}
 		

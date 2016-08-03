@@ -3,12 +3,12 @@ package tool.compiler.java.ast;
 import polyglot.ast.Cast;
 import polyglot.ast.Node;
 import polyglot.util.SerialVersionUID;
+import tool.compiler.java.aos.MetaSetVariable;
+import tool.compiler.java.constraint.XSubseteqY;
 import tool.compiler.java.util.ReportUtil;
 import tool.compiler.java.util.ReportUtil.MetaSetVarGoal;
 import tool.compiler.java.util.ReportUtil.MetaSetVarSource;
 import tool.compiler.java.visit.EquGenerator;
-import tool.compiler.java.visit.MetaSetVariable;
-import tool.compiler.java.visit.XSubseteqY;
 
 /**
  * Cast <: Expr <: Term <: Node					<br>
@@ -43,7 +43,7 @@ public class EquGenCastExt extends EquGenExprExt {
 		
 		//   3. C{Chi1} <: D{Chi2} 제약식을 추가
 		XSubseteqY xy = new XSubseteqY(cchi1, dchi2);
-		v.getCurrMC().addMetaConstraint(xy);
+		v.getCurrCF().addMetaConstraint(xy);
 		ReportUtil.report(xy);
 		
 		//   4. D{Chi2}를 리턴 타입으로 지정

@@ -9,19 +9,19 @@ import polyglot.ast.FieldAssign;
 import polyglot.ast.Node;
 import polyglot.ext.jl5.types.JL5FieldInstance;
 import polyglot.util.SerialVersionUID;
+import tool.compiler.java.aos.AbstractObject;
+import tool.compiler.java.aos.ArrayMetaSetVariable;
+import tool.compiler.java.aos.MetaSetVariable;
+import tool.compiler.java.aos.AbstractObject.Info;
+import tool.compiler.java.constraint.AssignField;
+import tool.compiler.java.constraint.AssignStaticField;
+import tool.compiler.java.constraint.ObjsSubseteqX;
+import tool.compiler.java.constraint.XSubseteqY;
 import tool.compiler.java.util.EquGenUtil;
 import tool.compiler.java.util.ReportUtil;
 import tool.compiler.java.util.ReportUtil.MetaSetVarGoal;
 import tool.compiler.java.util.ReportUtil.MetaSetVarSource;
-import tool.compiler.java.visit.AbstractObject;
-import tool.compiler.java.visit.ArrayMetaSetVariable;
-import tool.compiler.java.visit.AssignField;
-import tool.compiler.java.visit.AssignStaticField;
 import tool.compiler.java.visit.EquGenerator;
-import tool.compiler.java.visit.MetaSetVariable;
-import tool.compiler.java.visit.ObjsSubseteqX;
-import tool.compiler.java.visit.XSubseteqY;
-import tool.compiler.java.visit.AbstractObject.Info;
 
 /**
  * FieldAssign <: Assign <: Expr <: Term <: Node				<br>
@@ -81,7 +81,7 @@ public class EquGenFieldAssignExt extends EquGenAssignExt {
 			
 			//   2-1Bb. E{o} <: E{Chi3} 제약식을 추가
 			ObjsSubseteqX ox = new ObjsSubseteqX(absObj, echi3);
-			v.getCurrMC().addMetaConstraint(ox);
+			v.getCurrCF().addMetaConstraint(ox);
 			ReportUtil.report(ox);
 		}
 		
@@ -93,7 +93,7 @@ public class EquGenFieldAssignExt extends EquGenAssignExt {
 			ReportUtil.report(cchi1, MetaSetVarSource.Receiver, MetaSetVarGoal.Flow);
 			
 			AssignField af = new AssignField(echi3, cchi1, fldIns);
-			v.getCurrMC().addMetaConstraint(af);
+			v.getCurrCF().addMetaConstraint(af);
 			ReportUtil.report(af);
 		}
 		
@@ -101,7 +101,7 @@ public class EquGenFieldAssignExt extends EquGenAssignExt {
 		//         E{Chi3} <: C.f 제약식을 추가
 		else {
 			AssignStaticField asf = new AssignStaticField(echi3, fldIns);
-			v.getCurrMC().addMetaConstraint(asf);
+			v.getCurrCF().addMetaConstraint(asf);
 			ReportUtil.report(asf);
 		}
 		
@@ -110,7 +110,7 @@ public class EquGenFieldAssignExt extends EquGenAssignExt {
 			Collection<XSubseteqY> xys = EquGenUtil.constrain(
 					(ArrayMetaSetVariable) echi3, 
 					(ArrayMetaSetVariable) dchi2);	// D[]에 대한 MetaSetVariable
-			v.getCurrMC().addMetaConstraints(xys);
+			v.getCurrCF().addMetaConstraints(xys);
 		}
 		
 		//   3. e1.f / C.f의 타입 D{Chi2}를 리턴할 타입으로 지정

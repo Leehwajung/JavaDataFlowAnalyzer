@@ -3,13 +3,13 @@ package tool.compiler.java.ast;
 import polyglot.ast.Instanceof;
 import polyglot.ast.Node;
 import polyglot.util.SerialVersionUID;
+import tool.compiler.java.aos.AbstractObject;
+import tool.compiler.java.aos.MetaSetVariable;
+import tool.compiler.java.constraint.ObjsSubseteqX;
 import tool.compiler.java.util.ReportUtil;
 import tool.compiler.java.util.ReportUtil.MetaSetVarGoal;
 import tool.compiler.java.util.ReportUtil.MetaSetVarSource;
-import tool.compiler.java.visit.AbstractObject;
 import tool.compiler.java.visit.EquGenerator;
-import tool.compiler.java.visit.MetaSetVariable;
-import tool.compiler.java.visit.ObjsSubseteqX;
 
 /**
  * Instanceof <: Expr <: Term <: Node				<br>
@@ -46,7 +46,7 @@ public class EquGenInstanceofExt extends EquGenExprExt {
 		
 		//   2. boolean{o} <: boolean{Chi} 제약식을 추가
 		ObjsSubseteqX ox = new ObjsSubseteqX(absObj, tchi);
-		v.getCurrMC().addMetaConstraint(ox);
+		v.getCurrCF().addMetaConstraint(ox);
 		ReportUtil.report(ox);
 		
 		//   3. return boolean{Chi}
