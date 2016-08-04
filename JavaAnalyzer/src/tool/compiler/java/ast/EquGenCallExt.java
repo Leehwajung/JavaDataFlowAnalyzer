@@ -48,7 +48,8 @@ public class EquGenCallExt extends EquGenExprExt {
 		
 		// e.m(e1, ..., en) / C.m(e1, ..., en)
 		//   1. 리턴할 타입 D{Chi}를 만든 다음, (Chi는 새로 만들고 D는 이 노드 자신의 타입)
-		MetaSetVariable dchi = new MetaSetVariable(call.type());
+		MetaSetVariable dchi = MetaSetVariable.create(call.type());
+//		MetaSetVariable dchi = new MetaSetVariable(call.type());
 		ReportUtil.report(dchi, MetaSetVarSource.New, MetaSetVarGoal.Return);
 		
 		//   2. e1~en의 타입 Ci{Chii}를 가져온다.

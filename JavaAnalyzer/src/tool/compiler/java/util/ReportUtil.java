@@ -81,7 +81,9 @@ public final class ReportUtil {
 	public static final void report(MetaSetVariable msv, 
 			MetaSetVarSource src, MetaSetVarGoal goal) {
 		StringBuilder sb = new StringBuilder();
-		sb.append("\t[MetaSetVariable] ")
+		sb.append('\t').append('[')
+			.append(msv.getClass().getSimpleName())
+			.append(']').append(' ')
 			.append(msv)
 			.append(' ').append('(').append(' ')
 			.append(src.translate())

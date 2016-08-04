@@ -64,7 +64,8 @@ public class EquGenLocalAssignExt extends EquGenAssignExt {
 			v.getCurrCF().addMetaConstraint(xy);
 			ReportUtil.report(xy);
 			
-			//   2A-3. 배열 변수인 경우, Top Level 아래의 MetaSetVariable의 데이터 플로우
+			//   2A-3. 배열 변수인 경우, D{Chi2} <: C{Chi1}의 하위 레벨 제약식을 추가
+			//	         (Top Level 아래의 MetaSetVariable(s)의 데이터 플로우)
 			if(EquGenUtil.isArray(cchi1)) {
 				Collection<XSubseteqY> xys = EquGenUtil.constrain(
 						(ArrayMetaSetVariable) dchi2, 

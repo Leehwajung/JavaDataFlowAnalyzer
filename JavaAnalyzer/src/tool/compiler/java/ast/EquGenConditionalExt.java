@@ -1,10 +1,14 @@
 package tool.compiler.java.ast;
 
+import java.util.Collection;
+
 import polyglot.ast.Conditional;
 import polyglot.ast.Node;
 import polyglot.util.SerialVersionUID;
+import tool.compiler.java.aos.ArrayMetaSetVariable;
 import tool.compiler.java.aos.MetaSetVariable;
 import tool.compiler.java.constraint.XSubseteqY;
+import tool.compiler.java.util.EquGenUtil;
 import tool.compiler.java.util.ReportUtil;
 import tool.compiler.java.util.ReportUtil.MetaSetVarGoal;
 import tool.compiler.java.util.ReportUtil.MetaSetVarSource;
@@ -34,7 +38,8 @@ public class EquGenConditionalExt extends EquGenExprExt {
 		
 		// e ? e1 : e2
 		//   1. 리턴할 타입 T{Chi}를 만든 다음, (Chi는 새로 만들고 T는 이 노드 자신의 타입)
-		MetaSetVariable tchi = new MetaSetVariable(cond.type());
+		MetaSetVariable tchi = MetaSetVariable.create(cond.type());
+//		MetaSetVariable tchi = new MetaSetVariable(cond.type());
 		ReportUtil.report(tchi, MetaSetVarSource.New, MetaSetVarGoal.Return);
 		
 		//   2. e1의 타입 T1{Chi1}와 e2의 타입 T2{Chi2}를 가져온다.
@@ -43,13 +48,26 @@ public class EquGenConditionalExt extends EquGenExprExt {
 		ReportUtil.report(t1chi1, MetaSetVarSource.SubExpression, MetaSetVarGoal.Flow);
 		ReportUtil.report(t2chi2, MetaSetVarSource.SubExpression, MetaSetVarGoal.Flow);
 		
-		//   3. T1{Chi1} <: T{Chi}와 T2{Chi2} <: T{Chi} 제약식을 추가
+		//   3-1. T1{Chi1} <: T{Chi}와 T2{Chi2} <: T{Chi} 제약식을 추가
 		XSubseteqY xy1 = new XSubseteqY(t1chi1, tchi);
 		XSubseteqY xy2 = new XSubseteqY(t2chi2, tchi);
 		v.getCurrCF().addMetaConstraint(xy1);
 		v.getCurrCF().addMetaConstraint(xy2);
 		ReportUtil.report(xy1);
 		ReportUtil.report(xy2);
+		
+		//   3-2. 배열인 경우, T1{Chi1} <: T{Chi}와 T2{Chi2} <: T{Chi}의 하위 레벨 제약식을 추가
+		//         (Top Level 아래의 MetaSetVariable(s)의 데이터 플로우)
+		if(EquGenUtil.isArray(tchi)) {
+			Collection<XSubseteqY> xys1 = EquGenUtil.constrain(
+					(ArrayMetaSetVariable) t1chi1, 
+					(ArrayMetaSetVariable) tchi);
+			Collection<XSubseteqY> xys2 = EquGenUtil.constrain(
+					(ArrayMetaSetVariable) t2chi2, 
+					(ArrayMetaSetVariable) tchi);
+			v.getCurrCF().addMetaConstraints(xys1);
+			v.getCurrCF().addMetaConstraints(xys2);
+		}
 		
 		//   4. T{Chi}를 리턴 타입으로 지정
 		setMetaSetVar(tchi);

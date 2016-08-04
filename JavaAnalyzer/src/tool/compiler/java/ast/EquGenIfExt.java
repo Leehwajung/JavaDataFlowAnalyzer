@@ -29,8 +29,8 @@ public class EquGenIfExt extends EquGenStmtExt {
 		If ifStmt = (If)this.node();
 		
 		// if (condition) {consequent} else {alternative}
-		LocalEnvironment cons = EquGenStmtExt.localEnv(ifStmt.consequent());
-		LocalEnvironment altr = EquGenStmtExt.localEnv(ifStmt.alternative());
+//		LocalEnvironment cons = EquGenStmtExt.localEnv(ifStmt.consequent());
+//		LocalEnvironment altr = EquGenStmtExt.localEnv(ifStmt.alternative());
 		
 		// TODO: environment의 합집합을 구하는 동작이 필요 없음?
 		setLocalEnv(v.peekTypeEnv().getCurrEnv());
