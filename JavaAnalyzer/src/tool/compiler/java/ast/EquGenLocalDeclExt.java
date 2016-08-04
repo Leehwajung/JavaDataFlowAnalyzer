@@ -41,7 +41,7 @@ public class EquGenLocalDeclExt extends EquGenStmtExt {
 		Type localDeclType = localDecl.type().type();
 		JL5LocalInstance localIns = (JL5LocalInstance) localDecl.localInstance();
 		
-		// C x = e / C[] x = e;
+		// C x = e / C[] x = e
 		//   1. x : C{Chi1} / C[]{Chi1(base, elem)}을 현재 env에 추가 (Chi1은 새로운 변수)
 		MetaSetVariable cchi1 = MetaSetVariable.create(localDeclType);
 		v.peekTypeEnv().add(localIns, cchi1);
@@ -59,7 +59,8 @@ public class EquGenLocalDeclExt extends EquGenStmtExt {
 			v.getCurrCF().addMetaConstraint(xy);
 			ReportUtil.report(xy);
 			
-			//   2-3. 배열 변수인 경우, Top Level 아래의 MetaSetVariable의 데이터 플로우
+			//   2-3. 배열 변수인 경우, D{Chi2} <: C{Chi1}의 하위 레벨 제약식을 추가
+			//	         (Top Level 아래의 MetaSetVariable(s)의 데이터 플로우)
 			if(EquGenUtil.isArray(localDeclType)) {
 				Collection<XSubseteqY> xys = EquGenUtil.constrain(
 						(ArrayMetaSetVariable) dchi2, 
