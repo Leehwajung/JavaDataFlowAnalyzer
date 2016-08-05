@@ -1,5 +1,6 @@
 package tool.compiler.java.ast;
 
+import polyglot.ast.ClassLit;
 import polyglot.ast.Lit;
 import polyglot.ast.Node;
 import polyglot.util.SerialVersionUID;
@@ -27,10 +28,12 @@ public class EquGenLitExt extends EquGenExprExt {
 		ReportUtil.enterReport(this);
 		Lit lit = (Lit) this.node();
 		
-		absObj = new AbstractObject(lit);
-		v.addToSet(absObj);
-		ReportUtil.report(absObj);
-//		Report.report(3, "\t[AbstractObject] " + absObj + " ( " + lit.getClass().getInterfaces()[0].getSimpleName() + " )");
+		if (!(lit instanceof ClassLit)) {
+			absObj = new AbstractObject(lit);
+			v.addToSet(absObj);
+			ReportUtil.report(absObj);
+//			Report.report(3, "\t[AbstractObject] " + absObj + " ( " + lit.getClass().getInterfaces()[0].getSimpleName() + " )");
+		}
 		
 		return super.equGenEnter(v);
 	}
@@ -46,9 +49,11 @@ public class EquGenLitExt extends EquGenExprExt {
 		ReportUtil.report(tchi, MetaSetVarSource.New, MetaSetVarGoal.Return);
 		
 		//   2. T{o} <: T{Chi} 제약식을 추가
-		ObjsSubseteqX ox = new ObjsSubseteqX(absObj, tchi);
-		v.getCurrCF().addMetaConstraint(ox);
-		ReportUtil.report(ox);
+		if (!(lit instanceof ClassLit)) {
+			ObjsSubseteqX ox = new ObjsSubseteqX(absObj, tchi);
+			v.getCurrCF().addMetaConstraint(ox);
+			ReportUtil.report(ox);
+		}
 		
 		//   3. return T{Chi}
 		setMetaSetVar(tchi);

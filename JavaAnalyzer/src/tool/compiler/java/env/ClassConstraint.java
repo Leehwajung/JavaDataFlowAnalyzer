@@ -44,11 +44,9 @@ public class ClassConstraint implements ConstraintFunction {
 	}
 	
 	private void generateThis(JL5ClassType type) {
-		if (!type.flags().isStatic()) {	// Dynamic
-			this.chi_this = new MetaSetVariable(type);
-		} else {	// Static
-			this.chi_this = null;
-		}
+		// 배열 타입에 대한 ClassConstraint는 생성하지 않으므로, 
+		// ArrayMetaSetVariable을 생성하는 경우는 없음
+		this.chi_this = new MetaSetVariable(type);
 	}
 	
 	private void generateFields(JL5ClassType type) {
@@ -57,13 +55,7 @@ public class ClassConstraint implements ConstraintFunction {
 		if (!fields.isEmpty()) {
 			this.chi_fields = new LinkedHashMap<>();
 			for (FieldInstance field : fields) {
-				Type fieldType = field.type();
-				MetaSetVariable fieldMSV;
-				if (!(fieldType instanceof JL5ArrayType)) {	// For Scalar Type Field
-					fieldMSV = new MetaSetVariable(fieldType);
-				} else {									// For Array Type Field
-					fieldMSV = new ArrayMetaSetVariable((JL5ArrayType) fieldType);
-				}
+				MetaSetVariable fieldMSV = MetaSetVariable.create(field.type());
 				this.chi_fields.put((JL5FieldInstance)field, fieldMSV);	// field
 			}
 		} else {

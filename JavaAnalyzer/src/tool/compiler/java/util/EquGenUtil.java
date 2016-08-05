@@ -95,6 +95,15 @@ public final class EquGenUtil {
 		return constraints;
 	}
 	
+	public static final ArrayList<XSubseteqY> constrain(MetaSetVariable x, ArrayMetaSetVariable y) {
+		try {
+			return constrain((ArrayMetaSetVariable) x, y);
+		} catch (ClassCastException e) {
+			return new ArrayList<>();
+//			return null;
+		}
+	}
+	
 	public static final boolean isArray(Type type) {
 		return type instanceof JL5ArrayType;
 	}

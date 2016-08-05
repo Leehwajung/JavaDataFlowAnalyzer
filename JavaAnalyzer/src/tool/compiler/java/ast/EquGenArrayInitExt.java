@@ -88,8 +88,7 @@ public class EquGenArrayInitExt extends EquGenExprExt {
 			//         (Top Level 아래의 MetaSetVariable(s)의 데이터 플로우)
 			if(EquGenUtil.isArray(ei.type())) {
 				Collection<XSubseteqY> xys = EquGenUtil.constrain(
-						(ArrayMetaSetVariable) cichii, 
-						(ArrayMetaSetVariable) cchi_base);
+						cichii, (ArrayMetaSetVariable) cchi_base);
 				v.getCurrCF().addMetaConstraints(xys);
 			}
 		}

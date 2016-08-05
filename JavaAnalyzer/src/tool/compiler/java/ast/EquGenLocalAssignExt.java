@@ -68,8 +68,7 @@ public class EquGenLocalAssignExt extends EquGenAssignExt {
 			//	         (Top Level 아래의 MetaSetVariable(s)의 데이터 플로우)
 			if(EquGenUtil.isArray(cchi1)) {
 				Collection<XSubseteqY> xys = EquGenUtil.constrain(
-						(ArrayMetaSetVariable) dchi2, 
-						(ArrayMetaSetVariable) cchi1);
+						dchi2, (ArrayMetaSetVariable) cchi1);
 				v.getCurrCF().addMetaConstraints(xys);
 			}
 		}

@@ -32,8 +32,8 @@ public class MethodConstraint extends CodeConstraint {
 	public MethodConstraint(JL5ProcedureInstance m) {
 		super(m);
 		if (m instanceof JL5MethodInstance) {
-			this.chi_ret = new MetaSetVariable(((JL5MethodInstance) m).returnType());
-		} else/* if (m instanceof JL5ConstructorInstance)*/ {	//JL5ConstructorInstance
+			this.chi_ret = MetaSetVariable.create(((JL5MethodInstance) m).returnType());
+		} else/* if (m instanceof JL5ConstructorInstance)*/ {	// JL5ConstructorInstance
 			this.chi_ret = null;
 		}
 	}
@@ -161,7 +161,7 @@ public class MethodConstraint extends CodeConstraint {
 		return getInstance() instanceof JL5ConstructorInstance;
 	}
 	
-	public boolean isNormal() {
+	public boolean isNormalMethod() {
 		return getInstance() instanceof JL5MethodInstance;
 	}
 	

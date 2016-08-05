@@ -1,7 +1,6 @@
 package tool.compiler.java.aos;
 
 import polyglot.ext.jl5.types.JL5ArrayType;
-import polyglot.types.Type;
 
 public class ArrayMetaSetVariable extends MetaSetVariable {
 	
@@ -10,15 +9,8 @@ public class ArrayMetaSetVariable extends MetaSetVariable {
 	
 	public ArrayMetaSetVariable(JL5ArrayType type) {
 		super(type);
-		
-		Type baseType = type.base();
-		if(baseType instanceof JL5ArrayType) {
-			base = new ArrayMetaSetVariable((JL5ArrayType) baseType);
-		} else {
-			base = new MetaSetVariable(baseType);
-		}
-		
-		length = new MetaSetVariable(type.lengthField().type());
+		this.base = MetaSetVariable.create(type.base());
+		this.length = new MetaSetVariable(type.lengthField().type());
 	}
 	
 	public MetaSetVariable base() {

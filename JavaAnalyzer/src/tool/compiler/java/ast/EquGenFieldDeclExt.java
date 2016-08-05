@@ -77,8 +77,7 @@ public class EquGenFieldDeclExt extends EquGenClassMemberExt {
 			//   2-2. 배열 변수인 경우, Top Level 아래의 MetaSetVariable의 데이터 플로우
 			if(EquGenUtil.isArray(fldDecl.type().type())) {
 				Collection<XSubseteqY> xys = EquGenUtil.constrain(
-						(ArrayMetaSetVariable) echi3, 
-						(ArrayMetaSetVariable) v.getCurrCC().getField(fldIns));	// D[]에 대한 MetaSetVariable
+						echi3, (ArrayMetaSetVariable) v.getCurrCC().getField(fldIns));	// D[]에 대한 MetaSetVariable
 				v.getCurrCF().addMetaConstraints(xys);
 			}
 		}

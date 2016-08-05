@@ -63,8 +63,7 @@ public class EquGenLocalDeclExt extends EquGenStmtExt {
 			//	         (Top Level 아래의 MetaSetVariable(s)의 데이터 플로우)
 			if(EquGenUtil.isArray(localDeclType)) {
 				Collection<XSubseteqY> xys = EquGenUtil.constrain(
-						(ArrayMetaSetVariable) dchi2, 
-						(ArrayMetaSetVariable) cchi1);
+						dchi2, (ArrayMetaSetVariable) cchi1);
 				v.getCurrCF().addMetaConstraints(xys);
 			}
 		}

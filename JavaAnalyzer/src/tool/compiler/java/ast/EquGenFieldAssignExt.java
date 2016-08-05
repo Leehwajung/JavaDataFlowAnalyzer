@@ -108,8 +108,7 @@ public class EquGenFieldAssignExt extends EquGenAssignExt {
 		//   2-3. 배열 변수인 경우, Top Level 아래의 MetaSetVariable의 데이터 플로우
 		if(EquGenUtil.isArray(dchi2)) {
 			Collection<XSubseteqY> xys = EquGenUtil.constrain(
-					(ArrayMetaSetVariable) echi3, 
-					(ArrayMetaSetVariable) dchi2);	// D[]에 대한 MetaSetVariable
+					echi3, (ArrayMetaSetVariable) dchi2);	// D[]에 대한 MetaSetVariable
 			v.getCurrCF().addMetaConstraints(xys);
 		}
 		

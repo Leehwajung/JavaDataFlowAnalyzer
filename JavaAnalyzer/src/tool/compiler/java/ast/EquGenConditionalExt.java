@@ -60,11 +60,9 @@ public class EquGenConditionalExt extends EquGenExprExt {
 		//         (Top Level 아래의 MetaSetVariable(s)의 데이터 플로우)
 		if(EquGenUtil.isArray(tchi)) {
 			Collection<XSubseteqY> xys1 = EquGenUtil.constrain(
-					(ArrayMetaSetVariable) t1chi1, 
-					(ArrayMetaSetVariable) tchi);
+					 t1chi1, (ArrayMetaSetVariable) tchi);
 			Collection<XSubseteqY> xys2 = EquGenUtil.constrain(
-					(ArrayMetaSetVariable) t2chi2, 
-					(ArrayMetaSetVariable) tchi);
+					t2chi2, (ArrayMetaSetVariable) tchi);
 			v.getCurrCF().addMetaConstraints(xys1);
 			v.getCurrCF().addMetaConstraints(xys2);
 		}
