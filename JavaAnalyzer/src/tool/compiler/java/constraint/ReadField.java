@@ -26,7 +26,7 @@ public class ReadField implements Constraint {
 	 */
 	
 	/* ### Actual Fields ### */
-	private AbsObjSet cx;		// C, X (NOT null)
+	private SetVariable cx;		// C, X (NOT null)
 	private JL5FieldInstance f;	// f (NOT null)
 	private SetVariable dy;		// D, Y (NOT null)
 	
@@ -39,7 +39,7 @@ public class ReadField implements Constraint {
 	 * @param f		set f
 	 * @param dy	set D, Y	( D{Y} )
 	 */
-	public ReadField(AbsObjSet cx, JL5FieldInstance f, SetVariable dy) {
+	public ReadField(SetVariable cx, JL5FieldInstance f, SetVariable dy) {
 		super();
 		this.cx = cx;
 		this.f = f;
@@ -92,7 +92,7 @@ public class ReadField implements Constraint {
 	/**
 	 * @return the C{X}
 	 */
-	public AbsObjSet getCX() {
+	public SetVariable getCX() {
 		return cx;
 	}
 	

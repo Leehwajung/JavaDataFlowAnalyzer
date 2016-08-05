@@ -37,7 +37,7 @@ public class InvokeMth implements Constraint {
 	 */
 	
 	/* ### Actual Fields ### */
-	private AbsObjSet cx;				// C, X (NOT null)
+	private SetVariable cx;				// C, X (NOT null)
 	private JL5ProcedureInstance m;		// m (NOT null)
 	private ArrayList<? extends SetVariable> dxs;	// Ds, Xs ( D1{X1}, ..., Dn{Xn} ) (nullable)
 	private HashMap<EffectName, Effect> effects;	// (effect) (nullable)
@@ -53,7 +53,7 @@ public class InvokeMth implements Constraint {
 	 * @param dxs	set Ds, Xs	( D1{X1}, ..., Dn{Xn} )
 	 * @param ey	set E, Y	( E{Y} )
 	 */
-	public InvokeMth(AbsObjSet cx, JL5ProcedureInstance m, List<? extends SetVariable> dxs, SetVariable ey) {
+	public InvokeMth(SetVariable cx, JL5ProcedureInstance m, List<? extends SetVariable> dxs, SetVariable ey) {
 		super();
 		this.cx = cx;
 		this.m = m;
@@ -73,7 +73,7 @@ public class InvokeMth implements Constraint {
 	 * @param effects	set effects
 	 * @param ey	set E, Y	( E{Y} )
 	 */
-	public InvokeMth(AbsObjSet cx, JL5ProcedureInstance m, List<? extends SetVariable> dxs, Collection<Effect> effects, SetVariable ey) {
+	public InvokeMth(SetVariable cx, JL5ProcedureInstance m, List<? extends SetVariable> dxs, Collection<Effect> effects, SetVariable ey) {
 		this(cx, m, dxs, ey);
 		if(effects != null) {
 			this.effects = new HashMap<>();
@@ -93,7 +93,7 @@ public class InvokeMth implements Constraint {
 	 * @param effects	set effects
 	 * @param ey	set E, Y	( E{Y} )
 	 */
-	private InvokeMth(AbsObjSet cx, JL5ProcedureInstance m, List<? extends SetVariable> dxs, Map<EffectName, Effect> effects, SetVariable ey) {
+	private InvokeMth(SetVariable cx, JL5ProcedureInstance m, List<? extends SetVariable> dxs, Map<EffectName, Effect> effects, SetVariable ey) {
 		this(cx, m, dxs, ey);
 		if(effects != null) {
 			this.effects = new HashMap<>(effects);
@@ -109,7 +109,7 @@ public class InvokeMth implements Constraint {
 	 * @param dxs	set Ds, Xs	( D1{X1}, ..., Dn{Xn} )
 	 * @param ey	set E, Y	( E{Y} )
 	 */
-	public InvokeMth(AbsObjSet cx, JL5MethodInstance m, List<? extends SetVariable> dxs, SetVariable ey) {
+	public InvokeMth(SetVariable cx, JL5MethodInstance m, List<? extends SetVariable> dxs, SetVariable ey) {
 		this(cx, (JL5ProcedureInstance) m, dxs, ey);
 	}
 	
@@ -121,7 +121,7 @@ public class InvokeMth implements Constraint {
 	 * @param effects	set effects
 	 * @param ey	set E, Y	( E{Y} )
 	 */
-	public InvokeMth(AbsObjSet cx, JL5MethodInstance m, List<? extends SetVariable> dxs, Collection<Effect> effects, SetVariable ey) {
+	public InvokeMth(SetVariable cx, JL5MethodInstance m, List<? extends SetVariable> dxs, Collection<Effect> effects, SetVariable ey) {
 		this(cx, (JL5ProcedureInstance) m, dxs, effects, ey);
 	}
 	
@@ -132,7 +132,7 @@ public class InvokeMth implements Constraint {
 	 * @param dxs	set Ds, Xs	( D1{X1}, ..., Dn{Xn} )
 	 * @param ey	set E, Y	( E{Y} )
 	 */
-	public InvokeMth(AbsObjSet cx, JL5ConstructorInstance m, List<? extends SetVariable> dxs, SetVariable ey) {
+	public InvokeMth(SetVariable cx, JL5ConstructorInstance m, List<? extends SetVariable> dxs, SetVariable ey) {
 		this(cx, (JL5ProcedureInstance) m, dxs, ey);
 	}
 	
@@ -144,7 +144,7 @@ public class InvokeMth implements Constraint {
 	 * @param effects	set effects
 	 * @param ey	set E, Y	( E{Y} )
 	 */
-	public InvokeMth(AbsObjSet cx, JL5ConstructorInstance m, List<? extends SetVariable> dxs, Collection<Effect> effects, SetVariable ey) {
+	public InvokeMth(SetVariable cx, JL5ConstructorInstance m, List<? extends SetVariable> dxs, Collection<Effect> effects, SetVariable ey) {
 		this(cx, (JL5ProcedureInstance) m, dxs, effects, ey);
 	}
 	
@@ -216,7 +216,7 @@ public class InvokeMth implements Constraint {
 	/**
 	 * @return the C{X}
 	 */
-	public AbsObjSet getCX() {
+	public SetVariable getCX() {
 		return cx;
 	}
 	

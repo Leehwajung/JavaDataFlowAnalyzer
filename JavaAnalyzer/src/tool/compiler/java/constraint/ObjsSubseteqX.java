@@ -154,7 +154,7 @@ public class ObjsSubseteqX implements Constraint {
 	
 	
 	/**
-	 * Form:	{ context1, ..., contextk } <: X
+	 * Form:	{ context1, ..., contextk } <: C{X}
 	 */
 	@Override
 	public String toString() {

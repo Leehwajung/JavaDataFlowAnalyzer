@@ -24,7 +24,7 @@ public class VarToVar implements Constraint {
 	 */
 	
 	/* ### Actual Fields ### */
-	private AbsObjSet cx;	// C, X
+	private SetVariable cx;	// C, X
 	private SetVariable dy;	// D, Y
 	
 	
@@ -35,7 +35,7 @@ public class VarToVar implements Constraint {
 	 * @param cx	set C, X	( C{X} )
 	 * @param dy	set D, Y	( D{Y} )
 	 */
-	public VarToVar(AbsObjSet cx, SetVariable dy) {
+	public VarToVar(SetVariable cx, SetVariable dy) {
 		super();
 		this.cx = cx;
 		this.dy = dy;
@@ -87,7 +87,7 @@ public class VarToVar implements Constraint {
 	/**
 	 * @return the C{X}
 	 */
-	public AbsObjSet getCX() {
+	public SetVariable getCX() {
 		return cx;
 	}
 	

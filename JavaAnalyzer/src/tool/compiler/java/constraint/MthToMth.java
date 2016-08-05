@@ -47,7 +47,7 @@ public class MthToMth implements Constraint {
 	private SetVariable e2y;				// E2, Y
 	
 	
-	// constructor
+	// constructors
 	
 	/**
 	 * (C1{X1}, ..., Cn{Xn}) -- effect1 --> E1{X} 

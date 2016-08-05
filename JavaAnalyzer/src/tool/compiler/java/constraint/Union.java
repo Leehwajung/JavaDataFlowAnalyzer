@@ -8,26 +8,27 @@ import tool.compiler.java.aos.SetVariable;
 import tool.compiler.java.aos.TypedSetVariable;
 
 /**
- * X <: Y
+ * X ∪ Y <: Z
  */
-public class XSubseteqY implements Constraint {
+public class Union implements Constraint {
 	
 	// fields
 	
-	private SetVariable x, y;	// X, Y (NOT null)
+	private SetVariable x, y, z;	// X, Y (NOT null)
 	
 	
 	// constructor
 	
 	/**
-	 * X <: Y
-	 * @param x	set X
-	 * @param y	set Y
+	 * @param x
+	 * @param y
+	 * @param z
 	 */
-	public XSubseteqY(SetVariable x, SetVariable y) {
+	protected Union(SetVariable x, SetVariable y, SetVariable z) {
 		super();
 		this.x = x;
 		this.y = y;
+		this.z = z;
 	}
 	
 	
@@ -35,12 +36,13 @@ public class XSubseteqY implements Constraint {
 	
 	/**
 	 * Substitute TypedSetVariable for AbsObjSet<br>
-	 * X <: Y
+	 * X ∪ Y <: Z
 	 * @param x	set X
 	 * @param y	set Y
+	 * @param z	set Z
 	 * @return	Substituted New Constraint
 	 */
-	public XSubseteqY substitute(TypedSetVariable x, TypedSetVariable y) {
+	public Union substitute(TypedSetVariable x, TypedSetVariable y, TypedSetVariable z) {
 		if(!this.x.equalsForType(x)) {
 			throw new IllegalArgumentException("The Type Mismatch for x. "
 					+ "(orig: " + this.x.getType() + ", subst: " + x.getType() + ")");
@@ -51,61 +53,86 @@ public class XSubseteqY implements Constraint {
 					+ "(orig: " + this.y.getType() + ", subst: " + y.getType() + ")");
 		}
 		
-		return new XSubseteqY(x, y);
+		if(!this.z.equalsForType(z)) {
+			throw new IllegalArgumentException("The Type Mismatch for z. "
+					+ "(orig: " + this.z.getType() + ", subst: " + y.getType() + ")");
+		}
+		
+		return new Union(x, y, z);
 	}
 	
 	/**
 	 * Substitute TypedSetVariable for AbsObjSet<br>
-	 * X <: Y
-	 * @param xy	X and Y	(The size is 2)
+	 * X ∪ Y <: Z
+	 * @param xyz	X, Y and Z	(The size is 3)
 	 * @return		Substituted New Constraint
 	 */
 	@Override
-	public Constraint substitute(List<TypedSetVariable> xy) {
-		if(xy.size() != substitutableSize()) {
+	public Constraint substitute(List<TypedSetVariable> xyz) {
+		if(xyz.size() != substitutableSize()) {
 			throw new IllegalArgumentException("The Size of tsvs must be " + substitutableSize() + ". "
-					+ "(Current size is " + xy.size() + ".)");
+					+ "(Current size is " + xyz.size() + ".)");
 		}
-		Object[] xyArr = xy.toArray();
-		return substitute((TypedSetVariable)xyArr[0], (TypedSetVariable)xyArr[1]);
+		Object[] xyzArr = xyz.toArray();
+		return substitute((TypedSetVariable)xyzArr[0], (TypedSetVariable)xyzArr[1], (TypedSetVariable)xyzArr[2]);
 	}
 	
 	
 	// getter methods
 	
 	/**
-	 * @return the X
+	 * @return the x
 	 */
-	public AbsObjSet getX() {
+	public SetVariable getX() {
 		return x;
 	}
 	
 	/**
-	 * @return the Y
+	 * @return the y
 	 */
-	public AbsObjSet getY() {
+	public SetVariable getY() {
 		return y;
 	}
 	
+	/**
+	 * @return the z
+	 */
+	public SetVariable getZ() {
+		return z;
+	}
 	
+	
+	/**
+	 * @see tool.compiler.java.constraint.Constraint#absObjSetSize()
+	 */
 	@Override
 	public int absObjSetSize() {
-		return 2;
+		return 3;
 	}
 	
+	/**
+	 * @see tool.compiler.java.constraint.Constraint#substitutableSize()
+	 */
 	@Override
 	public int substitutableSize() {
-		return 2;
+		return 3;
 	}
 	
+	/**
+	 * @see tool.compiler.java.constraint.Constraint#getAllAbsObjSets()
+	 */
 	@Override
 	public List<? extends AbsObjSet> getAllAbsObjSets() {
 		ArrayList<SetVariable> abss = new ArrayList<>();
 		abss.add(x);
 		abss.add(y);
+		abss.add(z);
 		return abss;
 	}
 	
+	/**
+	 * @see tool.compiler.java.constraint.Constraint#contains(tool.compiler.java.aos.AbsObjSet)
+	 */
 	@Override
 	public boolean contains(AbsObjSet aos) {
 		if (x.equals(aos)) {
@@ -114,21 +141,26 @@ public class XSubseteqY implements Constraint {
 		if (y.equals(aos)) {
 			return true;
 		}
+		if (z.equals(aos)) {
+			return true;
+		}
 		return false;
 	}
 	
+	/**
+	 * @see tool.compiler.java.constraint.Constraint#getKind()
+	 */
 	@Override
 	public String getKind() {
 		return this.getClass().getSimpleName();
 	}
 	
-	
 	/**
-	 * Form:	C{X} <: D{Y}
+	 * Form:	C{X} ∪ D{Y} <: E{Z}
 	 */
 	@Override
 	public String toString() {
-		return getX() + " <: " + getY();
+		return getX() + " ∪ " + getY() + " <: " + getZ();
 	}
 	
 	/**
@@ -140,6 +172,7 @@ public class XSubseteqY implements Constraint {
 		int result = 1;
 		result = prime * result + ((x == null) ? 0 : x.hashCode());
 		result = prime * result + ((y == null) ? 0 : y.hashCode());
+		result = prime * result + ((z == null) ? 0 : z.hashCode());
 		return result;
 	}
 	
@@ -157,7 +190,7 @@ public class XSubseteqY implements Constraint {
 		if (getClass() != obj.getClass()) {
 			return false;
 		}
-		XSubseteqY other = (XSubseteqY) obj;
+		Union other = (Union) obj;
 		if (x == null) {
 			if (other.x != null) {
 				return false;
@@ -170,6 +203,13 @@ public class XSubseteqY implements Constraint {
 				return false;
 			}
 		} else if (!y.equals(other.y)) {
+			return false;
+		}
+		if (z == null) {
+			if (other.z != null) {
+				return false;
+			}
+		} else if (!z.equals(other.z)) {
 			return false;
 		}
 		return true;

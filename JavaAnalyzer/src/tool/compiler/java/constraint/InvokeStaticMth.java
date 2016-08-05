@@ -40,7 +40,7 @@ public class InvokeStaticMth implements Constraint {
 	private SetVariable ey;				// E, Y (nullable)
 	
 	
-	// constructor
+	// constructors
 	
 	/**
 	 * C.m <: (D1{X1}, ..., Dn{Xn}) -- effect --> E{Y}

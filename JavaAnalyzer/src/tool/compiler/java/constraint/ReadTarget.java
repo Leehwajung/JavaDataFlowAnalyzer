@@ -3,29 +3,34 @@ package tool.compiler.java.constraint;
 import java.util.ArrayList;
 import java.util.List;
 
+import polyglot.ext.jl5.types.JL5ClassType;
 import tool.compiler.java.aos.AbsObjSet;
 import tool.compiler.java.aos.SetVariable;
 import tool.compiler.java.aos.TypedSetVariable;
 
 /**
- * X <: Y
+ * Target(X) <: Y<br>
+ * for android activity effect
  */
-public class XSubseteqY implements Constraint {
+public class ReadTarget implements Constraint {
 	
 	// fields
 	
-	private SetVariable x, y;	// X, Y (NOT null)
+	private JL5ClassType target;	// Target (NOT null)
+	private SetVariable x;			// X (NOT null)
+	private SetVariable y;			// Y (NOT null)
 	
 	
 	// constructor
 	
 	/**
-	 * X <: Y
-	 * @param x	set X
-	 * @param y	set Y
+	 * @param x
+	 * @param y
+	 * @param z
 	 */
-	public XSubseteqY(SetVariable x, SetVariable y) {
+	protected ReadTarget(JL5ClassType target, SetVariable x, SetVariable y) {
 		super();
+		this.target = target;
 		this.x = x;
 		this.y = y;
 	}
@@ -35,12 +40,12 @@ public class XSubseteqY implements Constraint {
 	
 	/**
 	 * Substitute TypedSetVariable for AbsObjSet<br>
-	 * X <: Y
+	 * Target(X) <: Y
 	 * @param x	set X
 	 * @param y	set Y
 	 * @return	Substituted New Constraint
 	 */
-	public XSubseteqY substitute(TypedSetVariable x, TypedSetVariable y) {
+	public ReadTarget substitute(TypedSetVariable x, TypedSetVariable y) {
 		if(!this.x.equalsForType(x)) {
 			throw new IllegalArgumentException("The Type Mismatch for x. "
 					+ "(orig: " + this.x.getType() + ", subst: " + x.getType() + ")");
@@ -51,12 +56,12 @@ public class XSubseteqY implements Constraint {
 					+ "(orig: " + this.y.getType() + ", subst: " + y.getType() + ")");
 		}
 		
-		return new XSubseteqY(x, y);
+		return new ReadTarget(this.target, x, y);
 	}
 	
 	/**
 	 * Substitute TypedSetVariable for AbsObjSet<br>
-	 * X <: Y
+	 * Target(X) <: Y
 	 * @param xy	X and Y	(The size is 2)
 	 * @return		Substituted New Constraint
 	 */
@@ -66,38 +71,54 @@ public class XSubseteqY implements Constraint {
 			throw new IllegalArgumentException("The Size of tsvs must be " + substitutableSize() + ". "
 					+ "(Current size is " + xy.size() + ".)");
 		}
-		Object[] xyArr = xy.toArray();
-		return substitute((TypedSetVariable)xyArr[0], (TypedSetVariable)xyArr[1]);
+		Object[] xyzArr = xy.toArray();
+		return substitute((TypedSetVariable)xyzArr[0], (TypedSetVariable)xyzArr[1]);
 	}
 	
 	
 	// getter methods
 	
 	/**
-	 * @return the X
+	 * @return the target
 	 */
-	public AbsObjSet getX() {
+	public JL5ClassType getTarget() {
+		return target;
+	}
+	
+	/**
+	 * @return the x
+	 */
+	public SetVariable getX() {
 		return x;
 	}
 	
 	/**
-	 * @return the Y
+	 * @return the y
 	 */
-	public AbsObjSet getY() {
+	public SetVariable getY() {
 		return y;
 	}
 	
 	
+	/**
+	 * @see tool.compiler.java.constraint.Constraint#absObjSetSize()
+	 */
 	@Override
 	public int absObjSetSize() {
 		return 2;
 	}
 	
+	/**
+	 * @see tool.compiler.java.constraint.Constraint#substitutableSize()
+	 */
 	@Override
 	public int substitutableSize() {
 		return 2;
 	}
 	
+	/**
+	 * @see tool.compiler.java.constraint.Constraint#getAllAbsObjSets()
+	 */
 	@Override
 	public List<? extends AbsObjSet> getAllAbsObjSets() {
 		ArrayList<SetVariable> abss = new ArrayList<>();
@@ -106,6 +127,9 @@ public class XSubseteqY implements Constraint {
 		return abss;
 	}
 	
+	/**
+	 * @see tool.compiler.java.constraint.Constraint#contains(tool.compiler.java.aos.AbsObjSet)
+	 */
 	@Override
 	public boolean contains(AbsObjSet aos) {
 		if (x.equals(aos)) {
@@ -117,18 +141,21 @@ public class XSubseteqY implements Constraint {
 		return false;
 	}
 	
+	/**
+	 * @see tool.compiler.java.constraint.Constraint#getKind()
+	 */
 	@Override
 	public String getKind() {
 		return this.getClass().getSimpleName();
 	}
 	
-	
 	/**
-	 * Form:	C{X} <: D{Y}
+	 * Form:	Target(C{X}) <: D{Y}
 	 */
 	@Override
 	public String toString() {
-		return getX() + " <: " + getY();
+		return getTarget() + "(" + getX() + ") <: " + getY();
+//		return "Target(" + getX() + ") <: " + getY() + " [" + getTarget() + "]";
 	}
 	
 	/**
@@ -138,6 +165,7 @@ public class XSubseteqY implements Constraint {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
+		result = prime * result + ((target == null) ? 0 : target.hashCode());
 		result = prime * result + ((x == null) ? 0 : x.hashCode());
 		result = prime * result + ((y == null) ? 0 : y.hashCode());
 		return result;
@@ -157,7 +185,14 @@ public class XSubseteqY implements Constraint {
 		if (getClass() != obj.getClass()) {
 			return false;
 		}
-		XSubseteqY other = (XSubseteqY) obj;
+		ReadTarget other = (ReadTarget) obj;
+		if (target == null) {
+			if (other.target != null) {
+				return false;
+			}
+		} else if (!target.equals(other.target)) {
+			return false;
+		}
 		if (x == null) {
 			if (other.x != null) {
 				return false;
