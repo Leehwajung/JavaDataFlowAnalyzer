@@ -12,7 +12,7 @@ import tool.compiler.java.aos.MetaSetVariable;
 import tool.compiler.java.constraint.InvokeMth;
 import tool.compiler.java.constraint.ObjsSubseteqX;
 import tool.compiler.java.env.ClassConstraint;
-import tool.compiler.java.env.CodeConstraint;
+import tool.compiler.java.env.ConstraintFunction;
 import tool.compiler.java.info.MethodCallInfo;
 import tool.compiler.java.util.ReportUtil;
 import tool.compiler.java.util.ReportUtil.MetaSetVarGoal;
@@ -51,9 +51,11 @@ public class EquGenNewExt extends EquGenExprExt {
 		// Class Constraint (For Method Local Class)
 		if (nw.body() != null) {
 			cc = new ClassConstraint((JL5ParsedClassType) nw.anonType());
-			CodeConstraint outerMC = v.getCurrMC();
-			cc.setOuter(outerMC);		// Outer Method 설정
-			outerMC.addInner(cc);	// Local Class 설정
+			ConstraintFunction outerCF = v.getCurrCF();
+			if (outerCF != null) {
+				cc.setOuter(outerCF);	// Outer Class/Method 설정
+				outerCF.addInner(cc);	// Inner/Local Class 설정
+			}
 			v.addToSet(cc);				// Vistor에, CC를 keep하고 현재 CC를 갱신
 			ReportUtil.report(cc);
 		}

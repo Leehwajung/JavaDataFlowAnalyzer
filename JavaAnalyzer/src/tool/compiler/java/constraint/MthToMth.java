@@ -149,7 +149,7 @@ public class MthToMth implements Constraint {
 			}
 		}
 		
-		if (this.effects1 != null) {		// 'effects1' is nullable
+		if (this.effects1 == null) {		// 'effects1' is nullable
 			if (effects1 != null && !effects1.isEmpty()) {
 				throw new IllegalArgumentException("The Orig 'effects' is null.");
 			}
@@ -211,7 +211,7 @@ public class MthToMth implements Constraint {
 			}
 		}
 		
-		if (this.effects2 != null) {		// 'effects2' is nullable
+		if (this.effects2 == null) {		// 'effects2' is nullable
 			if (effects2 != null && !effects2.isEmpty()) {
 				throw new IllegalArgumentException("The Orig 'effects' is null.");
 			}
@@ -313,15 +313,23 @@ public class MthToMth implements Constraint {
 	 * @return C1{X1}, ..., Cn{Xn}
 	 */
 	public List<? extends SetVariable> getCXs() {
-		return new ArrayList<>(cxs);
+		try {
+			return new ArrayList<>(cxs);
+		} catch (NullPointerException e) {
+			return null;
+		}
 	}
 	
 	/**
-	 * @param i	index
+	 * @param i	index (i >= 1)
 	 * @return Ci{Xi}
 	 */
 	public SetVariable getCX(int i) {
-		return cxs.get(i);
+		try {
+			return cxs.get(i - 1);
+		} catch (NullPointerException e) {
+			return null;
+		}
 	}
 	
 	/**
@@ -358,29 +366,45 @@ public class MthToMth implements Constraint {
 	 * @return the E1
 	 */
 	public Type getE1() {
-		return e1x.getType();
+		try {
+			return e1x.getType();
+		} catch (NullPointerException e) {
+			return null;
+		}
 	}
 	
 	/**
 	 * @return the X
 	 */
 	public String getX() {
-		return e1x.getID();
+		try {
+			return e1x.getID();
+		} catch (NullPointerException e) {
+			return null;
+		}
 	}
 	
 	/**
 	 * @return D1{Y1}, ..., Dn{Yn}
 	 */
 	public List<? extends SetVariable> getDYs() {
-		return new ArrayList<>(dys);
+		try {
+			return new ArrayList<>(dys);
+		} catch (NullPointerException e) {
+			return null;
+		}
 	}
 	
 	/**
-	 * @param i	index
+	 * @param i	index (i >= 1)
 	 * @return Di{Yi}
 	 */
 	public SetVariable getDY(int i) {
-		return dys.get(i);
+		try {
+			return dys.get(i - 1);
+		} catch (NullPointerException e) {
+			return null;
+		}
 	}
 	
 	/**
@@ -417,14 +441,22 @@ public class MthToMth implements Constraint {
 	 * @return the E2
 	 */
 	public Type getE2() {
-		return e2y.getType();
+		try {
+			return e2y.getType();
+		} catch (NullPointerException e) {
+			return null;
+		}
 	}
 	
 	/**
 	 * @return the Y
 	 */
 	public String getY() {
-		return e2y.getID();
+		try {
+			return e2y.getID();
+		} catch (NullPointerException e) {
+			return null;
+		}
 	}
 	
 	

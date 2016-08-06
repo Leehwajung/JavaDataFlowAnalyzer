@@ -179,7 +179,7 @@ public class InvokeMth implements Constraint {
 			}
 		}
 		
-		if (this.effects != null) {		// 'effects' is nullable
+		if (this.effects == null) {		// 'effects' is nullable
 			if (effects != null && !effects.isEmpty()) {
 				throw new IllegalArgumentException("The Orig 'effects' is null.");
 			}
@@ -290,15 +290,23 @@ public class InvokeMth implements Constraint {
 	 * @return D1{X1}, ..., Dn{Xn}
 	 */
 	public List<? extends SetVariable> getDXs() {
-		return new ArrayList<>(dxs);
+		try {
+			return new ArrayList<>(dxs);
+		} catch (NullPointerException e) {
+			return null;
+		}
 	}
 	
 	/**
-	 * @param i	index
+	 * @param i	index (i >= 1)
 	 * @return Di{Xi}
 	 */
 	public SetVariable getDX(int i) {
-		return dxs.get(i);
+		try {
+			return dxs.get(i - 1);
+		} catch (NullPointerException e) {
+			return null;
+		}
 	}
 	
 	/**
@@ -335,14 +343,22 @@ public class InvokeMth implements Constraint {
 	 * @return the E
 	 */
 	public Type getE() {
-		return ey.getType();
+		if (isNormal()) {
+			return ey.getType();
+		} else {
+			return null;
+		}
 	}
 	
 	/**
 	 * @return the Y
 	 */
 	public String getY() {
-		return ey.getID();
+		if (isNormal()) {
+			return ey.getID();
+		} else {
+			return null;
+		}
 	}
 	
 	
@@ -366,7 +382,7 @@ public class InvokeMth implements Constraint {
 		if (effects != null) {
 			abss.addAll(effects.values());
 		}
-		if (!isConstructor()) {
+		if (isNormal()) {
 			abss.add(ey);
 		}
 		return abss;

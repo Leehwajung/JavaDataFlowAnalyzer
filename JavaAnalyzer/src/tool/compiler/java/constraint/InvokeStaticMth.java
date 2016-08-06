@@ -117,7 +117,7 @@ public class InvokeStaticMth implements Constraint {
 			}
 		}
 		
-		if (this.effects != null) {			// 'effects' is nullable
+		if (this.effects == null) {			// 'effects' is nullable
 			if (effects != null && !effects.isEmpty()) {
 				throw new IllegalArgumentException("The Orig 'effects' is null.");
 			}
@@ -204,15 +204,23 @@ public class InvokeStaticMth implements Constraint {
 	 * @return D1{X1}, ..., Dn{Xn}
 	 */
 	public List<? extends SetVariable> getDXs() {
-		return new ArrayList<>(dxs);
+		try {
+			return new ArrayList<>(dxs);
+		} catch (NullPointerException e) {
+			return null;
+		}
 	}
 	
 	/**
-	 * @param i	index
+	 * @param i	index (i >= 1)
 	 * @return Di{Xi}
 	 */
 	public SetVariable getDX(int i) {
-		return dxs.get(i);
+		try {
+			return dxs.get(i - 1);
+		} catch (NullPointerException e) {
+			return null;
+		}
 	}
 	
 	/**

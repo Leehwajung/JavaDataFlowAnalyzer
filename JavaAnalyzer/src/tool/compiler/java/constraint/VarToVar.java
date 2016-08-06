@@ -24,8 +24,8 @@ public class VarToVar implements Constraint {
 	 */
 	
 	/* ### Actual Fields ### */
-	private SetVariable cx;	// C, X
-	private SetVariable dy;	// D, Y
+	private SetVariable cx;	// C, X (NOT null)
+	private SetVariable dy;	// D, Y (NOT null)
 	
 	
 	// constructor
