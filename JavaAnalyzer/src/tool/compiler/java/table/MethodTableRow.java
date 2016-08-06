@@ -6,12 +6,10 @@ import polyglot.types.ReferenceType;
 import polyglot.types.Type;
 import tool.compiler.java.aos.AbstractObject;
 import tool.compiler.java.aos.TypedSetVariable;
-import tool.compiler.java.effect.Effect;
 import tool.compiler.java.effect.EffectName;
 import tool.compiler.java.info.MethodCallInfo;
 import tool.compiler.java.util.CollUtil;
 
-import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -20,11 +18,11 @@ import java.util.Map;
 public class MethodTableRow extends AbstractTableRow implements MethodOps {
 	
 	private LinkedList<TypedSetVariable> formalList;
-	private LinkedHashMap<EffectName, Effect> effects;
+	private LinkedHashMap<EffectName, TypedSetVariable> effects;
 	
 	public MethodTableRow(AbstractObject abstractObjectInfo, MethodCallInfo info) {
 		super(abstractObjectInfo, info);
-		Map<EffectName, Effect> effectMap = info.getEffectMap();
+		Map<EffectName, TypedSetVariable> effectMap = info.getEffects();
 		if(effectMap != null) {
 			this.effects = new LinkedHashMap<>(effectMap);
 		}
@@ -75,9 +73,9 @@ public class MethodTableRow extends AbstractTableRow implements MethodOps {
 	 * @return effects
 	 */
 	@Override
-	public List<Effect> getEffects() {
+	public Map<EffectName, TypedSetVariable> getEffects() {
 		try {
-			return new ArrayList<>(effects.values());
+			return new LinkedHashMap<>(effects);
 		} catch(NullPointerException e) {
 			return null;
 		}
@@ -88,7 +86,7 @@ public class MethodTableRow extends AbstractTableRow implements MethodOps {
 	 * @return effect
 	 */
 	@Override
-	public Effect getEffect(EffectName type) {
+	public TypedSetVariable getEffect(EffectName type) {
 		try {
 			return effects.get(type);
 		} catch(NullPointerException e) {

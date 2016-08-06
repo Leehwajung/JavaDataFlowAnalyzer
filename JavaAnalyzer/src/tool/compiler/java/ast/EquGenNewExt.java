@@ -91,8 +91,8 @@ public class EquGenNewExt extends EquGenExprExt {
 			ReportUtil.report(cichii, MetaSetVarSource.Argument, MetaSetVarGoal.Flow);
 		}
 		
-		//   2-2b. C<T1,...,Tn>{Chi}.C <: (C1{Chi1}, ... , Cn{Chin}) -> D{Chi} 제약식을 추가
-		InvokeMth im = new InvokeMth(ctschi, ctorIns, cschis, null);
+		//   2-2b. C<T1,...,Tn>{Chi}.C <: (C1{Chi1}, ... , Cn{Chin}) -> null 제약식을 추가
+		InvokeMth im = new InvokeMth(ctschi, ctorIns, cschis);
 		v.getCurrCF().addMetaConstraint(im);
 		ReportUtil.report(im);
 		

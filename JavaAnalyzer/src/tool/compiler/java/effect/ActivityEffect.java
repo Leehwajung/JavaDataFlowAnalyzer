@@ -7,6 +7,7 @@ import polyglot.ext.jl5.types.JL5ClassType;
 /**
  * Android Activity Effect
  */
+@Deprecated
 public class ActivityEffect implements Effect {
 	
 	private LinkedHashSet<JL5ClassType> activities;
@@ -16,7 +17,7 @@ public class ActivityEffect implements Effect {
 	}
 	
 	@Override
-	public EffectName getType() {
+	public EffectName getEffectType() {
 		return EffectName.ActivityEff;
 	}
 }

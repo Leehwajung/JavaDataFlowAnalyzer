@@ -14,7 +14,7 @@ public class Union implements Constraint {
 	
 	// fields
 	
-	private SetVariable x, y, z;	// X, Y (NOT null)
+	private SetVariable x, y, z;	// X, Y, Z (NOT null)
 	
 	
 	// constructor

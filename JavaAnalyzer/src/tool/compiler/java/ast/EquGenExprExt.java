@@ -1,9 +1,12 @@
 package tool.compiler.java.ast;
 
+import java.util.HashMap;
+
 import polyglot.ast.Expr;
 import polyglot.ast.Node;
 import polyglot.util.SerialVersionUID;
 import tool.compiler.java.aos.MetaSetVariable;
+import tool.compiler.java.effect.EffectName;
 import tool.compiler.java.visit.EquGenerator;
 
 /**
@@ -16,6 +19,7 @@ public class EquGenExprExt extends EquGenExt {
 	public static final String KIND = "Expression";
 	
 	private MetaSetVariable metaSetVar = null;
+	private HashMap<EffectName, MetaSetVariable> effects = null;
 	
 	@Override
 	public EquGenerator equGenEnter(EquGenerator v) {
@@ -59,5 +63,51 @@ public class EquGenExprExt extends EquGenExt {
 	 */
 	protected final void setMetaSetVar(MetaSetVariable metaSetVar) {
 		this.metaSetVar = metaSetVar;
+	}
+	
+	/**
+	 * @return the Effect
+	 */
+	public final MetaSetVariable effect(EffectName type) {
+		try {
+			return effects.get(type);
+		} catch(NullPointerException e) {
+			return null;
+		}
+	}
+	
+	public final HashMap<EffectName, MetaSetVariable> effects() {
+		try {
+			return new HashMap<>(effects);
+		} catch(NullPointerException e) {
+			return null;
+		}
+	}
+	
+	/**
+	 * @param n node
+	 * @param type Effect Name
+	 * @return the Effect of node n
+	 */
+	public static final MetaSetVariable effect(Expr n, EffectName type) {
+		return ((EquGenExprExt) EquGenExt.ext(n)).effect(type);
+	}
+	
+	/**
+	 * @param n node 
+	 * @return Effects of node n
+	 */
+	public static final HashMap<EffectName, MetaSetVariable> effects(Expr n) {
+		return ((EquGenExprExt) EquGenExt.ext(n)).effects();
+	}
+	
+	/**
+	 * @param effect the Effect to set
+	 */
+	protected final void setEffect(EffectName type, MetaSetVariable effect) {
+		if(effects == null) {
+			effects = new HashMap<>();
+		}
+		effects.put(type, effect);
 	}
 }

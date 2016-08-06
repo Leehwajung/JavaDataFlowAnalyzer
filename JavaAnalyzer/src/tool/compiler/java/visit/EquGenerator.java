@@ -56,9 +56,6 @@ public class EquGenerator extends ContextVisitor {
 	private static LinkedHashMap<MethodCallInfo, LinkedHashSet<MethodTableRow>> methodTableMap;
 	private static LinkedHashMap<FieldInfo, LinkedHashSet<FieldTableRow>> fieldTableMap;
 	
-	@Deprecated
-	private static LinkedHashSet<FieldTableRow> fieldEquationSet;
-	
 	private static final String OutputFileName = "tables.txt";
 	
 	static {
@@ -72,8 +69,6 @@ public class EquGenerator extends ContextVisitor {
 		
 		methodTableMap = new LinkedHashMap<>();
 		fieldTableMap = new LinkedHashMap<>();
-		
-		fieldEquationSet = new LinkedHashSet<>();
 	}
 	
 	public EquGenerator(Job job, TypeSystem ts, NodeFactory nf) {

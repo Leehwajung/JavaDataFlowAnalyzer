@@ -1,14 +1,11 @@
 package tool.compiler.java.env;
 
 import polyglot.ast.TypeNode;
-import polyglot.ext.jl5.types.JL5ArrayType;
 import polyglot.ext.jl5.types.JL5ClassType;
 import polyglot.ext.jl5.types.JL5FieldInstance;
 import polyglot.ext.jl5.types.JL5ParsedClassType;
 import polyglot.ext.jl5.types.TypeVariable;
 import polyglot.types.FieldInstance;
-import polyglot.types.Type;
-import tool.compiler.java.aos.ArrayMetaSetVariable;
 import tool.compiler.java.aos.MetaSetVariable;
 import tool.compiler.java.constraint.Constraint;
 import tool.compiler.java.util.CollUtil;

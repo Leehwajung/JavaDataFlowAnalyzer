@@ -10,6 +10,7 @@ import tool.compiler.java.util.CollUtil;
 /**
  * Exception Effect
  */
+@Deprecated
 public class ExnEffect implements Effect, Iterable<JL5ClassType> {
 	
 	private LinkedHashSet<JL5ClassType> exceptions;
@@ -39,7 +40,7 @@ public class ExnEffect implements Effect, Iterable<JL5ClassType> {
 	}
 	
 	@Override
-	public EffectName getType() {
+	public EffectName getEffectType() {
 		return EffectName.ExnEff;
 	}
 
