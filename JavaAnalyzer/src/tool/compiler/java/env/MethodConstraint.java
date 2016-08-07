@@ -9,12 +9,14 @@ import tool.compiler.java.aos.MetaSetVariable;
 import tool.compiler.java.aos.TypedSetVariable;
 import tool.compiler.java.constraint.Constraint;
 import tool.compiler.java.constraint.XSubseteqY;
+import tool.compiler.java.effect.EffectName;
 import tool.compiler.java.util.CollUtil;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
 
@@ -24,6 +26,7 @@ import java.util.List;
 public class MethodConstraint extends CodeConstraint {
 	
 	private ArrayList<MetaSetVariable> chi_formals = null;
+	private LinkedHashMap<EffectName, MetaSetVariable> chi_effects = null;
 	private MetaSetVariable chi_ret = null;
 	
 	/**
@@ -35,6 +38,15 @@ public class MethodConstraint extends CodeConstraint {
 			this.chi_ret = MetaSetVariable.create(((JL5MethodInstance) m).returnType());
 		} else/* if (m instanceof JL5ConstructorInstance)*/ {	// JL5ConstructorInstance
 			this.chi_ret = null;
+		}
+		this.chi_effects = new LinkedHashMap<>();
+		// TODO: 아래는 하드코딩되어있으므로 수정 필요
+		try {
+			MetaSetVariable chi_exnEffect = MetaSetVariable.create(m.throwTypes().get(0));
+			this.chi_effects.put(EffectName.ExnEff, chi_exnEffect);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 	}
 	
@@ -151,10 +163,19 @@ public class MethodConstraint extends CodeConstraint {
 	}
 	
 	/**
+	 * TODO: 하드코딩 되어 있으므로 수정 필요
 	 * @return the chi_ret
 	 */
 	public MetaSetVariable getReturn() {
 		return chi_ret;
+	}
+	
+	/**
+	 * TODO: 
+	 * @return the chi_exnEffect
+	 */
+	public MetaSetVariable getException() {
+		return chi_effects.get(EffectName.ExnEff);
 	}
 	
 	public boolean isConstructor() {

@@ -26,8 +26,8 @@ public class MainActivity extends ListActivity {
         memoDbHelper = new MemoDBHelper(this, null, 1);
         db = memoDbHelper.getWritableDatabase();
         String[] selectionArgs = { MemoDBHelper.colTitle };
-        Cursor cursor =
-          db.rawQuery("SELECT * FROM " + MemoDBHelper.tableName, null);
+        Cursor cursor = db.rawQuery("SELECT * FROM " + MemoDBHelper.tableName,
+                                    null);
         adapter =
           new SimpleCursorAdapter(this, android.R.layout.simple_list_item_1,
                                   cursor, selectionArgs,
@@ -67,26 +67,28 @@ public class MainActivity extends ListActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK) {
             if (data.getBooleanExtra("isEdited", true)) {
-                long posId =
-                  adapter.getItemId(data.getIntExtra("position", -1));
+                long posId = adapter.getItemId(data.getIntExtra("position",
+                                                                -1));
                 db.execSQL("UPDATE " + MemoDBHelper.tableName + " SET " +
-                           MemoDBHelper.colTitle + " = \'" +
-                           data.getStringExtra("title") + "\', " +
-                           MemoDBHelper.colContent + " = \'" +
-                           data.getStringExtra("contents") + "\', " +
-                           MemoDBHelper.colDate + " = \'" +
-                           Calendar.getInstance().getTime().toString() + "\'" +
-                           " WHERE " + MemoDBHelper.colID + " = " + posId);
+                             MemoDBHelper.colTitle + " = \'" +
+                             data.getStringExtra("title") + "\', " +
+                             MemoDBHelper.colContent + " = \'" +
+                             data.getStringExtra("contents") + "\', " +
+                             MemoDBHelper.colDate + " = \'" +
+                             Calendar.getInstance().getTime().toString() +
+                             "\'" + " WHERE " + MemoDBHelper.colID + " = " +
+                             posId);
             } else {
                 db.execSQL("INSERT INTO " + MemoDBHelper.tableName +
-                           " VALUES ( NULL, " + "\'" +
-                           data.getStringExtra("title") + "\', " + "\'" +
-                           data.getStringExtra("contents") + "\', " + "\'" +
-                           Calendar.getInstance().getTime().toString() +
-                           "\' ) ");
+                             " VALUES ( NULL, " + "\'" +
+                             data.getStringExtra("title") + "\', " + "\'" +
+                             data.getStringExtra("contents") + "\', " + "\'" +
+                             Calendar.getInstance().getTime().toString() +
+                             "\' ) ");
             }
-            Cursor cursor =
-              db.rawQuery("SELECT * FROM " + MemoDBHelper.tableName, null);
+            Cursor cursor = db.rawQuery("SELECT * FROM " +
+                                          MemoDBHelper.tableName,
+                                        null);
             adapter.changeCursor(cursor);
             adapter.notifyDataSetChanged();
         } else
@@ -95,15 +97,14 @@ public class MainActivity extends ListActivity {
     
     private AdapterView.OnItemLongClickListener ilcl =
       new AdapterView.OnItemLongClickListener() {
-        
         @Override
-        public boolean onItemLongClick(AdapterView<?> parent,
-                                       View view, int position,
-                                       long id) {
+        public boolean onItemLongClick(AdapterView<?> parent, View view,
+                                       int position, long id) {
             db.execSQL("DELETE FROM " + MemoDBHelper.tableName + " WHERE " +
-                       MemoDBHelper.colID + " = " + id);
-            Cursor cursor =
-              db.rawQuery("SELECT * FROM " + MemoDBHelper.tableName, null);
+                         MemoDBHelper.colID + " = " + id);
+            Cursor cursor = db.rawQuery("SELECT * FROM " +
+                                          MemoDBHelper.tableName,
+                                        null);
             adapter.changeCursor(cursor);
             adapter.notifyDataSetChanged();
             return true;
@@ -111,11 +112,11 @@ public class MainActivity extends ListActivity {
     };
     
     @Override
-    protected void onListItemClick(ListView l, View v, int position,
-                                   long id) {
-        Cursor cursor =
-          db.rawQuery("SELECT * FROM " + MemoDBHelper.tableName + " WHERE " +
-                      MemoDBHelper.colID + " = " + id, null);
+    protected void onListItemClick(ListView l, View v, int position, long id) {
+        Cursor cursor = db.rawQuery("SELECT * FROM " + MemoDBHelper.tableName +
+                                      " WHERE " + MemoDBHelper.colID + " = " +
+                                      id,
+                                    null);
         cursor.moveToFirst();
         Intent intent = new Intent();
         intent.setClassName("com.example.memocptest",
@@ -130,7 +131,7 @@ public class MainActivity extends ListActivity {
     
     public MainActivity() { super(); }
     
-    public static final String jlc$CompilerVersion$jl7 = "2.7.0";
+    public static final String jlc$CompilerVersion$jl7 = "2.7.1";
     public static final long jlc$SourceLastModified$jl7 = 1470575729000L;
     public static final String jlc$ClassType$jl7 =
       ("H4sIAAAAAAAAAL1ZfWwUxxWfO58/MdiYYLuED4MNKSS5LSShqkwTzAHBcGCH" +

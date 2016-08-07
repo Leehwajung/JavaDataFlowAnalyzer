@@ -19,8 +19,9 @@ public class MemoContentProvider extends ContentProvider {
         Matcher = new UriMatcher(UriMatcher.NO_MATCH);
         Matcher.addURI(MemoContract.AUTHORITY, MemoDBHelper.tableName,
                        ALL_MEMOS);
-        Matcher.addURI(MemoContract.AUTHORITY, MemoDBHelper.tableName + "/" +
-                       MemoContract.MEMO_TITLE, ALL_TITLES);
+        Matcher.addURI(MemoContract.AUTHORITY,
+                       MemoDBHelper.tableName + "/" + MemoContract.MEMO_TITLE,
+                       ALL_TITLES);
         Matcher.addURI(MemoContract.AUTHORITY, MemoDBHelper.tableName + "/#",
                        ONE_MEMO);
     }
@@ -46,14 +47,16 @@ public class MemoContentProvider extends ContentProvider {
                 break;
             case ALL_TITLES:
                 cursor = db.rawQuery("SELECT " + MemoDBHelper.colID + ", " +
-                                     MemoDBHelper.colTitle + " FROM " +
-                                     MemoDBHelper.tableName, null);
+                                       MemoDBHelper.colTitle + " FROM " +
+                                       MemoDBHelper.tableName,
+                                     null);
                 break;
             case ONE_MEMO:
                 String id = uri.getPathSegments().get(1);
                 cursor = db.rawQuery("SELECT * FROM " + MemoDBHelper.tableName +
-                                     " WHERE " + MemoDBHelper.colID + " = " +
-                                     id, null);
+                                       " WHERE " + MemoDBHelper.colID + " = " +
+                                       id,
+                                     null);
                 break;
             default:
                 cursor = null;
@@ -87,8 +90,7 @@ public class MemoContentProvider extends ContentProvider {
         int count = 0;
         switch (code) {
             case ONE_MEMO:
-                String where =
-                  MemoDBHelper.colID +
+                String where = MemoDBHelper.colID +
                 " = " +
                 uri.getPathSegments().get(1) +
                 (selection == null || selection.length() == 0
@@ -103,8 +105,7 @@ public class MemoContentProvider extends ContentProvider {
     }
     
     @Override
-    public int delete(Uri uri, String selection,
-                      String[] selectionArgs) {
+    public int delete(Uri uri, String selection, String[] selectionArgs) {
         int code = Matcher.match(uri);
         int count = 0;
         switch (code) {
@@ -113,8 +114,7 @@ public class MemoContentProvider extends ContentProvider {
                                   selectionArgs);
                 break;
             case ONE_MEMO:
-                String where =
-                  MemoDBHelper.colID +
+                String where = MemoDBHelper.colID +
                 " = " +
                 uri.getPathSegments().get(1) +
                 (selection == null || selection.length() == 0
@@ -144,7 +144,7 @@ public class MemoContentProvider extends ContentProvider {
     
     public MemoContentProvider() { super(); }
     
-    public static final String jlc$CompilerVersion$jl7 = "2.7.0";
+    public static final String jlc$CompilerVersion$jl7 = "2.7.1";
     public static final long jlc$SourceLastModified$jl7 = 1470575729000L;
     public static final String jlc$ClassType$jl7 =
       ("H4sIAAAAAAAAAMVZDXAUVx1/d/kOCRcSCEhJAiSA0Hon1XbspNaGa4DQy4ck" +

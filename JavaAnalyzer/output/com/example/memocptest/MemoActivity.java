@@ -61,7 +61,7 @@ public class MemoActivity extends Activity {
     
     public MemoActivity() { super(); }
     
-    public static final String jlc$CompilerVersion$jl7 = "2.7.0";
+    public static final String jlc$CompilerVersion$jl7 = "2.7.1";
     public static final long jlc$SourceLastModified$jl7 = 1470575729000L;
     public static final String jlc$ClassType$jl7 =
       ("H4sIAAAAAAAAAL1YfWwcRxWfO9t3tuPkbCf+ICTOh91APrglKa2EXEKcw06c" +

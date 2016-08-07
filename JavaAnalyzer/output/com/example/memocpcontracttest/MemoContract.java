@@ -8,14 +8,14 @@ public class MemoContract {
     public static String MEMO_TITLE = "title";
     public static String MEMO_CONTENT = "content";
     public static String MEMO_DATE = "date";
-    public static Uri CONTENT_URI =
-      Uri.parse("content://" + AUTHORITY + "/memos");
-    public static Uri CONTENT_TITLE_URI =
-      Uri.parse("content://" + AUTHORITY + "/memos/" + MEMO_TITLE);
+    public static Uri CONTENT_URI = Uri.parse("content://" + AUTHORITY +
+                                                "/memos");
+    public static Uri CONTENT_TITLE_URI = Uri.parse("content://" + AUTHORITY +
+                                                      "/memos/" + MEMO_TITLE);
     
     public MemoContract() { super(); }
     
-    public static final String jlc$CompilerVersion$jl7 = "2.7.0";
+    public static final String jlc$CompilerVersion$jl7 = "2.7.1";
     public static final long jlc$SourceLastModified$jl7 = 1470576009000L;
     public static final String jlc$ClassType$jl7 =
       ("H4sIAAAAAAAAAMVYfWwcRxWfO9t3PsfN2U6TmJA6aeIGHJdbEmhF5QJxL059" +

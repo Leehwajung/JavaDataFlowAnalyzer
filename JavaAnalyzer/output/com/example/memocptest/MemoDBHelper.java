@@ -20,31 +20,30 @@ public class MemoDBHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         db.execSQL("CREATE TABLE " + tableName + "( " + colID +
-                   " INTEGER PRIMARY KEY AUTOINCREMENT, " + colTitle +
-                   " TEXT, " + colContent + " TEXT, " + colDate + " TEXT )");
+                     " INTEGER PRIMARY KEY AUTOINCREMENT, " + colTitle +
+                     " TEXT, " + colContent + " TEXT, " + colDate + " TEXT )");
         String date = Calendar.getInstance().getTime().toString();
         db.execSQL(
              "INSERT INTO " +
-             tableName +
-             (" VALUES ( NULL, \'Android\', \'Activity, View, Menu, Dialog." +
-              "..\', ") +
-             "\'" +
-             date +
-             "\'" +
-             " ) ");
+               tableName +
+               (" VALUES ( NULL, \'Android\', \'Activity, View, Menu, Dialog." +
+                "..\', ") +
+               "\'" +
+               date +
+               "\'" +
+               " ) ");
         db.execSQL(
              "INSERT INTO " + tableName +
-             " VALUES ( NULL, \'Java\', \'Class, Package, Interface...\', " +
-             "\'" + date + "\'" + " ) ");
+               " VALUES ( NULL, \'Java\', \'Class, Package, Interface...\', " +
+               "\'" + date + "\'" + " ) ");
     }
     
     @Override
-    public void onUpgrade(SQLiteDatabase db, int oldVersion,
-                          int newVersion) {
+    public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         
     }
     
-    public static final String jlc$CompilerVersion$jl7 = "2.7.0";
+    public static final String jlc$CompilerVersion$jl7 = "2.7.1";
     public static final long jlc$SourceLastModified$jl7 = 1470575729000L;
     public static final String jlc$ClassType$jl7 =
       ("H4sIAAAAAAAAAL1Ya2wcVxW+u+t3HHvjxEkaEjtOnJC47U4fKbS4jyRru3ZY" +

@@ -11,7 +11,7 @@ public final class BuildConfig {
     
     public BuildConfig() { super(); }
     
-    public static final String jlc$CompilerVersion$jl7 = "2.7.0";
+    public static final String jlc$CompilerVersion$jl7 = "2.7.1";
     public static final long jlc$SourceLastModified$jl7 = 1470579047000L;
     public static final String jlc$ClassType$jl7 =
       ("H4sIAAAAAAAAAM1Ye2wcRxmfO9vnR5zYcRInhMR5uQU75bYJtAK5QOzzOb70" +
