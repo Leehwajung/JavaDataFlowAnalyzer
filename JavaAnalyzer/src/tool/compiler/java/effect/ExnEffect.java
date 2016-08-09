@@ -10,7 +10,7 @@ public class ExnEffect implements EffectElem {
 	private JL5ClassType exception;
 	
 	public ExnEffect(JL5ClassType throwableClassType) {
-		exception = throwableClassType;
+		this.exception = throwableClassType;
 	}
 	
 	public JL5ClassType get() {

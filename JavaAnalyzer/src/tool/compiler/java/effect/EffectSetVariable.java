@@ -12,7 +12,7 @@ public abstract class EffectSetVariable extends SetVariable implements Effect {
 	 * @param type
 	 */
 	protected EffectSetVariable(EffectName type) {
-		super(true);
+		super();
 		this.type = type;
 	}
 	

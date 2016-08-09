@@ -14,6 +14,7 @@ import polyglot.ext.jl5.types.JL5PrimitiveType;
 import polyglot.ext.jl5.types.JL5Subst;
 import polyglot.ext.jl5.types.JL5SubstClassType;
 import polyglot.types.ReferenceType;
+import polyglot.types.Type;
 
 import java.util.Collection;
 
@@ -84,26 +85,30 @@ public class AbstractObject extends AbsObjSet {
 	 * @see AbstractObject.Info
 	 */
 	public AbstractObject(Expr expr, Info info) {
-		super(true);
+		super(inferType(expr, info));
 		this.expr = expr;
 		this.info = info;
-		
-		if(info == null) {
-			setType(expr.type());
-		} else {
+	}
+	
+	/**
+	 * @param expr	Abstract Object가 생성된 노드
+	 * @param infoAbstract Object의 유형 정보 (노드 자체에 대한 Abstract Object인 경우 null)
+	 * @return 찾아낸 타입
+	 */
+	private static Type inferType(Expr expr, Info info) {
+		if(info != null) {
 			switch (info) {
 			case ArrayInitLength:
 				JL5ArrayType arrType = (JL5ArrayType)((ArrayInit) expr).type();
-				setType(arrType.lengthField().type());
-				break;
+				return arrType.lengthField().type();
 			case FieldAssignOp:
 			case LocalAssignOp:
 			case ArrayAccessAssignOp:
 				Assign asgn = (Assign) expr;
-				setType(asgn.left().type());
-				break;
+				return asgn.left().type();
 			}
 		}
+		return expr.type();
 	}
 	
 	/**

@@ -8,10 +8,11 @@ public abstract class AbsObjSet extends SetVariable implements Info {
 	
 	private Type type;
 	
-	protected AbsObjSet(boolean autoGenID) {
-		super(autoGenID);
+	protected AbsObjSet(Type type) {
+		super();
+		setType(type);
 	}
-
+	
 	/**
 	 * @return the type
 	 */
@@ -34,7 +35,7 @@ public abstract class AbsObjSet extends SetVariable implements Info {
 	/**
 	 * @param type the type to set
 	 */
-	public void setType(Type type) {
+	private void setType(Type type) {
 		this.type = type;
 	}
 	

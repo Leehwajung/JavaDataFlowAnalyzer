@@ -16,16 +16,22 @@ public class EffectUnion extends EffectSetVariable {
 	// constructor
 	
 	/**
-	 * @param type
 	 * @param x
 	 * @param y
 	 */
-	public EffectUnion(EffectName type, EffectSetVariable x, EffectSetVariable y) {
-		super(type);
+	protected EffectUnion(EffectSetVariable x, EffectSetVariable y) {
+		super(check(x, y));
 		this.x = x;
 		this.y = y;
 	}
 	
+	private static EffectName check(EffectSetVariable x, EffectSetVariable y) {
+		if (x.getEffectType().equals(y.getEffectType())){
+			return x.getEffectType();
+		} else {
+			throw new IllegalArgumentException("Effect Type NOT match.");
+		}
+	}
 	
 	// getter methods
 	

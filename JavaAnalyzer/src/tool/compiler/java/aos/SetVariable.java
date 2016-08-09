@@ -4,10 +4,8 @@ public abstract class SetVariable {
 	
 	private long idNum;
 	
-	protected SetVariable(boolean autoGenID) {
-		if (autoGenID) {
-			generateID();
-		}
+	protected SetVariable() {
+		generateID();
 	}
 	
 	/**
@@ -30,7 +28,7 @@ public abstract class SetVariable {
 	/**
 	 * generate the ID
 	 */
-	protected final void generateID() {
+	private final void generateID() {
 		idNum = generateIDNum();
 	}
 	
