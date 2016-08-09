@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import tool.compiler.java.aos.AbsObjSet;
-import tool.compiler.java.aos.SetVariable;
+import tool.compiler.java.aos.DataFlowSetVariable;
 import tool.compiler.java.aos.TypedSetVariable;
 
 /**
@@ -14,7 +14,7 @@ public class XSubseteqY implements Constraint {
 	
 	// fields
 	
-	private SetVariable x, y;	// X, Y (NOT null)
+	private DataFlowSetVariable x, y;	// X, Y (NOT null)
 	
 	
 	// constructor
@@ -24,7 +24,7 @@ public class XSubseteqY implements Constraint {
 	 * @param x	set X
 	 * @param y	set Y
 	 */
-	public XSubseteqY(SetVariable x, SetVariable y) {
+	public XSubseteqY(DataFlowSetVariable x, DataFlowSetVariable y) {
 		super();
 		this.x = x;
 		this.y = y;
@@ -100,7 +100,7 @@ public class XSubseteqY implements Constraint {
 	
 	@Override
 	public List<? extends AbsObjSet> getAllAbsObjSets() {
-		ArrayList<SetVariable> abss = new ArrayList<>();
+		ArrayList<DataFlowSetVariable> abss = new ArrayList<>();
 		abss.add(x);
 		abss.add(y);
 		return abss;

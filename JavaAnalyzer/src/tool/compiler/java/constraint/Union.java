@@ -4,17 +4,18 @@ import java.util.ArrayList;
 import java.util.List;
 
 import tool.compiler.java.aos.AbsObjSet;
-import tool.compiler.java.aos.SetVariable;
+import tool.compiler.java.aos.DataFlowSetVariable;
 import tool.compiler.java.aos.TypedSetVariable;
 
 /**
  * X ∪ Y <: Z
  */
+@Deprecated
 public class Union implements Constraint {
 	
 	// fields
 	
-	private SetVariable x, y, z;	// X, Y, Z (NOT null)
+	private DataFlowSetVariable x, y, z;	// X, Y, Z (NOT null)
 	
 	
 	// constructor
@@ -24,7 +25,7 @@ public class Union implements Constraint {
 	 * @param y
 	 * @param z
 	 */
-	protected Union(SetVariable x, SetVariable y, SetVariable z) {
+	public Union(DataFlowSetVariable x, DataFlowSetVariable y, DataFlowSetVariable z) {
 		super();
 		this.x = x;
 		this.y = y;
@@ -83,21 +84,21 @@ public class Union implements Constraint {
 	/**
 	 * @return the x
 	 */
-	public SetVariable getX() {
+	public DataFlowSetVariable getX() {
 		return x;
 	}
 	
 	/**
 	 * @return the y
 	 */
-	public SetVariable getY() {
+	public DataFlowSetVariable getY() {
 		return y;
 	}
 	
 	/**
 	 * @return the z
 	 */
-	public SetVariable getZ() {
+	public DataFlowSetVariable getZ() {
 		return z;
 	}
 	
@@ -123,7 +124,7 @@ public class Union implements Constraint {
 	 */
 	@Override
 	public List<? extends AbsObjSet> getAllAbsObjSets() {
-		ArrayList<SetVariable> abss = new ArrayList<>();
+		ArrayList<DataFlowSetVariable> abss = new ArrayList<>();
 		abss.add(x);
 		abss.add(y);
 		abss.add(z);

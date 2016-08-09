@@ -21,7 +21,7 @@ public class AbstractObject extends AbsObjSet {
 	
 	public static final String KIND = "o";
 	private Expr expr;		// 생성 위치 노드
-	private static long idGen = 1;
+	private static long idFactor = 1;
 	/**
 	 * info == null => Abstract Object에 해당하는 프로그램 택스트 상의 Node가 있는 경우
 	 * info != null => Node와 Type을 아래 Info에 따라 해석
@@ -84,9 +84,9 @@ public class AbstractObject extends AbsObjSet {
 	 * @see AbstractObject.Info
 	 */
 	public AbstractObject(Expr expr, Info info) {
+		super(true);
 		this.expr = expr;
 		this.info = info;
-		generateID();
 		
 		if(info == null) {
 			setType(expr.type());
@@ -243,6 +243,6 @@ public class AbstractObject extends AbsObjSet {
 	 */
 	@Override
 	protected long generateIDNum() {
-		return idGen++;
+		return idFactor++;
 	}
 }

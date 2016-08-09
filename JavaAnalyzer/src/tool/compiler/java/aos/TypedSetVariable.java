@@ -4,7 +4,7 @@ import java.util.Collection;
 
 import polyglot.types.Type;
 
-public class TypedSetVariable extends SetVariable {
+public class TypedSetVariable extends DataFlowSetVariable {
 	
 	public static final String KIND = "X";
 	private static long idFactor = 1;

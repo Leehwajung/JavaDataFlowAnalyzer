@@ -6,7 +6,7 @@ import java.util.List;
 import polyglot.ext.jl5.types.JL5FieldInstance;
 import polyglot.types.Type;
 import tool.compiler.java.aos.AbsObjSet;
-import tool.compiler.java.aos.SetVariable;
+import tool.compiler.java.aos.DataFlowSetVariable;
 import tool.compiler.java.aos.TypedSetVariable;
 
 /**
@@ -25,7 +25,7 @@ public class AssignStaticField implements Constraint {
 	 */
 	
 	/* ### Actual Fields ### */
-	private SetVariable cx;			// C, X (NOT null)
+	private DataFlowSetVariable cx;			// C, X (NOT null)
 	private JL5FieldInstance df;	// D, f (NOT null)
 	
 	
@@ -36,7 +36,7 @@ public class AssignStaticField implements Constraint {
 	 * @param cx	set C, X	( C{X} )
 	 * @param df	set D, f	( D.f )
 	 */
-	public AssignStaticField(SetVariable cx, JL5FieldInstance df) {
+	public AssignStaticField(DataFlowSetVariable cx, JL5FieldInstance df) {
 		super();
 		this.cx = cx;
 		this.df = df;
@@ -81,7 +81,7 @@ public class AssignStaticField implements Constraint {
 	/**
 	 * @return the C{X}
 	 */
-	public SetVariable getCX() {
+	public DataFlowSetVariable getCX() {
 		return cx;
 	}
 	

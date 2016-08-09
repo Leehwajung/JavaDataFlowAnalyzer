@@ -5,9 +5,9 @@ import java.util.HashMap;
 import polyglot.ast.Node;
 import polyglot.ast.Stmt;
 import polyglot.util.SerialVersionUID;
-import tool.compiler.java.aos.MetaSetVariable;
 import tool.compiler.java.ast.EquGenExt;
 import tool.compiler.java.effect.EffectName;
+import tool.compiler.java.effect.EffectSetVariable;
 import tool.compiler.java.env.LocalEnvironment;
 import tool.compiler.java.visit.EquGenerator;
 
@@ -20,7 +20,7 @@ public class EquGenStmtExt extends EquGenExt {
 	public static final String KIND = "Statement";
 	
 	private LocalEnvironment localEnv = null;
-	private HashMap<EffectName, MetaSetVariable> effects = null;
+	private HashMap<EffectName, EffectSetVariable> effects = null;
 	
 	@Override
 	public EquGenerator equGenEnter(EquGenerator v) {
@@ -69,7 +69,7 @@ public class EquGenStmtExt extends EquGenExt {
 	/**
 	 * @return the Effect
 	 */
-	public final MetaSetVariable effect(EffectName type) {
+	public final EffectSetVariable effect(EffectName type) {
 		try {
 			return effects.get(type);
 		} catch(NullPointerException e) {
@@ -77,7 +77,7 @@ public class EquGenStmtExt extends EquGenExt {
 		}
 	}
 	
-	public final HashMap<EffectName, MetaSetVariable> effects() {
+	public final HashMap<EffectName, EffectSetVariable> effects() {
 		try {
 			return effects;
 		} catch(NullPointerException e) {
@@ -90,7 +90,7 @@ public class EquGenStmtExt extends EquGenExt {
 	 * @param type Effect Name
 	 * @return the Effect of node n
 	 */
-	public static final MetaSetVariable effect(Stmt n, EffectName type) {
+	public static final EffectSetVariable effect(Stmt n, EffectName type) {
 		return ((EquGenStmtExt) EquGenExt.ext(n)).effect(type);
 	}
 	
@@ -98,14 +98,14 @@ public class EquGenStmtExt extends EquGenExt {
 	 * @param n node
 	 * @return Effects of node n
 	 */
-	public static final HashMap<EffectName, MetaSetVariable> effects(Stmt n) {
+	public static final HashMap<EffectName, EffectSetVariable> effects(Stmt n) {
 		return ((EquGenStmtExt) EquGenExt.ext(n)).effects();
 	}
 	
 	/**
 	 * @param effect the Effect to add
 	 */
-	protected final void setEffect(EffectName type, MetaSetVariable effect) {
+	protected final void setEffect(EffectName type, EffectSetVariable effect) {
 		if(effects == null) {
 			effects = new HashMap<>();
 		}

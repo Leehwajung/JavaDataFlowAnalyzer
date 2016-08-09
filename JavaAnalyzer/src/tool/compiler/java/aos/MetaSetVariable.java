@@ -3,7 +3,7 @@ package tool.compiler.java.aos;
 import polyglot.ext.jl5.types.JL5ArrayType;
 import polyglot.types.Type;
 
-public class MetaSetVariable extends SetVariable {
+public class MetaSetVariable extends DataFlowSetVariable {
 	
 //	public static final String KIND = "Χ";	// Capital Chi
 //	public static final String KIND = "χ";	// Small Letter Chi

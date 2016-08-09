@@ -1,63 +1,36 @@
 package tool.compiler.java.effect;
 
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.LinkedHashSet;
-
 import polyglot.ext.jl5.types.JL5ClassType;
-import tool.compiler.java.util.CollUtil;
 
 /**
  * Exception Effect
  */
-@Deprecated
-public class ExnEffect implements Effect, Iterable<JL5ClassType> {
+public class ExnEffect implements EffectElem {
 	
-	private LinkedHashSet<JL5ClassType> exceptions;
+	private JL5ClassType exception;
 	
-	public ExnEffect() {
-		exceptions = new LinkedHashSet<>();
-	}
-
-	public void add(JL5ClassType exceptionClass) {
-		exceptions.add(exceptionClass);
+	public ExnEffect(JL5ClassType throwableClassType) {
+		exception = throwableClassType;
 	}
 	
-	public void addAll(Collection<JL5ClassType> exceptionClasses) {
-		exceptions.addAll(exceptionClasses);
-	}
-	
-	public JL5ClassType get(int index) {
-		return (JL5ClassType) exceptions.toArray()[index];
-	}
-	
-	public Collection<JL5ClassType> getAll() {
-		return new LinkedHashSet<>(exceptions);
-	}
-	
-	public int size() {
-		return exceptions.size();
+	public JL5ClassType get() {
+		return exception;
 	}
 	
 	@Override
 	public EffectName getEffectType() {
 		return EffectName.ExnEff;
 	}
-
-	@Override
-	public Iterator<JL5ClassType> iterator() {
-		return exceptions.iterator();
-	}
 	
-	/**
-	 * @see java.lang.Object#toString()
-	 */
-	@Override
-	public String toString() {
-		try {
-			return CollUtil.getStringOf(exceptions);
-		} catch(NullPointerException e) {
-			return null;
-		}
-	}
+//	/**
+//	 * @see java.lang.Object#toString()
+//	 */
+//	@Override
+//	public String toString() {
+//		try {
+//			return exception;
+//		} catch(NullPointerException e) {
+//			return null;
+//		}
+//	}
 }

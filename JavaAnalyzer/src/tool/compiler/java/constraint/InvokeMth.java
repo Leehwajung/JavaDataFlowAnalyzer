@@ -5,7 +5,7 @@ import polyglot.ext.jl5.types.JL5MethodInstance;
 import polyglot.ext.jl5.types.JL5ProcedureInstance;
 import polyglot.types.Type;
 import tool.compiler.java.aos.AbsObjSet;
-import tool.compiler.java.aos.SetVariable;
+import tool.compiler.java.aos.DataFlowSetVariable;
 import tool.compiler.java.aos.TypedSetVariable;
 import tool.compiler.java.effect.EffectName;
 import tool.compiler.java.util.CollUtil;
@@ -37,11 +37,11 @@ public class InvokeMth implements Constraint {
 	 */
 	
 	/* ### Actual Fields ### */
-	private SetVariable cx;									// C, X (NOT null)
+	private DataFlowSetVariable cx;									// C, X (NOT null)
 	private JL5ProcedureInstance m;							// m (NOT null)
-	private ArrayList<? extends SetVariable> dxs;			// Ds, Xs ( D1{X1}, ..., Dn{Xn} ) (nullable)
-	private LinkedHashMap<EffectName, SetVariable> effects;	// (effect) (nullable)
-	private SetVariable ey;									// E, Y (nullable if Constructor)
+	private ArrayList<? extends DataFlowSetVariable> dxs;			// Ds, Xs ( D1{X1}, ..., Dn{Xn} ) (nullable)
+	private LinkedHashMap<EffectName, DataFlowSetVariable> effects;	// (effect) (nullable)
+	private DataFlowSetVariable ey;									// E, Y (nullable if Constructor)
 	
 	
 	// constructors
@@ -53,7 +53,7 @@ public class InvokeMth implements Constraint {
 	 * @param dxs	set Ds, Xs	( D1{X1}, ..., Dn{Xn} )
 	 * @param ey	set E, Y	( E{Y} )
 	 */
-	private InvokeMth(SetVariable cx, JL5ProcedureInstance m, List<? extends SetVariable> dxs, SetVariable ey) {
+	private InvokeMth(DataFlowSetVariable cx, JL5ProcedureInstance m, List<? extends DataFlowSetVariable> dxs, DataFlowSetVariable ey) {
 		super();
 		this.cx = cx;
 		this.m = m;
@@ -73,13 +73,13 @@ public class InvokeMth implements Constraint {
 	 * @param effects	set effects
 	 * @param ey		set E, Y	( E{Y} )
 	 */
-	private InvokeMth(SetVariable cx, JL5ProcedureInstance m, List<? extends SetVariable> dxs, 
-			Map<EffectName, ? extends SetVariable> effects, SetVariable ey) {
+	private InvokeMth(DataFlowSetVariable cx, JL5ProcedureInstance m, List<? extends DataFlowSetVariable> dxs, 
+			Map<EffectName, ? extends DataFlowSetVariable> effects, DataFlowSetVariable ey) {
 		this(cx, m, dxs, ey);
 		if (effects != null && !effects.isEmpty()) {
 			this.effects = new LinkedHashMap<>();
 			for (EffectName type : EffectName.values()) {
-				SetVariable effect = effects.get(type);
+				DataFlowSetVariable effect = effects.get(type);
 				if (effect != null) {
 					this.effects.put(type, effect);
 				}
@@ -96,7 +96,7 @@ public class InvokeMth implements Constraint {
 	 * @param dxs	set Ds, Xs	( D1{X1}, ..., Dn{Xn} )
 	 * @param ey	set E, Y	( E{Y} )
 	 */
-	public InvokeMth(SetVariable cx, JL5MethodInstance m, List<? extends SetVariable> dxs, SetVariable ey) {
+	public InvokeMth(DataFlowSetVariable cx, JL5MethodInstance m, List<? extends DataFlowSetVariable> dxs, DataFlowSetVariable ey) {
 		this(cx, (JL5ProcedureInstance) m, dxs, ey);
 	}
 	
@@ -108,8 +108,8 @@ public class InvokeMth implements Constraint {
 	 * @param effects	set effects
 	 * @param ey		set E, Y	( E{Y} )
 	 */
-	public InvokeMth(SetVariable cx, JL5MethodInstance m, List<? extends SetVariable> dxs, 
-			Map<EffectName, ? extends SetVariable> effects, SetVariable ey) {
+	public InvokeMth(DataFlowSetVariable cx, JL5MethodInstance m, List<? extends DataFlowSetVariable> dxs, 
+			Map<EffectName, ? extends DataFlowSetVariable> effects, DataFlowSetVariable ey) {
 		this(cx, (JL5ProcedureInstance) m, dxs, effects, ey);
 	}
 	
@@ -119,7 +119,7 @@ public class InvokeMth implements Constraint {
 	 * @param m		set m
 	 * @param dxs	set Ds, Xs	( D1{X1}, ..., Dn{Xn} )
 	 */
-	public InvokeMth(SetVariable cx, JL5ConstructorInstance m, List<? extends SetVariable> dxs) {
+	public InvokeMth(DataFlowSetVariable cx, JL5ConstructorInstance m, List<? extends DataFlowSetVariable> dxs) {
 		this(cx, (JL5ProcedureInstance) m, dxs, null);
 	}
 	
@@ -130,8 +130,8 @@ public class InvokeMth implements Constraint {
 	 * @param dxs		set Ds, Xs	( D1{X1}, ..., Dn{Xn} )
 	 * @param effects	set effects
 	 */
-	public InvokeMth(SetVariable cx, JL5ConstructorInstance m, List<? extends SetVariable> dxs, 
-			Map<EffectName, ? extends SetVariable> effects) {
+	public InvokeMth(DataFlowSetVariable cx, JL5ConstructorInstance m, List<? extends DataFlowSetVariable> dxs, 
+			Map<EffectName, ? extends DataFlowSetVariable> effects) {
 		this(cx, (JL5ProcedureInstance) m, dxs, effects, null);
 	}
 	
@@ -192,7 +192,7 @@ public class InvokeMth implements Constraint {
 					throw new IllegalArgumentException("The Orig 'effects' has no " + key + ".");
 				}
 			}
-			for (Entry<EffectName, SetVariable> effect : this.effects.entrySet()) {
+			for (Entry<EffectName, DataFlowSetVariable> effect : this.effects.entrySet()) {
 				EffectName type = effect.getKey();
 				if (effects.containsKey(type)) {
 					if (!effect.getValue().equalsForType(effects.get(type))) {
@@ -261,7 +261,7 @@ public class InvokeMth implements Constraint {
 	/**
 	 * @return the C{X}
 	 */
-	public SetVariable getCX() {
+	public DataFlowSetVariable getCX() {
 		return cx;
 	}
 	
@@ -289,7 +289,7 @@ public class InvokeMth implements Constraint {
 	/**
 	 * @return D1{X1}, ..., Dn{Xn}
 	 */
-	public List<? extends SetVariable> getDXs() {
+	public List<? extends DataFlowSetVariable> getDXs() {
 		try {
 			return new ArrayList<>(dxs);
 		} catch (NullPointerException e) {
@@ -301,7 +301,7 @@ public class InvokeMth implements Constraint {
 	 * @param i	index (i >= 1)
 	 * @return Di{Xi}
 	 */
-	public SetVariable getDX(int i) {
+	public DataFlowSetVariable getDX(int i) {
 		try {
 			return dxs.get(i - 1);
 		} catch (NullPointerException e) {
@@ -312,7 +312,7 @@ public class InvokeMth implements Constraint {
 	/**
 	 * @return effects
 	 */
-	public Map<EffectName, ? extends SetVariable> getEffects() {
+	public Map<EffectName, ? extends DataFlowSetVariable> getEffects() {
 		try {
 			return new LinkedHashMap<>(effects);
 		} catch(NullPointerException e) {
@@ -324,7 +324,7 @@ public class InvokeMth implements Constraint {
 	 * @param type	Effect Type
 	 * @return effect
 	 */
-	public SetVariable getEffect(EffectName type) {
+	public DataFlowSetVariable getEffect(EffectName type) {
 		try {
 			return effects.get(type);
 		} catch(NullPointerException e) {
@@ -335,7 +335,7 @@ public class InvokeMth implements Constraint {
 	/**
 	 * @return the E{Y}
 	 */
-	public SetVariable getEY() {
+	public DataFlowSetVariable getEY() {
 		return ey;
 	}
 	

@@ -10,6 +10,8 @@ import tool.compiler.java.aos.TypedSetVariable;
 import tool.compiler.java.constraint.Constraint;
 import tool.compiler.java.constraint.XSubseteqY;
 import tool.compiler.java.effect.EffectName;
+import tool.compiler.java.effect.EffectSetVariable;
+import tool.compiler.java.effect.EffectVariable;
 import tool.compiler.java.util.CollUtil;
 
 import java.util.ArrayList;
@@ -26,7 +28,7 @@ import java.util.List;
 public class MethodConstraint extends CodeConstraint {
 	
 	private ArrayList<MetaSetVariable> chi_formals = null;
-	private LinkedHashMap<EffectName, MetaSetVariable> chi_effects = null;
+	private LinkedHashMap<EffectName, EffectSetVariable> chi_effects = null;	// TODO: add method가 필요한가?
 	private MetaSetVariable chi_ret = null;
 	
 	/**
@@ -39,14 +41,10 @@ public class MethodConstraint extends CodeConstraint {
 		} else/* if (m instanceof JL5ConstructorInstance)*/ {	// JL5ConstructorInstance
 			this.chi_ret = null;
 		}
-		this.chi_effects = new LinkedHashMap<>();
-		// TODO: 아래는 하드코딩되어있으므로 수정 필요
-		try {
-			MetaSetVariable chi_exnEffect = MetaSetVariable.create(m.throwTypes().get(0));
+		if (!m.throwTypes().isEmpty()) {
+			this.chi_effects = new LinkedHashMap<>();	// TODO: Activity Effect를 커버하려면 언제 이 객체를 생성하는 것이 좋은가?
+			EffectVariable chi_exnEffect = new EffectVariable(EffectName.ExnEff);
 			this.chi_effects.put(EffectName.ExnEff, chi_exnEffect);
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
 		}
 	}
 	
@@ -163,7 +161,6 @@ public class MethodConstraint extends CodeConstraint {
 	}
 	
 	/**
-	 * TODO: 하드코딩 되어 있으므로 수정 필요
 	 * @return the chi_ret
 	 */
 	public MetaSetVariable getReturn() {
@@ -171,11 +168,36 @@ public class MethodConstraint extends CodeConstraint {
 	}
 	
 	/**
-	 * TODO: 
-	 * @return the chi_exnEffect
+	 * @return the exnEffect
 	 */
-	public MetaSetVariable getException() {
-		return chi_effects.get(EffectName.ExnEff);
+	public EffectVariable getExceptionEffect() {
+		try {
+			return (EffectVariable) chi_effects.get(EffectName.ExnEff);
+		} catch (NullPointerException e) {
+			return null;
+		}
+	}
+	
+	/**
+	 * @return the chi_effects
+	 */
+	public LinkedHashMap<EffectName, EffectSetVariable> getEffects() {
+		try {
+			return new LinkedHashMap<>(chi_effects);
+		} catch (NullPointerException e) {
+			return null;
+		}
+	}
+	
+	/**
+	 * @return the chi_effect
+	 */
+	public EffectSetVariable getEffect(EffectName type) {
+		try {
+			return chi_effects.get(type);
+		} catch (NullPointerException e) {
+			return null;
+		}
 	}
 	
 	public boolean isConstructor() {

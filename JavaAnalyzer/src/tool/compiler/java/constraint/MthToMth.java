@@ -2,7 +2,7 @@ package tool.compiler.java.constraint;
 
 import polyglot.types.Type;
 import tool.compiler.java.aos.AbsObjSet;
-import tool.compiler.java.aos.SetVariable;
+import tool.compiler.java.aos.DataFlowSetVariable;
 import tool.compiler.java.aos.TypedSetVariable;
 import tool.compiler.java.effect.EffectName;
 import tool.compiler.java.util.CollUtil;
@@ -39,12 +39,12 @@ public class MthToMth implements Constraint {
 	 */
 	
 	/* ### Actual Fields ### */
-	private ArrayList<? extends SetVariable> cxs;				// Cs, Xs ( C1{X1}, ..., Cn{Xn} )
-	private LinkedHashMap<EffectName, SetVariable> effects1;	// (effect1) (nullable)
-	private SetVariable e1x;									// E1, X
-	private ArrayList<? extends SetVariable> dys;				// Ds, Ys ( D1{Y1}, ..., Dn{Yn} )
-	private LinkedHashMap<EffectName, SetVariable> effects2;	// (effect2) (nullable)
-	private SetVariable e2y;									// E2, Y
+	private ArrayList<? extends DataFlowSetVariable> cxs;				// Cs, Xs ( C1{X1}, ..., Cn{Xn} )
+	private LinkedHashMap<EffectName, DataFlowSetVariable> effects1;	// (effect1) (nullable)
+	private DataFlowSetVariable e1x;									// E1, X
+	private ArrayList<? extends DataFlowSetVariable> dys;				// Ds, Ys ( D1{Y1}, ..., Dn{Yn} )
+	private LinkedHashMap<EffectName, DataFlowSetVariable> effects2;	// (effect2) (nullable)
+	private DataFlowSetVariable e2y;									// E2, Y
 	
 	
 	// constructors
@@ -57,7 +57,7 @@ public class MthToMth implements Constraint {
 	 * @param dys	set Ds, Ys	( D1{Y1}, ..., Dn{Yn} )
 	 * @param e2y	set E2, Y	( E2{Y} )
 	 */
-	public MthToMth(List<? extends SetVariable> cxs, SetVariable e1x, List<? extends SetVariable> dys, SetVariable e2y) {
+	public MthToMth(List<? extends DataFlowSetVariable> cxs, DataFlowSetVariable e1x, List<? extends DataFlowSetVariable> dys, DataFlowSetVariable e2y) {
 		super();
 		try {
 			this.cxs = new ArrayList<>(cxs);
@@ -83,13 +83,13 @@ public class MthToMth implements Constraint {
 	 * @param effects2	set effects2
 	 * @param e2y		set E2, Y	( E2{Y} )
 	 */
-	private MthToMth(List<? extends SetVariable> cxs, Map<EffectName, ? extends SetVariable> effects1, SetVariable e1x, 
-			List<? extends SetVariable> dys, Map<EffectName, ? extends SetVariable> effects2, SetVariable e2y) {
+	private MthToMth(List<? extends DataFlowSetVariable> cxs, Map<EffectName, ? extends DataFlowSetVariable> effects1, DataFlowSetVariable e1x, 
+			List<? extends DataFlowSetVariable> dys, Map<EffectName, ? extends DataFlowSetVariable> effects2, DataFlowSetVariable e2y) {
 		this(cxs, e1x, dys, e2y);
 		if (effects1 != null && !effects1.isEmpty()) {
 			this.effects1 = new LinkedHashMap<>();
 			for (EffectName type : EffectName.values()) {
-				SetVariable effect = effects1.get(type);
+				DataFlowSetVariable effect = effects1.get(type);
 				if (effect != null) {
 					this.effects1.put(type, effect);
 				}
@@ -100,7 +100,7 @@ public class MthToMth implements Constraint {
 		if (effects2 != null && !effects2.isEmpty()) {
 			this.effects2 = new LinkedHashMap<>();
 			for (EffectName type : EffectName.values()) {
-				SetVariable effect = effects2.get(type);
+				DataFlowSetVariable effect = effects2.get(type);
 				if (effect != null) {
 					this.effects2.put(type, effect);
 				}
@@ -162,7 +162,7 @@ public class MthToMth implements Constraint {
 					throw new IllegalArgumentException("The Orig 'effects' has no " + key + ".");
 				}
 			}
-			for (Entry<EffectName, SetVariable> effect : this.effects1.entrySet()) {
+			for (Entry<EffectName, DataFlowSetVariable> effect : this.effects1.entrySet()) {
 				EffectName type = effect.getKey();
 				if (effects1.containsKey(type)) {
 					if (!effect.getValue().equalsForType(effects1.get(type))) {
@@ -224,7 +224,7 @@ public class MthToMth implements Constraint {
 					throw new IllegalArgumentException("The Orig 'effects' has no " + key + ".");
 				}
 			}
-			for (Entry<EffectName, SetVariable> effect : this.effects2.entrySet()) {
+			for (Entry<EffectName, DataFlowSetVariable> effect : this.effects2.entrySet()) {
 				EffectName type = effect.getKey();
 				if (effects2.containsKey(type)) {
 					if (!effect.getValue().equalsForType(effects2.get(type))) {
@@ -312,7 +312,7 @@ public class MthToMth implements Constraint {
 	/**
 	 * @return C1{X1}, ..., Cn{Xn}
 	 */
-	public List<? extends SetVariable> getCXs() {
+	public List<? extends DataFlowSetVariable> getCXs() {
 		try {
 			return new ArrayList<>(cxs);
 		} catch (NullPointerException e) {
@@ -324,7 +324,7 @@ public class MthToMth implements Constraint {
 	 * @param i	index (i >= 1)
 	 * @return Ci{Xi}
 	 */
-	public SetVariable getCX(int i) {
+	public DataFlowSetVariable getCX(int i) {
 		try {
 			return cxs.get(i - 1);
 		} catch (NullPointerException e) {
@@ -335,7 +335,7 @@ public class MthToMth implements Constraint {
 	/**
 	 * @return effects1
 	 */
-	public Map<EffectName, ? extends SetVariable> getEffects1() {
+	public Map<EffectName, ? extends DataFlowSetVariable> getEffects1() {
 		try {
 			return new LinkedHashMap<>(effects1);
 		} catch(NullPointerException e) {
@@ -347,7 +347,7 @@ public class MthToMth implements Constraint {
 	 * @param type	Effect Type
 	 * @return effect1
 	 */
-	public SetVariable getEffect1(EffectName type) {
+	public DataFlowSetVariable getEffect1(EffectName type) {
 		try {
 			return effects1.get(type);
 		} catch(NullPointerException e) {
@@ -358,7 +358,7 @@ public class MthToMth implements Constraint {
 	/**
 	 * @return the E1{X}
 	 */
-	public SetVariable getE1X() {
+	public DataFlowSetVariable getE1X() {
 		return e1x;
 	}
 	
@@ -387,7 +387,7 @@ public class MthToMth implements Constraint {
 	/**
 	 * @return D1{Y1}, ..., Dn{Yn}
 	 */
-	public List<? extends SetVariable> getDYs() {
+	public List<? extends DataFlowSetVariable> getDYs() {
 		try {
 			return new ArrayList<>(dys);
 		} catch (NullPointerException e) {
@@ -399,7 +399,7 @@ public class MthToMth implements Constraint {
 	 * @param i	index (i >= 1)
 	 * @return Di{Yi}
 	 */
-	public SetVariable getDY(int i) {
+	public DataFlowSetVariable getDY(int i) {
 		try {
 			return dys.get(i - 1);
 		} catch (NullPointerException e) {
@@ -410,7 +410,7 @@ public class MthToMth implements Constraint {
 	/**
 	 * @return effects2
 	 */
-	public Map<EffectName, ? extends SetVariable> getEffects2() {
+	public Map<EffectName, ? extends DataFlowSetVariable> getEffects2() {
 		try {
 			return new LinkedHashMap<>(effects2);
 		} catch(NullPointerException e) {
@@ -422,7 +422,7 @@ public class MthToMth implements Constraint {
 	 * @param type	Effect Type
 	 * @return effect2
 	 */
-	public SetVariable getEffect2(EffectName type) {
+	public DataFlowSetVariable getEffect2(EffectName type) {
 		try {
 			return effects2.get(type);
 		} catch(NullPointerException e) {
@@ -433,7 +433,7 @@ public class MthToMth implements Constraint {
 	/**
 	 * @return the E2{Y}
 	 */
-	public SetVariable getE2Y() {
+	public DataFlowSetVariable getE2Y() {
 		return e2y;
 	}
 	
@@ -474,7 +474,7 @@ public class MthToMth implements Constraint {
 	
 	@Override
 	public List<? extends AbsObjSet> getAllAbsObjSets() {
-		ArrayList<SetVariable> abss = new ArrayList<>();
+		ArrayList<DataFlowSetVariable> abss = new ArrayList<>();
 		if (cxs != null) {
 			abss.addAll(cxs);
 		}

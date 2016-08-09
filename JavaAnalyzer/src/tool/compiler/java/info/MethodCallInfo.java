@@ -5,8 +5,8 @@ import polyglot.ext.jl5.types.JL5Subst;
 import polyglot.ext.jl5.types.JL5TypeSystem;
 import polyglot.ext.jl5.types.TypeVariable;
 import polyglot.types.ReferenceType;
-import tool.compiler.java.aos.TypedSetVariable;
 import tool.compiler.java.effect.EffectName;
+import tool.compiler.java.effect.EffectSetVariable;
 import tool.compiler.java.util.EquGenUtil;
 
 import java.util.LinkedList;
@@ -23,7 +23,7 @@ public class MethodCallInfo extends AbstractMethodInfo {
 		this(procedureInstance, null);
 	}
 	
-	public MethodCallInfo(JL5ProcedureInstance procedureInstance, Map<EffectName, TypedSetVariable> effects) {
+	public MethodCallInfo(JL5ProcedureInstance procedureInstance, Map<EffectName, EffectSetVariable> effects) {
 		super(procedureInstance, effects);
 		this.origProcIns = getOrigInstanceOf(getTypeInstance());
 		if(isGenericMethod()) {

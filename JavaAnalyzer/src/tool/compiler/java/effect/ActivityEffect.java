@@ -1,19 +1,16 @@
 package tool.compiler.java.effect;
 
-import java.util.LinkedHashSet;
-
 import polyglot.ext.jl5.types.JL5ClassType;
 
 /**
  * Android Activity Effect
  */
-@Deprecated
-public class ActivityEffect implements Effect {
+public class ActivityEffect implements EffectElem {
 	
-	private LinkedHashSet<JL5ClassType> activities;
+	private JL5ClassType activity;
 	
-	public ActivityEffect() {
-		activities = new LinkedHashSet<>();
+	public ActivityEffect(JL5ClassType activity) {
+		this.activity = activity;
 	}
 	
 	@Override

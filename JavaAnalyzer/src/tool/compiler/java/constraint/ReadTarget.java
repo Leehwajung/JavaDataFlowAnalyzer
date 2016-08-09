@@ -5,20 +5,21 @@ import java.util.List;
 
 import polyglot.ext.jl5.types.JL5ClassType;
 import tool.compiler.java.aos.AbsObjSet;
-import tool.compiler.java.aos.SetVariable;
+import tool.compiler.java.aos.DataFlowSetVariable;
 import tool.compiler.java.aos.TypedSetVariable;
 
 /**
  * Target(X) <: Y<br>
  * for android activity effect
  */
+@Deprecated
 public class ReadTarget implements Constraint {
 	
 	// fields
 	
 	private JL5ClassType target;	// Target (NOT null)
-	private SetVariable x;			// X (NOT null)
-	private SetVariable y;			// Y (NOT null)
+	private DataFlowSetVariable x;			// X (NOT null)
+	private DataFlowSetVariable y;			// Y (NOT null)
 	
 	
 	// constructor
@@ -28,7 +29,7 @@ public class ReadTarget implements Constraint {
 	 * @param y
 	 * @param z
 	 */
-	protected ReadTarget(JL5ClassType target, SetVariable x, SetVariable y) {
+	public ReadTarget(JL5ClassType target, DataFlowSetVariable x, DataFlowSetVariable y) {
 		super();
 		this.target = target;
 		this.x = x;
@@ -88,14 +89,14 @@ public class ReadTarget implements Constraint {
 	/**
 	 * @return the x
 	 */
-	public SetVariable getX() {
+	public DataFlowSetVariable getX() {
 		return x;
 	}
 	
 	/**
 	 * @return the y
 	 */
-	public SetVariable getY() {
+	public DataFlowSetVariable getY() {
 		return y;
 	}
 	
@@ -121,7 +122,7 @@ public class ReadTarget implements Constraint {
 	 */
 	@Override
 	public List<? extends AbsObjSet> getAllAbsObjSets() {
-		ArrayList<SetVariable> abss = new ArrayList<>();
+		ArrayList<DataFlowSetVariable> abss = new ArrayList<>();
 		abss.add(x);
 		abss.add(y);
 		return abss;

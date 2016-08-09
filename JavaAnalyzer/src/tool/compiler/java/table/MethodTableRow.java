@@ -7,6 +7,7 @@ import polyglot.types.Type;
 import tool.compiler.java.aos.AbstractObject;
 import tool.compiler.java.aos.TypedSetVariable;
 import tool.compiler.java.effect.EffectName;
+import tool.compiler.java.effect.EffectSetVariable;
 import tool.compiler.java.info.MethodCallInfo;
 import tool.compiler.java.util.CollUtil;
 
@@ -18,11 +19,11 @@ import java.util.Map;
 public class MethodTableRow extends AbstractTableRow implements MethodOps {
 	
 	private LinkedList<TypedSetVariable> formalList;
-	private LinkedHashMap<EffectName, TypedSetVariable> effects;
+	private LinkedHashMap<EffectName, EffectSetVariable> effects;
 	
 	public MethodTableRow(AbstractObject abstractObjectInfo, MethodCallInfo info) {
 		super(abstractObjectInfo, info);
-		Map<EffectName, TypedSetVariable> effectMap = info.getEffects();
+		Map<EffectName, EffectSetVariable> effectMap = info.getEffects();
 		if(effectMap != null) {
 			this.effects = new LinkedHashMap<>(effectMap);
 		}
@@ -73,7 +74,7 @@ public class MethodTableRow extends AbstractTableRow implements MethodOps {
 	 * @return effects
 	 */
 	@Override
-	public Map<EffectName, TypedSetVariable> getEffects() {
+	public Map<EffectName, EffectSetVariable> getEffects() {
 		try {
 			return new LinkedHashMap<>(effects);
 		} catch(NullPointerException e) {
@@ -86,7 +87,7 @@ public class MethodTableRow extends AbstractTableRow implements MethodOps {
 	 * @return effect
 	 */
 	@Override
-	public TypedSetVariable getEffect(EffectName type) {
+	public EffectSetVariable getEffect(EffectName type) {
 		try {
 			return effects.get(type);
 		} catch(NullPointerException e) {
