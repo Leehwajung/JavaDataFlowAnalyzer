@@ -19,7 +19,7 @@ public class EffectUnion extends EffectSetVariable {
 	 * @param x
 	 * @param y
 	 */
-	protected EffectUnion(EffectSetVariable x, EffectSetVariable y) {
+	public EffectUnion(EffectSetVariable x, EffectSetVariable y) {
 		super(check(x, y));
 		this.x = x;
 		this.y = y;

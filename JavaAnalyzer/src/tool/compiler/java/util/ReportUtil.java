@@ -9,6 +9,7 @@ import tool.compiler.java.aos.AbstractObject;
 import tool.compiler.java.aos.MetaSetVariable;
 import tool.compiler.java.ast.EquGenExt;
 import tool.compiler.java.constraint.Constraint;
+import tool.compiler.java.effect.EffectSetVariable;
 import tool.compiler.java.env.ConstraintFunction;
 import tool.compiler.java.info.Info;
 
@@ -87,9 +88,28 @@ public final class ReportUtil {
 			.append(msv)
 			.append(' ').append('(').append(' ')
 			.append(src.translate())
-			.append(": For ")
+			.append(": To ")
 			.append(goal)
 			.append(' ').append(')');
+		Report.report(3, sb.toString());
+	}
+	
+	/**
+	 * Report EffectSetVariable.
+	 * @param esv
+	 * @param src
+	 * @see ReportUtil.EffectSetVarSource
+	 */
+	public static final void report(EffectSetVariable esv, 
+			EffectSetVarSource src) {
+		StringBuilder sb = new StringBuilder();
+		sb.append('\t').append('[')
+		.append(esv.getClass().getSimpleName())
+		.append(']').append(' ')
+		.append(esv)
+		.append(' ').append('(').append(' ')
+		.append(src)
+		.append(' ').append(')');
 		Report.report(3, sb.toString());
 	}
 	
@@ -149,7 +169,9 @@ public final class ReportUtil {
 		Rvalue,
 		SubExpression,
 		Argument,
-		Environment,
+		ClassEnvironment,
+		MethodEnvironment,
+		LocalEnvironment,
 		ArrayInit,
 		ArrayLength,
 		ArrayDimension,
@@ -170,8 +192,12 @@ public final class ReportUtil {
 				return "From Sub-Expression";
 			case Argument:
 				return "From Argument";
-			case Environment:
-				return "From Environment";
+			case ClassEnvironment:
+				return "From Class Environment";
+			case MethodEnvironment:
+				return "From Method Environment";
+			case LocalEnvironment:
+				return "From Local Environment";
 			case ArrayInit:
 				return "From Initialization of Array";
 			case ArrayLength:
@@ -190,8 +216,48 @@ public final class ReportUtil {
 	
 	public static enum MetaSetVarGoal {
 		Return,
-		Environment,
+		ClassEnvironment,
+		MethodEnvironment,
+		LocalEnvironment,
 		Flow,
 		ArraySubFlow;
+		
+		public String toString() {
+			switch (this) {
+			case Return:
+				return "Return";
+			case ClassEnvironment:
+				return "Class Environment";
+			case MethodEnvironment:
+				return "Method Environment";
+			case LocalEnvironment:
+				return "Local Environment";
+			case Flow:
+				return "Flow";
+			case ArraySubFlow:
+				return "Array Sub-Flow";
+			default:
+				return super.toString();
+			}
+		}
+	}
+	
+	public static enum EffectSetVarSource {
+		New,
+		SubExpression,
+		SubStatement;
+		
+		public String toString() {
+			switch (this) {
+			case New:
+				return "New";
+			case SubExpression:
+				return "Sub-Expression";
+			case SubStatement:
+				return "Sub-Statement";
+			default:
+				return super.toString();
+			}
+		}
 	}
 }

@@ -4,6 +4,7 @@ import polyglot.ext.jl5.types.JL5ConstructorInstance;
 import polyglot.ext.jl5.types.JL5MethodInstance;
 import polyglot.ext.jl5.types.JL5ProcedureInstance;
 import polyglot.ext.jl5.types.TypeVariable;
+import polyglot.types.Type;
 import tool.compiler.java.aos.AbsObjSet;
 import tool.compiler.java.aos.MetaSetVariable;
 import tool.compiler.java.aos.TypedSetVariable;
@@ -13,6 +14,10 @@ import tool.compiler.java.effect.EffectName;
 import tool.compiler.java.effect.EffectSetVariable;
 import tool.compiler.java.effect.EffectVariable;
 import tool.compiler.java.util.CollUtil;
+import tool.compiler.java.util.ReportUtil;
+import tool.compiler.java.util.ReportUtil.EffectSetVarSource;
+import tool.compiler.java.util.ReportUtil.MetaSetVarGoal;
+import tool.compiler.java.util.ReportUtil.MetaSetVarSource;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -27,24 +32,49 @@ import java.util.List;
  */
 public class MethodConstraint extends CodeConstraint {
 	
+	private MetaSetVariable chi_ret = null;
 	private ArrayList<MetaSetVariable> chi_formals = null;
 	private LinkedHashMap<EffectName, EffectSetVariable> chi_effects = null;	// TODO: add method가 필요한가?
-	private MetaSetVariable chi_ret = null;
 	
 	/**
 	 * @param m
 	 */
 	public MethodConstraint(JL5ProcedureInstance m) {
 		super(m);
-		if (m instanceof JL5MethodInstance) {
+		generateReturn(m);
+		generateFormals(m);
+		generateExceptions(m);
+	}
+	
+	private void generateReturn(JL5ProcedureInstance m) {
+		if (m instanceof JL5MethodInstance) {	// return type이 void인 경우에도 MetaSetVariable을 생성함 (단, ID는 없음)
 			this.chi_ret = MetaSetVariable.create(((JL5MethodInstance) m).returnType());
+			ReportUtil.report(chi_ret, MetaSetVarSource.New, MetaSetVarGoal.MethodEnvironment);
 		} else/* if (m instanceof JL5ConstructorInstance)*/ {	// JL5ConstructorInstance
 			this.chi_ret = null;
 		}
+	}
+	
+	private void generateFormals(JL5ProcedureInstance m) {
+		List<? extends Type> formals = m.formalTypes();
+		if (!formals.isEmpty()) {
+			this.chi_formals = new ArrayList<>();
+			for (Type type : formals) {
+				MetaSetVariable chi_formal = MetaSetVariable.create(type);
+				this.chi_formals.add(chi_formal);	// formal
+				ReportUtil.report(chi_formal, MetaSetVarSource.New, MetaSetVarGoal.MethodEnvironment);
+			}
+		} else {
+			this.chi_formals = null;
+		}
+	}
+	
+	private void generateExceptions(JL5ProcedureInstance m) {
 		if (!m.throwTypes().isEmpty()) {
 			this.chi_effects = new LinkedHashMap<>();	// TODO: Activity Effect를 커버하려면 언제 이 객체를 생성하는 것이 좋은가?
 			EffectVariable chi_exnEffect = new EffectVariable(EffectName.ExnEff);
 			this.chi_effects.put(EffectName.ExnEff, chi_exnEffect);
+			ReportUtil.report(chi_exnEffect, EffectSetVarSource.New);
 		}
 	}
 	
@@ -145,18 +175,21 @@ public class MethodConstraint extends CodeConstraint {
 	 * @return the chi_formals
 	 */
 	public LinkedHashSet<MetaSetVariable> getFormals() {
-		return new LinkedHashSet<>(chi_formals);
+		try {
+			return new LinkedHashSet<>(chi_formals);
+		} catch (NullPointerException e) {
+			return null;
+		}
 	}
 	
 	/**
-	 * @param chi_formal
+	 * @return the chi_formal
 	 */
-	public void addFormal(MetaSetVariable chi_formal) {
+	public MetaSetVariable getFormal(int i) {
 		try {
-			this.chi_formals.add(chi_formal);
+			return chi_formals.get(i);
 		} catch (NullPointerException e) {
-			this.chi_formals = new ArrayList<>();
-			this.chi_formals.add(chi_formal);
+			return null;
 		}
 	}
 	

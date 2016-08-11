@@ -33,7 +33,7 @@ public class EquGenLocalExt extends EquGenExprExt {
 		Local lcl = (Local)this.node();
 		
 		MetaSetVariable tchi = v.peekTypeEnv().lookUp((JL5LocalInstance) lcl.localInstance());
-		ReportUtil.report(tchi, MetaSetVarSource.Environment, MetaSetVarGoal.Return);
+		ReportUtil.report(tchi, MetaSetVarSource.LocalEnvironment, MetaSetVarGoal.Return);
 		
 		setMetaSetVar(tchi);
 		

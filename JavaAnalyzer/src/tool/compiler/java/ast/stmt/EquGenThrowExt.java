@@ -1,8 +1,14 @@
 package tool.compiler.java.ast.stmt;
 
 import polyglot.ast.Node;
+import polyglot.ast.Throw;
 import polyglot.util.SerialVersionUID;
+import tool.compiler.java.aos.MetaSetVariable;
+import tool.compiler.java.ast.expr.EquGenExprExt;
+import tool.compiler.java.effect.EffectName;
+import tool.compiler.java.effect.EffectVariable;
 import tool.compiler.java.util.ReportUtil;
+import tool.compiler.java.util.ReportUtil.EffectSetVarSource;
 import tool.compiler.java.visit.EquGenerator;
 
 /**
@@ -24,7 +30,12 @@ public class EquGenThrowExt extends EquGenStmtExt {
 	@Override
 	public Node equGenLeave(EquGenerator v) {
 		ReportUtil.leaveReport(this);
-//		Throw throwStmt = (Throw)this.node();
+		Throw throwStmt = (Throw) this.node();
+		
+		MetaSetVariable msv = EquGenExprExt.metaSetVar(throwStmt.expr());
+		EffectVariable esv = new EffectVariable(EffectName.ExnEff, msv);
+		addEffect(esv);
+		ReportUtil.report(esv, EffectSetVarSource.New);
 		
 		setLocalEnv(v.peekTypeEnv().getCurrEnv());
 		

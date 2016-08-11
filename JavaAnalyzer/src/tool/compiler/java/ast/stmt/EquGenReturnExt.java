@@ -40,7 +40,7 @@ public class EquGenReturnExt extends EquGenStmtExt {
 		// return e
 		//   1. 메서드의 리턴 타입 T1{Chi1}을 가져온 다음,
 		MetaSetVariable t1chi1 = ((MethodConstraint) v.getCurrMC()).getReturn();
-		ReportUtil.report(t1chi1, MetaSetVarSource.Environment, MetaSetVarGoal.Flow);
+		ReportUtil.report(t1chi1, MetaSetVarSource.MethodEnvironment, MetaSetVarGoal.Flow);
 		
 		//   2. e의 타입 T2{Chi2}를 가져온다.
 		MetaSetVariable t2chi2 = EquGenExprExt.metaSetVar(returnStmt.expr());

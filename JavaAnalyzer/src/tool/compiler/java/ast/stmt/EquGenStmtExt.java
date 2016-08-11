@@ -105,10 +105,28 @@ public class EquGenStmtExt extends EquGenExt {
 	/**
 	 * @param effect the Effect to add
 	 */
-	protected final void setEffect(EffectName type, EffectSetVariable effect) {
-		if(effects == null) {
-			effects = new HashMap<>();
+	protected final void addEffect(EffectSetVariable effect) {
+		if (effect != null) {
+			if(effects == null) {
+				effects = new HashMap<>();
+			}
+			effects.put(effect.getEffectType(), effect);
 		}
-		effects.put(type, effect);
+	}
+	
+	/**
+	 * @param type	the type of the effect
+	 * @param effect	the Effect to add
+	 */
+	protected final void addEffect(EffectName type, EffectSetVariable effect) {
+		if (effect != null) {
+			if (effect.getEffectType().equals(type)) {
+				addEffect(effect);
+			} else {
+				throw new IllegalArgumentException("Argumented type and effect's type are NOT matched.");
+			}
+		} else if (effects != null && effects.containsKey(type)) {
+			effects.remove(type);
+		}
 	}
 }

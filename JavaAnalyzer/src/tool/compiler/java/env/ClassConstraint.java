@@ -9,6 +9,9 @@ import polyglot.types.FieldInstance;
 import tool.compiler.java.aos.MetaSetVariable;
 import tool.compiler.java.constraint.Constraint;
 import tool.compiler.java.util.CollUtil;
+import tool.compiler.java.util.ReportUtil;
+import tool.compiler.java.util.ReportUtil.MetaSetVarGoal;
+import tool.compiler.java.util.ReportUtil.MetaSetVarSource;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -44,16 +47,17 @@ public class ClassConstraint implements ConstraintFunction {
 		// 배열 타입에 대한 ClassConstraint는 생성하지 않으므로, 
 		// ArrayMetaSetVariable을 생성하는 경우는 없음
 		this.chi_this = new MetaSetVariable(type);
+		ReportUtil.report(chi_this, MetaSetVarSource.New, MetaSetVarGoal.ClassEnvironment);
 	}
 	
 	private void generateFields(JL5ClassType type) {
 		List<? extends FieldInstance> fields = type.fields();
-		
 		if (!fields.isEmpty()) {
 			this.chi_fields = new LinkedHashMap<>();
 			for (FieldInstance field : fields) {
-				MetaSetVariable fieldMSV = MetaSetVariable.create(field.type());
-				this.chi_fields.put((JL5FieldInstance)field, fieldMSV);	// field
+				MetaSetVariable chi_field = MetaSetVariable.create(field.type());
+				this.chi_fields.put((JL5FieldInstance)field, chi_field);	// field
+				ReportUtil.report(chi_field, MetaSetVarSource.New, MetaSetVarGoal.ClassEnvironment);
 			}
 		} else {
 			this.chi_fields = null;
