@@ -15,6 +15,7 @@ import tool.compiler.java.effect.EffectSetVariable;
 import tool.compiler.java.effect.EffectVariable;
 import tool.compiler.java.util.CollUtil;
 import tool.compiler.java.util.ReportUtil;
+import tool.compiler.java.util.ReportUtil.EffectSetVarGoal;
 import tool.compiler.java.util.ReportUtil.EffectSetVarSource;
 import tool.compiler.java.util.ReportUtil.MetaSetVarGoal;
 import tool.compiler.java.util.ReportUtil.MetaSetVarSource;
@@ -74,7 +75,7 @@ public class MethodConstraint extends CodeConstraint {
 			this.chi_effects = new LinkedHashMap<>();	// TODO: Activity Effect를 커버하려면 언제 이 객체를 생성하는 것이 좋은가?
 			EffectVariable chi_exnEffect = new EffectVariable(EffectName.ExnEff);
 			this.chi_effects.put(EffectName.ExnEff, chi_exnEffect);
-			ReportUtil.report(chi_exnEffect, EffectSetVarSource.New);
+			ReportUtil.report(chi_exnEffect, EffectSetVarSource.New, EffectSetVarGoal.MethodEnvironment);
 		}
 	}
 	

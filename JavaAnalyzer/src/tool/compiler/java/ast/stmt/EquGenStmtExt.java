@@ -56,7 +56,7 @@ public class EquGenStmtExt extends EquGenExt {
 	 * @return the LocalEnvironment of node n
 	 */
 	public static final LocalEnvironment localEnv(Stmt n) {
-		return ((EquGenStmtExt)EquGenExt.ext(n)).localEnv();
+		return ((EquGenStmtExt) EquGenExt.ext(n)).localEnv();
 	}
 	
 	/**
@@ -67,6 +67,33 @@ public class EquGenStmtExt extends EquGenExt {
 	}
 	
 	/**
+	 * @return the Exception Effect
+	 */
+	public final EffectSetVariable exceptionEffect() {
+		return effect(EffectName.ExnEff);
+	}
+	
+	/**
+	 * @param n node
+	 * @return the Exception Effect of node n
+	 */
+	public static final EffectSetVariable exceptionEffect(Stmt n) {
+		return ((EquGenStmtExt) EquGenExt.ext(n)).exceptionEffect();
+	}
+	
+	/**
+	 * @param exceptionEffect the Exception Effect to set
+	 */
+	protected final void setExceptionEffect(EffectSetVariable exceptionEffect) {
+		try {
+			addEffect(EffectName.ExnEff, exceptionEffect);
+		} catch (IllegalArgumentException e) {
+			throw new IllegalArgumentException("The argument exceptionEffect is not Exception Effect.");
+		}
+	}
+	
+	/**
+	 * @param type Effect Name
 	 * @return the Effect
 	 */
 	public final EffectSetVariable effect(EffectName type) {
@@ -77,6 +104,9 @@ public class EquGenStmtExt extends EquGenExt {
 		}
 	}
 	
+	/**
+	 * @return all effects
+	 */
 	public final HashMap<EffectName, EffectSetVariable> effects() {
 		try {
 			return effects;

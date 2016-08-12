@@ -54,7 +54,7 @@ public class EquGenNewArrayExt extends EquGenExprExt {
 		//       새로운 집합변수 Chi를 생성해서 C[]{Chi}를 만들고, C[]{o} <: C[]{Chi}를 제약식 집합에 추가
 		if(es == null) {
 			//   1A-1. C[]{Chi} 변수 생성 (NewArray의 타입에 대한 MSV)
-			cchi = new ArrayMetaSetVariable((JL5ArrayType) nwArr.type());
+			cchi = ArrayMetaSetVariable.create((JL5ArrayType) nwArr.type());
 			ReportUtil.report(cchi, MetaSetVarSource.New, MetaSetVarGoal.Return);
 			
 			//   1A-2. C[]{o} <: C[]{Chi} 제약식을 추가

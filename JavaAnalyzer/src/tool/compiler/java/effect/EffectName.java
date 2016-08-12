@@ -14,4 +14,14 @@ public enum EffectName {
 		}
 		return "Effect";
 	}
+	
+	public String getSimpleString() {
+		switch (this) {
+		case ExnEff:
+			return "Exception";
+		case ActivityEff:
+			return "Activity";
+		}
+		return "Effect";
+	}
 }

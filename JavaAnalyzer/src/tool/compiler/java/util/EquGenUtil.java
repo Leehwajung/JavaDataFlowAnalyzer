@@ -1,6 +1,7 @@
 package tool.compiler.java.util;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
@@ -16,6 +17,10 @@ import polyglot.types.Type;
 import tool.compiler.java.aos.ArrayMetaSetVariable;
 import tool.compiler.java.aos.MetaSetVariable;
 import tool.compiler.java.constraint.XSubseteqY;
+import tool.compiler.java.effect.EffectSetVariable;
+import tool.compiler.java.effect.EffectUnion;
+import tool.compiler.java.util.ReportUtil.EffectSetVarGoal;
+import tool.compiler.java.util.ReportUtil.EffectSetVarSource;
 import tool.compiler.java.util.ReportUtil.MetaSetVarGoal;
 import tool.compiler.java.util.ReportUtil.MetaSetVarSource;
 
@@ -102,6 +107,26 @@ public final class EquGenUtil {
 			return new ArrayList<>();
 //			return null;
 		}
+	}
+	
+	/**
+	 * EffectSetVariable Collection을 합집합한다.
+	 * @param effects		합집합할 effects
+	 * @return	effects가 1 초과인 경우 EffectUnion, 1인 경우 EffectSetVariable
+	 */
+	public static final EffectSetVariable unionize(Collection<? extends EffectSetVariable> effects) {
+		EffectSetVariable effect = null;
+		for (EffectSetVariable curr : effects) {
+			if (effect != null) {
+				if (effect != curr) {	// 이전 effect에 대한 Report (결과 effect에 대해서는 메서드 밖에서 Report할 것)
+					ReportUtil.report(effect, EffectSetVarSource.New, EffectSetVarGoal.Flow);
+				}
+				effect = new EffectUnion(effect, curr);
+			} else {
+				effect = curr;
+			}
+		}
+		return effect;
 	}
 	
 	public static final boolean isArray(Type type) {

@@ -17,4 +17,16 @@ public class ActivityEffect implements EffectElem {
 	public EffectName getEffectType() {
 		return EffectName.ActivityEff;
 	}
+	
+	/**
+	 * @see java.lang.Object#toString()
+	 */
+	@Override
+	public String toString() {
+		try {
+			return activity.name();
+		} catch(NullPointerException e) {
+			return null;
+		}
+	}
 }

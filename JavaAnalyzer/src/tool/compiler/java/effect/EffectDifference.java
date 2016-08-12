@@ -4,9 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * X ∪ Y <: Z		(Z is this)
+ * X ∖ Y <: Z		(Z is this)
  */
-public class EffectUnion extends EffectSetVariable {
+public class EffectDifference extends EffectSetVariable {
 	
 	// fields
 	
@@ -19,7 +19,7 @@ public class EffectUnion extends EffectSetVariable {
 	 * @param x
 	 * @param y
 	 */
-	public EffectUnion(EffectSetVariable x, EffectSetVariable y) {
+	public EffectDifference(EffectSetVariable x, EffectSetVariable y) {
 		super(check(x, y));
 		this.x = x;
 		this.y = y;
@@ -50,33 +50,6 @@ public class EffectUnion extends EffectSetVariable {
 		return y;
 	}
 	
-	/**
-	 * 
-	 * @return
-	 */
-	public List<? extends EffectSetVariable> getAllElements() {
-		ArrayList<EffectSetVariable> elements = new ArrayList<>();
-		getAllElements(elements);
-		return elements;
-	}
-	
-	/**
-	 * only leaf nodes traversal
-	 * @param elements
-	 */
-	private void getAllElements(ArrayList<EffectSetVariable> elements) {
-		if (this.x instanceof EffectUnion) {
-			((EffectUnion) this.x).getAllElements(elements);
-		} else {
-			elements.add(this.x);
-		}
-		if (this.y instanceof EffectUnion) {
-			((EffectUnion) this.y).getAllElements(elements);
-		} else {
-			elements.add(this.y);
-		}
-	}
-	
 	
 	public List<? extends EffectSetVariable> getAllEffectSetVariables() {
 		ArrayList<EffectSetVariable> abss = new ArrayList<>();
@@ -103,11 +76,11 @@ public class EffectUnion extends EffectSetVariable {
 	}
 	
 	/**
-	 * Form:	Effect{X} ∪ Effect{Y} <: Effect{Z}	(Z is this)
+	 * Form:	Effect{X} ∖ Effect{Y} <: Effect{Z}	(Z is this)
 	 */
 	@Override
 	public String toString() {
-		return getX() + " ∪ " + getY() + " <: " + super.toString();
+		return getX() + " ∖ " + getY() + " <: " + super.toString();
 	}
 	
 	/**
@@ -136,7 +109,7 @@ public class EffectUnion extends EffectSetVariable {
 		if (getClass() != obj.getClass()) {
 			return false;
 		}
-		EffectUnion other = (EffectUnion) obj;
+		EffectDifference other = (EffectDifference) obj;
 		if (x == null) {
 			if (other.x != null) {
 				return false;

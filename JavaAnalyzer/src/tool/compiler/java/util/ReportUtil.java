@@ -98,10 +98,11 @@ public final class ReportUtil {
 	 * Report EffectSetVariable.
 	 * @param esv
 	 * @param src
+	 * @param goal
 	 * @see ReportUtil.EffectSetVarSource
 	 */
 	public static final void report(EffectSetVariable esv, 
-			EffectSetVarSource src) {
+			EffectSetVarSource src, EffectSetVarGoal goal) {
 		StringBuilder sb = new StringBuilder();
 		sb.append('\t').append('[')
 		.append(esv.getClass().getSimpleName())
@@ -109,6 +110,8 @@ public final class ReportUtil {
 		.append(esv)
 		.append(' ').append('(').append(' ')
 		.append(src)
+		.append(": To ")
+		.append(goal)
 		.append(' ').append(')');
 		Report.report(3, sb.toString());
 	}
@@ -220,7 +223,8 @@ public final class ReportUtil {
 		MethodEnvironment,
 		LocalEnvironment,
 		Flow,
-		ArraySubFlow;
+		ArraySubFlow,
+		Effect;
 		
 		public String toString() {
 			switch (this) {
@@ -236,6 +240,8 @@ public final class ReportUtil {
 				return "Flow";
 			case ArraySubFlow:
 				return "Array Sub-Flow";
+			case Effect:
+				return "Effect";
 			default:
 				return super.toString();
 			}
@@ -255,6 +261,25 @@ public final class ReportUtil {
 				return "Sub-Expression";
 			case SubStatement:
 				return "Sub-Statement";
+			default:
+				return super.toString();
+			}
+		}
+	}
+	
+	public static enum EffectSetVarGoal {
+		Return,
+		MethodEnvironment,
+		Flow;
+		
+		public String toString() {
+			switch (this) {
+			case Return:
+				return "Return";
+			case MethodEnvironment:
+				return "Method Environment";
+			case Flow:
+				return "Flow";
 			default:
 				return super.toString();
 			}

@@ -17,7 +17,7 @@ public class MetaSetVariable extends DataFlowSetVariable {
 	 * @param isLocal
 	 */
 	@Deprecated
-	public MetaSetVariable(Type type, boolean isLocal) {
+	protected MetaSetVariable(Type type, boolean isLocal) {
 		super(type);
 		this.isLocal = isLocal;
 	}
@@ -25,7 +25,7 @@ public class MetaSetVariable extends DataFlowSetVariable {
 	/**
 	 * @param type
 	 */
-	public MetaSetVariable(Type type) {
+	protected MetaSetVariable(Type type) {
 		super(type);
 //		this(type, false);
 	}

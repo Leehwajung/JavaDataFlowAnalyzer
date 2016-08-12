@@ -41,7 +41,7 @@ public class EquGenUnaryExt extends EquGenExprExt {
 		
 		// +e / -e / ++e / --e / e++ / e-- / !e / ~e
 		//   1. T{Chi} 변수 생성
-		MetaSetVariable tchi = new MetaSetVariable(unary.type());
+		MetaSetVariable tchi = MetaSetVariable.create(unary.type());
 		ReportUtil.report(tchi, MetaSetVarSource.New, MetaSetVarGoal.Return);
 		
 		//   2. T{o} <: T{Chi} 제약식을 추가

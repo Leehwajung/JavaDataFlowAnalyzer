@@ -54,7 +54,7 @@ public class EquGenArrayInitExt extends EquGenExprExt {
 		
 		// {e1, ... , en}
 		//   1. C[]{Chi} 변수 생성
-		ArrayMetaSetVariable cchi = new ArrayMetaSetVariable((JL5ArrayType) arrInit.type());
+		ArrayMetaSetVariable cchi = ArrayMetaSetVariable.create((JL5ArrayType) arrInit.type());
 		ReportUtil.report(cchi, MetaSetVarSource.New, MetaSetVarGoal.Return);
 		
 		//   2-1. C[]{o} <: C[]{Chi} 제약식을 추가

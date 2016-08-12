@@ -41,7 +41,7 @@ public class EquGenInstanceofExt extends EquGenExprExt {
 		
 		// instanceof
 		//   1. boolean{Chi} 변수 생성
-		MetaSetVariable tchi = new MetaSetVariable(insof.type());
+		MetaSetVariable tchi = MetaSetVariable.create(insof.type());
 		ReportUtil.report(tchi, MetaSetVarSource.New, MetaSetVarGoal.Return);
 		
 		//   2. boolean{o} <: boolean{Chi} 제약식을 추가

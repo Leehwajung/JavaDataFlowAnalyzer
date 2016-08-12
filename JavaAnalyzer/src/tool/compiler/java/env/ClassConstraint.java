@@ -46,7 +46,7 @@ public class ClassConstraint implements ConstraintFunction {
 	private void generateThis(JL5ClassType type) {
 		// 배열 타입에 대한 ClassConstraint는 생성하지 않으므로, 
 		// ArrayMetaSetVariable을 생성하는 경우는 없음
-		this.chi_this = new MetaSetVariable(type);
+		this.chi_this = MetaSetVariable.create(type);
 		ReportUtil.report(chi_this, MetaSetVarSource.New, MetaSetVarGoal.ClassEnvironment);
 	}
 	

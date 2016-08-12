@@ -1,11 +1,9 @@
 package tool.compiler.java.ast.stmt;
 
-import java.util.ArrayList;
-
+import polyglot.ast.Catch;
 import polyglot.ast.Node;
-import polyglot.ast.TypeNode;
 import polyglot.ext.jl5.types.JL5ClassType;
-import polyglot.ext.jl7.ast.MultiCatch;
+import polyglot.types.Type;
 import polyglot.util.SerialVersionUID;
 import tool.compiler.java.effect.EffectSet;
 import tool.compiler.java.effect.ExnEffect;
@@ -15,17 +13,17 @@ import tool.compiler.java.util.ReportUtil.EffectSetVarSource;
 import tool.compiler.java.visit.EquGenerator;
 
 /**
- * MultiCatch <: Catch <: CompoundStmt <: Stmt <: Term <: Node
+ * Catch <: CompoundStmt <: Stmt <: Term <: Node
  * @author LHJ
  */
-public class EquGenMultiCatchExt extends EquGenCatchExt {
+public class EquGenSingleCatchExt extends EquGenCatchExt {
 	private static final long serialVersionUID = SerialVersionUID.generate();
-	public static final String KIND = "Multi-Catch";
+	public static final String KIND = "Catch";
 	
 	@Override
 	public EquGenerator equGenEnter(EquGenerator v) {
 		ReportUtil.enterReport(this);
-//		MultiCatch multiCatch = (MultiCatch) this.node();
+//		Catch singleCatch = (Catch) this.node();
 		
 		return super.equGenEnter(v);
 	}
@@ -33,13 +31,10 @@ public class EquGenMultiCatchExt extends EquGenCatchExt {
 	@Override
 	public Node equGenLeave(EquGenerator v) {
 		ReportUtil.leaveReport(this);
-		MultiCatch multiCatch = (MultiCatch) this.node();
+		Catch singleCatch = (Catch) this.node();
 		
-		ArrayList<ExnEffect> effectElems = new ArrayList<>();
-		for (TypeNode alternative : multiCatch.alternatives()) {
-			effectElems.add(new ExnEffect((JL5ClassType) alternative.type()));
-		}
-		EffectSet exnEffect = new EffectSet(effectElems);
+		Type catchType = singleCatch.catchType();
+		EffectSet exnEffect = new EffectSet(new ExnEffect((JL5ClassType) catchType));
 		setFormalTypes(exnEffect);
 		ReportUtil.report(exnEffect, EffectSetVarSource.New, EffectSetVarGoal.Return);
 		

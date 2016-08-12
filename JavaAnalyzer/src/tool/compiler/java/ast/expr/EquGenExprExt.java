@@ -57,7 +57,7 @@ public class EquGenExprExt extends EquGenExt {
 	 * @return the MetaSetVariable of node n
 	 */
 	public static final MetaSetVariable metaSetVar(Expr n) {
-		return ((EquGenExprExt)EquGenExt.ext(n)).metaSetVar();
+		return ((EquGenExprExt) EquGenExt.ext(n)).metaSetVar();
 	}
 	
 	/**
@@ -68,6 +68,33 @@ public class EquGenExprExt extends EquGenExt {
 	}
 	
 	/**
+	 * @return the Exception Effect
+	 */
+	public final EffectSetVariable exceptionEffect() {
+		return effect(EffectName.ExnEff);
+	}
+	
+	/**
+	 * @param n node
+	 * @return the Exception Effect of node n
+	 */
+	public static final EffectSetVariable exceptionEffect(Expr n) {
+		return ((EquGenExprExt) EquGenExt.ext(n)).exceptionEffect();
+	}
+	
+	/**
+	 * @param exceptionEffect the Exception Effect to set
+	 */
+	protected final void setExceptionEffect(EffectSetVariable exceptionEffect) {
+		try {
+			addEffect(EffectName.ExnEff, exceptionEffect);
+		} catch (IllegalArgumentException e) {
+			throw new IllegalArgumentException("The argument exceptionEffect is not Exception Effect.");
+		}
+	}
+	
+	/**
+	 * @param type Effect Name
 	 * @return the Effect
 	 */
 	public final EffectSetVariable effect(EffectName type) {
@@ -78,9 +105,12 @@ public class EquGenExprExt extends EquGenExt {
 		}
 	}
 	
+	/**
+	 * @return all effects
+	 */
 	public final HashMap<EffectName, EffectSetVariable> effects() {
 		try {
-			return new HashMap<>(effects);
+			return effects;
 		} catch(NullPointerException e) {
 			return null;
 		}
@@ -96,7 +126,7 @@ public class EquGenExprExt extends EquGenExt {
 	}
 	
 	/**
-	 * @param n node 
+	 * @param n node
 	 * @return Effects of node n
 	 */
 	public static final HashMap<EffectName, EffectSetVariable> effects(Expr n) {
@@ -104,12 +134,30 @@ public class EquGenExprExt extends EquGenExt {
 	}
 	
 	/**
-	 * @param effect the Effect to set
+	 * @param effect the Effect to add
 	 */
-	protected final void setEffect(EffectName type, EffectSetVariable effect) {
-		if(effects == null) {
-			effects = new HashMap<>();
+	protected final void addEffect(EffectSetVariable effect) {
+		if (effect != null) {
+			if(effects == null) {
+				effects = new HashMap<>();
+			}
+			effects.put(effect.getEffectType(), effect);
 		}
-		effects.put(type, effect);
+	}
+	
+	/**
+	 * @param type	the type of the effect
+	 * @param effect	the Effect to add
+	 */
+	protected final void addEffect(EffectName type, EffectSetVariable effect) {
+		if (effect != null) {
+			if (effect.getEffectType().equals(type)) {
+				addEffect(effect);
+			} else {
+				throw new IllegalArgumentException("Argumented type and effect's type are NOT matched.");
+			}
+		} else if (effects != null && effects.containsKey(type)) {
+			effects.remove(type);
+		}
 	}
 }

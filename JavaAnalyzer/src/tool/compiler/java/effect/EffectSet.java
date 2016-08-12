@@ -12,23 +12,23 @@ public class EffectSet extends EffectSetVariable implements Iterable<EffectElem>
 	
 	private LinkedHashSet<EffectElem> set;
 	
-	public EffectSet(Collection<EffectElem> elems) {
+	public EffectSet(Collection<? extends EffectElem> elems) {
 		super(inferType(elems));
 		this.set = new LinkedHashSet<>(elems);
 	}
 	
-	public EffectSet(EffectElem elem) {
+	public <N extends EffectElem> EffectSet(N elem) {
 		super(elem.getEffectType());
 		this.set = new LinkedHashSet<>();
 		this.set.add(elem);
 	}
 	
-	private static final EffectName inferType(Collection<EffectElem> elems) {
+	private static final EffectName inferType(Collection<? extends EffectElem> elems) {
 		try {
-			Iterator<EffectElem> iterator = elems.iterator();		// NullPointerException
-			EffectName type = iterator.next().getEffectType();	// NoSuchElementException
+			Iterator<? extends EffectElem> iterator = elems.iterator();	// NullPointerException
+			EffectName type = iterator.next().getEffectType();					// NoSuchElementException
 			while (iterator.hasNext()) {
-				if (!type.equals(iterator.next())) {
+				if (!type.equals(iterator.next().getEffectType())) {
 					throw new IllegalArgumentException("Elems' effect types are not matched."); 
 				}
 			}
@@ -52,7 +52,7 @@ public class EffectSet extends EffectSetVariable implements Iterable<EffectElem>
 		return (JL5ClassType) set.toArray()[index];
 	}
 	
-	public Collection<EffectElem> getAll() {
+	public Collection<? extends EffectElem> getAll() {
 		return new LinkedHashSet<>(set);
 	}
 	
@@ -71,7 +71,7 @@ public class EffectSet extends EffectSetVariable implements Iterable<EffectElem>
 	@Override
 	public String toString() {
 		try {
-			return CollUtil.getStringOf(set);
+			return CollUtil.getStringOf(set, '{', '}');
 		} catch(NullPointerException e) {
 			return null;
 		}

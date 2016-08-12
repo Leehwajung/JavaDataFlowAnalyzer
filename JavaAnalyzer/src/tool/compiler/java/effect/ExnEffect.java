@@ -22,15 +22,15 @@ public class ExnEffect implements EffectElem {
 		return EffectName.ExnEff;
 	}
 	
-//	/**
-//	 * @see java.lang.Object#toString()
-//	 */
-//	@Override
-//	public String toString() {
-//		try {
-//			return exception;
-//		} catch(NullPointerException e) {
-//			return null;
-//		}
-//	}
+	/**
+	 * @see java.lang.Object#toString()
+	 */
+	@Override
+	public String toString() {
+		try {
+			return exception.name();
+		} catch(NullPointerException e) {
+			return null;
+		}
+	}
 }

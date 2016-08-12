@@ -8,7 +8,10 @@ import tool.compiler.java.ast.expr.EquGenExprExt;
 import tool.compiler.java.effect.EffectName;
 import tool.compiler.java.effect.EffectVariable;
 import tool.compiler.java.util.ReportUtil;
+import tool.compiler.java.util.ReportUtil.EffectSetVarGoal;
 import tool.compiler.java.util.ReportUtil.EffectSetVarSource;
+import tool.compiler.java.util.ReportUtil.MetaSetVarGoal;
+import tool.compiler.java.util.ReportUtil.MetaSetVarSource;
 import tool.compiler.java.visit.EquGenerator;
 
 /**
@@ -33,9 +36,10 @@ public class EquGenThrowExt extends EquGenStmtExt {
 		Throw throwStmt = (Throw) this.node();
 		
 		MetaSetVariable msv = EquGenExprExt.metaSetVar(throwStmt.expr());
-		EffectVariable esv = new EffectVariable(EffectName.ExnEff, msv);
-		addEffect(esv);
-		ReportUtil.report(esv, EffectSetVarSource.New);
+		ReportUtil.report(msv, MetaSetVarSource.SubExpression, MetaSetVarGoal.Effect);
+		EffectVariable exnEffect = new EffectVariable(EffectName.ExnEff, msv);
+		setExceptionEffect(exnEffect);
+		ReportUtil.report(exnEffect, EffectSetVarSource.New, EffectSetVarGoal.Return);
 		
 		setLocalEnv(v.peekTypeEnv().getCurrEnv());
 		

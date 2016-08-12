@@ -43,7 +43,7 @@ public class EquGenBinaryExt extends EquGenExprExt {
 		// e1 || e2 / e1 && e2 / e1 + e2 / e1 - e2 / e1 * e2 / e1 / e2 / e1 % e2 /
 		// e1 | e2 / e1 & e2 / e1 ^ e2 / e1 << e2 / e1 >> e2 / e1 >>> e2
 		//   1. T{Chi} 변수 생성
-		MetaSetVariable tchi = new MetaSetVariable(binary.type());
+		MetaSetVariable tchi = MetaSetVariable.create(binary.type());
 		ReportUtil.report(tchi, MetaSetVarSource.New, MetaSetVarGoal.Return);
 		
 		//   2. T{o} <: T{Chi} 제약식을 추가

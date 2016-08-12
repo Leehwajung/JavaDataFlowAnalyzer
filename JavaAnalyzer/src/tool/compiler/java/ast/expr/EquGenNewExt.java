@@ -76,7 +76,7 @@ public class EquGenNewExt extends EquGenExprExt {
 		
 		// new C(e1, ..., en)
 		//   1. C<T1,...,Tn>{Chi} 변수 생성
-		MetaSetVariable ctschi = new MetaSetVariable(ctorIns.container());	// 배열은 NewArray 노드에서 대응
+		MetaSetVariable ctschi = MetaSetVariable.create(ctorIns.container());	// 배열은 NewArray 노드에서 대응
 		ReportUtil.report(ctschi, MetaSetVarSource.New, MetaSetVarGoal.Return);
 		
 		//   2-1. C<T1,...,Tn>{o} <: C<T1,...,Tn>{Chi} 제약식을 추가

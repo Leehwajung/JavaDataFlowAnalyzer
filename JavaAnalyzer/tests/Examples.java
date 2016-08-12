@@ -85,7 +85,7 @@ class CC extends C {
 }
 
 class CCC extends CC {
-	int ii = 1;
+	static int ii = 1;
 }
 
 class CCCC extends CC {
@@ -125,6 +125,24 @@ class CCCC extends CC {
 		int a = 1;
 		while(iii == 33) {
 			a++;
+		}
+		
+		class RR implements java.lang.AutoCloseable {
+			int i = 1;
+			@Override
+			public void close() throws NullPointerException {
+				i = 0;
+				throw new IllegalArgumentException();
+			}
+		}
+		
+		try (RR r = new RR(); RR r2 = new RR()) {
+			int it = 1;
+			throw new NullPointerException();
+		} catch(NullPointerException | IndexOutOfBoundsException e) {
+			int ic = 2;
+		} finally {
+			int iff = 3;
 		}
 	}
 }

@@ -5,7 +5,8 @@ import tool.compiler.java.aos.SetVariable;
 public abstract class EffectSetVariable extends SetVariable implements Effect {
 	
 	private EffectName type;
-	public static final String KIND = "Effect";
+	public static final String KIND = "E";
+//	public static final String KIND = "Effect";
 	private static long idFactor = 1;
 	
 	/**
@@ -31,7 +32,7 @@ public abstract class EffectSetVariable extends SetVariable implements Effect {
 	 */
 	@Override
 	public String toString() {
-		return type + "{" + getID() + "}";
+		return type.getSimpleString() + "{" + getID() + "}";
 	}
 
 	@Override

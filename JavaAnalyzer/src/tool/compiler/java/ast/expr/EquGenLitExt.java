@@ -45,7 +45,7 @@ public class EquGenLitExt extends EquGenExprExt {
 		
 		// int / char / float / boolean / string / class / null
 		//   1. T{Chi} 변수 생성
-		MetaSetVariable tchi = new MetaSetVariable(lit.type());
+		MetaSetVariable tchi = MetaSetVariable.create(lit.type());
 		ReportUtil.report(tchi, MetaSetVarSource.New, MetaSetVarGoal.Return);
 		
 		//   2. T{o} <: T{Chi} 제약식을 추가
