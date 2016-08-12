@@ -1,18 +1,18 @@
 package tool.compiler.java.ast.stmt;
 
-import java.util.ArrayList;
-
 import polyglot.ast.LocalDecl;
 import polyglot.ast.Node;
 import polyglot.ext.jl7.ast.TryWithResources;
+import polyglot.util.Pair;
 import polyglot.util.SerialVersionUID;
-import tool.compiler.java.ast.EquGenExt;
 import tool.compiler.java.effect.EffectSetVariable;
-import tool.compiler.java.util.EquGenUtil;
+import tool.compiler.java.effect.EffectUnion;
 import tool.compiler.java.util.ReportUtil;
 import tool.compiler.java.util.ReportUtil.EffectSetVarGoal;
 import tool.compiler.java.util.ReportUtil.EffectSetVarSource;
 import tool.compiler.java.visit.EquGenerator;
+
+import java.util.ArrayList;
 
 /**
  * TryWithResources <: Try <: CompoundStmt <: Stmt <: Term <: Node
@@ -23,6 +23,7 @@ public class EquGenTryWithResourcesExt extends EquGenTryExt {
 	public static final String KIND = "Try with Resources";
 	
 	private EffectSetVariable resourcesExnEffect = null;
+	private EffectSetVarSource srcResourcesExnEffect = null;
 	
 	@Override
 	public EquGenerator equGenEnter(EquGenerator v) {
@@ -55,36 +56,24 @@ public class EquGenTryWithResourcesExt extends EquGenTryExt {
 	 * @return the Resources
 	 */
 	@Override
-	public final EffectSetVariable resources() {
-		if (resourcesExnEffect != null) {
-			return resourcesExnEffect;
-		}
-		
-		TryWithResources tryRes = (TryWithResources) this.node();
-		ArrayList<EffectSetVariable> resEffects = new ArrayList<>();
-		for (LocalDecl resource : tryRes.resources()) {
-			EffectSetVariable resEffect = EquGenStmtExt.exceptionEffect(resource);
-			if (resEffect != null) {
-				resEffects.add(resEffect);
-				ReportUtil.report(resEffect, EffectSetVarSource.SubExpression, EffectSetVarGoal.Flow);
+	protected final Pair<EffectSetVariable, EffectSetVarSource> findResources() {
+		if (resourcesExnEffect == null || srcResourcesExnEffect == null) {
+			TryWithResources tryRes = (TryWithResources) this.node();
+			ArrayList<EffectSetVariable> resEffects = new ArrayList<>();
+			for (LocalDecl resource : tryRes.resources()) {
+				EffectSetVariable x_stmt_resj = EquGenStmtExt.exceptionEffect(resource);
+				if (x_stmt_resj != null) {
+					resEffects.add(x_stmt_resj);
+				}
 			}
+			if (resEffects.size() > 1) {
+				srcResourcesExnEffect = EffectSetVarSource.New;
+				ReportUtil.report(resEffects, EffectSetVarSource.SubStatement, EffectSetVarGoal.Flow);
+			} else {
+				srcResourcesExnEffect = EffectSetVarSource.SubStatement;
+			}
+			resourcesExnEffect = EffectUnion.unionize(resEffects);
 		}
-		setResources(EquGenUtil.unionize(resEffects));
-		return resourcesExnEffect;
-	}
-	
-	/**
-	 * @param n node
-	 * @return the Resources of node n
-	 */
-	public static final EffectSetVariable resources(TryWithResources n) {
-		return ((EquGenTryWithResourcesExt) EquGenExt.ext(n)).resources();
-	}
-	
-	/**
-	 * @param resources the Resources to set
-	 */
-	private final void setResources(EffectSetVariable resources) {
-		resourcesExnEffect = resources;
+		return new Pair<EffectSetVariable, EffectSetVarSource>(resourcesExnEffect, srcResourcesExnEffect);
 	}
 }

@@ -54,7 +54,7 @@ public class EquGenCastExt extends EquGenExprExt {
 		//   3-2. 배열인 경우, D{Chi2} <: C{Chi1}의 하위 레벨 제약식을 집합에 추가
 		//         (Top Level 아래의 MetaSetVariable(s)의 데이터 플로우)
 		if(EquGenUtil.isArray(dchi2) && EquGenUtil.isArray(cchi1)) {
-			Collection<XSubseteqY> xys = EquGenUtil.constrain(
+			Collection<XSubseteqY> xys = XSubseteqY.constrain(
 					(ArrayMetaSetVariable) dchi2, 
 					(ArrayMetaSetVariable) cchi1);
 			v.getCurrCF().addMetaConstraints(xys);

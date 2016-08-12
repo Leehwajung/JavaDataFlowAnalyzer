@@ -1,6 +1,8 @@
 package tool.compiler.java.util;
 
 import java.util.Collection;
+import java.util.Map;
+import java.util.Map.Entry;
 
 import polyglot.ast.Expr;
 import polyglot.ast.Node;
@@ -114,6 +116,33 @@ public final class ReportUtil {
 		.append(goal)
 		.append(' ').append(')');
 		Report.report(3, sb.toString());
+	}
+	
+	/**
+	 * Report EffectSetVariables.
+	 * @param esvs
+	 * @param src
+	 * @param goal
+	 * @see ReportUtil.EffectSetVarSource
+	 */
+	public static final void report(Collection<? extends EffectSetVariable> esvs, 
+			EffectSetVarSource src, EffectSetVarGoal goal) {
+		for (EffectSetVariable esv : esvs) {
+			report(esv, src, goal);
+		}
+	}
+	
+	/**
+	 * Report EffectSetVariables.
+	 * @param esvs
+	 * @param goal
+	 * @see ReportUtil.EffectSetVarSource
+	 */
+	public static final void report(Map<? extends EffectSetVariable, EffectSetVarSource> esvs, 
+			EffectSetVarGoal goal) {
+		for (Entry<? extends EffectSetVariable, EffectSetVarSource> esv : esvs.entrySet()) {
+			report(esv.getKey(), esv.getValue(), goal);
+		}
 	}
 	
 	/**

@@ -1,7 +1,12 @@
 package tool.compiler.java.effect;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
+
+import tool.compiler.java.util.ReportUtil;
+import tool.compiler.java.util.ReportUtil.EffectSetVarGoal;
+import tool.compiler.java.util.ReportUtil.EffectSetVarSource;
 
 /**
  * X ∪ Y <: Z		(Z is this)
@@ -31,6 +36,48 @@ public class EffectUnion extends EffectSetVariable {
 		} else {
 			throw new IllegalArgumentException("Effect Type NOT match.");
 		}
+	}
+	
+	
+	// Utilities
+	
+	/**
+	 * EffectSetVariables를 합집합한다.
+	 * @param x
+	 * @param y
+	 * @return	 EffectUnion
+	 */
+	public static final EffectSetVariable unionize(EffectSetVariable x, EffectSetVariable y) {
+		final boolean xNotNull = x != null;
+		final boolean yNotNull = y != null;
+		if (xNotNull && yNotNull) {
+			return new EffectUnion(x, y);
+		} else if (xNotNull) {
+			return x;
+		} else if (yNotNull) {
+			return y;
+		}
+		return null;
+	}
+	
+	/**
+	 * EffectSetVariable Collection을 합집합한다.
+	 * @param effects		합집합할 effects
+	 * @return	effects의 개수가 1을 초과하는 경우 EffectUnion, 1인 경우 EffectSetVariable, 
+	 */
+	public static final EffectSetVariable unionize(Collection<? extends EffectSetVariable> effects) {
+		EffectSetVariable effect = null;
+		for (EffectSetVariable curr : effects) {
+			if (effect != null) {
+				if (effect != curr) {	// 이전 effect에 대한 Report (결과 effect에 대해서는 메서드 밖에서 Report할 것)
+					ReportUtil.report(effect, EffectSetVarSource.New, EffectSetVarGoal.Flow);
+				}
+				effect = new EffectUnion(effect, curr);
+			} else {
+				effect = curr;
+			}
+		}
+		return effect;
 	}
 	
 	

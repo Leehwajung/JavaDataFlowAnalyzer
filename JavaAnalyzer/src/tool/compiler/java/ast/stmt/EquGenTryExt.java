@@ -1,19 +1,21 @@
 package tool.compiler.java.ast.stmt;
 
-import java.util.ArrayList;
-
 import polyglot.ast.Catch;
 import polyglot.ast.Node;
 import polyglot.ast.Try;
+import polyglot.util.Pair;
 import polyglot.util.SerialVersionUID;
 import tool.compiler.java.effect.EffectDifference;
 import tool.compiler.java.effect.EffectSet;
 import tool.compiler.java.effect.EffectSetVariable;
-import tool.compiler.java.util.EquGenUtil;
+import tool.compiler.java.effect.EffectUnion;
 import tool.compiler.java.util.ReportUtil;
 import tool.compiler.java.util.ReportUtil.EffectSetVarGoal;
 import tool.compiler.java.util.ReportUtil.EffectSetVarSource;
 import tool.compiler.java.visit.EquGenerator;
+
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
 
 /**
  * Try <: CompoundStmt <: Stmt <: Term <: Node
@@ -36,66 +38,83 @@ public class EquGenTryExt extends EquGenStmtExt {
 		ReportUtil.leaveReport(this);
 		Try tryStmt = (Try) this.node();
 		
-		// try ( stmt_res0, ... , stmt_resm ) { stmt0 } catch (C1 e1) { stmt1 } ... catch (Ck ek) { stmtk } finally { stmtn } 	(단, k = n-1)
+		// 주의! 여기서는 EffectSetVariable이 소모될 때 - 흘러갈 곳을 찾았을 때 - Report함!
+		
+		// try ( stmt_res0; ... ; stmt_resm ) { stmt0 } catch (C1 e1) { stmt1 } ... catch (Ck ek) { stmtk } finally { stmtn } 	(단, k = n-1)
 		//   1. stmt_res0, ... , stmt_resm를 분석해서 나오는 effects의 집합 X_eff_res을 가져오고,
-		ArrayList<EffectSetVariable> x_eff_try = new ArrayList<>();
-		EffectSetVariable x_eff_res = resources();
-		if (x_eff_res != null) {
-			x_eff_try.add(x_eff_res);
-			ReportUtil.report(x_eff_res, EffectSetVarSource.SubStatement, EffectSetVarGoal.Flow);
-		}
+		Pair<EffectSetVariable, EffectSetVarSource> resources = findResources();
+		EffectSetVariable x_eff_res = resources.part1();
 		
-		//   2. stmt0을 분석하면 나오는 effect인 X_eff0를 가져오고, 
+		//   2. stmt0을 분석하면 나오는 effect인 X_eff0를 가져온 다음, 
 		EffectSetVariable x_eff0 = EquGenStmtExt.exceptionEffect(tryStmt.tryBlock());
-		if (x_eff0 != null) {
-			x_eff_try.add(x_eff0);
+		
+		//   3. X_eff_res ∪ X_eff0를 구한다.
+		EffectSetVariable x_eff_try = EffectUnion.unionize(x_eff_res, x_eff0);
+		EffectSetVarSource src_x_eff_try = EffectSetVarSource.SubStatement;
+		if (x_eff_try != x_eff0 && x_eff_try != x_eff_res) {	// 새롭게 생성된 합집합이면 (둘 다 null이 아님)
+			src_x_eff_try = EffectSetVarSource.New;
+			ReportUtil.report(x_eff_res, EffectSetVarSource.New, EffectSetVarGoal.Flow);
 			ReportUtil.report(x_eff0, EffectSetVarSource.SubStatement, EffectSetVarGoal.Flow);
-		}
-			
-		//   3. catch되는 타입들 C1, ... , Ck을 가져와 그들의 합집합인 X_C를 만든 다음,
-		ArrayList<EffectSet> cks = new ArrayList<>();
-		EffectSet ck = null;
-		for (Catch catchBlock : tryStmt.catchBlocks()) {
-			ck = EquGenCatchExt.formalTypes(catchBlock);
-			cks.add(ck);
-			ReportUtil.report(ck, EffectSetVarSource.SubStatement, EffectSetVarGoal.Flow);
-		}
-		EffectSetVariable x_c = EquGenUtil.unionize(cks);
-		if (x_c != ck) {
-			ReportUtil.report(x_c, EffectSetVarSource.New, EffectSetVarGoal.Flow);
-		}
-			
-		//   4. X_eff_res ∪ X_eff0 ∖ X_C를 구한다.
-		ArrayList<EffectSetVariable> x_effs = new ArrayList<>();
-		if (ck != null) {
-			EffectSetVariable ExnEffect = new EffectDifference(EquGenUtil.unionize(x_eff_try), x_c);
-			x_effs.add(ExnEffect);
-			ReportUtil.report(ExnEffect, EffectSetVarSource.New, EffectSetVarGoal.Flow);
+		} else if (x_eff_try == x_eff_res) {
+			src_x_eff_try = resources.part2();
 		}
 		
-		//   5. stmt1, ... , stmtk를 분석하면 나오는 effect들인 X_eff1, ... , X_effk를 각각 가져오고, 
+		//   4. catch되는 타입들 C1, ... , Ck을 가져와 그들의 합집합인 X_C를 만들어,
+		EffectSetVariable x_c = null;
+		EffectSetVarSource src_x_c = null;
+		if (x_eff0 != null || x_eff_res != null) {	// X_eff_res와 X_eff0가 둘 다 공집합이면 X_C를 차집합하는 것이 의미 없음
+			ArrayList<EffectSet> cks = new ArrayList<>();
+			for (Catch catchBlock : tryStmt.catchBlocks()) {
+				EffectSet ci = EquGenCatchExt.formalTypes(catchBlock);
+				cks.add(ci);
+			}
+			src_x_c = EffectSetVarSource.SubStatement;
+			if (cks.size() > 1) {	// 새로운 합집합이 생성될 예정이면
+				src_x_c = EffectSetVarSource.New;
+				ReportUtil.report(cks, EffectSetVarSource.SubStatement, EffectSetVarGoal.Flow);
+			}
+			x_c = EffectUnion.unionize(cks);
+		}
+		
+		//   5. X_eff_res ∪ X_eff0 ∖ X_C를 구한다.
+		EffectSetVariable x_eff_try_differed = EffectDifference.differ(x_eff_try, x_c);
+		EffectSetVarSource src_x_eff_try_differed = src_x_eff_try;
+		if (x_eff_try_differed != x_eff_try) {
+			src_x_eff_try_differed = EffectSetVarSource.New;
+			ReportUtil.report(x_eff_try, src_x_eff_try, EffectSetVarGoal.Flow);
+			ReportUtil.report(x_c, src_x_c, EffectSetVarGoal.Flow);
+		}
+		LinkedHashMap<EffectSetVariable, EffectSetVarSource> x_effs = new LinkedHashMap<>();
+		if (x_eff_try_differed != null) {
+			x_effs.put(x_eff_try_differed, src_x_eff_try_differed);
+		}
+		
+		//   6. stmt1, ... , stmtk를 분석하면 나오는 effect들인 X_eff1, ... , X_effk를 각각 가져오고, 
 		for (Catch catchBlock : tryStmt.catchBlocks()) {
 			EffectSetVariable x_effi = EquGenStmtExt.exceptionEffect(catchBlock.body());
 			if (x_effi != null) {
-				x_effs.add(x_effi);
-				ReportUtil.report(x_effi, EffectSetVarSource.SubStatement, EffectSetVarGoal.Flow);
+				x_effs.put(x_effi, EffectSetVarSource.SubStatement);
 			}
 		}
 		
-		//   6. stmtn을 분석하면 나오는 effect인 X_effn를 가져온 다음,
+		//   7. stmtn을 분석하면 나오는 effect인 X_effn를 가져온 다음,
 		EffectSetVariable x_effn = EquGenStmtExt.exceptionEffect(tryStmt.finallyBlock());
 		if (x_effn != null) {
-			x_effs.add(x_effn);
-			ReportUtil.report(x_effn, EffectSetVarSource.SubStatement, EffectSetVarGoal.Flow);
+			x_effs.put(x_effn, EffectSetVarSource.SubStatement);
 		}
 		
-		//   7. 최종적으로 X_eff_res ∪ X_eff0 ∖ X_C ∪ X_eff1 ∪ ... ∪ X_effk ∪ X_effn을 구하고, 이를 리턴한다.
+		//   8. 최종적으로 X_eff_res ∪ X_eff0 ∖ X_C ∪ X_eff1 ∪ ... ∪ X_effk ∪ X_effn을 구하고, 이를 리턴한다.
 		if (!x_effs.isEmpty()) {
-			EffectSetVariable ExnEffect = EquGenUtil.unionize(x_effs);
-			if (ExnEffect != null) {
-				setExceptionEffect(ExnEffect);
-				ReportUtil.report(ExnEffect, EffectSetVarSource.New, EffectSetVarGoal.Return);
-			} 
+			EffectSetVarSource src_ExnEffect;
+			if (x_effs.size() > 1) {
+				src_ExnEffect = EffectSetVarSource.New;
+				ReportUtil.report(x_effs, EffectSetVarGoal.Flow);
+			} else {
+				src_ExnEffect = (EffectSetVarSource) x_effs.values().toArray()[0];
+			}
+			EffectSetVariable ExnEffect = EffectUnion.unionize(x_effs.keySet());
+			setExceptionEffect(ExnEffect);
+			ReportUtil.report(ExnEffect, src_ExnEffect, EffectSetVarGoal.Return);
 		}
 		
 		setLocalEnv(v.peekTypeEnv().getCurrEnv());
@@ -113,7 +132,7 @@ public class EquGenTryExt extends EquGenStmtExt {
 	 * For EquGenTryWithResourcesExt
 	 * @return null
 	 */
-	public EffectSetVariable resources() {
+	protected Pair<EffectSetVariable, EffectSetVarSource> findResources() {
 		// For EquGenTryWithResourcesExt
 		return null;
 	}

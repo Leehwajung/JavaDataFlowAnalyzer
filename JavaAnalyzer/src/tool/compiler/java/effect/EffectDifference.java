@@ -34,6 +34,26 @@ public class EffectDifference extends EffectSetVariable {
 	}
 	
 	
+	// Utility
+	
+	/**
+	 * EffectSetVariables를 차집합한다.
+	 * @param x
+	 * @param y
+	 * @return	 EffectDifference
+	 */
+	public static final EffectSetVariable differ(EffectSetVariable x, EffectSetVariable y) {
+		if (x != null) {
+			if (y != null) {
+				return new EffectDifference(x, y);
+			} else {
+				return x;
+			}
+		}
+		return null;
+	}
+	
+	
 	// getter methods
 	
 	/**

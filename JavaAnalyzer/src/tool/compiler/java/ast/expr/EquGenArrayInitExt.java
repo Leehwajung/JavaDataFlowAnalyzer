@@ -87,7 +87,7 @@ public class EquGenArrayInitExt extends EquGenExprExt {
 			//   2-3d. ei가 배열인 경우, Ci{Chii} <: C[]{Chi}.base의 하위 레벨 제약식을 집합에 추가
 			//         (Top Level 아래의 MetaSetVariable(s)의 데이터 플로우)
 			if(EquGenUtil.isArray(ei.type())) {
-				Collection<XSubseteqY> xys = EquGenUtil.constrain(
+				Collection<XSubseteqY> xys = XSubseteqY.constrain(
 						cichii, (ArrayMetaSetVariable) cchi_base);
 				v.getCurrCF().addMetaConstraints(xys);
 			}

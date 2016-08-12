@@ -59,9 +59,9 @@ public class EquGenConditionalExt extends EquGenExprExt {
 		//   3-2. 배열인 경우, T1{Chi1} <: T{Chi}와 T2{Chi2} <: T{Chi}의 하위 레벨 제약식을 추가
 		//         (Top Level 아래의 MetaSetVariable(s)의 데이터 플로우)
 		if(EquGenUtil.isArray(tchi)) {
-			Collection<XSubseteqY> xys1 = EquGenUtil.constrain(
+			Collection<XSubseteqY> xys1 = XSubseteqY.constrain(
 					 t1chi1, (ArrayMetaSetVariable) tchi);
-			Collection<XSubseteqY> xys2 = EquGenUtil.constrain(
+			Collection<XSubseteqY> xys2 = XSubseteqY.constrain(
 					t2chi2, (ArrayMetaSetVariable) tchi);
 			v.getCurrCF().addMetaConstraints(xys1);
 			v.getCurrCF().addMetaConstraints(xys2);

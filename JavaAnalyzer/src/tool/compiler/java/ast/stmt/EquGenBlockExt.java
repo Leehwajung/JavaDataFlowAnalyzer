@@ -1,8 +1,6 @@
 package tool.compiler.java.ast.stmt;
 
-import java.util.LinkedHashMap;
-import java.util.LinkedList;
-import java.util.Map.Entry;
+import java.util.ArrayList;
 
 import polyglot.ast.Block;
 import polyglot.ast.Node;
@@ -34,31 +32,32 @@ public class EquGenBlockExt extends EquGenStmtExt {
 		
 		return super.equGenEnter(v);
 	}
-	
+	 
 	@Override
 	public Node equGenLeave(EquGenerator v) {
 		ReportUtil.leaveReport(this);
 		Block block = (Block) this.node();
 		
 		// 하위의 Effects 찾기
-		EffectSetVariable exnEffect = null;
-		LinkedHashMap<EffectSetVariable, EffectSetVarSource> exnEffMapForReport = new LinkedHashMap<>();
-		int size = 0;
+		ArrayList<EffectSetVariable> exns = new ArrayList<>();
 		for (Stmt subStmt : block.statements()) {
 			EffectSetVariable currExn = EquGenStmtExt.exceptionEffect(subStmt);
 			if (currExn != null) {
-				size++;
-				exnEffMapForReport.put(currExn, EffectSetVarSource.SubStatement);
-				if (size == 1) {
-					exnEffect = currExn;
-				} else {
-					exnEffect = new  EffectUnion(exnEffect, currExn);
-					exnEffMapForReport.put(exnEffect, EffectSetVarSource.New);
-				}
+				exns.add(currExn);
 			}
 		}
-		report(exnEffMapForReport);
-		setExceptionEffect(exnEffect);
+		if (!exns.isEmpty()) {
+			EffectSetVarSource src_ExnEffect;
+			if (exns.size() > 1) {
+				src_ExnEffect = EffectSetVarSource.New;
+				ReportUtil.report(exns, EffectSetVarSource.SubStatement, EffectSetVarGoal.Flow);
+			} else {
+				src_ExnEffect = EffectSetVarSource.SubStatement;
+			}
+			EffectSetVariable exnEffect = EffectUnion.unionize(exns);
+			ReportUtil.report(exnEffect, src_ExnEffect, EffectSetVarGoal.Return);
+			setExceptionEffect(exnEffect);
+		}
 		
 		// 로컬 환경 해제
 		LocalEnvironment localEnv = v.peekTypeEnv().pop();
@@ -70,22 +69,5 @@ public class EquGenBlockExt extends EquGenStmtExt {
 	@Override
 	public String getKind() {
 		return KIND;
-	}
-	
-	
-	
-	/**
-	 * Report Exception Effects
-	 * @param reportMap
-	 */
-	private static final void report(LinkedHashMap<EffectSetVariable, EffectSetVarSource> exnEffMapForReport) {
-		if (exnEffMapForReport.size() > 0) {
-			LinkedList<Entry<EffectSetVariable, EffectSetVarSource>> exnEffListForReport = new LinkedList<>(exnEffMapForReport.entrySet());
-			Entry<EffectSetVariable, EffectSetVarSource> exnEffForReport = exnEffListForReport.removeLast();
-			for (Entry<EffectSetVariable, EffectSetVarSource> exnEffFlowForReport : exnEffListForReport) {
-				ReportUtil.report(exnEffFlowForReport.getKey(), exnEffFlowForReport.getValue(), EffectSetVarGoal.Flow);
-			}
-			ReportUtil.report(exnEffForReport.getKey(), exnEffForReport.getValue(), EffectSetVarGoal.Return);
-		}
 	}
 }

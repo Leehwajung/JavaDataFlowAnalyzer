@@ -5,6 +5,7 @@ import polyglot.ext.jl5.types.JL5MethodInstance;
 import polyglot.ext.jl5.types.JL5ProcedureInstance;
 import polyglot.ext.jl5.types.TypeVariable;
 import polyglot.types.Type;
+import polyglot.util.Pair;
 import tool.compiler.java.aos.AbsObjSet;
 import tool.compiler.java.aos.MetaSetVariable;
 import tool.compiler.java.aos.TypedSetVariable;
@@ -81,7 +82,7 @@ public class MethodConstraint extends CodeConstraint {
 	
 	
 	// TODO: 제네릭 메서드 대응 필요: 현재 구현은, 타입 변수의 경우에 일치하는 타입이 없을 것이므로, subst 되지 않는 경우가 발생할 것 (제네릭 클래스는?)
-	public ConstraintsPair apply(Collection<TypedSetVariable> XFormals) {
+	public Pair<Collection<? extends Constraint>, TypedSetVariable> apply(Collection<TypedSetVariable> XFormals) {
 		
 		// 앞에서 만든 X1~Xn과 X_e1~X_en을 자료흐름 관계를 제약식 집합 CS1으로 만든다.
 		ArrayList<XSubseteqY> cs1 = new ArrayList<>();
@@ -157,7 +158,7 @@ public class MethodConstraint extends CodeConstraint {
 		cs.addAll(cs1);
 		cs.addAll(cs2);
 		
-		return new ConstraintsPair(cs, x_ret);
+		return new Pair<Collection<? extends Constraint>, TypedSetVariable>(cs, x_ret);
 	}
 	
 	/**
@@ -307,36 +308,5 @@ public class MethodConstraint extends CodeConstraint {
 			return false;
 		}
 		return true;
-	}
-	
-	
-	public static class ConstraintsPair {
-		
-		private Collection<? extends Constraint> cs;
-		private TypedSetVariable xret;
-		
-		/**
-		 * @param cs
-		 * @param xret
-		 */
-		protected ConstraintsPair(Collection<? extends Constraint> cs, TypedSetVariable xret) {
-			super();
-			this.cs = cs;
-			this.xret = xret;
-		}
-		
-		/**
-		 * @return the cs
-		 */
-		public Collection<? extends Constraint> getCS() {
-			return cs;
-		}
-		
-		/**
-		 * @return the xret
-		 */
-		public TypedSetVariable getXret() {
-			return xret;
-		}
 	}
 }

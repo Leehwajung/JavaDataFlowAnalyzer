@@ -63,7 +63,7 @@ public class EquGenLocalDeclExt extends EquGenStmtExt {
 			//   2-3. 배열 변수인 경우, D{Chi2} <: C{Chi1}의 하위 레벨 제약식을 추가
 			//	         (Top Level 아래의 MetaSetVariable(s)의 데이터 플로우)
 			if(EquGenUtil.isArray(localDeclType)) {
-				Collection<XSubseteqY> xys = EquGenUtil.constrain(
+				Collection<XSubseteqY> xys = XSubseteqY.constrain(
 						dchi2, (ArrayMetaSetVariable) cchi1);
 				v.getCurrCF().addMetaConstraints(xys);
 			}
