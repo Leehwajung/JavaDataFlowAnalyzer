@@ -33,11 +33,14 @@ public class EquGenSingleCatchExt extends EquGenCatchExt {
 		ReportUtil.leaveReport(this);
 		Catch singleCatch = (Catch) this.node();
 		
-		Type catchType = singleCatch.catchType();
-		EffectSet exnEffect = new EffectSet(new ExnEffect((JL5ClassType) catchType));
+		// catch (C e) { stmt }
+		//   1. e의 타입 C를 가져와 EffectSet을 만들고 이를 리턴하고,
+		Type c = singleCatch.catchType();
+		EffectSet exnEffect = new EffectSet(new ExnEffect((JL5ClassType) c));
 		setFormalTypes(exnEffect);
 		ReportUtil.report(exnEffect, EffectSetVarSource.New, EffectSetVarGoal.Return);
 		
+		//   2. stmt를 분석하면 나오는 exn effect인 exnEffect를 가져와 이를 리턴한다. (EquGenCatchExt)
 		return super.equGenLeave(v);
 	}
 	

@@ -9,6 +9,7 @@ import tool.compiler.java.visit.EquGenerator;
  * SwitchBlock <: SwitchElement <: Stmt <: Term <: Node
  * @author LHJ
  */
+@Deprecated
 public class EquGenSwitchBlockExt extends EquGenBlockExt {
 	private static final long serialVersionUID = SerialVersionUID.generate();
 	public static final String KIND = "Switch Block";

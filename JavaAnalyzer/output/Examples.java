@@ -2,7 +2,7 @@ class Y {
     public Y() { super(); }
     
     public static final String jlc$CompilerVersion$jl7 = "2.7.1";
-    public static final long jlc$SourceLastModified$jl7 = 1471169317630L;
+    public static final long jlc$SourceLastModified$jl7 = 1471179298573L;
     public static final String jlc$ClassType$jl7 =
       ("H4sIAAAAAAAAALVWX2wURRifu/6vhbu2UBChlHKYlD93NIqJFiPlLLb1oA0H" +
        "GOrJMd2da7ed211m5+i1iIKJgSdCIiA+wBPExKgQI9EXTI2JYjAmGGLURPRR" +
@@ -53,7 +53,7 @@ class X {
     public X() { super(); }
     
     public static final String jlc$CompilerVersion$jl7 = "2.7.1";
-    public static final long jlc$SourceLastModified$jl7 = 1471169317630L;
+    public static final long jlc$SourceLastModified$jl7 = 1471179298573L;
     public static final String jlc$ClassType$jl7 =
       ("H4sIAAAAAAAAALVXbWwURRieu37RUuhRPq3QllIw5eMOVEy0yNfR0taDNlxB" +
        "OCvHdHeuXbq3u+zOtUexiiQG4g9CtCAmwC+ISkCIkUhiMDVGgWBMMMSoiWD8" +
@@ -122,7 +122,7 @@ class Z<T> {
     public Z() { super(); }
     
     public static final String jlc$CompilerVersion$jl7 = "2.7.1";
-    public static final long jlc$SourceLastModified$jl7 = 1471169317630L;
+    public static final long jlc$SourceLastModified$jl7 = 1471179298573L;
     public static final String jlc$ClassType$jl7 =
       ("H4sIAAAAAAAAALVYfWwUxxWfW39hY2xjB5dQvm2gJuEutKVV44RgDhvbHNjC" +
        "DgXX4VjvzdkLe7ub3T37gJgvqQL1D5SkDqUpQY0EbROZkFZFUdWmchWlCaKl" +
@@ -215,7 +215,7 @@ class C {
         public Inner() { super(); }
         
         public static final String jlc$CompilerVersion$jl7 = "2.7.1";
-        public static final long jlc$SourceLastModified$jl7 = 1471169317630L;
+        public static final long jlc$SourceLastModified$jl7 = 1471179298573L;
         public static final String jlc$ClassType$jl7 =
           ("H4sIAAAAAAAAALVWXWwUVRQ+u+32z9LdFloQoRRYMPxkV1RItBgpa7GtC21Y" +
            "qLEuLLczd9tpZ2eGmbvttIiCicEnQiIgPsATxMSoECPRF0yNiWIwJhhi1ET0" +
@@ -254,7 +254,7 @@ class C {
     }
     
     public static final String jlc$CompilerVersion$jl7 = "2.7.1";
-    public static final long jlc$SourceLastModified$jl7 = 1471169317630L;
+    public static final long jlc$SourceLastModified$jl7 = 1471179298573L;
     public static final String jlc$ClassType$jl7 =
       ("H4sIAAAAAAAAALVYe2wUxxmf2zs/Mb7DDoRS8ANMJPO4CyRETZ2SmIsd2z3w" +
        "iXNccXVzjHfn7MV7u5vdOfswmABSBaoUGrVOQiTCX0RtI1KiqPShKpWrqg00" +
@@ -311,7 +311,7 @@ interface I {
     void m();
     
     String jlc$CompilerVersion$jl7 = "2.7.1";
-    long jlc$SourceLastModified$jl7 = 1471169317630L;
+    long jlc$SourceLastModified$jl7 = 1471179298573L;
     String jlc$ClassType$jl7 =
       ("H4sIAAAAAAAAALVZDXAUVx1/d/kOIQlJgUrb8BU6QmkiVZiRtJYkDZD08jFc" +
        "gDamPV523yVL9naX3XfJJTRMi1aQGShTA8WR0tEB+zGlMFWm1U4r1ZkCrXTE" +
@@ -376,7 +376,7 @@ class CC extends C {
     public CC() { super(); }
     
     public static final String jlc$CompilerVersion$jl7 = "2.7.1";
-    public static final long jlc$SourceLastModified$jl7 = 1471169317630L;
+    public static final long jlc$SourceLastModified$jl7 = 1471179298573L;
     public static final String jlc$ClassType$jl7 =
       ("H4sIAAAAAAAAALVXW2wUVRg+u73XwvYCBRFogYIpl10axUSLSFlb2rrQ2gWM" +
        "tbKczpztDp2dGWbOtttiFUgMxAdCtCAawReIl4CgkUhiMDUmAsGYYIhRE8E3" +
@@ -423,7 +423,7 @@ class CCC extends CC {
     public CCC() { super(); }
     
     public static final String jlc$CompilerVersion$jl7 = "2.7.1";
-    public static final long jlc$SourceLastModified$jl7 = 1471169317630L;
+    public static final long jlc$SourceLastModified$jl7 = 1471179298573L;
     public static final String jlc$ClassType$jl7 =
       ("H4sIAAAAAAAAALVXb2wURRSfu/6vhbu2tCBCKW3BlD93oGKiRaGcrW05aEOh" +
        "6Fk5prtz7dK93WV3rr0Wq0BiIH4gJBbEBPgE0RAQYiSaGEyNUTEYEwwxYiIY" +
@@ -516,12 +516,18 @@ class CCCC extends CC {
         finally {
             int iff = 3;
         }
+        do  { aa = 10; }while(i == 0); 
+        LL: for (int elem : intArr1) {
+            for (int i1 = 0, i2 = 1; i1 < 10; i1++, i2++) {
+                if (i1 == 5) { continue LL; }
+            }
+        }
     }
     
     public CCCC() { super(); }
     
     public static final String jlc$CompilerVersion$jl7 = "2.7.1";
-    public static final long jlc$SourceLastModified$jl7 = 1471169317630L;
+    public static final long jlc$SourceLastModified$jl7 = 1471179298573L;
     public static final String jlc$ClassType$jl7 =
       ("H4sIAAAAAAAAALVXa2wUVRS+u32Xwm4LFERoCy2Y8tilUUy0iJS1pa0LbVjA" +
        "WArL7czddui8mLnbbotVIDEQfxCiBTERfkF8BIQYiSYGU2MiEIwJhhg1Efwn" +

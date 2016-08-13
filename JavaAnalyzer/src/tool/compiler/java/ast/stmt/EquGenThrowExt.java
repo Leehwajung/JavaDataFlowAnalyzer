@@ -35,9 +35,11 @@ public class EquGenThrowExt extends EquGenStmtExt {
 		ReportUtil.leaveReport(this);
 		Throw throwStmt = (Throw) this.node();
 		
-		MetaSetVariable msv = EquGenExprExt.metaSetVar(throwStmt.expr());
-		ReportUtil.report(msv, MetaSetVarSource.SubExpression, MetaSetVarGoal.Effect);
-		EffectVariable exnEffect = new EffectVariable(EffectName.ExnEff, msv);
+		// throw expr;
+		//   expr의 타입 C{Chi}을 가져와 EffectVariable을 만들고 이를 리턴한다.
+		MetaSetVariable cchi = EquGenExprExt.metaSetVar(throwStmt.expr());
+		ReportUtil.report(cchi, MetaSetVarSource.SubExpression, MetaSetVarGoal.Effect);
+		EffectVariable exnEffect = new EffectVariable(EffectName.ExnEff, cchi);
 		setExceptionEffect(exnEffect);
 		ReportUtil.report(exnEffect, EffectSetVarSource.New, EffectSetVarGoal.Return);
 		

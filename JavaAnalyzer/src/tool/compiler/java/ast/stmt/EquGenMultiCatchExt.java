@@ -35,14 +35,17 @@ public class EquGenMultiCatchExt extends EquGenCatchExt {
 		ReportUtil.leaveReport(this);
 		MultiCatch multiCatch = (MultiCatch) this.node();
 		
-		ArrayList<ExnEffect> effectElems = new ArrayList<>();
-		for (TypeNode alternative : multiCatch.alternatives()) {
-			effectElems.add(new ExnEffect((JL5ClassType) alternative.type()));
+		// catch (C1 | ... | Cn e) { stmt }
+		//   1. e의 타입 C1, ... , Cn을 가져와 EffectSet을 만들고 이를 리턴하고,
+		ArrayList<ExnEffect> cs = new ArrayList<>();
+		for (TypeNode ci : multiCatch.alternatives()) {
+			cs.add(new ExnEffect((JL5ClassType) ci.type()));
 		}
-		EffectSet exnEffect = new EffectSet(effectElems);
+		EffectSet exnEffect = new EffectSet(cs);
 		setFormalTypes(exnEffect);
 		ReportUtil.report(exnEffect, EffectSetVarSource.New, EffectSetVarGoal.Return);
 		
+		//   2. stmt를 분석하면 나오는 exn effect인 exnEffect를 가져와 이를 리턴한다. (EquGenCatchExt)
 		return super.equGenLeave(v);
 	}
 	

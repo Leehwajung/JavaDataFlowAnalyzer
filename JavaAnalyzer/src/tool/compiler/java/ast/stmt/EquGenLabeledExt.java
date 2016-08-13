@@ -1,8 +1,12 @@
 package tool.compiler.java.ast.stmt;
 
+import polyglot.ast.Labeled;
 import polyglot.ast.Node;
 import polyglot.util.SerialVersionUID;
+import tool.compiler.java.effect.EffectSetVariable;
 import tool.compiler.java.util.ReportUtil;
+import tool.compiler.java.util.ReportUtil.EffectSetVarGoal;
+import tool.compiler.java.util.ReportUtil.EffectSetVarSource;
 import tool.compiler.java.visit.EquGenerator;
 
 /**
@@ -24,7 +28,15 @@ public class EquGenLabeledExt extends EquGenStmtExt {
 	@Override
 	public Node equGenLeave(EquGenerator v) {
 		ReportUtil.leaveReport(this);
-//		Labeled labeled = (Labeled)this.node();
+		Labeled labeled = (Labeled)this.node();
+		
+		// name: stmt
+		//   stmt를 분석하면 나오는 exn effect인 exnEffect를 가져와 이를 리턴한다.
+		final EffectSetVariable exnEffect = EquGenStmtExt.exceptionEffect(labeled.statement());
+		if (exnEffect != null) {
+			setExceptionEffect(exnEffect);
+			ReportUtil.report(exnEffect, EffectSetVarSource.SubExpression, EffectSetVarGoal.Return);
+		}
 		
 		setLocalEnv(v.peekTypeEnv().getCurrEnv());
 		

@@ -1,6 +1,7 @@
 package tool.compiler.java.ast.stmt;
 
 import java.util.HashMap;
+import java.util.Map;
 
 import polyglot.ast.Node;
 import polyglot.ast.Stmt;
@@ -8,7 +9,11 @@ import polyglot.util.SerialVersionUID;
 import tool.compiler.java.ast.EquGenExt;
 import tool.compiler.java.effect.EffectName;
 import tool.compiler.java.effect.EffectSetVariable;
+import tool.compiler.java.effect.EffectUnion;
 import tool.compiler.java.env.LocalEnvironment;
+import tool.compiler.java.util.ReportUtil;
+import tool.compiler.java.util.ReportUtil.EffectSetVarGoal;
+import tool.compiler.java.util.ReportUtil.EffectSetVarSource;
 import tool.compiler.java.visit.EquGenerator;
 
 /**
@@ -25,7 +30,7 @@ public class EquGenStmtExt extends EquGenExt {
 	@Override
 	public EquGenerator equGenEnter(EquGenerator v) {
 //		ReportUtil.enterReport(this);
-//		Stmt stmt = (Stmt)this.node();
+//		Stmt stmt = (Stmt) this.node();
 		
 		return super.equGenEnter(v);
 	}
@@ -33,7 +38,7 @@ public class EquGenStmtExt extends EquGenExt {
 	@Override
 	public Node equGenLeave(EquGenerator v) {
 //		ReportUtil.leaveReport(this);
-//		Stmt stmt = (Stmt)this.node();
+//		Stmt stmt = (Stmt) this.node();
 		
 		return super.equGenLeave(v);
 	}
@@ -89,6 +94,28 @@ public class EquGenStmtExt extends EquGenExt {
 			addEffect(EffectName.ExnEff, exceptionEffect);
 		} catch (IllegalArgumentException e) {
 			throw new IllegalArgumentException("The argument exceptionEffect is not Exception Effect.");
+		}
+	}
+	
+	/**
+	 * @param exceptionEffects Exception Effects to set
+	 */
+	public void setExceptionEffect(final Map<EffectSetVariable, EffectSetVarSource> exceptionEffects) {
+		try {
+			if (!exceptionEffects.isEmpty()) {		// 아래의 ExnEffect가 null이 아님이 보장됨.
+				EffectSetVarSource src_ExnEffect;
+				if (exceptionEffects.size() > 1) {	// 새로운 EffectUnion이 생성되는 것이 보장됨.
+					src_ExnEffect = EffectSetVarSource.New;
+					ReportUtil.report(exceptionEffects, EffectSetVarGoal.Flow);
+				} else {										// exceptionEffects의 size가 1임이 보장됨.
+					src_ExnEffect = (EffectSetVarSource) exceptionEffects.values().toArray()[0];
+				}
+				final EffectSetVariable ExnEffect = EffectUnion.unionize(exceptionEffects.keySet());
+				setExceptionEffect(ExnEffect);
+				ReportUtil.report(ExnEffect, src_ExnEffect, EffectSetVarGoal.Return);
+			}
+		} catch (NullPointerException e) {
+			// x_effs가 null인 경우는 무시
 		}
 	}
 	

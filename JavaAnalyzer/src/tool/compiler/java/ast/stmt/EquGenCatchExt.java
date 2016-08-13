@@ -49,11 +49,12 @@ public abstract class EquGenCatchExt extends EquGenStmtExt {
 	public Node equGenLeave(EquGenerator v) {
 		Catch catchStmt = (Catch) this.node();
 		
-		// catch 블록의 Exception Effect를 catch 노드의 Exception Effect로 설정
-		EffectSetVariable exnEffect = exceptionEffect(catchStmt.body());
+		// catch (C e) { stmt }
+		//   stmt를 분석하면 나오는 exn effect인 exnEffect를 가져와 이를 리턴한다.
+		final EffectSetVariable exnEffect = EquGenStmtExt.exceptionEffect(catchStmt.body());
 		if (exnEffect != null) {
 			setExceptionEffect(exnEffect);
-			ReportUtil.report(exnEffect, EffectSetVarSource.SubStatement, EffectSetVarGoal.Return);
+			ReportUtil.report(exnEffect, EffectSetVarSource.SubExpression, EffectSetVarGoal.Return);
 		}
 		
 		// 로컬 환경 해제

@@ -144,5 +144,17 @@ class CCCC extends CC {
 		} finally {
 			int iff = 3;
 		}
+		
+		do {
+			aa = 10;
+		} while (i == 0);
+		
+		LL: for (int elem : intArr1) {
+			for (int i1 = 0, i2 = 1; i1 < 10 ; i1++, i2++) {
+				if (i1 == 5) {
+					continue LL;
+				}
+			}
+		}
 	}
 }

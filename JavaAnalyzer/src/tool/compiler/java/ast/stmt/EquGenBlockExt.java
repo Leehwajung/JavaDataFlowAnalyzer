@@ -1,18 +1,16 @@
 package tool.compiler.java.ast.stmt;
 
-import java.util.ArrayList;
-
 import polyglot.ast.Block;
 import polyglot.ast.Node;
 import polyglot.ast.Stmt;
 import polyglot.util.SerialVersionUID;
 import tool.compiler.java.effect.EffectSetVariable;
-import tool.compiler.java.effect.EffectUnion;
 import tool.compiler.java.env.LocalEnvironment;
 import tool.compiler.java.util.ReportUtil;
-import tool.compiler.java.util.ReportUtil.EffectSetVarGoal;
 import tool.compiler.java.util.ReportUtil.EffectSetVarSource;
 import tool.compiler.java.visit.EquGenerator;
+
+import java.util.LinkedHashMap;
 
 /**
  * Block <: CompoundStmt <: Stmt <: Term <: Node
@@ -38,26 +36,19 @@ public class EquGenBlockExt extends EquGenStmtExt {
 		ReportUtil.leaveReport(this);
 		Block block = (Block) this.node();
 		
-		// 하위의 Effects 찾기
-		ArrayList<EffectSetVariable> exns = new ArrayList<>();
+		// { stmt1 ... stmtn }
+		LinkedHashMap<EffectSetVariable, EffectSetVarSource> x_effs = new LinkedHashMap<>();
+		
+		//   1. stmt1, ... , stmtn를 분석해서 나오는 exn effects인 X_eff1, ... , X_effn를 찾아,
 		for (Stmt subStmt : block.statements()) {
-			EffectSetVariable currExn = EquGenStmtExt.exceptionEffect(subStmt);
-			if (currExn != null) {
-				exns.add(currExn);
+			EffectSetVariable x_effi = EquGenStmtExt.exceptionEffect(subStmt);
+			if (x_effi != null) {
+				x_effs.put(x_effi, EffectSetVarSource.SubStatement);
 			}
 		}
-		if (!exns.isEmpty()) {
-			EffectSetVarSource src_ExnEffect;
-			if (exns.size() > 1) {
-				src_ExnEffect = EffectSetVarSource.New;
-				ReportUtil.report(exns, EffectSetVarSource.SubStatement, EffectSetVarGoal.Flow);
-			} else {
-				src_ExnEffect = EffectSetVarSource.SubStatement;
-			}
-			EffectSetVariable exnEffect = EffectUnion.unionize(exns);
-			ReportUtil.report(exnEffect, src_ExnEffect, EffectSetVarGoal.Return);
-			setExceptionEffect(exnEffect);
-		}
+		
+		//   2. X_eff1 ∪ ... ∪ X_effn를 구하고, 이를 리턴한다.
+		setExceptionEffect(x_effs);
 		
 		// 로컬 환경 해제
 		LocalEnvironment localEnv = v.peekTypeEnv().pop();
