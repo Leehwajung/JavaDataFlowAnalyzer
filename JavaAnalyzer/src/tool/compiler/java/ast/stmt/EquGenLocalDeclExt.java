@@ -10,8 +10,11 @@ import tool.compiler.java.aos.ArrayMetaSetVariable;
 import tool.compiler.java.aos.MetaSetVariable;
 import tool.compiler.java.ast.expr.EquGenExprExt;
 import tool.compiler.java.constraint.XSubseteqY;
+import tool.compiler.java.effect.EffectSetVariable;
 import tool.compiler.java.util.EquGenUtil;
 import tool.compiler.java.util.ReportUtil;
+import tool.compiler.java.util.ReportUtil.EffectSetVarGoal;
+import tool.compiler.java.util.ReportUtil.EffectSetVarSource;
 import tool.compiler.java.util.ReportUtil.MetaSetVarGoal;
 import tool.compiler.java.util.ReportUtil.MetaSetVarSource;
 import tool.compiler.java.visit.EquGenerator;
@@ -66,6 +69,13 @@ public class EquGenLocalDeclExt extends EquGenStmtExt {
 				Collection<XSubseteqY> xys = XSubseteqY.constrain(
 						dchi2, (ArrayMetaSetVariable) cchi1);
 				v.getCurrCF().addMetaConstraints(xys);
+			}
+			
+			//   2-4. e를 분석하면 나오는 exn effect인 exnEffect를 가져와 이를 리턴한다.
+			final EffectSetVariable exnEffect = EquGenExprExt.exceptionEffect(e);
+			if (exnEffect != null) {
+				setExceptionEffect(exnEffect);
+				ReportUtil.report(exnEffect, EffectSetVarSource.SubExpression, EffectSetVarGoal.Return);
 			}
 		}
 		

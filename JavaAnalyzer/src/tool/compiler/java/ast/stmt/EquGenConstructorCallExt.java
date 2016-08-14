@@ -1,11 +1,16 @@
 package tool.compiler.java.ast.stmt;
 
 import polyglot.ast.ConstructorCall;
+import polyglot.ast.Expr;
 import polyglot.ast.Node;
 import polyglot.ext.jl5.types.JL5ProcedureInstance;
 import polyglot.util.SerialVersionUID;
+import tool.compiler.java.ast.expr.EquGenExprExt;
+import tool.compiler.java.effect.EffectSetVariable;
 import tool.compiler.java.info.MethodCallInfo;
 import tool.compiler.java.util.ReportUtil;
+import tool.compiler.java.util.ReportUtil.EffectSetVarGoal;
+import tool.compiler.java.util.ReportUtil.EffectSetVarSource;
 import tool.compiler.java.visit.EquGenerator;
 
 /**
@@ -43,9 +48,19 @@ public class EquGenConstructorCallExt extends EquGenStmtExt {
 	@Override
 	public Node equGenLeave(EquGenerator v) {
 		ReportUtil.leaveReport(this);
-//		ConstructorCall ctorCall = (ConstructorCall) this.node();
+		ConstructorCall ctorCall = (ConstructorCall) this.node();
 //		JL5ConstructorInstance ctorIns = (JL5ConstructorInstance) ctorCall.constructorInstance();
 		
+		// this(); / super();
+		//   expr를 분석하면 나오는 exn effect인 exnEffect를 가져와 이를 리턴한다.
+		final Expr qualifier = ctorCall.qualifier();
+		if (qualifier != null) {
+			final EffectSetVariable exnEffect = EquGenExprExt.exceptionEffect(qualifier);
+			if (exnEffect != null) {
+				setExceptionEffect(exnEffect);
+				ReportUtil.report(exnEffect, EffectSetVarSource.SubExpression, EffectSetVarGoal.Return);
+			} 
+		}
 		setLocalEnv(v.peekTypeEnv().getCurrEnv());
 		
 		return super.equGenLeave(v);

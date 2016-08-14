@@ -279,6 +279,7 @@ public final class ReportUtil {
 	
 	public static enum EffectSetVarSource {
 		New,
+		MethodEnvironment,
 		SubExpression,
 		SubStatement;
 		
@@ -286,6 +287,8 @@ public final class ReportUtil {
 			switch (this) {
 			case New:
 				return "New";
+			case MethodEnvironment:
+				return "Method Environment";
 			case SubExpression:
 				return "Sub-Expression";
 			case SubStatement:

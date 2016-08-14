@@ -20,7 +20,7 @@ public class EquGenLabeledExt extends EquGenStmtExt {
 	@Override
 	public EquGenerator equGenEnter(EquGenerator v) {
 		ReportUtil.enterReport(this);
-//		Labeled labeled = (Labeled)this.node();
+//		Labeled labeled = (Labeled) this.node();
 		
 		return super.equGenEnter(v);
 	}
@@ -28,14 +28,14 @@ public class EquGenLabeledExt extends EquGenStmtExt {
 	@Override
 	public Node equGenLeave(EquGenerator v) {
 		ReportUtil.leaveReport(this);
-		Labeled labeled = (Labeled)this.node();
+		Labeled labeled = (Labeled) this.node();
 		
 		// name: stmt
 		//   stmt를 분석하면 나오는 exn effect인 exnEffect를 가져와 이를 리턴한다.
 		final EffectSetVariable exnEffect = EquGenStmtExt.exceptionEffect(labeled.statement());
 		if (exnEffect != null) {
 			setExceptionEffect(exnEffect);
-			ReportUtil.report(exnEffect, EffectSetVarSource.SubExpression, EffectSetVarGoal.Return);
+			ReportUtil.report(exnEffect, EffectSetVarSource.SubStatement, EffectSetVarGoal.Return);
 		}
 		
 		setLocalEnv(v.peekTypeEnv().getCurrEnv());
