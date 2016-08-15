@@ -6,6 +6,7 @@ import polyglot.ast.Expr;
 import polyglot.ast.Node;
 import polyglot.util.SerialVersionUID;
 import tool.compiler.java.aos.MetaSetVariable;
+import tool.compiler.java.ast.EquGenEffectableExt;
 import tool.compiler.java.ast.EquGenExt;
 import tool.compiler.java.effect.EffectName;
 import tool.compiler.java.effect.EffectSetVariable;
@@ -16,12 +17,11 @@ import tool.compiler.java.visit.EquGenerator;
  * Expr <: Receiver <: Prefix <: Node
  * @author LHJ
  */
-public class EquGenExprExt extends EquGenExt {
+public class EquGenExprExt extends EquGenEffectableExt {
 	private static final long serialVersionUID = SerialVersionUID.generate();
 	public static final String KIND = "Expression";
 	
 	private MetaSetVariable metaSetVar = null;
-	private HashMap<EffectName, EffectSetVariable> effects = null;
 	
 	@Override
 	public EquGenerator equGenEnter(EquGenerator v) {
@@ -68,52 +68,11 @@ public class EquGenExprExt extends EquGenExt {
 	}
 	
 	/**
-	 * @return the Exception Effect
-	 */
-	public final EffectSetVariable exceptionEffect() {
-		return effect(EffectName.ExnEff);
-	}
-	
-	/**
 	 * @param n node
 	 * @return the Exception Effect of node n
 	 */
 	public static final EffectSetVariable exceptionEffect(Expr n) {
 		return ((EquGenExprExt) EquGenExt.ext(n)).exceptionEffect();
-	}
-	
-	/**
-	 * @param exceptionEffect the Exception Effect to set
-	 */
-	protected final void setExceptionEffect(EffectSetVariable exceptionEffect) {
-		try {
-			addEffect(EffectName.ExnEff, exceptionEffect);
-		} catch (IllegalArgumentException e) {
-			throw new IllegalArgumentException("The argument exceptionEffect is not Exception Effect.");
-		}
-	}
-	
-	/**
-	 * @param type Effect Name
-	 * @return the Effect
-	 */
-	public final EffectSetVariable effect(EffectName type) {
-		try {
-			return effects.get(type);
-		} catch(NullPointerException e) {
-			return null;
-		}
-	}
-	
-	/**
-	 * @return all effects
-	 */
-	public final HashMap<EffectName, EffectSetVariable> effects() {
-		try {
-			return effects;
-		} catch(NullPointerException e) {
-			return null;
-		}
 	}
 	
 	/**
@@ -131,33 +90,5 @@ public class EquGenExprExt extends EquGenExt {
 	 */
 	public static final HashMap<EffectName, EffectSetVariable> effects(Expr n) {
 		return ((EquGenExprExt) EquGenExt.ext(n)).effects();
-	}
-	
-	/**
-	 * @param effect the Effect to add
-	 */
-	protected final void addEffect(EffectSetVariable effect) {
-		if (effect != null) {
-			if(effects == null) {
-				effects = new HashMap<>();
-			}
-			effects.put(effect.getEffectType(), effect);
-		}
-	}
-	
-	/**
-	 * @param type	the type of the effect
-	 * @param effect	the Effect to add
-	 */
-	protected final void addEffect(EffectName type, EffectSetVariable effect) {
-		if (effect != null) {
-			if (effect.getEffectType().equals(type)) {
-				addEffect(effect);
-			} else {
-				throw new IllegalArgumentException("Argumented type and effect's type are NOT matched.");
-			}
-		} else if (effects != null && effects.containsKey(type)) {
-			effects.remove(type);
-		}
 	}
 }

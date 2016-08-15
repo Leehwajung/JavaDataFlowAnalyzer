@@ -25,7 +25,7 @@ public class EquGenThrowExt extends EquGenStmtExt {
 	@Override
 	public EquGenerator equGenEnter(EquGenerator v) {
 		ReportUtil.enterReport(this);
-//		Throw throwStmt = (Throw)this.node();
+//		Throw throwStmt = (Throw) this.node();
 		
 		return super.equGenEnter(v);
 	}
@@ -40,8 +40,10 @@ public class EquGenThrowExt extends EquGenStmtExt {
 		MetaSetVariable cchi = EquGenExprExt.metaSetVar(throwStmt.expr());
 		ReportUtil.report(cchi, MetaSetVarSource.SubExpression, MetaSetVarGoal.Effect);
 		
-		//   2. EffectVariable을 만들고 이를 리턴한다.
+		//   2. EffectVariable을 만들고
 		EffectVariable exnEffect = new EffectVariable(EffectName.ExnEff, cchi);
+		
+		//   3. 이를 리턴할 exn effect로 지정.
 		setExceptionEffect(exnEffect);
 		ReportUtil.report(exnEffect, EffectSetVarSource.New, EffectSetVarGoal.Return);
 		

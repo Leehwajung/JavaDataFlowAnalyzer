@@ -45,7 +45,7 @@ public class EquGenTryWithResourcesExt extends EquGenTryExt {
 		// Try Node의 탈출부에서 로컬 환경을 해제하는 것은 좋지 못한 것으로 판단된다. 
 		// 따라서, try block의 탈출부에서 환경을 해제하는 방법을 강구해야한다.
 		// 다만, 이미 컴파일러에서 catch/finally block가 Resources에 접근하는 것을 막으므로,
-		// Resources에 대한 MetaSetVariable에 접근하는 경우가 없음이 보장된다.
+		// Resources에 대한 MetaSetVariable에 접근하는 경우가 없음은 보장된다.
 		v.peekTypeEnv().pop();	// super에서 설정(setLocalEnv())했던 LocalEnv임
 		
 		return tryRes;

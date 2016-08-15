@@ -70,8 +70,10 @@ public class EquGenReturnExt extends EquGenStmtExt {
 			
 			// TODO: 아래의 1번과 2번 중에 알맞은 것을 선택해야 함.
 			// 1번
-			//   5. expr를 분석하면 나오는 exn effect인 exnEffect를 가져와 이를 리턴한다.
+			//   5. expr를 분석하면 나오는 exn effect인 exnEffect를 가져와
 			final EffectSetVariable exnEffect = EquGenExprExt.exceptionEffect(expr);
+			
+			//   6. exnEffect를 리턴할 exn effect로 지정.
 			if (exnEffect != null) {
 				setExceptionEffect(exnEffect);
 				ReportUtil.report(exnEffect, EffectSetVarSource.SubExpression, EffectSetVarGoal.Return);

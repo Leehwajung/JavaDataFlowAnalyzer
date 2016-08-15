@@ -32,7 +32,7 @@ import tool.compiler.java.ast.stmt.EquGenAssertExt;
 import tool.compiler.java.ast.stmt.EquGenBlockExt;
 import tool.compiler.java.ast.stmt.EquGenBranchExt;
 import tool.compiler.java.ast.stmt.EquGenCaseExt;
-import tool.compiler.java.ast.stmt.EquGenSingleCatchExt;
+import tool.compiler.java.ast.stmt.EquGenCatchExt;
 import tool.compiler.java.ast.stmt.EquGenConstructorCallExt;
 import tool.compiler.java.ast.stmt.EquGenDoExt;
 import tool.compiler.java.ast.stmt.EquGenEmptyExt;
@@ -508,7 +508,7 @@ public final class EquGenExtFactory_c extends EquGenAbstractExtFactory_c {
 	@Override
 	protected Ext extCatchImpl() {
 //		return super.extCatchImpl();
-		return new EquGenSingleCatchExt();
+		return new EquGenCatchExt();
 	}
 	
 	/**

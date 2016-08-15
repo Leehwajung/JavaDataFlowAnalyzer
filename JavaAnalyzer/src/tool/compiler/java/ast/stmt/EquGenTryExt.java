@@ -65,7 +65,7 @@ public class EquGenTryExt extends EquGenStmtExt {
 		//   4. catch되는 타입들 C1, ... , Ck을 가져와 그들의 합집합인 X_C를 만들어,
 			final ArrayList<EffectSet> cks = new ArrayList<>();
 			for (Catch catchBlock : tryStmt.catchBlocks()) {
-				final EffectSet ci = EquGenCatchExt.formalTypes(catchBlock);
+				final EffectSet ci = EquGenAbstractCatchExt.formalTypes(catchBlock);
 				cks.add(ci);
 			}
 			EffectSetVarSource src_x_c = EffectSetVarSource.SubStatement;
@@ -102,7 +102,7 @@ public class EquGenTryExt extends EquGenStmtExt {
 			x_effs.put(x_effn, EffectSetVarSource.SubStatement);
 		}
 		
-		//   8. 최종적으로 X_eff_res ∪ X_eff0 ∖ X_C ∪ X_eff1 ∪ ... ∪ X_effk ∪ X_effn을 구하고, 이를 리턴한다.
+		//   8. 최종적으로 X_eff_res ∪ X_eff0 ∖ X_C ∪ X_eff1 ∪ ... ∪ X_effk ∪ X_effn을 구하고, 이를 리턴할 exn effect로 지정.
 		setExceptionEffect(x_effs);
 		
 		setLocalEnv(v.peekTypeEnv().getCurrEnv());

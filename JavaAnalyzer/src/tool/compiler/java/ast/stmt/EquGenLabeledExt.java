@@ -30,9 +30,11 @@ public class EquGenLabeledExt extends EquGenStmtExt {
 		ReportUtil.leaveReport(this);
 		Labeled labeled = (Labeled) this.node();
 		
-		// name: stmt
-		//   stmt를 분석하면 나오는 exn effect인 exnEffect를 가져와 이를 리턴한다.
+		// label: stmt
+		//   1. stmt를 분석하면 나오는 exn effect인 exnEffect를 가져와
 		final EffectSetVariable exnEffect = EquGenStmtExt.exceptionEffect(labeled.statement());
+		
+		//   2. exnEffect를 리턴할 exn effect로 지정.
 		if (exnEffect != null) {
 			setExceptionEffect(exnEffect);
 			ReportUtil.report(exnEffect, EffectSetVarSource.SubStatement, EffectSetVarGoal.Return);

@@ -1,0 +1,109 @@
+package tool.compiler.java.ast;
+
+import java.util.HashMap;
+import java.util.Map;
+
+import polyglot.util.SerialVersionUID;
+import tool.compiler.java.effect.EffectName;
+import tool.compiler.java.effect.EffectSetVariable;
+import tool.compiler.java.effect.EffectUnion;
+import tool.compiler.java.util.ReportUtil;
+import tool.compiler.java.util.ReportUtil.EffectSetVarGoal;
+import tool.compiler.java.util.ReportUtil.EffectSetVarSource;
+
+public abstract class EquGenEffectableExt extends EquGenExt {
+	private static final long serialVersionUID = SerialVersionUID.generate();
+	
+	private HashMap<EffectName, EffectSetVariable> effects = null;
+	
+	/**
+	 * @return the Exception Effect
+	 */
+	public final EffectSetVariable exceptionEffect() {
+		return effect(EffectName.ExnEff);
+	}
+	
+	/**
+	 * @param exceptionEffect the Exception Effect to set
+	 */
+	protected final void setExceptionEffect(EffectSetVariable exceptionEffect) {
+		try {
+			addEffect(EffectName.ExnEff, exceptionEffect);
+		} catch (IllegalArgumentException e) {
+			throw new IllegalArgumentException("The argument exceptionEffect is not Exception Effect.");
+		}
+	}
+	
+	/**
+	 * @param exceptionEffects Exception Effects to set
+	 */
+	public final void setExceptionEffect(final Map<EffectSetVariable, EffectSetVarSource> exceptionEffects) {
+		try {
+			if (!exceptionEffects.isEmpty()) {		// 아래의 ExnEffect가 null이 아님이 보장됨.
+				EffectSetVarSource src_ExnEffect;
+				if (exceptionEffects.size() > 1) {	// 새로운 EffectUnion이 생성되는 것이 보장됨.
+					src_ExnEffect = EffectSetVarSource.New;
+					ReportUtil.report(exceptionEffects, EffectSetVarGoal.Flow);
+				} else {										// exceptionEffects의 size가 1임이 보장됨.
+					src_ExnEffect = (EffectSetVarSource) exceptionEffects.values().toArray()[0];
+				}
+				final EffectSetVariable ExnEffect = EffectUnion.unionize(exceptionEffects.keySet());
+				setExceptionEffect(ExnEffect);
+				ReportUtil.report(ExnEffect, src_ExnEffect, EffectSetVarGoal.Return);
+			}
+		} catch (NullPointerException e) {
+			// x_effs가 null인 경우는 무시
+		}
+	}
+	
+	/**
+	 * @param type Effect Name
+	 * @return the Effect
+	 */
+	public final EffectSetVariable effect(EffectName type) {
+		try {
+			return effects.get(type);
+		} catch(NullPointerException e) {
+			return null;
+		}
+	}
+	
+	/**
+	 * @return all effects
+	 */
+	public final HashMap<EffectName, EffectSetVariable> effects() {
+		try {
+			return effects;
+		} catch(NullPointerException e) {
+			return null;
+		}
+	}
+	
+	/**
+	 * @param effect the Effect to add
+	 */
+	protected final void addEffect(EffectSetVariable effect) {
+		if (effect != null) {
+			if(effects == null) {
+				effects = new HashMap<>();
+			}
+			effects.put(effect.getEffectType(), effect);
+		}
+	}
+	
+	/**
+	 * @param type	the type of the effect
+	 * @param effect	the Effect to add
+	 */
+	protected final void addEffect(EffectName type, EffectSetVariable effect) {
+		if (effect != null) {
+			if (effect.getEffectType().equals(type)) {
+				addEffect(effect);
+			} else {
+				throw new IllegalArgumentException("Argumented type and effect's type are NOT matched.");
+			}
+		} else if (effects != null && effects.containsKey(type)) {
+			effects.remove(type);
+		}
+	}
+}

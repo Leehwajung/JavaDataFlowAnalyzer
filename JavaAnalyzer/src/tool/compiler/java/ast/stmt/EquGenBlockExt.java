@@ -47,7 +47,7 @@ public class EquGenBlockExt extends EquGenStmtExt {
 			}
 		}
 		
-		//   2. X_eff1 ∪ ... ∪ X_effn를 구하고, 이를 리턴한다.
+		//   2. X_eff1 ∪ ... ∪ X_effn를 구하고, 이를 리턴할 exn effect로 지정.
 		setExceptionEffect(x_effs);
 		
 		// 로컬 환경 해제

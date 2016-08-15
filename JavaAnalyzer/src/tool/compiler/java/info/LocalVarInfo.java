@@ -2,6 +2,7 @@ package tool.compiler.java.info;
 
 import polyglot.types.Type;
 
+@Deprecated
 public class LocalVarInfo implements Info {
 
 	@Override

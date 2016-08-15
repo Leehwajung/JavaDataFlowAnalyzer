@@ -18,7 +18,7 @@ import tool.compiler.java.visit.EquGenerator;
  * MultiCatch <: Catch <: CompoundStmt <: Stmt <: Term <: Node
  * @author LHJ
  */
-public class EquGenMultiCatchExt extends EquGenCatchExt {
+public class EquGenMultiCatchExt extends EquGenAbstractCatchExt {
 	private static final long serialVersionUID = SerialVersionUID.generate();
 	public static final String KIND = "Multi-Catch";
 	
@@ -45,7 +45,7 @@ public class EquGenMultiCatchExt extends EquGenCatchExt {
 		setFormalTypes(exnEffect);
 		ReportUtil.report(exnEffect, EffectSetVarSource.New, EffectSetVarGoal.Return);
 		
-		//   2. stmt를 분석하면 나오는 exn effect인 exnEffect를 가져와 이를 리턴한다. (EquGenCatchExt)
+		//   2. stmt를 분석하면 나오는 exn effect인 exnEffect를 가져와 이를 리턴할 exn effect로 지정. (EquGenAbstractCatchExt)
 		return super.equGenLeave(v);
 	}
 	

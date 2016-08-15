@@ -1,12 +1,16 @@
 package tool.compiler.java.ast.expr;
 
+import java.util.LinkedHashMap;
+
 import polyglot.ast.Binary;
 import polyglot.ast.Node;
 import polyglot.util.SerialVersionUID;
 import tool.compiler.java.aos.AbstractObject;
 import tool.compiler.java.aos.MetaSetVariable;
 import tool.compiler.java.constraint.ObjsSubseteqX;
+import tool.compiler.java.effect.EffectSetVariable;
 import tool.compiler.java.util.ReportUtil;
+import tool.compiler.java.util.ReportUtil.EffectSetVarSource;
 import tool.compiler.java.util.ReportUtil.MetaSetVarGoal;
 import tool.compiler.java.util.ReportUtil.MetaSetVarSource;
 import tool.compiler.java.visit.EquGenerator;
@@ -53,6 +57,22 @@ public class EquGenBinaryExt extends EquGenExprExt {
 		
 		//   3. return T{Chi}
 		setMetaSetVar(tchi);
+		
+		//   4. e1을 분석하면 나오는 exn effect인 X_eff1를 가져오고, 
+		final LinkedHashMap<EffectSetVariable, EffectSetVarSource> x_effs = new LinkedHashMap<>();
+		final EffectSetVariable x_eff1 = EquGenExprExt.exceptionEffect(binary.left());
+		if (x_eff1 != null) {
+			x_effs.put(x_eff1, EffectSetVarSource.SubExpression);
+		}
+		
+		//   5. e2를 분석하면 나오는 exn effect인 X_eff2를 가져와, 
+		final EffectSetVariable x_eff2 = EquGenExprExt.exceptionEffect(binary.right());
+		if (x_eff2 != null) {
+			x_effs.put(x_eff2, EffectSetVarSource.SubExpression);
+		}
+		
+		//   6. X_eff1 ∪ X_eff2를 구하고, 이를 리턴할 exn effect로 지정
+		setExceptionEffect(x_effs);
 		
 		return super.equGenLeave(v);
 	}

@@ -56,7 +56,7 @@ public class EquGenIfExt extends EquGenStmtExt {
 				x_effs.put(x_eff2, EffectSetVarSource.SubStatement);
 			} 
 		}
-		//   4. X_eff0 ∪ X_eff1 ∪ X_eff2를 구하고, 이를 리턴한다.
+		//   4. X_eff0 ∪ X_eff1 ∪ X_eff2를 구하고, 이를 리턴할 exn effect로 지정.
 		setExceptionEffect(x_effs);
 		
 		// if (condition) {consequent} else {alternative}

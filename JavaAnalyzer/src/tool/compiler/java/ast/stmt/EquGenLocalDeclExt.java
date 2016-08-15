@@ -71,8 +71,10 @@ public class EquGenLocalDeclExt extends EquGenStmtExt {
 				v.getCurrCF().addMetaConstraints(xys);
 			}
 			
-			//   2-4. e를 분석하면 나오는 exn effect인 exnEffect를 가져와 이를 리턴한다.
+			//   2-4. e를 분석하면 나오는 exn effect인 exnEffect를 가져와
 			final EffectSetVariable exnEffect = EquGenExprExt.exceptionEffect(e);
+			
+			//   2-5. exnEffect를 리턴할 exn effect로 지정.
 			if (exnEffect != null) {
 				setExceptionEffect(exnEffect);
 				ReportUtil.report(exnEffect, EffectSetVarSource.SubExpression, EffectSetVarGoal.Return);

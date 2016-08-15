@@ -3,19 +3,27 @@ package tool.compiler.java.ast.expr;
 import polyglot.ast.Call;
 import polyglot.ast.Expr;
 import polyglot.ast.Node;
+import polyglot.ext.jl5.types.JL5ClassType;
 import polyglot.ext.jl5.types.JL5MethodInstance;
 import polyglot.ext.jl5.types.JL5ProcedureInstance;
+import polyglot.types.Type;
 import polyglot.util.SerialVersionUID;
+import polyglot.util.SubtypeSet;
 import tool.compiler.java.aos.MetaSetVariable;
 import tool.compiler.java.constraint.InvokeMth;
 import tool.compiler.java.constraint.InvokeStaticMth;
+import tool.compiler.java.effect.EffectSet;
+import tool.compiler.java.effect.EffectSetVariable;
+import tool.compiler.java.effect.ExnEffect;
 import tool.compiler.java.info.MethodCallInfo;
 import tool.compiler.java.util.ReportUtil;
+import tool.compiler.java.util.ReportUtil.EffectSetVarSource;
 import tool.compiler.java.util.ReportUtil.MetaSetVarGoal;
 import tool.compiler.java.util.ReportUtil.MetaSetVarSource;
 import tool.compiler.java.visit.EquGenerator;
 
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 
 /**
  * Call <: Expr <: Term <: Node					<br>
@@ -80,6 +88,32 @@ public class EquGenCallExt extends EquGenExprExt {
 		
 		//   4. D{Chi}를 리턴 타입으로 지정
 		setMetaSetVar(dchi);
+		
+		//   5. e1, ... , en를 분석해서 나오는 exn effects인 X_eff1, ... , X_effn를 찾고,
+		LinkedHashMap<EffectSetVariable, EffectSetVarSource> x_effs = new LinkedHashMap<>();
+		for (Expr arg : call.arguments()) {
+			EffectSetVariable x_effi = EquGenExprExt.exceptionEffect(arg);
+			if (x_effi != null) {
+				x_effs.put(x_effi, EffectSetVarSource.SubExpression);
+			}
+		}
+		
+		//   6. 메서드 내부에서 발생할 수 있는 Exception의 타입들을 가져와 EffectSet X_eff_trw을 만들어,
+		//      TODO: 6번 항목이 필요한지, 유효한지 확인 필요
+		final SubtypeSet exceptions = call.exceptions();
+		if (exceptions != null) {
+			ArrayList<ExnEffect> exns = new ArrayList<>();
+			for (Type exn : exceptions) {
+				exns.add(new ExnEffect((JL5ClassType) exn));
+			}
+			if (!exns.isEmpty()) {
+				EffectSet x_eff_trw = new EffectSet(exns);
+				x_effs.put(x_eff_trw, EffectSetVarSource.MethodCall);
+			} 
+		}
+		
+		//   7. X_eff1 ∪ ... ∪ X_effn ∪ X_eff_trw를 구하고, 이를 리턴할 exn effect로 지정
+		setExceptionEffect(x_effs);
 		
 		return super.equGenLeave(v);
 	}

@@ -6,7 +6,10 @@ import polyglot.util.SerialVersionUID;
 import tool.compiler.java.aos.AbstractObject;
 import tool.compiler.java.aos.MetaSetVariable;
 import tool.compiler.java.constraint.ObjsSubseteqX;
+import tool.compiler.java.effect.EffectSetVariable;
 import tool.compiler.java.util.ReportUtil;
+import tool.compiler.java.util.ReportUtil.EffectSetVarGoal;
+import tool.compiler.java.util.ReportUtil.EffectSetVarSource;
 import tool.compiler.java.util.ReportUtil.MetaSetVarGoal;
 import tool.compiler.java.util.ReportUtil.MetaSetVarSource;
 import tool.compiler.java.visit.EquGenerator;
@@ -51,6 +54,15 @@ public class EquGenUnaryExt extends EquGenExprExt {
 		
 		//   3. return T{Chi}
 		setMetaSetVar(tchi);
+		
+		//   4. e를 분석하면 나오는 exn effect인 exnEffect를 가져와
+		final EffectSetVariable exnEffect = EquGenExprExt.exceptionEffect(unary.expr());
+		
+		//   5. exnEffect를 리턴할 exn effect로 지정
+		if (exnEffect != null) {
+			setExceptionEffect(exnEffect);
+			ReportUtil.report(exnEffect, EffectSetVarSource.SubExpression, EffectSetVarGoal.Return);
+		}
 		
 		return super.equGenLeave(v);
 	}

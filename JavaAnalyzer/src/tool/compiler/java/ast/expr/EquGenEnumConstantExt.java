@@ -9,6 +9,7 @@ import tool.compiler.java.visit.EquGenerator;
  * EnumConstant <: Field <: NamedVariable <: Variable <: Expr <: Receiver <: Prefix <: Node
  * @author LHJ
  */
+@Deprecated
 public class EquGenEnumConstantExt extends EquGenFieldExt {
 	private static final long serialVersionUID = SerialVersionUID.generate();
 	public static final String KIND = "Enum Constant";

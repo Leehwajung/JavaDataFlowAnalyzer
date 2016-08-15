@@ -281,7 +281,8 @@ public final class ReportUtil {
 		New,
 		MethodEnvironment,
 		SubExpression,
-		SubStatement;
+		SubStatement,
+		MethodCall;
 		
 		public String toString() {
 			switch (this) {
@@ -293,6 +294,8 @@ public final class ReportUtil {
 				return "Sub-Expression";
 			case SubStatement:
 				return "Sub-Statement";
+			case MethodCall:
+				return "Method Call";
 			default:
 				return super.toString();
 			}

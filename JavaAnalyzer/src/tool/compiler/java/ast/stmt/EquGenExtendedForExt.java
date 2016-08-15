@@ -54,7 +54,7 @@ public class EquGenExtendedForExt extends EquGenStmtExt {
 			x_effs.put(x_eff2, EffectSetVarSource.SubStatement);
 		}
 		
-		//   4. X_eff0 ∪ X_eff1 ∪ X_eff2를 구하고, 이를 리턴한다.
+		//   4. X_eff0 ∪ X_eff1 ∪ X_eff2를 구하고, 이를 리턴할 exn effect로 지정.
 		setExceptionEffect(x_effs);
 		
 		// TODO: environment의 합집합을 구하는 동작이 필요 없음?

@@ -31,10 +31,13 @@ public class EquGenCaseExt extends EquGenStmtExt {
 		ReportUtil.leaveReport(this);
 		Case caseStmt = (Case) this.node();
 		
-		// case expr;
-		//   expr를 분석하면 나오는 exn effect인 exnEffect를 가져와 이를 리턴한다.
+		// case expr: / default:
+		// case expr:
 		if (!caseStmt.isDefault()) {
+			//   1. expr를 분석하면 나오는 exn effect인 exnEffect를 가져와
 			final EffectSetVariable exnEffect = EquGenExprExt.exceptionEffect(caseStmt.expr());
+			
+			//   2. exnEffect를 리턴할 exn effect로 지정
 			if (exnEffect != null) {
 				setExceptionEffect(exnEffect);
 				ReportUtil.report(exnEffect, EffectSetVarSource.SubExpression, EffectSetVarGoal.Return);

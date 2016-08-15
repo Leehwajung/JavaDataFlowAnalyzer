@@ -6,7 +6,10 @@ import polyglot.util.SerialVersionUID;
 import tool.compiler.java.aos.AbstractObject;
 import tool.compiler.java.aos.MetaSetVariable;
 import tool.compiler.java.constraint.ObjsSubseteqX;
+import tool.compiler.java.effect.EffectSetVariable;
 import tool.compiler.java.util.ReportUtil;
+import tool.compiler.java.util.ReportUtil.EffectSetVarGoal;
+import tool.compiler.java.util.ReportUtil.EffectSetVarSource;
 import tool.compiler.java.util.ReportUtil.MetaSetVarGoal;
 import tool.compiler.java.util.ReportUtil.MetaSetVarSource;
 import tool.compiler.java.visit.EquGenerator;
@@ -39,7 +42,7 @@ public class EquGenInstanceofExt extends EquGenExprExt {
 		ReportUtil.leaveReport(this);
 		Instanceof insof = (Instanceof) this.node();
 		
-		// instanceof
+		// e instanceof C
 		//   1. boolean{Chi} 변수 생성
 		MetaSetVariable tchi = MetaSetVariable.create(insof.type());
 		ReportUtil.report(tchi, MetaSetVarSource.New, MetaSetVarGoal.Return);
@@ -51,6 +54,15 @@ public class EquGenInstanceofExt extends EquGenExprExt {
 		
 		//   3. return boolean{Chi}
 		setMetaSetVar(tchi);
+		
+		//   4. e를 분석하면 나오는 exn effect인 exnEffect를 가져와
+		final EffectSetVariable exnEffect = EquGenExprExt.exceptionEffect(insof.expr());
+		
+		//   5. exnEffect를 리턴할 exn effect로 지정
+		if (exnEffect != null) {
+			setExceptionEffect(exnEffect);
+			ReportUtil.report(exnEffect, EffectSetVarSource.SubExpression, EffectSetVarGoal.Return);
+		}
 		
 		return super.equGenLeave(v);
 	}

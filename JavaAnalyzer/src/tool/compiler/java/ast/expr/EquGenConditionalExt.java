@@ -1,6 +1,7 @@
 package tool.compiler.java.ast.expr;
 
 import java.util.Collection;
+import java.util.LinkedHashMap;
 
 import polyglot.ast.Conditional;
 import polyglot.ast.Node;
@@ -8,8 +9,10 @@ import polyglot.util.SerialVersionUID;
 import tool.compiler.java.aos.ArrayMetaSetVariable;
 import tool.compiler.java.aos.MetaSetVariable;
 import tool.compiler.java.constraint.XSubseteqY;
+import tool.compiler.java.effect.EffectSetVariable;
 import tool.compiler.java.util.EquGenUtil;
 import tool.compiler.java.util.ReportUtil;
+import tool.compiler.java.util.ReportUtil.EffectSetVarSource;
 import tool.compiler.java.util.ReportUtil.MetaSetVarGoal;
 import tool.compiler.java.util.ReportUtil.MetaSetVarSource;
 import tool.compiler.java.visit.EquGenerator;
@@ -36,7 +39,7 @@ public class EquGenConditionalExt extends EquGenExprExt {
 		ReportUtil.leaveReport(this);
 		Conditional cond = (Conditional) this.node();
 		
-		// e ? e1 : e2
+		// e0 ? e1 : e2
 		//   1. 리턴할 타입 T{Chi}를 만든 다음, (Chi는 새로 만들고 T는 이 노드 자신의 타입)
 		MetaSetVariable tchi = MetaSetVariable.create(cond.type());
 //		MetaSetVariable tchi = new MetaSetVariable(cond.type());
@@ -69,6 +72,28 @@ public class EquGenConditionalExt extends EquGenExprExt {
 		
 		//   4. T{Chi}를 리턴 타입으로 지정
 		setMetaSetVar(tchi);
+		
+		//   5. e0을 분석하면 나오는 exn effect인 X_eff0를 가져오고, 
+		LinkedHashMap<EffectSetVariable, EffectSetVarSource> x_effs = new LinkedHashMap<>();
+		final EffectSetVariable x_eff0 = EquGenExprExt.exceptionEffect(cond.cond());
+		if (x_eff0 != null) {
+			x_effs.put(x_eff0, EffectSetVarSource.SubExpression);
+		}
+		
+		//   6. e1을 분석하면 나오는 exn effect인 X_eff1를 가져온 다음, 
+		final EffectSetVariable x_eff1 = EquGenExprExt.exceptionEffect(cond.consequent());
+		if (x_eff1 != null) {
+			x_effs.put(x_eff1, EffectSetVarSource.SubExpression);
+		}
+		
+		//   7. e2를 분석하면 나오는 exn effect인 X_eff2를 가져와, 
+		final EffectSetVariable x_eff2 = EquGenExprExt.exceptionEffect(cond.alternative());
+		if (x_eff2 != null) {
+			x_effs.put(x_eff2, EffectSetVarSource.SubExpression);
+		} 
+		
+		//   8. X_eff0 ∪ X_eff1 ∪ X_eff2를 구하고, 이를 리턴할 exn effect로 지정
+		setExceptionEffect(x_effs);
 		
 		return super.equGenLeave(v);
 	}

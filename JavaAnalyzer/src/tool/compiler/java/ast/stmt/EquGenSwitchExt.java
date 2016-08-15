@@ -25,7 +25,7 @@ public class EquGenSwitchExt extends EquGenStmtExt {
 	@Override
 	public EquGenerator equGenEnter(EquGenerator v) {
 		ReportUtil.enterReport(this);
-//		Switch switchStmt = (Switch)this.node();
+//		Switch switchStmt = (Switch) this.node();
 		
 		return super.equGenEnter(v);
 	}
@@ -33,7 +33,7 @@ public class EquGenSwitchExt extends EquGenStmtExt {
 	@Override
 	public Node equGenLeave(EquGenerator v) {
 		ReportUtil.leaveReport(this);
-		Switch switchStmt = (Switch)this.node();
+		Switch switchStmt = (Switch) this.node();
 		
 		// switch ( expr ) { stmt1 ... stmtn }
 		final LinkedHashMap<EffectSetVariable, EffectSetVarSource> x_effs = new LinkedHashMap<>();
@@ -59,7 +59,7 @@ public class EquGenSwitchExt extends EquGenStmtExt {
 			x_effs.put(x_eff1, EffectSetVarSource.SubStatement);
 		}
 		
-		//   3. X_eff0 ∪ X_eff1를 구하고, 이를 리턴한다.
+		//   3. X_eff0 ∪ X_eff1를 구하고, 이를 리턴할 exn effect로 지정.
 		setExceptionEffect(x_effs);
 		
 		// TODO: environment의 합집합을 구하는 동작이 필요 없음?

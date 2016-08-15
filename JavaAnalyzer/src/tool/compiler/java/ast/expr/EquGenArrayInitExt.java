@@ -11,13 +11,16 @@ import tool.compiler.java.aos.MetaSetVariable;
 import tool.compiler.java.aos.AbstractObject.Info;
 import tool.compiler.java.constraint.ObjsSubseteqX;
 import tool.compiler.java.constraint.XSubseteqY;
+import tool.compiler.java.effect.EffectSetVariable;
 import tool.compiler.java.util.EquGenUtil;
 import tool.compiler.java.util.ReportUtil;
+import tool.compiler.java.util.ReportUtil.EffectSetVarSource;
 import tool.compiler.java.util.ReportUtil.MetaSetVarGoal;
 import tool.compiler.java.util.ReportUtil.MetaSetVarSource;
 import tool.compiler.java.visit.EquGenerator;
 
 import java.util.Collection;
+import java.util.LinkedHashMap;
 
 /**
  * ArrayInit <: Expr <: Term <: Node				<br>
@@ -95,6 +98,18 @@ public class EquGenArrayInitExt extends EquGenExprExt {
 		
 		//   3. return C[]{Chi}
 		setMetaSetVar(cchi);
+		
+		//   4. e1, ... , en를 분석해서 나오는 exn effects인 X_eff1, ... , X_effn를 찾아,
+		LinkedHashMap<EffectSetVariable, EffectSetVarSource> x_effs = new LinkedHashMap<>();
+		for (Expr elem : arrInit.elements()) {
+			EffectSetVariable x_effi = EquGenExprExt.exceptionEffect(elem);
+			if (x_effi != null) {
+				x_effs.put(x_effi, EffectSetVarSource.SubExpression);
+			}
+		}
+		
+		//   5. X_eff1 ∪ ... ∪ X_effn를 구하고, 이를 리턴할 exn effect로 지정
+		setExceptionEffect(x_effs);
 		
 		return super.equGenLeave(v);
 	}

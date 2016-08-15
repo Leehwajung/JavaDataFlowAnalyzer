@@ -9,6 +9,7 @@ import tool.compiler.java.visit.EquGenerator;
  * LocalDecl <: VarDecl <: Term <: Node
  * @author LHJ
  */
+@Deprecated
 public class EquGenResourceExt extends EquGenLocalDeclExt {
 	private static final long serialVersionUID = SerialVersionUID.generate();
 	public static final String KIND = "Resource";
