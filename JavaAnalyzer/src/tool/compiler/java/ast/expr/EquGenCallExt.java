@@ -64,10 +64,10 @@ public class EquGenCallExt extends EquGenExprExt {
 			ReportUtil.report(cichii, MetaSetVarSource.Argument, MetaSetVarGoal.Flow);
 		}
 		
-		//   3A. e.m(e1, ..., en)	(non-static)
+		//   3A. e.m(e1, ..., en)	(dynamic)
 		//       e의 타입 C{Chi0}를 가져오고, C{Chi0}.m <: (C1{Chi1}, ... , Cn{Chin}) -> D{Chi} 제약식을 추가
 		if(!mthIns.flags().isStatic()) {
-			MetaSetVariable cchi0 = EquGenExprExt.metaSetVar((Expr)call.target());
+			MetaSetVariable cchi0 = EquGenExprExt.metaSetVar((Expr) call.target());
 			InvokeMth im = new InvokeMth(cchi0, mthIns, cschis, dchi);
 			v.getCurrCF().addMetaConstraint(im);
 			ReportUtil.report(im);

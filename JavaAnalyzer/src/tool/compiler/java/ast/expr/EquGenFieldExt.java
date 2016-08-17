@@ -44,10 +44,10 @@ public class EquGenFieldExt extends EquGenExprExt {
 //		MetaSetVariable dchi2 = v.getCurrCC().getField(fldIns);
 //		Report.report(3, "\t[MetaSetVariable] " + dchi2 + " (For return: From Class Constraint)");
 		
-		//   2A. e.f	(non-static)
+		//   2A. e.f	(dynamic)
 		//       e의 타입 C{Chi1}을 가져오고, C{Chi1}.f <: D{Chi2}를 제약식 집합에 추가
 		if(!fldIns.flags().isStatic()) {
-			MetaSetVariable cchi1 = EquGenExprExt.metaSetVar((Expr)f.target());
+			MetaSetVariable cchi1 = EquGenExprExt.metaSetVar((Expr) f.target());
 			ReportUtil.report(cchi1, MetaSetVarSource.Receiver, MetaSetVarGoal.Flow);
 			
 			ReadField rf = new ReadField(cchi1, fldIns, dchi2);

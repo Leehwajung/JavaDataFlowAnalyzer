@@ -1,6 +1,6 @@
 package tool.compiler.java.ast.stmt;
 
-import java.util.ArrayList;
+import java.util.List;
 
 import polyglot.ast.Expr;
 import polyglot.ast.Node;
@@ -60,7 +60,7 @@ public class EquGenReturnExt extends EquGenStmtExt {
 			//   3-2. 배열인 경우, T2{Chi2} <: T1{Chi1}의 하위 레벨 제약식을 추가
 			//         (Top Level 아래의 MetaSetVariable(s)의 데이터 플로우)
 			if (EquGenUtil.isArray(t1chi1) && EquGenUtil.isArray(t2chi2)) {
-				ArrayList<XSubseteqY> xys = XSubseteqY.constrain(
+				List<XSubseteqY> xys = XSubseteqY.constrain(
 						(ArrayMetaSetVariable) t2chi2, 
 						(ArrayMetaSetVariable) t1chi1);
 				v.getCurrMC().addMetaConstraints(xys);

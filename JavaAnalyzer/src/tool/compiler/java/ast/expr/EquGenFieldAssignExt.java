@@ -86,10 +86,10 @@ public class EquGenFieldAssignExt extends EquGenAssignExt {
 		}
 		
 		//   2-2. 스칼라 변수, 또는 배열 변수의 Top Level의 MetaSetVariable의 데이터 플로우
-		//   2-2A. e1.f = e2 / e1.f op= e2	(non-static)
+		//   2-2A. e1.f = e2 / e1.f op= e2	(dynamic)
 		//         e1의 타입 C{Chi1}을 가져오고, E{Chi3} <: C{Chi1}.f 제약식을 추가
 		if(!fldIns.flags().isStatic()) {
-			MetaSetVariable cchi1 = EquGenExprExt.metaSetVar((Expr)f.target());
+			MetaSetVariable cchi1 = EquGenExprExt.metaSetVar((Expr) f.target());
 			ReportUtil.report(cchi1, MetaSetVarSource.Receiver, MetaSetVarGoal.Flow);
 			
 			AssignField af = new AssignField(echi3, cchi1, fldIns);

@@ -39,6 +39,7 @@ public class EquGenProcedureDeclExt extends EquGenClassMemberExt {
 		ProcedureDecl procDecl = (ProcedureDecl) this.node();
 		JL5ProcedureInstance procIns = (JL5ProcedureInstance) procDecl.procedureInstance();
 		
+		// Method Constraint
 		mc = new MethodConstraint(procIns);
 		mc.setOuter(v.getCurrCC());
 		v.getCurrCC().addCodeConstraint(mc);

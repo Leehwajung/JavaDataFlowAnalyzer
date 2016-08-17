@@ -56,7 +56,7 @@ public class EquGenFieldDeclExt extends EquGenClassMemberExt {
 			ReportUtil.report(echi3, MetaSetVarSource.Rvalue, MetaSetVarGoal.Flow);
 			
 			//   2-1. 스칼라 변수, 또는 배열 변수의 Top Level의 MetaSetVariable의 데이터 플로우
-			//   2-1A. D f = e2	(non-static)
+			//   2-1A. D f = e2	(dynamic)
 			//         e1(this)의 타입 C{Chi1}을 가져오고, E{Chi3} <: C{Chi1}.f 제약식을 추가
 			if(!fldIns.flags().isStatic()) {
 				MetaSetVariable cchi1 = v.getCurrCC().getThis();		// 선언시이므로 무조건 this

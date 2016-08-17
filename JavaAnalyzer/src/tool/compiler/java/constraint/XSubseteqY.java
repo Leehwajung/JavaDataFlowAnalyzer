@@ -46,7 +46,7 @@ public class XSubseteqY implements Constraint {
 	 * @param y	set Y[]
 	 * @return	Generated Constraints for Array (XSubseteqY)
 	 */
-	public static final ArrayList<XSubseteqY> constrain(ArrayMetaSetVariable x, ArrayMetaSetVariable y) {
+	public static final List<XSubseteqY> constrain(ArrayMetaSetVariable x, ArrayMetaSetVariable y) {
 		ArrayList<XSubseteqY> constraints = new ArrayList<>();
 		XSubseteqY xy;
 		ArrayMetaSetVariable cichi;			// C{Chi1}의 하위 레벨 base Ci{Chi}
@@ -90,7 +90,7 @@ public class XSubseteqY implements Constraint {
 		return constraints;
 	}
 	
-	public static final ArrayList<XSubseteqY> constrain(MetaSetVariable x, ArrayMetaSetVariable y) {
+	public static final List<XSubseteqY> constrain(MetaSetVariable x, ArrayMetaSetVariable y) {
 		try {
 			return constrain((ArrayMetaSetVariable) x, y);
 		} catch (ClassCastException e) {
