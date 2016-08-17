@@ -36,7 +36,7 @@ public class EquGenCatchExt extends EquGenAbstractCatchExt {
 		// catch (C e) { stmt }
 		//   1. e의 타입 C를 가져와 EffectSet을 만들고 이를 리턴하고,
 		Type c = catchStmt.catchType();
-		EffectSet exnEffect = new EffectSet(new ExnEffect((JL5ClassType) c));
+		EffectSet<ExnEffect> exnEffect = new EffectSet<>(new ExnEffect((JL5ClassType) c));
 		setFormalTypes(exnEffect);
 		ReportUtil.report(exnEffect, EffectSetVarSource.New, EffectSetVarGoal.Return);
 		

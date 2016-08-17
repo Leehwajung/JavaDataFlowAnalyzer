@@ -14,4 +14,6 @@ M({}, CCC<>, o18<>, CCC<>) = ()
 M({}, java.lang.IllegalArgumentException<>, o74<>, java.lang.IllegalArgumentException<>) = ()
 M({}, RR<>, o75<>, RR<>) = ()
 M({}, RR<>, o76<>, RR<>) = ()
+M({}, RR<>, o75<>, close<>) = () ----> void{}
+M({}, RR<>, o76<>, close<>) = () ----> void{}
 M({}, java.lang.NullPointerException<>, o78<>, java.lang.NullPointerException<>) = ()

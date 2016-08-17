@@ -13,11 +13,8 @@ import tool.compiler.java.constraint.Constraint;
 import tool.compiler.java.constraint.XSubseteqY;
 import tool.compiler.java.effect.EffectName;
 import tool.compiler.java.effect.EffectSetVariable;
-import tool.compiler.java.effect.EffectVariable;
 import tool.compiler.java.util.CollUtil;
 import tool.compiler.java.util.ReportUtil;
-import tool.compiler.java.util.ReportUtil.EffectSetVarGoal;
-import tool.compiler.java.util.ReportUtil.EffectSetVarSource;
 import tool.compiler.java.util.ReportUtil.MetaSetVarGoal;
 import tool.compiler.java.util.ReportUtil.MetaSetVarSource;
 
@@ -36,7 +33,7 @@ public class MethodConstraint extends CodeConstraint {
 	
 	private MetaSetVariable chi_ret = null;
 	private ArrayList<MetaSetVariable> chi_formals = null;
-	private LinkedHashMap<EffectName, EffectSetVariable> chi_effects = null;	// TODO: add method가 필요한가?
+	private HashMap<EffectName, EffectSetVariable> effects = null;
 	
 	/**
 	 * @param m
@@ -45,7 +42,7 @@ public class MethodConstraint extends CodeConstraint {
 		super(m);
 		generateReturn(m);
 		generateFormals(m);
-		generateExceptions(m);
+//		generateExceptions(m);
 	}
 	
 	private void generateReturn(JL5ProcedureInstance m) {
@@ -71,14 +68,14 @@ public class MethodConstraint extends CodeConstraint {
 		}
 	}
 	
-	private void generateExceptions(JL5ProcedureInstance m) {
-		if (!m.throwTypes().isEmpty()) {
-			this.chi_effects = new LinkedHashMap<>();	// TODO: Activity Effect를 커버하려면 언제 이 객체를 생성하는 것이 좋은가?
-			EffectVariable chi_exnEffect = new EffectVariable(EffectName.ExnEff);
-			this.chi_effects.put(EffectName.ExnEff, chi_exnEffect);
-			ReportUtil.report(chi_exnEffect, EffectSetVarSource.New, EffectSetVarGoal.MethodEnvironment);
-		}
-	}
+//	private void generateExceptions(JL5ProcedureInstance m) {
+//		if (!m.throwTypes().isEmpty()) {
+//			this.effects = new HashMap<>();	// TODO: Activity Effect를 커버하려면 언제 이 객체를 생성하는 것이 좋은가?
+//			EffectVariable chi_exnEffect = new EffectVariable(EffectName.ExnEff);
+//			this.effects.put(EffectName.ExnEff, chi_exnEffect);
+//			ReportUtil.report(chi_exnEffect, EffectSetVarSource.New, EffectSetVarGoal.MethodEnvironment);
+//		}
+//	}
 	
 	
 	// TODO: 제네릭 메서드 대응 필요: 현재 구현은, 타입 변수의 경우에 일치하는 타입이 없을 것이므로, subst 되지 않는 경우가 발생할 것 (제네릭 클래스는?)
@@ -203,35 +200,108 @@ public class MethodConstraint extends CodeConstraint {
 	}
 	
 	/**
-	 * @return the exnEffect
+	 * @return the Exception Effect
 	 */
-	public EffectVariable getExceptionEffect() {
+	public EffectSetVariable getException() {
+		return getEffect(EffectName.ExnEff);
+	}
+	
+	/**
+	 * @param exceptionEffect the Exception Effect to set
+	 */
+	public void setException(EffectSetVariable exceptionEffect) {
 		try {
-			return (EffectVariable) chi_effects.get(EffectName.ExnEff);
-		} catch (NullPointerException e) {
-			return null;
+			setEffect(EffectName.ExnEff, exceptionEffect);
+		} catch (IllegalArgumentException e) {
+			throw new IllegalArgumentException("The exceptionEffect's type must be 'EffectName.ExnEff'.");
 		}
 	}
 	
 	/**
-	 * @return the chi_effects
+	 * @return the Activity Effect
 	 */
-	public LinkedHashMap<EffectName, EffectSetVariable> getEffects() {
+	public EffectSetVariable getActivityEffect() {
+		return getEffect(EffectName.ActivityEff);
+	}
+	
+	/**
+	 * @param activityEffect the Activity Effect to set
+	 */
+	public void setActivityEffect(EffectSetVariable activityEffect) {
 		try {
-			return new LinkedHashMap<>(chi_effects);
-		} catch (NullPointerException e) {
-			return null;
+			setEffect(EffectName.ActivityEff, activityEffect);
+		} catch (IllegalArgumentException e) {
+			throw new IllegalArgumentException("The activityEffect's type must be 'EffectName.ActivityEff'.");
 		}
 	}
 	
 	/**
-	 * @return the chi_effect
+	 * @return the effect
 	 */
 	public EffectSetVariable getEffect(EffectName type) {
 		try {
-			return chi_effects.get(type);
+			return effects.get(type);
 		} catch (NullPointerException e) {
 			return null;
+		}
+	}
+	
+	/**
+	 * @param effect the Effect to set
+	 */
+	public void setEffect(EffectName type, EffectSetVariable effect) {
+		if (effect != null) {
+			if (effect.getEffectType().equals(type)) {
+				if (effects == null) {
+					effects = new HashMap<>();
+				}
+				effects.put(type, effect);
+			} else {
+				throw new IllegalArgumentException("type mismatch");
+			}
+		} else if (effects != null) {
+			effects.remove(type);
+		}
+	}
+	
+	/**
+	 * @param effect the Effect to add
+	 */
+	public void addEffect(EffectSetVariable effect) {
+		if (effect != null) {
+			if (effects == null) {
+				effects = new HashMap<>();
+			}
+			effects.put(effect.getEffectType(), effect);
+		}
+	}
+	
+	/**
+	 * @return the effects
+	 */
+	public LinkedHashMap<EffectName, EffectSetVariable> getEffectMap() {
+		if (this.effects != null && !this.effects.isEmpty()) {
+			LinkedHashMap<EffectName, EffectSetVariable> effectMap = new LinkedHashMap<>();
+			for (EffectName type : EffectName.values()) {
+				EffectSetVariable effect = this.effects.get(type);
+				if (effect != null) {
+					effectMap.put(type, effect);
+				}
+			}
+			return effectMap;
+		} else {
+			return null;
+		}
+	}
+	
+	public void addEffects(Collection<EffectSetVariable> effects) {
+		if (effects != null && !effects.isEmpty()) {
+			if (this.effects == null) {
+				this.effects = new HashMap<>();
+			}
+			for (EffectSetVariable effect : effects) {
+				this.effects.put(effect.getEffectType(), effect);
+			}
 		}
 	}
 	

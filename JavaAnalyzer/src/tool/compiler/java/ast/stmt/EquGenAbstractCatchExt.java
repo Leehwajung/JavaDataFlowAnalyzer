@@ -9,6 +9,7 @@ import tool.compiler.java.aos.MetaSetVariable;
 import tool.compiler.java.ast.EquGenExt;
 import tool.compiler.java.effect.EffectSet;
 import tool.compiler.java.effect.EffectSetVariable;
+import tool.compiler.java.effect.ExnEffect;
 import tool.compiler.java.env.LocalEnvironment;
 import tool.compiler.java.env.TypeEnvironment;
 import tool.compiler.java.util.ReportUtil;
@@ -28,7 +29,7 @@ public abstract class EquGenAbstractCatchExt extends EquGenStmtExt {
 	private static final long serialVersionUID = SerialVersionUID.generate();
 	public static final String KIND = "Catch";
 	
-	private EffectSet effect_formal = null;
+	private EffectSet<ExnEffect> effect_formal = null;
 	
 	@Override
 	public EquGenerator equGenEnter(EquGenerator v) {
@@ -75,7 +76,7 @@ public abstract class EquGenAbstractCatchExt extends EquGenStmtExt {
 	/**
 	 * @return the formalTypes
 	 */
-	public final EffectSet formalTypes() {
+	public final EffectSet<ExnEffect> formalTypes() {
 		return effect_formal;
 	}
 	
@@ -83,14 +84,14 @@ public abstract class EquGenAbstractCatchExt extends EquGenStmtExt {
 	 * @param n node
 	 * @return the formalTypes of node n
 	 */
-	public static final EffectSet formalTypes(Catch n) {
+	public static final EffectSet<ExnEffect> formalTypes(Catch n) {
 		return ((EquGenAbstractCatchExt) EquGenExt.ext(n)).formalTypes();
 	}
 	
 	/**
 	 * @param formalTypes the formalTypes to set
 	 */
-	protected final void setFormalTypes(EffectSet formalTypes) {
+	protected final void setFormalTypes(EffectSet<ExnEffect> formalTypes) {
 		this.effect_formal = formalTypes;
 	}
 }

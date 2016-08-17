@@ -3,23 +3,29 @@ package tool.compiler.java.constraint;
 import java.util.ArrayList;
 import java.util.List;
 
-import polyglot.ext.jl5.types.JL5ClassType;
 import tool.compiler.java.aos.AbsObjSet;
 import tool.compiler.java.aos.DataFlowSetVariable;
 import tool.compiler.java.aos.TypedSetVariable;
+import tool.compiler.java.effect.EffectSetVariable;
 
 /**
  * Target(X) <: Y<br>
+ * X는 Intent 객체의 집합
+ *  e.g. X = { Intent { Target = MainActivity, ... }, ..., 
+ *             Intent { Target = MenuActivity, ... } }
+ * 
+ * Target(X)는 각 Intents 안에 있는 타겟들의 집합
+ *  e.g. Target(X) = { MainActivity, ... , MenuActivity }
+ * 
+ * Y는 Target(X)를 포함한다.
  * for android activity effect
  */
-@Deprecated
 public class ReadTarget implements Constraint {
 	
 	// fields
 	
-	private JL5ClassType target;	// Target (NOT null)
-	private DataFlowSetVariable x;			// X (NOT null)
-	private DataFlowSetVariable y;			// Y (NOT null)
+	private DataFlowSetVariable x;	// X (NOT null) Intent 파라메터에 대한 MSV
+	private EffectSetVariable y;	// Y (NOT null) Fresh하게 생성
 	
 	
 	// constructor
@@ -29,9 +35,8 @@ public class ReadTarget implements Constraint {
 	 * @param y
 	 * @param z
 	 */
-	public ReadTarget(JL5ClassType target, DataFlowSetVariable x, DataFlowSetVariable y) {
+	public ReadTarget(DataFlowSetVariable x, EffectSetVariable y) {
 		super();
-		this.target = target;
 		this.x = x;
 		this.y = y;
 	}
@@ -43,21 +48,15 @@ public class ReadTarget implements Constraint {
 	 * Substitute TypedSetVariable for AbsObjSet<br>
 	 * Target(X) <: Y
 	 * @param x	set X
-	 * @param y	set Y
 	 * @return	Substituted New Constraint
 	 */
-	public ReadTarget substitute(TypedSetVariable x, TypedSetVariable y) {
+	public ReadTarget substitute(TypedSetVariable x) {
 		if(!this.x.equalsForType(x)) {
 			throw new IllegalArgumentException("The Type Mismatch for x. "
 					+ "(orig: " + this.x.getType() + ", subst: " + x.getType() + ")");
 		}
 		
-		if(!this.y.equalsForType(y)) {
-			throw new IllegalArgumentException("The Type Mismatch for y. "
-					+ "(orig: " + this.y.getType() + ", subst: " + y.getType() + ")");
-		}
-		
-		return new ReadTarget(this.target, x, y);
+		return new ReadTarget(x, this.y);
 	}
 	
 	/**
@@ -73,18 +72,11 @@ public class ReadTarget implements Constraint {
 					+ "(Current size is " + xy.size() + ".)");
 		}
 		Object[] xyzArr = xy.toArray();
-		return substitute((TypedSetVariable)xyzArr[0], (TypedSetVariable)xyzArr[1]);
+		return substitute((TypedSetVariable)xyzArr[0]);
 	}
 	
 	
 	// getter methods
-	
-	/**
-	 * @return the target
-	 */
-	public JL5ClassType getTarget() {
-		return target;
-	}
 	
 	/**
 	 * @return the x
@@ -96,7 +88,7 @@ public class ReadTarget implements Constraint {
 	/**
 	 * @return the y
 	 */
-	public DataFlowSetVariable getY() {
+	public EffectSetVariable getY() {
 		return y;
 	}
 	
@@ -106,7 +98,7 @@ public class ReadTarget implements Constraint {
 	 */
 	@Override
 	public int absObjSetSize() {
-		return 2;
+		return 1;
 	}
 	
 	/**
@@ -114,7 +106,7 @@ public class ReadTarget implements Constraint {
 	 */
 	@Override
 	public int substitutableSize() {
-		return 2;
+		return 1;
 	}
 	
 	/**
@@ -124,7 +116,6 @@ public class ReadTarget implements Constraint {
 	public List<? extends AbsObjSet> getAllAbsObjSets() {
 		ArrayList<DataFlowSetVariable> abss = new ArrayList<>();
 		abss.add(x);
-		abss.add(y);
 		return abss;
 	}
 	
@@ -155,8 +146,7 @@ public class ReadTarget implements Constraint {
 	 */
 	@Override
 	public String toString() {
-		return getTarget() + "(" + getX() + ") <: " + getY();
-//		return "Target(" + getX() + ") <: " + getY() + " [" + getTarget() + "]";
+		return "Target(" + getX() + ") <: " + getY();
 	}
 	
 	/**
@@ -166,7 +156,6 @@ public class ReadTarget implements Constraint {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((target == null) ? 0 : target.hashCode());
 		result = prime * result + ((x == null) ? 0 : x.hashCode());
 		result = prime * result + ((y == null) ? 0 : y.hashCode());
 		return result;
@@ -187,13 +176,6 @@ public class ReadTarget implements Constraint {
 			return false;
 		}
 		ReadTarget other = (ReadTarget) obj;
-		if (target == null) {
-			if (other.target != null) {
-				return false;
-			}
-		} else if (!target.equals(other.target)) {
-			return false;
-		}
 		if (x == null) {
 			if (other.x != null) {
 				return false;

@@ -68,8 +68,6 @@ public class EquGenReturnExt extends EquGenStmtExt {
 			
 			//   4. 리턴할 MataSetVar는 없음
 			
-			// TODO: 아래의 1번과 2번 중에 알맞은 것을 선택해야 함.
-			// 1번
 			//   5. expr를 분석하면 나오는 exn effect인 exnEffect를 가져와
 			final EffectSetVariable exnEffect = EquGenExprExt.exceptionEffect(expr);
 			
@@ -78,22 +76,6 @@ public class EquGenReturnExt extends EquGenStmtExt {
 				setExceptionEffect(exnEffect);
 				ReportUtil.report(exnEffect, EffectSetVarSource.SubExpression, EffectSetVarGoal.Return);
 			} 
-			
-			// 2번
-//			//   5-1. e를 분석하면 나오는 exn effect인 X_eff2를 가져오고,
-//			final EffectSetVariable x_eff2 = EquGenExprExt.exceptionEffect(e);
-//			if (x_eff2 != null) {
-//				setExceptionEffect(x_eff2);	// 이 노드의 Exn Effect는 X_eff2이다.
-//				ReportUtil.report(x_eff2, EffectSetVarSource.SubExpression, EffectSetVarGoal.Flow);
-//				
-//				//   5-2. 메서드의 exn effect인 X_eff1을 가져온 다음,
-//				final EffectVariable x_eff1 = ((MethodConstraint) v.getCurrMC()).getExceptionEffect();
-//				ReportUtil.report(x_eff1, EffectSetVarSource.MethodEnvironment, EffectSetVarGoal.Flow);
-//				
-//				//   TODO:5-3. X_eff2 <: X_eff1 제약식을 추가
-//				
-//				// TODO: return 문이 생략된 메서드에 대해서도 대응 필요
-//			}
 		}
 		
 		setLocalEnv(v.peekTypeEnv().getCurrEnv());

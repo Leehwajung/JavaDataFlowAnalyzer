@@ -41,7 +41,7 @@ public class EquGenMultiCatchExt extends EquGenAbstractCatchExt {
 		for (TypeNode ci : multiCatch.alternatives()) {
 			cs.add(new ExnEffect((JL5ClassType) ci.type()));
 		}
-		EffectSet exnEffect = new EffectSet(cs);
+		EffectSet<ExnEffect> exnEffect = new EffectSet<>(cs);
 		setFormalTypes(exnEffect);
 		ReportUtil.report(exnEffect, EffectSetVarSource.New, EffectSetVarGoal.Return);
 		

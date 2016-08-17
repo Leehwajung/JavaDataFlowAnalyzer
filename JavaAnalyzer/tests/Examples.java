@@ -137,6 +137,7 @@ class CCCC extends CC {
 		}
 		
 		try (RR r = new RR(); RR r2 = new RR()) {
+			r.close();
 			int it = 1;
 			throw new NullPointerException();
 		} catch(NullPointerException | IndexOutOfBoundsException e) {

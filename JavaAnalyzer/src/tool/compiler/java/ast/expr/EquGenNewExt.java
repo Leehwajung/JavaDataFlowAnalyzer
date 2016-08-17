@@ -3,20 +3,15 @@ package tool.compiler.java.ast.expr;
 import polyglot.ast.Expr;
 import polyglot.ast.New;
 import polyglot.ast.Node;
-import polyglot.ext.jl5.types.JL5ClassType;
 import polyglot.ext.jl5.types.JL5ConstructorInstance;
 import polyglot.ext.jl5.types.JL5ParsedClassType;
 import polyglot.ext.jl5.types.JL5ProcedureInstance;
-import polyglot.types.Type;
 import polyglot.util.SerialVersionUID;
-import polyglot.util.SubtypeSet;
 import tool.compiler.java.aos.AbstractObject;
 import tool.compiler.java.aos.MetaSetVariable;
 import tool.compiler.java.constraint.InvokeMth;
 import tool.compiler.java.constraint.ObjsSubseteqX;
-import tool.compiler.java.effect.EffectSet;
 import tool.compiler.java.effect.EffectSetVariable;
-import tool.compiler.java.effect.ExnEffect;
 import tool.compiler.java.env.ClassConstraint;
 import tool.compiler.java.env.ConstraintFunction;
 import tool.compiler.java.info.MethodCallInfo;
@@ -106,7 +101,7 @@ public class EquGenNewExt extends EquGenExprExt {
 		v.getCurrCF().addMetaConstraint(im);
 		ReportUtil.report(im);
 		
-		//  3. return C<T1,...,Tn>{Chi}
+		//   3. return C<T1,...,Tn>{Chi}
 		setMetaSetVar(ctschi);
 		
 		//   4. qualifier를 분석하면 나오는 exn effect인 exn effect인 X_eff0를 가져오고, 
@@ -127,21 +122,7 @@ public class EquGenNewExt extends EquGenExprExt {
 			}
 		}
 		
-		//   6. 메서드 내부에서 발생할 수 있는 Exception의 타입들을 가져와 EffectSet X_eff_trw을 만들어,
-		//      TODO: 6번 항목이 필요한지, 유효한지 확인 필요
-		final SubtypeSet exceptions = nw.exceptions();
-		if (exceptions != null) {
-			ArrayList<ExnEffect> exns = new ArrayList<>();
-			for (Type exn : exceptions) {
-				exns.add(new ExnEffect((JL5ClassType) exn));
-			}
-			if (!exns.isEmpty()) {
-				EffectSet x_eff_trw = new EffectSet(exns);
-				x_effs.put(x_eff_trw, EffectSetVarSource.MethodCall);
-			} 
-		}
-		
-		//   7. X_eff0 ∪ X_eff1 ∪ ... ∪ X_effn ∪ X_eff_trw를 구하고, 이를 리턴할 exn effect로 지정
+		//   6. X_eff0 ∪ X_eff1 ∪ ... ∪ X_effn를 구하고, 이를 리턴할 exn effect로 지정
 		setExceptionEffect(x_effs);
 		
 		return super.equGenLeave(v);

@@ -31,6 +31,7 @@ public class EquGenSpecialExt extends EquGenExprExt {
 		ReportUtil.leaveReport(this);
 		Special spc = (Special) this.node();
 		
+		// this / super
 		MetaSetVariable cchi;
 		if(spc.kind() == Special.THIS) {
 			cchi = v.getCurrCC().getThis(spc.qualifier());

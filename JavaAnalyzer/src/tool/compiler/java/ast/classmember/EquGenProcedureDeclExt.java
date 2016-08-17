@@ -3,6 +3,7 @@ package tool.compiler.java.ast.classmember;
 import java.util.Iterator;
 import java.util.LinkedHashSet;
 
+import polyglot.ast.Block;
 import polyglot.ast.Formal;
 import polyglot.ast.Node;
 import polyglot.ast.ProcedureDecl;
@@ -10,10 +11,14 @@ import polyglot.ext.jl5.types.JL5LocalInstance;
 import polyglot.ext.jl5.types.JL5ProcedureInstance;
 import polyglot.util.SerialVersionUID;
 import tool.compiler.java.aos.MetaSetVariable;
+import tool.compiler.java.ast.stmt.EquGenStmtExt;
+import tool.compiler.java.effect.EffectSetVariable;
 import tool.compiler.java.env.MethodConstraint;
 import tool.compiler.java.env.TypeEnvironment;
 import tool.compiler.java.info.MethodInfo;
 import tool.compiler.java.util.ReportUtil;
+import tool.compiler.java.util.ReportUtil.EffectSetVarGoal;
+import tool.compiler.java.util.ReportUtil.EffectSetVarSource;
 import tool.compiler.java.util.ReportUtil.MetaSetVarGoal;
 import tool.compiler.java.util.ReportUtil.MetaSetVarSource;
 import tool.compiler.java.visit.EquGenerator;
@@ -26,6 +31,7 @@ import tool.compiler.java.visit.EquGenerator;
 public class EquGenProcedureDeclExt extends EquGenClassMemberExt {
 	private static final long serialVersionUID = SerialVersionUID.generate();
 	public static final String KIND = "Procedure Declaration";
+	private MethodConstraint mc;
 	
 	@Override
 	public EquGenerator equGenEnter(EquGenerator v) {
@@ -33,8 +39,7 @@ public class EquGenProcedureDeclExt extends EquGenClassMemberExt {
 		ProcedureDecl procDecl = (ProcedureDecl) this.node();
 		JL5ProcedureInstance procIns = (JL5ProcedureInstance) procDecl.procedureInstance();
 		
-		// MethodConstraint
-		MethodConstraint mc = new MethodConstraint(procIns);
+		mc = new MethodConstraint(procIns);
 		mc.setOuter(v.getCurrCC());
 		v.getCurrCC().addCodeConstraint(mc);
 		v.addToSet(mc);
@@ -64,7 +69,17 @@ public class EquGenProcedureDeclExt extends EquGenClassMemberExt {
 	@Override
 	public Node equGenLeave(EquGenerator v) {
 		ReportUtil.leaveReport(this);
-//		ProcedureDecl procDecl = (ProcedureDecl) this.node();
+		ProcedureDecl procDecl = (ProcedureDecl) this.node();
+		
+		// Method Body의 exn Effect를 Method의 exn Effect로 지정
+		Block body = procDecl.body();
+		if (body != null) {
+			EffectSetVariable exnEffect = EquGenStmtExt.exceptionEffect(body);
+			if (exnEffect != null) {
+				mc.setException(exnEffect);
+				ReportUtil.report(exnEffect, EffectSetVarSource.SubStatement, EffectSetVarGoal.MethodEnvironment);
+			} 
+		}
 		
 		// 로컬 환경 해제
 		v.popTypeEnv().pop();
