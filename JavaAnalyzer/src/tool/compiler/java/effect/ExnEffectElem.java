@@ -5,11 +5,11 @@ import polyglot.ext.jl5.types.JL5ClassType;
 /**
  * Exception Effect
  */
-public class ExnEffect implements EffectElem {
+public class ExnEffectElem implements EffectElem {
 	
 	private JL5ClassType exception;
 	
-	public ExnEffect(JL5ClassType throwableClassType) {
+	public ExnEffectElem(JL5ClassType throwableClassType) {
 		this.exception = throwableClassType;
 	}
 	

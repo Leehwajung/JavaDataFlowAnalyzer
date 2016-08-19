@@ -6,7 +6,7 @@ import polyglot.ext.jl5.types.JL5ClassType;
 import polyglot.types.Type;
 import polyglot.util.SerialVersionUID;
 import tool.compiler.java.effect.EffectSet;
-import tool.compiler.java.effect.ExnEffect;
+import tool.compiler.java.effect.ExnEffectElem;
 import tool.compiler.java.util.ReportUtil;
 import tool.compiler.java.util.ReportUtil.EffectSetVarGoal;
 import tool.compiler.java.util.ReportUtil.EffectSetVarSource;
@@ -36,7 +36,7 @@ public class EquGenCatchExt extends EquGenAbstractCatchExt {
 		// catch (C e) { stmt }
 		//   1. e의 타입 C를 가져와 EffectSet을 만들고 이를 리턴하고,
 		Type c = catchStmt.catchType();
-		EffectSet<ExnEffect> exnEffect = new EffectSet<>(new ExnEffect((JL5ClassType) c));
+		EffectSet<ExnEffectElem> exnEffect = new EffectSet<>(new ExnEffectElem((JL5ClassType) c));
 		setFormalTypes(exnEffect);
 		ReportUtil.report(exnEffect, EffectSetVarSource.New, EffectSetVarGoal.Return);
 		

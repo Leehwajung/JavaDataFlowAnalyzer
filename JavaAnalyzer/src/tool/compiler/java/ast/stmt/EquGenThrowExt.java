@@ -5,8 +5,8 @@ import polyglot.ast.Throw;
 import polyglot.util.SerialVersionUID;
 import tool.compiler.java.aos.MetaSetVariable;
 import tool.compiler.java.ast.expr.EquGenExprExt;
-import tool.compiler.java.effect.EffectName;
 import tool.compiler.java.effect.EffectVariable;
+import tool.compiler.java.effect.ExnEffectVariable;
 import tool.compiler.java.util.ReportUtil;
 import tool.compiler.java.util.ReportUtil.EffectSetVarGoal;
 import tool.compiler.java.util.ReportUtil.EffectSetVarSource;
@@ -41,7 +41,7 @@ public class EquGenThrowExt extends EquGenStmtExt {
 		ReportUtil.report(cchi, MetaSetVarSource.SubExpression, MetaSetVarGoal.Effect);
 		
 		//   2. EffectVariable을 만들고
-		EffectVariable exnEffect = new EffectVariable(EffectName.ExnEff, cchi);
+		EffectVariable exnEffect = new ExnEffectVariable(cchi);
 		
 		//   3. 이를 리턴할 exn effect로 지정.
 		setExceptionEffect(exnEffect);

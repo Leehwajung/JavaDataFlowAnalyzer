@@ -9,7 +9,7 @@ import tool.compiler.java.effect.EffectDifference;
 import tool.compiler.java.effect.EffectSet;
 import tool.compiler.java.effect.EffectSetVariable;
 import tool.compiler.java.effect.EffectUnion;
-import tool.compiler.java.effect.ExnEffect;
+import tool.compiler.java.effect.ExnEffectElem;
 import tool.compiler.java.util.ReportUtil;
 import tool.compiler.java.util.ReportUtil.EffectSetVarGoal;
 import tool.compiler.java.util.ReportUtil.EffectSetVarSource;
@@ -64,9 +64,9 @@ public class EquGenTryExt extends EquGenStmtExt {
 			}
 		
 		//   4. catch되는 타입들 C1, ... , Ck을 가져와 그들의 합집합인 X_C를 만들어,
-			final ArrayList<EffectSet<ExnEffect>> cks = new ArrayList<>();
+			final ArrayList<EffectSet<ExnEffectElem>> cks = new ArrayList<>();
 			for (Catch catchBlock : tryStmt.catchBlocks()) {
-				final EffectSet<ExnEffect> ci = EquGenAbstractCatchExt.formalTypes(catchBlock);
+				final EffectSet<ExnEffectElem> ci = EquGenAbstractCatchExt.formalTypes(catchBlock);
 				cks.add(ci);
 			}
 			EffectSetVarSource src_x_c = EffectSetVarSource.SubStatement;

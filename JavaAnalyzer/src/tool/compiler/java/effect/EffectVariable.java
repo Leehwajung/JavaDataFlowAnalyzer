@@ -9,7 +9,7 @@ public class EffectVariable extends EffectSetVariable {
 	/**
 	 * @param type
 	 */
-	public EffectVariable(EffectName type) {
+	protected EffectVariable(EffectName type) {
 		super(type);
 	}
 	
@@ -17,9 +17,23 @@ public class EffectVariable extends EffectSetVariable {
 	 * @param type
 	 * @param chi_effect
 	 */
-	public EffectVariable(EffectName type, MetaSetVariable chi_effect) {
+	protected EffectVariable(EffectName type, MetaSetVariable chi_effect) {
 		super(type);
 		this.chi_effect = chi_effect;
+	}
+	
+	public static EffectVariable create(EffectName type) {
+		return create(type, null);
+	}
+	
+	public static EffectVariable create(EffectName type, MetaSetVariable chi_effect) {
+		switch (type) {
+		case ExnEff:
+			return new ExnEffectVariable(chi_effect);
+		case ActivityEff:
+			return new ActivityEffectVariable(chi_effect);
+		}
+		return new EffectVariable(type, chi_effect);
 	}
 	
 	/**
