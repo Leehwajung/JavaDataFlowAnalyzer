@@ -9,9 +9,12 @@ import polyglot.util.SerialVersionUID;
 import tool.compiler.java.aos.MetaSetVariable;
 import tool.compiler.java.constraint.InvokeMth;
 import tool.compiler.java.constraint.InvokeStaticMth;
+import tool.compiler.java.effect.ActivityEffectVariable;
+import tool.compiler.java.effect.EffectName;
 import tool.compiler.java.effect.EffectSetVariable;
 import tool.compiler.java.info.MethodCallInfo;
 import tool.compiler.java.util.ReportUtil;
+import tool.compiler.java.util.ReportUtil.EffectSetVarGoal;
 import tool.compiler.java.util.ReportUtil.EffectSetVarSource;
 import tool.compiler.java.util.ReportUtil.MetaSetVarGoal;
 import tool.compiler.java.util.ReportUtil.MetaSetVarSource;
@@ -96,6 +99,13 @@ public class EquGenCallExt extends EquGenExprExt {
 		//   6. X_eff1 ∪ ... ∪ X_effn를 구하고, 이를 리턴할 exn effect로 지정
 		setExceptionEffect(x_effs);
 		
+		//   7. startActivity()류의 메서드인 경우, 인텐트에 대한 Activity Effect를 만들고, 
+		//      리턴할 Activity Effect로 지정
+		ActivityEffectVariable activityEffect = ActivityEffectVariable.create(call);
+		if (activityEffect != null) {
+			addEffect(EffectName.ActivityEff, activityEffect);
+			ReportUtil.report(activityEffect, EffectSetVarSource.New, EffectSetVarGoal.Return);
+		}
 		return super.equGenLeave(v);
 	}
 	

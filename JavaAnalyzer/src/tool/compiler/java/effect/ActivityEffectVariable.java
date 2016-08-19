@@ -1,5 +1,7 @@
 package tool.compiler.java.effect;
 
+import java.util.List;
+
 import polyglot.ast.Call;
 import polyglot.ast.Expr;
 import polyglot.types.MethodInstance;
@@ -7,11 +9,16 @@ import polyglot.types.ReferenceType;
 import polyglot.types.Type;
 import tool.compiler.java.aos.MetaSetVariable;
 import tool.compiler.java.ast.expr.EquGenExprExt;
+import tool.compiler.java.util.ReportUtil;
+import tool.compiler.java.util.ReportUtil.MetaSetVarGoal;
+import tool.compiler.java.util.ReportUtil.MetaSetVarSource;
 
 public class ActivityEffectVariable extends EffectVariable {
 	
-	private static final String CONTAINER = "android.content.Activity";
-	private static enum MethodName { 
+	private MethodName mthName;
+	
+	public static final String CONTAINER = "android.app.Activity";
+	public static enum MethodName { 
 		startActivity, startActivities, startActivityForResult, 
 		startActivityFromChild, startActivityFromFragment, 
 		startActivityIfNeeded, startNextMatchingActivity;
@@ -40,15 +47,28 @@ public class ActivityEffectVariable extends EffectVariable {
 		super(null);
 	}
 	
+	/**
+	 * @param chi_effect
+	 */
 	protected ActivityEffectVariable(MetaSetVariable chi_intent) {
 		super(EffectName.ActivityEff, chi_intent);
 	}
 	
 	/**
-	 * @param chi_effect
+	 * android.content.Activity를 상속받은 클래스의 메서드 중, startActivity()류의 메서드에 대하여 ActivityEffectVariable을 생성한다.
+	 * @param callNode Call Node
+	 * @return 생성된 ActivityEffectVariable, 생성 실패할 경우 null
 	 */
-	public ActivityEffectVariable(Call callNode) {
-		this(getIntentMetaSetVar(callNode));
+	public static ActivityEffectVariable create(Call callNode) {
+		MethodName mthName = getMethodName(callNode);	// Check Creatable
+		if (mthName != null) {
+			MetaSetVariable intent = getIntentMetaSetVar(mthName, callNode.arguments());
+			ReportUtil.report(intent, MetaSetVarSource.Argument, MetaSetVarGoal.Effect);
+			ActivityEffectVariable activityEff = new ActivityEffectVariable(intent);
+			activityEff.setMthName(mthName);
+			return activityEff;
+		}
+		return null;
 	}
 	
 
@@ -57,15 +77,9 @@ public class ActivityEffectVariable extends EffectVariable {
 	 * @param callNode
 	 * @return
 	 */
-	private static MetaSetVariable getIntentMetaSetVar(Call callNode) {
-		MethodName mthName = getMethodName(callNode);	// Check Creatable
-		try {
-			Expr intentExpr = callNode.arguments().get(mthName.getIntentParamIndex());
-			return EquGenExprExt.metaSetVar(intentExpr);
-		} catch (IllegalArgumentException e) {
-			throw new IllegalArgumentException(
-					"This method is not Starting Activity");
-		}
+	private static MetaSetVariable getIntentMetaSetVar(MethodName mthName, List<Expr> args) {
+		Expr intentExpr = args.get(mthName.getIntentParamIndex());	// NullPointerException
+		return EquGenExprExt.metaSetVar(intentExpr);
 	}
 	
 	/**
@@ -75,9 +89,13 @@ public class ActivityEffectVariable extends EffectVariable {
 	 * @return
 	 */
 	private static MethodName getMethodName(Call callNode) {
-		MethodName mthName = MethodName.valueOf(callNode.name());	// IllegalArgumentException
-		if (checkContainer(callNode.methodInstance())) {
-			return mthName;
+		try {
+			MethodName mthName = MethodName.valueOf(callNode.name()); // IllegalArgumentException
+			if (checkContainer(callNode.methodInstance())) {
+				return mthName;
+			} 
+		} catch (IllegalArgumentException e) {
+			return null;
 		}
 		return null;
 	}
@@ -108,10 +126,20 @@ public class ActivityEffectVariable extends EffectVariable {
 	 * @return
 	 */
 	public static boolean checkCreatable(Call callNode) {
-		try {
-			return getMethodName(callNode) != null;
-		} catch (IllegalArgumentException e) {
-			return false;
-		}
+		return getMethodName(callNode) != null;
+	}
+	
+	/**
+	 * @return the mthName
+	 */
+	public MethodName getMthName() {
+		return mthName;
+	}
+	
+	/**
+	 * @param mthName the mthName to set
+	 */
+	private void setMthName(MethodName mthName) {
+		this.mthName = mthName;
 	}
 }

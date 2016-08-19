@@ -70,8 +70,12 @@ public class EquGenExprExt extends EquGenExt implements Effectable {
 		this.metaSetVar = metaSetVar;
 	}
 	
+	/**
+	 * @see tool.compiler.java.ast.Effectable#exceptionEffect()
+	 * @see tool.compiler.java.ast.Effectable.Effectable_c#exceptionEffect()
+	 */
 	@Override
-	public EffectSetVariable exceptionEffect() {
+	public final EffectSetVariable exceptionEffect() {
 		return effectable.exceptionEffect();
 	}
 	
@@ -83,23 +87,37 @@ public class EquGenExprExt extends EquGenExt implements Effectable {
 		return ((EquGenExprExt) EquGenExt.ext(n)).exceptionEffect();
 	}
 	
-	@Override
-	public void setExceptionEffect(EffectSetVariable exceptionEffect) {
+	/**
+	 * @param exceptionEffect the Exception Effect to set
+	 * @see tool.compiler.java.ast.Effectable.Effectable_c#setExceptionEffect(EffectSetVariable)
+	 */
+	protected final void setExceptionEffect(EffectSetVariable exceptionEffect) {
 		effectable.setExceptionEffect(exceptionEffect);
 	}
 	
-	@Override
-	public void setExceptionEffect(Map<EffectSetVariable, EffectSetVarSource> exceptionEffects) {
+	/**
+	 * @param exceptionEffects Exception Effects to set
+	 * @see tool.compiler.java.ast.Effectable.Effectable_c#setExceptionEffect(Map)
+	 */
+	protected final void setExceptionEffect(Map<EffectSetVariable, EffectSetVarSource> exceptionEffects) {
 		effectable.setExceptionEffect(exceptionEffects);
 	}
 	
+	/**
+	 * @see tool.compiler.java.ast.Effectable#effect(EffectName)
+	 * @see tool.compiler.java.ast.Effectable.Effectable_c#effect(EffectName)
+	 */
 	@Override
-	public EffectSetVariable effect(EffectName type) {
+	public final EffectSetVariable effect(EffectName type) {
 		return effectable.effect(type);
 	}
 	
+	/**
+	 * @see tool.compiler.java.ast.Effectable#effects()
+	 * @see tool.compiler.java.ast.Effectable.Effectable_c#effects()
+	 */
 	@Override
-	public HashMap<EffectName, EffectSetVariable> effects() {
+	public final HashMap<EffectName, EffectSetVariable> effects() {
 		return effectable.effects();
 	}
 	
@@ -120,13 +138,20 @@ public class EquGenExprExt extends EquGenExt implements Effectable {
 		return ((EquGenExprExt) EquGenExt.ext(n)).effects();
 	}
 	
-	@Override
-	public void addEffect(EffectSetVariable effect) {
+	/**
+	 * @param effect the Effect to add
+	 * @see tool.compiler.java.ast.Effectable.Effectable_c#addEffect(EffectSetVariable)
+	 */
+	protected final void addEffect(EffectSetVariable effect) {
 		effectable.addEffect(effect);
 	}
 	
-	@Override
-	public void addEffect(EffectName type, EffectSetVariable effect) {
+	/**
+	 * @param type the type of the effect
+	 * @param effect the Effect to add
+	 * @see tool.compiler.java.ast.Effectable.Effectable_c#addEffect(EffectName, EffectSetVariable)
+	 */
+	protected final void addEffect(EffectName type, EffectSetVariable effect) {
 		effectable.addEffect(type, effect);
 	}
 }

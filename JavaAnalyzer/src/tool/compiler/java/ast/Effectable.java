@@ -18,16 +18,6 @@ public interface Effectable {
 	public EffectSetVariable exceptionEffect();
 	
 	/**
-	 * @param exceptionEffect the Exception Effect to set
-	 */
-	public void setExceptionEffect(EffectSetVariable exceptionEffect);
-	
-	/**
-	 * @param exceptionEffects Exception Effects to set
-	 */
-	public void setExceptionEffect(Map<EffectSetVariable, EffectSetVarSource> exceptionEffects);
-	
-	/**
 	 * @param type Effect Name
 	 * @return the Effect
 	 */
@@ -37,17 +27,6 @@ public interface Effectable {
 	 * @return all effects
 	 */
 	public HashMap<EffectName, EffectSetVariable> effects();
-	
-	/**
-	 * @param effect the Effect to add
-	 */
-	public void addEffect(EffectSetVariable effect);
-	
-	/**
-	 * @param type	the type of the effect
-	 * @param effect	the Effect to add
-	 */
-	public void addEffect(EffectName type, EffectSetVariable effect);
 	
 	
 	public static class Effectable_c implements Effectable {
@@ -63,9 +42,8 @@ public interface Effectable {
 		}
 		
 		/**
-		 * @see tool.compiler.java.ast.Effectable#setExceptionEffect(tool.compiler.java.effect.EffectSetVariable)
+		 * @param exceptionEffect the Exception Effect to set
 		 */
-		@Override
 		public final void setExceptionEffect(EffectSetVariable exceptionEffect) {
 			try {
 				addEffect(EffectName.ExnEff, exceptionEffect);
@@ -75,9 +53,8 @@ public interface Effectable {
 		}
 		
 		/**
-		 * @see tool.compiler.java.ast.Effectable#setExceptionEffect(java.util.Map)
+		 * @param exceptionEffects Exception Effects to set
 		 */
-		@Override
 		public final void setExceptionEffect(final Map<EffectSetVariable, EffectSetVarSource> exceptionEffects) {
 			try {
 				if (!exceptionEffects.isEmpty()) {		// 아래의 ExnEffect가 null이 아님이 보장됨.
@@ -122,9 +99,8 @@ public interface Effectable {
 		}
 		
 		/**
-		 * @see tool.compiler.java.ast.Effectable#addEffect(tool.compiler.java.effect.EffectSetVariable)
+		 * @param effect the Effect to add
 		 */
-		@Override
 		public final void addEffect(EffectSetVariable effect) {
 			if (effect != null) {
 				if(effects == null) {
@@ -135,9 +111,9 @@ public interface Effectable {
 		}
 		
 		/**
-		 * @see tool.compiler.java.ast.Effectable#addEffect(tool.compiler.java.effect.EffectName, tool.compiler.java.effect.EffectSetVariable)
+		 * @param type	the type of the effect
+		 * @param effect	the Effect to add
 		 */
-		@Override
 		public final void addEffect(EffectName type, EffectSetVariable effect) {
 			if (effect != null) {
 				if (effect.getEffectType().equals(type)) {
