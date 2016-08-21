@@ -1,7 +1,9 @@
 package tool.compiler.java.ast;
 
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import tool.compiler.java.effect.EffectName;
 import tool.compiler.java.effect.EffectSetVariable;
@@ -56,22 +58,7 @@ public interface Effectable {
 		 * @param exceptionEffects Exception Effects to set
 		 */
 		public final void setExceptionEffect(final Map<EffectSetVariable, EffectSetVarSource> exceptionEffects) {
-			try {
-				if (!exceptionEffects.isEmpty()) {		// 아래의 ExnEffect가 null이 아님이 보장됨.
-					EffectSetVarSource src_ExnEffect;
-					if (exceptionEffects.size() > 1) {	// 새로운 EffectUnion이 생성되는 것이 보장됨.
-						src_ExnEffect = EffectSetVarSource.New;
-						ReportUtil.report(exceptionEffects, EffectSetVarGoal.Flow);
-					} else {										// exceptionEffects의 size가 1임이 보장됨.
-						src_ExnEffect = (EffectSetVarSource) exceptionEffects.values().toArray()[0];
-					}
-					final EffectSetVariable ExnEffect = EffectUnion.unionize(exceptionEffects.keySet());
-					setExceptionEffect(ExnEffect);
-					ReportUtil.report(ExnEffect, src_ExnEffect, EffectSetVarGoal.Return);
-				}
-			} catch (NullPointerException e) {
-				// x_effs가 null인 경우는 무시
-			}
+			addEffect(EffectName.ExnEff, exceptionEffects);
 		}
 		
 		/**
@@ -95,6 +82,27 @@ public interface Effectable {
 				return effects;
 			} catch(NullPointerException e) {
 				return null;
+			}
+		}
+		
+		/**
+		 * Report를 위하여, EffectSetVariable에 EffectSetVarSource를 연관시킴
+		 * @param effects	연관시킬 effects
+		 * @param effectSrc	연관시킬 EffectSetVarSource
+		 * @param effectMap	연관시킨 effects를 담을 Map
+		 */
+		public static final void effects(
+				HashMap<EffectName, EffectSetVariable> effects, 
+				EffectSetVarSource effectSrc, 
+				LinkedHashMap<EffectName, Map<EffectSetVariable, EffectSetVarSource>> effectMap) {
+			if (effects != null) {
+				for (Entry<EffectName, EffectSetVariable> entry : effects.entrySet()) {
+					Map<EffectSetVariable, EffectSetVarSource> map = effectMap.get(entry.getKey());
+					if (map == null) {
+						map = new LinkedHashMap<>();
+					}
+					map.put(entry.getValue(), effectSrc);
+				}
 			}
 		}
 		
@@ -123,6 +131,43 @@ public interface Effectable {
 				}
 			} else if (effects != null && effects.containsKey(type)) {
 				effects.remove(type);
+			}
+		}
+		
+		/**
+		 * @param type	the type of the effect
+		 * @param effects Effects to add
+		 */
+		public final void addEffect(EffectName type, final Map<EffectSetVariable, EffectSetVarSource> effects) {
+			try {
+				if (!effects.isEmpty()) {		// 아래의 ExnEffect가 null이 아님이 보장됨.
+					EffectSetVarSource src_Effect;
+					if (effects.size() > 1) {	// 새로운 EffectUnion이 생성되는 것이 보장됨.
+						src_Effect = EffectSetVarSource.New;
+						ReportUtil.report(effects, EffectSetVarGoal.Flow);
+					} else {										// exceptionEffects의 size가 1임이 보장됨.
+						src_Effect = (EffectSetVarSource) effects.values().toArray()[0];
+					}
+					final EffectSetVariable ExnEffect = EffectUnion.unionize(effects.keySet());
+					addEffect(type, ExnEffect);
+					ReportUtil.report(ExnEffect, src_Effect, EffectSetVarGoal.Return);
+				}
+			} catch (NullPointerException ignored) {
+				// x_effs가 null인 경우는 무시
+			}
+		}
+		
+		/**
+		 * @param effects Effects to set
+		 */
+		public final void setEffects(final Map<EffectName, Map<EffectSetVariable, EffectSetVarSource>> effects) {
+			if (this.effects == null) {
+				this.effects = new HashMap<>();
+			} else {
+				this.effects.clear();
+			}
+			for (Entry<EffectName, Map<EffectSetVariable, EffectSetVarSource>> entry : effects.entrySet()) {
+				addEffect(entry.getKey(), entry.getValue());
 			}
 		}
 	}

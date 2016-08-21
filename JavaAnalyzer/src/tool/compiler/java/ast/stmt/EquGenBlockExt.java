@@ -4,6 +4,7 @@ import polyglot.ast.Block;
 import polyglot.ast.Node;
 import polyglot.ast.Stmt;
 import polyglot.util.SerialVersionUID;
+import tool.compiler.java.effect.EffectName;
 import tool.compiler.java.effect.EffectSetVariable;
 import tool.compiler.java.env.LocalEnvironment;
 import tool.compiler.java.util.ReportUtil;
@@ -11,6 +12,7 @@ import tool.compiler.java.util.ReportUtil.EffectSetVarSource;
 import tool.compiler.java.visit.EquGenerator;
 
 import java.util.LinkedHashMap;
+import java.util.Map;
 
 /**
  * Block <: CompoundStmt <: Stmt <: Term <: Node
@@ -37,18 +39,15 @@ public class EquGenBlockExt extends EquGenStmtExt {
 		Block block = (Block) this.node();
 		
 		// { stmt1 ... stmtn }
-		LinkedHashMap<EffectSetVariable, EffectSetVarSource> x_effs = new LinkedHashMap<>();
+		final LinkedHashMap<EffectName, Map<EffectSetVariable, EffectSetVarSource>> x_effs = new LinkedHashMap<>();
 		
-		//   1. stmt1, ... , stmtn를 분석해서 나오는 exn effects인 X_eff1, ... , X_effn를 찾아,
+		//   1. stmt1, ... , stmtn를 분석해서 나오는 effects(exn, activity)인 X_eff1, ... , X_effn를 찾아, 
 		for (Stmt subStmt : block.statements()) {
-			EffectSetVariable x_effi = EquGenStmtExt.exceptionEffect(subStmt);
-			if (x_effi != null) {
-				x_effs.put(x_effi, EffectSetVarSource.SubStatement);
-			}
+			EquGenStmtExt.effects(subStmt, x_effs, EffectSetVarSource.SubStatement);
 		}
 		
-		//   2. X_eff1 ∪ ... ∪ X_effn를 구하고, 이를 리턴할 exn effect로 지정.
-		setExceptionEffect(x_effs);
+		//   2. X_eff1 ∪ ... ∪ X_effn를 구하고, 이를 리턴할 effect(exn, activity)로 지정.
+		setEffects(x_effs);
 		
 		// 로컬 환경 해제
 		LocalEnvironment localEnv = v.peekTypeEnv().pop();

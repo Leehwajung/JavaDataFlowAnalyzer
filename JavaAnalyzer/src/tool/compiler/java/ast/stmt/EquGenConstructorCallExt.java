@@ -1,6 +1,7 @@
 package tool.compiler.java.ast.stmt;
 
 import java.util.LinkedHashMap;
+import java.util.Map;
 
 import polyglot.ast.ConstructorCall;
 import polyglot.ast.Expr;
@@ -8,6 +9,7 @@ import polyglot.ast.Node;
 import polyglot.ext.jl5.types.JL5ProcedureInstance;
 import polyglot.util.SerialVersionUID;
 import tool.compiler.java.ast.expr.EquGenExprExt;
+import tool.compiler.java.effect.EffectName;
 import tool.compiler.java.effect.EffectSetVariable;
 import tool.compiler.java.info.MethodCallInfo;
 import tool.compiler.java.util.ReportUtil;
@@ -53,27 +55,21 @@ public class EquGenConstructorCallExt extends EquGenStmtExt {
 //		JL5ConstructorInstance ctorIns = (JL5ConstructorInstance) ctorCall.constructorInstance();
 		
 		// this(e1, ..., en); / super(e1, ..., en);
-		final LinkedHashMap<EffectSetVariable, EffectSetVarSource> x_effs = new LinkedHashMap<>();
+		final LinkedHashMap<EffectName, Map<EffectSetVariable, EffectSetVarSource>> x_effs = new LinkedHashMap<>();
 		
 		//   1. qualifier를 분석하면 나오는 exn effect인 exn effect인 X_eff0를 가져오고, 
 		final Expr qualifier = ctorCall.qualifier();
 		if (qualifier != null) {
-			final EffectSetVariable x_eff0 = EquGenExprExt.exceptionEffect(qualifier);
-			if (x_eff0 != null) {
-				x_effs.put(x_eff0, EffectSetVarSource.SubExpression);
-			}
+			EquGenExprExt.effects(qualifier, x_effs, EffectSetVarSource.SubExpression);
 		}
 		
 		//   2. e1, ... , en를 분석해서 나오는 exn effects인 X_eff1, ... , X_effn를 찾은 다음,
 		for (Expr arg : ctorCall.arguments()) {
-			EffectSetVariable x_effi = EquGenExprExt.exceptionEffect(arg);
-			if (x_effi != null) {
-				x_effs.put(x_effi, EffectSetVarSource.SubExpression);
-			}
+			EquGenExprExt.effects(arg, x_effs, EffectSetVarSource.SubExpression);
 		}
 		
 		//   3. X_eff0 ∪ X_eff1 ∪ ... ∪ X_effn를 구하고, 이를 리턴할 exn effect로 지정.
-		setExceptionEffect(x_effs);
+		setEffects(x_effs);
 		
 		setLocalEnv(v.peekTypeEnv().getCurrEnv());
 		

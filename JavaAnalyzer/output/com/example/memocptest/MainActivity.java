@@ -132,7 +132,7 @@ public class MainActivity extends ListActivity {
     public MainActivity() { super(); }
     
     public static final String jlc$CompilerVersion$jl7 = "2.7.1";
-    public static final long jlc$SourceLastModified$jl7 = 1471724817000L;
+    public static final long jlc$SourceLastModified$jl7 = 1471821667000L;
     public static final String jlc$ClassType$jl7 =
       ("H4sIAAAAAAAAAL1ZfWwUxxWfO58/MdiY2FAC5sOGFJLcBpJQUacJ5oBgOLDD" +
        "GaS4Scx6d85e2Ntddufss1OnhLSCViqKGkhpQ5CigtIiAqhK2khVAlWbJhFR" +

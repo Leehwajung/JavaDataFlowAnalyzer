@@ -83,14 +83,14 @@ public class ActivityEffectVariable extends EffectVariable {
 	}
 	
 	/**
-	 * android.content.Activity로부터 상속받은 Starting Activity 메서드인지 확인하고, 
+	 * android.app.Activity로부터 상속받은 Starting Activity 메서드인지 확인하고, 
 	 * 그 메서드의 이름을 반환
 	 * @param callNode
 	 * @return
 	 */
 	private static MethodName getMethodName(Call callNode) {
 		try {
-			MethodName mthName = MethodName.valueOf(callNode.name()); // IllegalArgumentException
+			MethodName mthName = MethodName.valueOf(callNode.name());	// IllegalArgumentException
 			if (checkContainer(callNode.methodInstance())) {
 				return mthName;
 			} 
@@ -101,7 +101,7 @@ public class ActivityEffectVariable extends EffectVariable {
 	}
 	
 	/**
-	 * 부모 및 조상 클래스에 android.content.Activity가 있는지 확인
+	 * 부모 또는 조상 클래스에 android.app.Activity가 있는지 확인
 	 * @param mthIns
 	 * @return
 	 */
@@ -116,6 +116,8 @@ public class ActivityEffectVariable extends EffectVariable {
 				}
 				superType = type.superType();
 			} while (superType != null && superType instanceof ReferenceType);
+			// TODO: android.app.Activity를 상속받지 않고 android.content.Context로부터 상속 받은 클래스의,
+			// startActivity()와 startActivities()에 대해 대응할 필요가 있음?
 		} 
 		return false;
 	}

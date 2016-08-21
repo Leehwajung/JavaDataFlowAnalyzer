@@ -1,9 +1,13 @@
 package tool.compiler.java.ast.stmt;
 
+import java.util.HashMap;
+import java.util.Map.Entry;
+
 import polyglot.ast.Eval;
 import polyglot.ast.Node;
 import polyglot.util.SerialVersionUID;
 import tool.compiler.java.ast.expr.EquGenExprExt;
+import tool.compiler.java.effect.EffectName;
 import tool.compiler.java.effect.EffectSetVariable;
 import tool.compiler.java.util.ReportUtil;
 import tool.compiler.java.util.ReportUtil.EffectSetVarGoal;
@@ -33,12 +37,15 @@ public class EquGenEvalExt extends EquGenStmtExt {
 		
 		// expr;
 		//   1. expr를 분석하면 나오는 exn effect인 exnEffect를 가져와
-		final EffectSetVariable exnEffect = EquGenExprExt.exceptionEffect(eval.expr());
+		final HashMap<EffectName, EffectSetVariable> effects = EquGenExprExt.effects(eval.expr());
 		
 		//   2. exnEffect를 리턴할 exn effect로 지정.
-		if (exnEffect != null) {
-			setExceptionEffect(exnEffect);
-			ReportUtil.report(exnEffect, EffectSetVarSource.SubExpression, EffectSetVarGoal.Return);
+		if (effects != null) {
+			for (Entry<EffectName, EffectSetVariable> entry : effects.entrySet()) {
+				EffectSetVariable effect = entry.getValue();
+				addEffect(entry.getKey(), effect);
+				ReportUtil.report(effect, EffectSetVarSource.SubExpression, EffectSetVarGoal.Return);
+			} 
 		}
 		
 		setLocalEnv(v.peekTypeEnv().getCurrEnv());

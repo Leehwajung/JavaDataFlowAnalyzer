@@ -1,6 +1,7 @@
 package tool.compiler.java.ast.stmt;
 
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 import polyglot.ast.Stmt;
@@ -74,7 +75,7 @@ public class EquGenStmtExt extends EquGenExt implements Effectable {
 	 * @see tool.compiler.java.ast.Effectable.Effectable_c#exceptionEffect()
 	 */
 	@Override
-	public EffectSetVariable exceptionEffect() {
+	public final EffectSetVariable exceptionEffect() {
 		return effectable.exceptionEffect();
 	}
 	
@@ -90,7 +91,7 @@ public class EquGenStmtExt extends EquGenExt implements Effectable {
 	 * @param exceptionEffect the Exception Effect to set
 	 * @see tool.compiler.java.ast.Effectable.Effectable_c#setExceptionEffect(EffectSetVariable)
 	 */
-	protected void setExceptionEffect(EffectSetVariable exceptionEffect) {
+	protected final void setExceptionEffect(EffectSetVariable exceptionEffect) {
 		effectable.setExceptionEffect(exceptionEffect);
 	}
 	
@@ -98,7 +99,7 @@ public class EquGenStmtExt extends EquGenExt implements Effectable {
 	 * @param exceptionEffects Exception Effects to set
 	 * @see tool.compiler.java.ast.Effectable.Effectable_c#setExceptionEffect(Map)
 	 */
-	protected void setExceptionEffect(Map<EffectSetVariable, EffectSetVarSource> exceptionEffects) {
+	protected final void setExceptionEffect(Map<EffectSetVariable, EffectSetVarSource> exceptionEffects) {
 		effectable.setExceptionEffect(exceptionEffects);
 	}
 	
@@ -107,7 +108,7 @@ public class EquGenStmtExt extends EquGenExt implements Effectable {
 	 * @see tool.compiler.java.ast.Effectable.Effectable_c#effect(EffectName)
 	 */
 	@Override
-	public EffectSetVariable effect(EffectName type) {
+	public final EffectSetVariable effect(EffectName type) {
 		return effectable.effect(type);
 	}
 	
@@ -116,7 +117,7 @@ public class EquGenStmtExt extends EquGenExt implements Effectable {
 	 * @see tool.compiler.java.ast.Effectable.Effectable_c#effects()
 	 */
 	@Override
-	public HashMap<EffectName, EffectSetVariable> effects() {
+	public final HashMap<EffectName, EffectSetVariable> effects() {
 		return effectable.effects();
 	}
 	
@@ -138,10 +139,24 @@ public class EquGenStmtExt extends EquGenExt implements Effectable {
 	}
 	
 	/**
+	 * @param n node
+	 * @param effectMap map for putting effects
+	 * @param effectSrc source of effects
+	 * @see tool.compiler.java.ast.Effectable.Effectable_c#effects(HashMap, EffectSetVarSource, LinkedHashMap)
+	 */
+	public static final HashMap<EffectName, EffectSetVariable> effects(Stmt n, 
+			LinkedHashMap<EffectName, Map<EffectSetVariable, EffectSetVarSource>> effectMap, 
+			EffectSetVarSource effectSrc) {
+		HashMap<EffectName, EffectSetVariable> effects = effects(n);
+		Effectable_c.effects(effects, effectSrc, effectMap);
+		return effects;
+	}
+	
+	/**
 	 * @param effect the Effect to add
 	 * @see tool.compiler.java.ast.Effectable.Effectable_c#addEffect(EffectSetVariable)
 	 */
-	protected void addEffect(EffectSetVariable effect) {
+	protected final void addEffect(EffectSetVariable effect) {
 		effectable.addEffect(effect);
 	}
 	
@@ -150,7 +165,25 @@ public class EquGenStmtExt extends EquGenExt implements Effectable {
 	 * @param effect the Effect to add
 	 * @see tool.compiler.java.ast.Effectable.Effectable_c#addEffect(EffectName, EffectSetVariable)
 	 */
-	protected void addEffect(EffectName type, EffectSetVariable effect) {
+	protected final void addEffect(EffectName type, EffectSetVariable effect) {
 		effectable.addEffect(type, effect);
+	}
+	
+	/**
+	 * @param type the type of the effect
+	 * @param effects Effects to add
+	 * @see tool.compiler.java.ast.Effectable.Effectable_c#addEffect(EffectName, Map)
+	 */
+	protected final void addEffect(EffectName type, final Map<EffectSetVariable, EffectSetVarSource> effects) {
+		effectable.addEffect(type, effects);
+		
+	}
+	
+	/**
+	 * @param effects Effects to set
+	 * @see tool.compiler.java.ast.Effectable.Effectable_c#setEffects(Map)
+	 */
+	protected final void setEffects(final Map<EffectName, Map<EffectSetVariable, EffectSetVarSource>> effects) {
+		effectable.setEffects(effects);
 	}
 }
