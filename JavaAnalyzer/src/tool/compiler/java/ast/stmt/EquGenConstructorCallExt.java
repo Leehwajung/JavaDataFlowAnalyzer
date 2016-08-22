@@ -57,18 +57,18 @@ public class EquGenConstructorCallExt extends EquGenStmtExt {
 		// this(e1, ..., en); / super(e1, ..., en);
 		final LinkedHashMap<EffectName, Map<EffectSetVariable, EffectSetVarSource>> x_effs = new LinkedHashMap<>();
 		
-		//   1. qualifier를 분석하면 나오는 exn effect인 exn effect인 X_eff0를 가져오고, 
+		//   1. qualifier를 분석하면 나오는 effects(exn, activity)인 X_eff0를 가져오고, 
 		final Expr qualifier = ctorCall.qualifier();
 		if (qualifier != null) {
 			EquGenExprExt.effects(qualifier, x_effs, EffectSetVarSource.SubExpression);
 		}
 		
-		//   2. e1, ... , en를 분석해서 나오는 exn effects인 X_eff1, ... , X_effn를 찾은 다음,
+		//   2. e1, ... , en를 분석해서 나오는 effects(exn, activity)인 X_eff1, ... , X_effn를 찾은 다음,
 		for (Expr arg : ctorCall.arguments()) {
 			EquGenExprExt.effects(arg, x_effs, EffectSetVarSource.SubExpression);
 		}
 		
-		//   3. X_eff0 ∪ X_eff1 ∪ ... ∪ X_effn를 구하고, 이를 리턴할 exn effect로 지정.
+		//   3. X_eff0 ∪ X_eff1 ∪ ... ∪ X_effn를 구하고, 이를 리턴할 effects(exn, activity)로 지정.
 		setEffects(x_effs);
 		
 		setLocalEnv(v.peekTypeEnv().getCurrEnv());

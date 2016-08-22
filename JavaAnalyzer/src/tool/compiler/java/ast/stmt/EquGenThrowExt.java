@@ -5,6 +5,8 @@ import polyglot.ast.Throw;
 import polyglot.util.SerialVersionUID;
 import tool.compiler.java.aos.MetaSetVariable;
 import tool.compiler.java.ast.expr.EquGenExprExt;
+import tool.compiler.java.effect.EffectName;
+import tool.compiler.java.effect.EffectSetVariable;
 import tool.compiler.java.effect.EffectVariable;
 import tool.compiler.java.effect.ExnEffectVariable;
 import tool.compiler.java.util.ReportUtil;
@@ -46,6 +48,17 @@ public class EquGenThrowExt extends EquGenStmtExt {
 		//   3. 이를 리턴할 exn effect로 지정.
 		setExceptionEffect(exnEffect);
 		ReportUtil.report(exnEffect, EffectSetVarSource.New, EffectSetVarGoal.Return);
+		
+		//   4. expr을 분석하면 나오는 activity effect를 가져오고, 
+		final EffectSetVariable activityEffect = EquGenExprExt.exceptionEffect(throwStmt.expr());
+		
+		//   5. 이를 리턴할 activity effect로 지정.
+		if (activityEffect != null) {
+			ReportUtil.report(activityEffect, EffectSetVarSource.SubExpression, EffectSetVarGoal.Return);
+			addEffect(EffectName.ActivityEff, activityEffect);
+		}
+		
+		// TODO: 다른 effects가 추가된다면 그에 맞는 반환 작업이 필요
 		
 		setLocalEnv(v.peekTypeEnv().getCurrEnv());
 		

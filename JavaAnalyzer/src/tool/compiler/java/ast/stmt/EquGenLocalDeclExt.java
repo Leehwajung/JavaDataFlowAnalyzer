@@ -10,6 +10,7 @@ import tool.compiler.java.aos.ArrayMetaSetVariable;
 import tool.compiler.java.aos.MetaSetVariable;
 import tool.compiler.java.ast.expr.EquGenExprExt;
 import tool.compiler.java.constraint.XSubseteqY;
+import tool.compiler.java.effect.EffectName;
 import tool.compiler.java.effect.EffectSetVariable;
 import tool.compiler.java.util.EquGenUtil;
 import tool.compiler.java.util.ReportUtil;
@@ -20,6 +21,8 @@ import tool.compiler.java.util.ReportUtil.MetaSetVarSource;
 import tool.compiler.java.visit.EquGenerator;
 
 import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map.Entry;
 
 /**
  * LocalDecl <: ForInit <: Stmt <: Term <: Node	<br>
@@ -71,13 +74,16 @@ public class EquGenLocalDeclExt extends EquGenStmtExt {
 				v.getCurrCF().addMetaConstraints(xys);
 			}
 			
-			//   2-4. e를 분석하면 나오는 exn effect인 exnEffect를 가져와
-			final EffectSetVariable exnEffect = EquGenExprExt.exceptionEffect(e);
+			//   2-4. e를 분석하면 나오는 effects(exn, activity)를 가져와
+			final HashMap<EffectName, EffectSetVariable> effects = EquGenExprExt.effects(e);
 			
-			//   2-5. exnEffect를 리턴할 exn effect로 지정.
-			if (exnEffect != null) {
-				setExceptionEffect(exnEffect);
-				ReportUtil.report(exnEffect, EffectSetVarSource.SubExpression, EffectSetVarGoal.Return);
+			//   2-5. 이를 리턴할 effects(exn, activity)로 지정.
+			if (effects != null) {
+				for (Entry<EffectName, EffectSetVariable> entry : effects.entrySet()) {
+					EffectSetVariable effect = entry.getValue();
+					addEffect(entry.getKey(), effect);
+					ReportUtil.report(effect, EffectSetVarSource.SubExpression, EffectSetVarGoal.Return);
+				}
 			}
 		}
 		

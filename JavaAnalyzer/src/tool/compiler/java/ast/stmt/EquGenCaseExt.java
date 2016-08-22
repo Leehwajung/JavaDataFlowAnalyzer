@@ -1,9 +1,13 @@
 package tool.compiler.java.ast.stmt;
 
+import java.util.HashMap;
+import java.util.Map.Entry;
+
 import polyglot.ast.Case;
 import polyglot.ast.Node;
 import polyglot.util.SerialVersionUID;
 import tool.compiler.java.ast.expr.EquGenExprExt;
+import tool.compiler.java.effect.EffectName;
 import tool.compiler.java.effect.EffectSetVariable;
 import tool.compiler.java.util.ReportUtil;
 import tool.compiler.java.util.ReportUtil.EffectSetVarGoal;
@@ -34,14 +38,17 @@ public class EquGenCaseExt extends EquGenStmtExt {
 		// case expr: / default:
 		// case expr:
 		if (!caseStmt.isDefault()) {
-			//   1. expr를 분석하면 나오는 exn effect인 exnEffect를 가져와
-			final EffectSetVariable exnEffect = EquGenExprExt.exceptionEffect(caseStmt.expr());
+			//   1. expr를 분석하면 나오는 effects(exn, activity)를 가져와
+			final HashMap<EffectName, EffectSetVariable> effects = EquGenExprExt.effects(caseStmt.expr());
 			
-			//   2. exnEffect를 리턴할 exn effect로 지정
-			if (exnEffect != null) {
-				setExceptionEffect(exnEffect);
-				ReportUtil.report(exnEffect, EffectSetVarSource.SubExpression, EffectSetVarGoal.Return);
-			} 
+			//   2. 이를 리턴할 effects(exn, activity)로 지정.
+			if (effects != null) {
+				for (Entry<EffectName, EffectSetVariable> entry : effects.entrySet()) {
+					EffectSetVariable effect = entry.getValue();
+					addEffect(entry.getKey(), effect);
+					ReportUtil.report(effect, EffectSetVarSource.SubExpression, EffectSetVarGoal.Return);
+				}
+			}
 		}
 		
 		setLocalEnv(v.peekTypeEnv().getCurrEnv());

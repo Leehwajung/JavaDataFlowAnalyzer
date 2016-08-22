@@ -1,8 +1,12 @@
 package tool.compiler.java.ast.stmt;
 
+import java.util.HashMap;
+import java.util.Map.Entry;
+
 import polyglot.ast.Labeled;
 import polyglot.ast.Node;
 import polyglot.util.SerialVersionUID;
+import tool.compiler.java.effect.EffectName;
 import tool.compiler.java.effect.EffectSetVariable;
 import tool.compiler.java.util.ReportUtil;
 import tool.compiler.java.util.ReportUtil.EffectSetVarGoal;
@@ -31,13 +35,16 @@ public class EquGenLabeledExt extends EquGenStmtExt {
 		Labeled labeled = (Labeled) this.node();
 		
 		// label: stmt
-		//   1. stmt를 분석하면 나오는 exn effect인 exnEffect를 가져와
-		final EffectSetVariable exnEffect = EquGenStmtExt.exceptionEffect(labeled.statement());
+		//   1. expr를 분석하면 나오는 effects(exn, activity)를 가져와
+		final HashMap<EffectName, EffectSetVariable> effects = EquGenStmtExt.effects(labeled.statement());
 		
-		//   2. exnEffect를 리턴할 exn effect로 지정.
-		if (exnEffect != null) {
-			setExceptionEffect(exnEffect);
-			ReportUtil.report(exnEffect, EffectSetVarSource.SubStatement, EffectSetVarGoal.Return);
+		//   2. 이를 리턴할 effects(exn, activity)로 지정.
+		if (effects != null) {
+			for (Entry<EffectName, EffectSetVariable> entry : effects.entrySet()) {
+				EffectSetVariable effect = entry.getValue();
+				addEffect(entry.getKey(), effect);
+				ReportUtil.report(effect, EffectSetVarSource.SubStatement, EffectSetVarGoal.Return);
+			}
 		}
 		
 		setLocalEnv(v.peekTypeEnv().getCurrEnv());

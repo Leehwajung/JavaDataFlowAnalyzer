@@ -46,7 +46,7 @@ public class EquGenBlockExt extends EquGenStmtExt {
 			EquGenStmtExt.effects(subStmt, x_effs, EffectSetVarSource.SubStatement);
 		}
 		
-		//   2. X_eff1 ∪ ... ∪ X_effn를 구하고, 이를 리턴할 effect(exn, activity)로 지정.
+		//   2. X_eff1 ∪ ... ∪ X_effn를 구하고, 이를 리턴할 effects(exn, activity)로 지정.
 		setEffects(x_effs);
 		
 		// 로컬 환경 해제

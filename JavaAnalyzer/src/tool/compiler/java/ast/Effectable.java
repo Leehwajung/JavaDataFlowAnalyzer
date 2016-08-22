@@ -95,7 +95,7 @@ public interface Effectable {
 				HashMap<EffectName, EffectSetVariable> effects, 
 				EffectSetVarSource effectSrc, 
 				LinkedHashMap<EffectName, Map<EffectSetVariable, EffectSetVarSource>> effectMap) {
-			if (effects != null) {
+			if (effects != null && effectSrc != null) {
 				for (Entry<EffectName, EffectSetVariable> entry : effects.entrySet()) {
 					Map<EffectSetVariable, EffectSetVarSource> map = effectMap.get(entry.getKey());
 					if (map == null) {

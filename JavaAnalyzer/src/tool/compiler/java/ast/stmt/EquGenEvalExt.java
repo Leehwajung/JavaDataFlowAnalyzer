@@ -36,10 +36,10 @@ public class EquGenEvalExt extends EquGenStmtExt {
 		Eval eval = (Eval) this.node();
 		
 		// expr;
-		//   1. expr를 분석하면 나오는 exn effect인 exnEffect를 가져와
+		//   1. expr를 분석하면 나오는 Effects(exn, activity)를 가져와
 		final HashMap<EffectName, EffectSetVariable> effects = EquGenExprExt.effects(eval.expr());
 		
-		//   2. exnEffect를 리턴할 exn effect로 지정.
+		//   2. 이를 리턴할 effects(exn, activity)로 지정.
 		if (effects != null) {
 			for (Entry<EffectName, EffectSetVariable> entry : effects.entrySet()) {
 				EffectSetVariable effect = entry.getValue();

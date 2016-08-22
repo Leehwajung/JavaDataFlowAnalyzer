@@ -86,8 +86,8 @@ public class EquGenArrayAccessAssignExt extends EquGenAssignExt {
 		//   3. C{Chi1}을 리턴할 타입으로 지정
 		setMetaSetVar(cchi1);
 		
-		//   4. a[i]의 exn effect인 X_eff1와 e의 exn effect인 X_eff2의 합집합 
-		//      X_eff1 ∪ X_eff2을 리턴할 exn effect로 지정 (EquGenAssignExt)
+		//   4. a[i]의 exn effect인 X_eff1와 e의 effect인 X_eff2의 합집합 
+		//      X_eff1 ∪ X_eff2을 리턴할 effect로 지정 (EquGenAssignExt)
 		return super.equGenLeave(v);
 	}
 	

@@ -37,13 +37,13 @@ public class EquGenWhileExt extends EquGenStmtExt {
 		// while ( expr ) { stmt }
 		final LinkedHashMap<EffectName, Map<EffectSetVariable, EffectSetVarSource>> x_effs = new LinkedHashMap<>();
 		
-		//   1. expr을 분석하면 나오는 exn effect인 X_eff0를 가져오고, 
+		//   1. expr을 분석하면 나오는 effects(exn, activity)인 X_eff0를 가져오고, 
 		EquGenExprExt.effects(whileLoop.cond(), x_effs, EffectSetVarSource.SubExpression);
 		
-		//   2. stmt를 분석하면 나오는 exn effect인 X_eff1를 가져와, 
+		//   2. stmt를 분석하면 나오는 effects(exn, activity)인 X_eff1를 가져와, 
 		EquGenStmtExt.effects(whileLoop.body(), x_effs, EffectSetVarSource.SubStatement);
 		
-		//   3. X_eff0 ∪ X_eff1를 구하고, 이를 리턴할 exn effect로 지정.
+		//   3. X_eff0 ∪ X_eff1를 구하고, 이를 리턴할 effects(exn, activity)로 지정.
 		setEffects(x_effs);
 		
 		// TODO: environment의 합집합을 구하는 동작이 필요 없음?
