@@ -5,6 +5,7 @@ import java.util.Map;
 
 import polyglot.ast.If;
 import polyglot.ast.Node;
+import polyglot.ast.Stmt;
 import polyglot.util.SerialVersionUID;
 import tool.compiler.java.ast.expr.EquGenExprExt;
 import tool.compiler.java.effect.EffectName;
@@ -44,7 +45,10 @@ public class EquGenIfExt extends EquGenStmtExt {
 		EquGenStmtExt.effects(ifStmt.consequent(), x_effs, EffectSetVarSource.SubStatement);
 		
 		//   3. stmt2를 분석하면 나오는 effect인 X_eff2를 가져와, 
-		EquGenStmtExt.effects(ifStmt.alternative(), x_effs, EffectSetVarSource.SubStatement);
+		Stmt alternative = ifStmt.alternative();
+		if (alternative != null) {
+			EquGenStmtExt.effects(alternative, x_effs, EffectSetVarSource.SubStatement);
+		}
 		
 		//   4. X_eff0 ∪ X_eff1 ∪ X_eff2를 구하고, 이를 리턴할 exn effect로 지정.
 		setEffects(x_effs);

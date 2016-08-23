@@ -1,11 +1,13 @@
 package tool.compiler.java.ast.stmt;
 
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
 import polyglot.ast.Stmt;
 import polyglot.ast.Node;
+import polyglot.util.Pair;
 import polyglot.util.SerialVersionUID;
 import tool.compiler.java.ast.Effectable;
 import tool.compiler.java.ast.EquGenExt;
@@ -153,6 +155,22 @@ public class EquGenStmtExt extends EquGenExt implements Effectable {
 	}
 	
 	/**
+	 * @param ns nodes
+	 * @param effectMap map for putting effects
+	 * @param effectSrc source of effects
+	 * @see tool.compiler.java.ast.Effectable.Effectable_c#effects(HashMap, EffectSetVarSource, LinkedHashMap)
+	 */
+	public static final void effects(Collection<? extends Stmt> ns, 
+			LinkedHashMap<EffectName, Map<EffectSetVariable, EffectSetVarSource>> effectMap, 
+			EffectSetVarSource effectSrc) {
+		final LinkedHashMap<EffectName, Map<EffectSetVariable, EffectSetVarSource>> subMap = new LinkedHashMap<>();
+		for (Stmt n : ns) {
+			EquGenStmtExt.effects(n, subMap, effectSrc);
+		}
+		Effectable_c.effects(subMap, effectMap);
+	}
+	
+	/**
 	 * @param effect the Effect to add
 	 * @see tool.compiler.java.ast.Effectable.Effectable_c#addEffect(EffectSetVariable)
 	 */
@@ -185,5 +203,12 @@ public class EquGenStmtExt extends EquGenExt implements Effectable {
 	 */
 	protected final void setEffects(final Map<EffectName, Map<EffectSetVariable, EffectSetVarSource>> effects) {
 		effectable.setEffects(effects);
+	}
+	
+	/**
+	 * @see tool.compiler.java.ast.Effectable.Effectable_c#unionize(Map)
+	 */
+	protected static final Pair<EffectSetVariable, EffectSetVarSource> unionize(final Map<EffectSetVariable, EffectSetVarSource> effects) {
+		return Effectable_c.unionize(effects);
 	}
 }

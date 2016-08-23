@@ -2,11 +2,9 @@ package tool.compiler.java.ast.stmt;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
-import java.util.Map.Entry;
 
 import polyglot.ast.Node;
 import polyglot.ast.Switch;
-import polyglot.ast.SwitchElement;
 import polyglot.util.SerialVersionUID;
 import tool.compiler.java.ast.expr.EquGenExprExt;
 import tool.compiler.java.effect.EffectName;
@@ -43,18 +41,7 @@ public class EquGenSwitchExt extends EquGenStmtExt {
 		EquGenExprExt.effects(switchStmt.expr(), x_effs, EffectSetVarSource.SubExpression);
 		
 		//   2. stmt1, ... , stmtn를 분석해서 나오는 effects(exn, activity)의 집합 X_eff1을 만들고,
-		final LinkedHashMap<EffectName, Map<EffectSetVariable, EffectSetVarSource>> x_eff1 = new LinkedHashMap<>();
-		for (SwitchElement elem : switchStmt.elements()) {
-			EquGenStmtExt.effects(elem, x_eff1, EffectSetVarSource.SubStatement);
-		}
-		for (Entry<EffectName, Map<EffectSetVariable, EffectSetVarSource>> entry : x_eff1.entrySet()) {
-			Map<EffectSetVariable, EffectSetVarSource> effect = x_effs.get(entry.getKey());
-			if (effect == null) {
-				x_effs.put(entry.getKey(), entry.getValue());
-			} else {
-				effect.putAll(entry.getValue());
-			}
-		}
+		EquGenStmtExt.effects(switchStmt.elements(), x_effs, EffectSetVarSource.SubStatement);
 		
 		//   3. X_eff0 ∪ X_eff1를 구하고, 이를 리턴할 effects(exn, activity)로 지정.
 		setEffects(x_effs);

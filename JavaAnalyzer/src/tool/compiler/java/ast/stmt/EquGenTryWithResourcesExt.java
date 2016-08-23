@@ -3,16 +3,10 @@ package tool.compiler.java.ast.stmt;
 import polyglot.ast.LocalDecl;
 import polyglot.ast.Node;
 import polyglot.ext.jl7.ast.TryWithResources;
-import polyglot.util.Pair;
 import polyglot.util.SerialVersionUID;
-import tool.compiler.java.effect.EffectSetVariable;
-import tool.compiler.java.effect.EffectUnion;
-import tool.compiler.java.util.ReportUtil;
-import tool.compiler.java.util.ReportUtil.EffectSetVarGoal;
-import tool.compiler.java.util.ReportUtil.EffectSetVarSource;
 import tool.compiler.java.visit.EquGenerator;
 
-import java.util.ArrayList;
+import java.util.List;
 
 /**
  * TryWithResources <: Try <: CompoundStmt <: Stmt <: Term <: Node
@@ -21,9 +15,6 @@ import java.util.ArrayList;
 public class EquGenTryWithResourcesExt extends EquGenTryExt {
 	private static final long serialVersionUID = SerialVersionUID.generate();
 	public static final String KIND = "Try with Resources";
-	
-	private EffectSetVariable resourcesExnEffect = null;
-	private EffectSetVarSource srcResourcesExnEffect = null;
 	
 	@Override
 	public EquGenerator equGenEnter(EquGenerator v) {
@@ -58,29 +49,11 @@ public class EquGenTryWithResourcesExt extends EquGenTryExt {
 	
 	
 	/**
-	 * @return the Resources
+	 * @return Resources
 	 */
 	@Override
-	protected final Pair<EffectSetVariable, EffectSetVarSource> findResources() {
-		// try ( stmt_res0; ... ; stmt_resm ) { stmt0 } catch (C1 e1) { stmt1 } ... catch (Ck ek) { stmtk } finally { stmtn } 	(단, k = n-1)
-		//   stmt_res0, ... , stmt_resm를 분석해서 나오는 exn effects의 집합 X_eff_res을 만든다.
-		if (resourcesExnEffect == null || srcResourcesExnEffect == null) {
-			TryWithResources tryRes = (TryWithResources) this.node();
-			ArrayList<EffectSetVariable> resEffects = new ArrayList<>();
-			for (LocalDecl resource : tryRes.resources()) {
-				EffectSetVariable x_stmt_resj = EquGenStmtExt.exceptionEffect(resource);
-				if (x_stmt_resj != null) {
-					resEffects.add(x_stmt_resj);
-				}
-			}
-			if (resEffects.size() > 1) {
-				srcResourcesExnEffect = EffectSetVarSource.New;
-				ReportUtil.report(resEffects, EffectSetVarSource.SubStatement, EffectSetVarGoal.Flow);
-			} else {
-				srcResourcesExnEffect = EffectSetVarSource.SubStatement;
-			}
-			resourcesExnEffect = EffectUnion.unionize(resEffects);
-		}
-		return new Pair<EffectSetVariable, EffectSetVarSource>(resourcesExnEffect, srcResourcesExnEffect);
+	protected final List<LocalDecl> resources() {
+		TryWithResources tryRes = (TryWithResources) this.node();
+		return tryRes.resources();
 	}
 }
