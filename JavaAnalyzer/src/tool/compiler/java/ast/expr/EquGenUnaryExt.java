@@ -1,11 +1,15 @@
 package tool.compiler.java.ast.expr;
 
+import java.util.HashMap;
+import java.util.Map.Entry;
+
 import polyglot.ast.Node;
 import polyglot.ast.Unary;
 import polyglot.util.SerialVersionUID;
 import tool.compiler.java.aos.AbstractObject;
 import tool.compiler.java.aos.MetaSetVariable;
 import tool.compiler.java.constraint.ObjsSubseteqX;
+import tool.compiler.java.effect.EffectName;
 import tool.compiler.java.effect.EffectSetVariable;
 import tool.compiler.java.util.ReportUtil;
 import tool.compiler.java.util.ReportUtil.EffectSetVarGoal;
@@ -55,13 +59,16 @@ public class EquGenUnaryExt extends EquGenExprExt {
 		//   3. return T{Chi}
 		setMetaSetVar(tchi);
 		
-		//   4. e를 분석하면 나오는 exn effect인 exnEffect를 가져와
-		final EffectSetVariable exnEffect = EquGenExprExt.exceptionEffect(unary.expr());
+		//   4. e를 분석하면 나오는 effects(exn, activity)를 가져와
+		final HashMap<EffectName, EffectSetVariable> effects = EquGenExprExt.effects(unary.expr());
 		
-		//   5. exnEffect를 리턴할 exn effect로 지정
-		if (exnEffect != null) {
-			setExceptionEffect(exnEffect);
-			ReportUtil.report(exnEffect, EffectSetVarSource.SubExpression, EffectSetVarGoal.Return);
+		//   5. 이를 리턴할 effects(exn, activity)로 지정
+		if (effects != null) {
+			for (Entry<EffectName, EffectSetVariable> entry : effects.entrySet()) {
+				EffectSetVariable effect = entry.getValue();
+				addEffect(entry.getKey(), effect);
+				ReportUtil.report(effect, EffectSetVarSource.SubExpression, EffectSetVarGoal.Return);
+			}
 		}
 		
 		return super.equGenLeave(v);

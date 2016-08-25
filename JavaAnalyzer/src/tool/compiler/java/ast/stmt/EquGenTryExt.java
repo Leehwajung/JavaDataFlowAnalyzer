@@ -49,7 +49,7 @@ public class EquGenTryExt extends EquGenStmtExt {
 		final LinkedHashMap<EffectName, Map<EffectSetVariable, EffectSetVarSource>> x_effs = new LinkedHashMap<>();
 		
 		//   1. stmt_res0, ... , stmt_resm를 분석해서 나오는 effects(exn, activity)s의 집합 X_eff_res을 가져오고, 
-		List<LocalDecl> resources = resources();
+		final List<LocalDecl> resources = resources();
 		if (resources != null) {
 			EquGenStmtExt.effects(resources, x_effs, EffectSetVarSource.SubStatement);
 		}
@@ -58,8 +58,8 @@ public class EquGenTryExt extends EquGenStmtExt {
 		EquGenStmtExt.effects(tryStmt.tryBlock(), x_effs, EffectSetVarSource.SubStatement);
 		
 		//   3. exn effect인 경우, X_eff_res ∪ X_eff0 ∖ X_C를 구한다.
-		List<Catch> catchBlocks = tryStmt.catchBlocks();
-		Map<EffectSetVariable, EffectSetVarSource> exnEffects = x_effs.get(EffectName.ExnEff);
+		final List<Catch> catchBlocks = tryStmt.catchBlocks();
+		final Map<EffectSetVariable, EffectSetVarSource> exnEffects = x_effs.get(EffectName.ExnEff);
 		if (catchBlocks != null && !catchBlocks.isEmpty()) {	// X_C가 공집합이면 차집합하는 것이 의미 없음
 			if (exnEffects != null && !exnEffects.isEmpty()) {	// X_eff_res와 X_eff0가 둘 다 공집합이면 X_C를 차집합하는 것이 의미 없음
 				//   3-1. X_eff_res ∪ X_eff0를 구하고,
@@ -99,7 +99,7 @@ public class EquGenTryExt extends EquGenStmtExt {
 		//   5. stmtn을 분석하면 나오는 effects(exn, activity)인 X_effn를 가져온 다음,
 		EquGenStmtExt.effects(tryStmt.finallyBlock(), x_effs, EffectSetVarSource.SubStatement);
 		
-		//   8. 최종적으로 X_eff_res ∪ X_eff0 ∖ X_C ∪ X_eff1 ∪ ... ∪ X_effk ∪ X_effn을 구하고, 이를 리턴할 effects(exn, activity)로 지정.
+		//   6. 최종적으로 X_eff_res ∪ X_eff0 ∖ X_C ∪ X_eff1 ∪ ... ∪ X_effk ∪ X_effn을 구하고, 이를 리턴할 effects(exn, activity)로 지정.
 		setEffects(x_effs);
 		
 		setLocalEnv(v.peekTypeEnv().getCurrEnv());

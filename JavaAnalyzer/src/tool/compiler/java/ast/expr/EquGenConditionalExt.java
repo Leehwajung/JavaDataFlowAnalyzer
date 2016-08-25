@@ -2,6 +2,7 @@ package tool.compiler.java.ast.expr;
 
 import java.util.Collection;
 import java.util.LinkedHashMap;
+import java.util.Map;
 
 import polyglot.ast.Conditional;
 import polyglot.ast.Node;
@@ -9,6 +10,7 @@ import polyglot.util.SerialVersionUID;
 import tool.compiler.java.aos.ArrayMetaSetVariable;
 import tool.compiler.java.aos.MetaSetVariable;
 import tool.compiler.java.constraint.XSubseteqY;
+import tool.compiler.java.effect.EffectName;
 import tool.compiler.java.effect.EffectSetVariable;
 import tool.compiler.java.util.EquGenUtil;
 import tool.compiler.java.util.ReportUtil;
@@ -74,26 +76,17 @@ public class EquGenConditionalExt extends EquGenExprExt {
 		setMetaSetVar(tchi);
 		
 		//   5. e0을 분석하면 나오는 exn effect인 X_eff0를 가져오고, 
-		LinkedHashMap<EffectSetVariable, EffectSetVarSource> x_effs = new LinkedHashMap<>();
-		final EffectSetVariable x_eff0 = EquGenExprExt.exceptionEffect(cond.cond());
-		if (x_eff0 != null) {
-			x_effs.put(x_eff0, EffectSetVarSource.SubExpression);
-		}
+		final LinkedHashMap<EffectName, Map<EffectSetVariable, EffectSetVarSource>> x_effs = new LinkedHashMap<>();
+		EquGenExprExt.effects(cond.cond(), x_effs, EffectSetVarSource.SubExpression);
 		
 		//   6. e1을 분석하면 나오는 exn effect인 X_eff1를 가져온 다음, 
-		final EffectSetVariable x_eff1 = EquGenExprExt.exceptionEffect(cond.consequent());
-		if (x_eff1 != null) {
-			x_effs.put(x_eff1, EffectSetVarSource.SubExpression);
-		}
+		EquGenExprExt.effects(cond.consequent(), x_effs, EffectSetVarSource.SubExpression);
 		
 		//   7. e2를 분석하면 나오는 exn effect인 X_eff2를 가져와, 
-		final EffectSetVariable x_eff2 = EquGenExprExt.exceptionEffect(cond.alternative());
-		if (x_eff2 != null) {
-			x_effs.put(x_eff2, EffectSetVarSource.SubExpression);
-		} 
+		EquGenExprExt.effects(cond.alternative(), x_effs, EffectSetVarSource.SubExpression);
 		
 		//   8. X_eff0 ∪ X_eff1 ∪ X_eff2를 구하고, 이를 리턴할 exn effect로 지정
-		setExceptionEffect(x_effs);
+		setEffects(x_effs);
 		
 		return super.equGenLeave(v);
 	}

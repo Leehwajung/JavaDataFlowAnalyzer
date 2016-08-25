@@ -1,5 +1,6 @@
 package tool.compiler.java.ast.classmember;
 
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedHashSet;
 
@@ -12,6 +13,7 @@ import polyglot.ext.jl5.types.JL5ProcedureInstance;
 import polyglot.util.SerialVersionUID;
 import tool.compiler.java.aos.MetaSetVariable;
 import tool.compiler.java.ast.stmt.EquGenStmtExt;
+import tool.compiler.java.effect.EffectName;
 import tool.compiler.java.effect.EffectSetVariable;
 import tool.compiler.java.env.MethodConstraint;
 import tool.compiler.java.env.TypeEnvironment;
@@ -72,14 +74,14 @@ public class EquGenProcedureDeclExt extends EquGenClassMemberExt {
 		ReportUtil.leaveReport(this);
 		ProcedureDecl procDecl = (ProcedureDecl) this.node();
 		
-		// Method Body의 exn Effect를 Method의 exn Effect로 지정
+		// Method Body의 Effects를 Method의 Effects로 지정
 		Block body = procDecl.body();
 		if (body != null) {
-			EffectSetVariable exnEffect = EquGenStmtExt.exceptionEffect(body);
-			if (exnEffect != null) {
-				mc.setException(exnEffect);
-				ReportUtil.report(exnEffect, EffectSetVarSource.SubStatement, EffectSetVarGoal.MethodEnvironment);
-			} 
+			HashMap<EffectName, EffectSetVariable> effects = EquGenStmtExt.effects(body);
+			for (EffectSetVariable effect : effects.values()) {
+				mc.addEffect(effect);
+				ReportUtil.report(effect, EffectSetVarSource.SubStatement, EffectSetVarGoal.MethodEnvironment);
+			}
 		}
 		
 		// 로컬 환경 해제

@@ -115,8 +115,8 @@ public class EquGenFieldAssignExt extends EquGenAssignExt {
 		//   3. e1.f / C.f의 타입 D{Chi2}를 리턴할 타입으로 지정
 		setMetaSetVar(dchi2);
 		
-		//   4. e1.f / C.f의 exn effect인 X_eff1와 e2의 exn effect인 X_eff2의 합집합 
-		//      X_eff1 ∪ X_eff2을 리턴할 exn effect로 지정 (EquGenAssignExt)
+		//   4. e1.f / C.f의 effect인 X_eff1와 e2의 effect인 X_eff2의 합집합 
+		//      X_eff1 ∪ X_eff2을 리턴할 effect로 지정 (EquGenAssignExt)
 		return super.equGenLeave(v);
 	}
 	

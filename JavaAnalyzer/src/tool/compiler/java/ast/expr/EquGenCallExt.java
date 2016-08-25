@@ -14,7 +14,6 @@ import tool.compiler.java.effect.EffectName;
 import tool.compiler.java.effect.EffectSetVariable;
 import tool.compiler.java.info.MethodCallInfo;
 import tool.compiler.java.util.ReportUtil;
-import tool.compiler.java.util.ReportUtil.EffectSetVarGoal;
 import tool.compiler.java.util.ReportUtil.EffectSetVarSource;
 import tool.compiler.java.util.ReportUtil.MetaSetVarGoal;
 import tool.compiler.java.util.ReportUtil.MetaSetVarSource;
@@ -22,6 +21,7 @@ import tool.compiler.java.visit.EquGenerator;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.Map;
 
 /**
  * Call <: Expr <: Term <: Node					<br>
@@ -87,25 +87,24 @@ public class EquGenCallExt extends EquGenExprExt {
 		//   4. D{Chi}를 리턴 타입으로 지정
 		setMetaSetVar(dchi);
 		
-		//   5. e1, ... , en를 분석해서 나오는 exn effects인 X_eff1, ... , X_effn를 찾고,
-		LinkedHashMap<EffectSetVariable, EffectSetVarSource> x_effs = new LinkedHashMap<>();
-		for (Expr arg : call.arguments()) {
-			EffectSetVariable x_effi = EquGenExprExt.exceptionEffect(arg);
-			if (x_effi != null) {
-				x_effs.put(x_effi, EffectSetVarSource.SubExpression);
-			}
-		}
+		//   5. e1, ... , en를 분석해서 나오는 effects(exn, activity)인 X_eff1, ... , X_effn를 찾고,
+		final LinkedHashMap<EffectName, Map<EffectSetVariable, EffectSetVarSource>> x_effs = new LinkedHashMap<>();
+		EquGenExprExt.effects(call.arguments(), x_effs, EffectSetVarSource.SubExpression);
 		
-		//   6. X_eff1 ∪ ... ∪ X_effn를 구하고, 이를 리턴할 exn effect로 지정
-		setExceptionEffect(x_effs);
-		
-		//   7. startActivity()류의 메서드인 경우, 인텐트에 대한 Activity Effect를 만들고, 
-		//      리턴할 Activity Effect로 지정
+		//   6. startActivity()류의 메서드인 경우, 인텐트에 대한 Activity Effect를 만들고, 
 		ActivityEffectVariable activityEffect = ActivityEffectVariable.create(call);
 		if (activityEffect != null) {
-			addEffect(EffectName.ActivityEff, activityEffect);
-			ReportUtil.report(activityEffect, EffectSetVarSource.New, EffectSetVarGoal.Return);
+			Map<EffectSetVariable, EffectSetVarSource> argEffect = x_effs.get(EffectName.ActivityEff);
+			if (argEffect == null) {
+				argEffect = new LinkedHashMap<>();
+				x_effs.put(EffectName.ActivityEff, argEffect);
+			}
+			argEffect.put(activityEffect, EffectSetVarSource.New);
 		}
+		
+		//   7. X_eff1 ∪ ... ∪ X_effn를 구하고, 이를 리턴할 effects(exn, activity)로 지정
+		setEffects(x_effs);
+		
 		return super.equGenLeave(v);
 	}
 	

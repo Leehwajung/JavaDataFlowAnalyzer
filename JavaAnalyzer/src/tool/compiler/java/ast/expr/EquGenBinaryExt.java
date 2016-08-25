@@ -60,14 +60,14 @@ public class EquGenBinaryExt extends EquGenExprExt {
 		//   3. return T{Chi}
 		setMetaSetVar(tchi);
 		
-		//   4. e1을 분석하면 나오는 effect(exn, activity)인 X_eff1를 가져오고, 
+		//   4. e1을 분석하면 나오는 effects(exn, activity)인 X_eff1를 가져오고, 
 		final LinkedHashMap<EffectName, Map<EffectSetVariable, EffectSetVarSource>> x_effs = new LinkedHashMap<>();
 		EquGenExprExt.effects(binary.left(), x_effs, EffectSetVarSource.SubExpression);
 		
-		//   5. e2를 분석하면 나오는 effect(exn, activity)인 X_eff2를 가져와, 
+		//   5. e2를 분석하면 나오는 effects(exn, activity)인 X_eff2를 가져와, 
 		EquGenExprExt.effects(binary.right(), x_effs, EffectSetVarSource.SubExpression);
 		
-		//   6. X_eff1 ∪ X_eff2를 구하고, 이를 리턴할 exn effect로 지정
+		//   6. X_eff1 ∪ X_eff2를 구하고, 이를 리턴할 effects(exn, activity)로 지정
 		setEffects(x_effs);
 		
 		return super.equGenLeave(v);

@@ -11,6 +11,7 @@ import tool.compiler.java.aos.AbstractObject;
 import tool.compiler.java.aos.MetaSetVariable;
 import tool.compiler.java.constraint.InvokeMth;
 import tool.compiler.java.constraint.ObjsSubseteqX;
+import tool.compiler.java.effect.EffectName;
 import tool.compiler.java.effect.EffectSetVariable;
 import tool.compiler.java.env.ClassConstraint;
 import tool.compiler.java.env.ConstraintFunction;
@@ -23,6 +24,7 @@ import tool.compiler.java.visit.EquGenerator;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.Map;
 
 /**
  * New <: Expr <: Term <: Node					<br>
@@ -105,25 +107,17 @@ public class EquGenNewExt extends EquGenExprExt {
 		setMetaSetVar(ctschi);
 		
 		//   4. qualifier를 분석하면 나오는 exn effect인 exn effect인 X_eff0를 가져오고, 
-		final LinkedHashMap<EffectSetVariable, EffectSetVarSource> x_effs = new LinkedHashMap<>();
-		final Expr qualifier = nw.qualifier();
+		final LinkedHashMap<EffectName, Map<EffectSetVariable, EffectSetVarSource>> x_effs = new LinkedHashMap<>();
+		Expr qualifier = nw.qualifier();
 		if (qualifier != null) {
-			final EffectSetVariable x_eff0 = EquGenExprExt.exceptionEffect(qualifier);
-			if (x_eff0 != null) {
-				x_effs.put(x_eff0, EffectSetVarSource.SubExpression);
-			}
+			EquGenExprExt.effects(qualifier, x_effs, EffectSetVarSource.SubExpression);
 		}
 		
 		//   5. e1, ... , en를 분석해서 나오는 exn effects인 X_eff1, ... , X_effn를 찾은 다음,
-		for (Expr arg : nw.arguments()) {
-			EffectSetVariable x_effi = EquGenExprExt.exceptionEffect(arg);
-			if (x_effi != null) {
-				x_effs.put(x_effi, EffectSetVarSource.SubExpression);
-			}
-		}
+		EquGenExprExt.effects(nw.arguments(), x_effs, EffectSetVarSource.SubExpression);
 		
 		//   6. X_eff0 ∪ X_eff1 ∪ ... ∪ X_effn를 구하고, 이를 리턴할 exn effect로 지정
-		setExceptionEffect(x_effs);
+		setEffects(x_effs);
 		
 		return super.equGenLeave(v);
 	}

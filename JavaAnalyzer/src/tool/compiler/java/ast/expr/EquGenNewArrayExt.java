@@ -1,6 +1,9 @@
 package tool.compiler.java.ast.expr;
 
+import java.util.HashMap;
 import java.util.LinkedHashMap;
+import java.util.Map;
+import java.util.Map.Entry;
 
 import polyglot.ast.ArrayInit;
 import polyglot.ast.Expr;
@@ -13,6 +16,7 @@ import tool.compiler.java.aos.ArrayMetaSetVariable;
 import tool.compiler.java.aos.MetaSetVariable;
 import tool.compiler.java.constraint.ObjsSubseteqX;
 import tool.compiler.java.constraint.XSubseteqY;
+import tool.compiler.java.effect.EffectName;
 import tool.compiler.java.effect.EffectSetVariable;
 import tool.compiler.java.util.ReportUtil;
 import tool.compiler.java.util.ReportUtil.EffectSetVarGoal;
@@ -101,17 +105,13 @@ public class EquGenNewArrayExt extends EquGenExprExt {
 			//   A4. return C[]...[]{Chi}
 			setMetaSetVar(cchi);
 			
-			//   A5. e1, ... , en를 분석해서 나오는 exn effects인 X_eff1, ... , X_effn를 찾고,
-			LinkedHashMap<EffectSetVariable, EffectSetVarSource> x_effs = new LinkedHashMap<>();
-			for (Expr dim : nwArr.dims()) {
-				EffectSetVariable x_effi = EquGenExprExt.exceptionEffect(dim);
-				if (x_effi != null) {
-					x_effs.put(x_effi, EffectSetVarSource.SubExpression);
-				}
-			}
+			//   A5. e1, ... , en를 분석해서 나오는 effects(exn, activity)인 X_eff1, ... , X_effn를 찾아 
+			//      X_eff1 ∪ ... ∪ X_effn를 구하고,
+			final LinkedHashMap<EffectName, Map<EffectSetVariable, EffectSetVarSource>> x_effs = new LinkedHashMap<>();
+			EquGenExprExt.effects(nwArr.dims(), x_effs, EffectSetVarSource.SubExpression);
 			
-			//   A6. X_eff1 ∪ ... ∪ X_effn를 구하고, 이를 리턴할 exn effect로 지정
-			setExceptionEffect(x_effs);
+			//   A6. 이를 리턴할 effects(exn, activity)로 지정
+			setEffects(x_effs);
 		}
 		
 		//   B. new C[]...[] e0		( 단, e0는 { ... {f1, ... , fk} ... } )
@@ -124,13 +124,16 @@ public class EquGenNewArrayExt extends EquGenExprExt {
 			//   B2. return C[]...[]{Chi}
 			setMetaSetVar(cchi);
 			
-			//   B3. e0를 분석하면 나오는 exn effect인 exnEffect를 가져와 
-			final EffectSetVariable exnEffect = EquGenExprExt.exceptionEffect(es);
+			//   B3. e를 분석하면 나오는 effects(exn, activity)를 가져와
+			final HashMap<EffectName, EffectSetVariable> effects = EquGenExprExt.effects(es);
 			
-			//   B4. exnEffect를 리턴할 exn effect로 지정
-			if (exnEffect != null) {
-				setExceptionEffect(exnEffect);
-				ReportUtil.report(exnEffect, EffectSetVarSource.SubExpression, EffectSetVarGoal.Return);
+			//   B4. 이를 리턴할 effects(exn, activity)로 지정
+			if (effects != null) {
+				for (Entry<EffectName, EffectSetVariable> entry : effects.entrySet()) {
+					EffectSetVariable effect = entry.getValue();
+					addEffect(entry.getKey(), effect);
+					ReportUtil.report(effect, EffectSetVarSource.SubExpression, EffectSetVarGoal.Return);
+				}
 			}
 		}
 		
