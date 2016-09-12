@@ -1,6 +1,8 @@
 package tool.compiler.java.util;
 
 import java.util.Collection;
+import java.util.Map;
+import java.util.Map.Entry;
 
 import polyglot.ast.Expr;
 import polyglot.ast.Node;
@@ -9,6 +11,7 @@ import tool.compiler.java.aos.AbstractObject;
 import tool.compiler.java.aos.MetaSetVariable;
 import tool.compiler.java.ast.EquGenExt;
 import tool.compiler.java.constraint.Constraint;
+import tool.compiler.java.effect.EffectSetVariable;
 import tool.compiler.java.env.ConstraintFunction;
 import tool.compiler.java.info.Info;
 
@@ -87,10 +90,59 @@ public final class ReportUtil {
 			.append(msv)
 			.append(' ').append('(').append(' ')
 			.append(src.translate())
-			.append(": For ")
+			.append(": To ")
 			.append(goal)
 			.append(' ').append(')');
 		Report.report(3, sb.toString());
+	}
+	
+	/**
+	 * Report EffectSetVariable.
+	 * @param esv
+	 * @param src
+	 * @param goal
+	 * @see ReportUtil.EffectSetVarSource
+	 */
+	public static final void report(EffectSetVariable esv, 
+			EffectSetVarSource src, EffectSetVarGoal goal) {
+		StringBuilder sb = new StringBuilder();
+		sb.append('\t').append('[')
+		.append(esv.getClass().getSimpleName())
+		.append(']').append(' ')
+		.append(esv)
+		.append(' ').append('(').append(' ')
+		.append(src)
+		.append(": To ")
+		.append(goal)
+		.append(' ').append(')');
+		Report.report(3, sb.toString());
+	}
+	
+	/**
+	 * Report EffectSetVariables.
+	 * @param esvs
+	 * @param src
+	 * @param goal
+	 * @see ReportUtil.EffectSetVarSource
+	 */
+	public static final void report(Collection<? extends EffectSetVariable> esvs, 
+			EffectSetVarSource src, EffectSetVarGoal goal) {
+		for (EffectSetVariable esv : esvs) {
+			report(esv, src, goal);
+		}
+	}
+	
+	/**
+	 * Report EffectSetVariables.
+	 * @param esvs
+	 * @param goal
+	 * @see ReportUtil.EffectSetVarSource
+	 */
+	public static final void report(Map<? extends EffectSetVariable, EffectSetVarSource> esvs, 
+			EffectSetVarGoal goal) {
+		for (Entry<? extends EffectSetVariable, EffectSetVarSource> esv : esvs.entrySet()) {
+			report(esv.getKey(), esv.getValue(), goal);
+		}
 	}
 	
 	/**
@@ -149,7 +201,9 @@ public final class ReportUtil {
 		Rvalue,
 		SubExpression,
 		Argument,
-		Environment,
+		ClassEnvironment,
+		MethodEnvironment,
+		LocalEnvironment,
 		ArrayInit,
 		ArrayLength,
 		ArrayDimension,
@@ -170,8 +224,12 @@ public final class ReportUtil {
 				return "From Sub-Expression";
 			case Argument:
 				return "From Argument";
-			case Environment:
-				return "From Environment";
+			case ClassEnvironment:
+				return "From Class Environment";
+			case MethodEnvironment:
+				return "From Method Environment";
+			case LocalEnvironment:
+				return "From Local Environment";
 			case ArrayInit:
 				return "From Initialization of Array";
 			case ArrayLength:
@@ -190,8 +248,76 @@ public final class ReportUtil {
 	
 	public static enum MetaSetVarGoal {
 		Return,
-		Environment,
+		ClassEnvironment,
+		MethodEnvironment,
+		LocalEnvironment,
 		Flow,
-		ArraySubFlow;
+		ArraySubFlow,
+		Effect;
+		
+		public String toString() {
+			switch (this) {
+			case Return:
+				return "Return";
+			case ClassEnvironment:
+				return "Class Environment";
+			case MethodEnvironment:
+				return "Method Environment";
+			case LocalEnvironment:
+				return "Local Environment";
+			case Flow:
+				return "Flow";
+			case ArraySubFlow:
+				return "Array Sub-Flow";
+			case Effect:
+				return "Effect";
+			default:
+				return super.toString();
+			}
+		}
+	}
+	
+	public static enum EffectSetVarSource {
+		New,
+		MethodEnvironment,
+		SubExpression,
+		SubStatement,
+		MethodCall;
+		
+		public String toString() {
+			switch (this) {
+			case New:
+				return "New";
+			case MethodEnvironment:
+				return "Method Environment";
+			case SubExpression:
+				return "Sub-Expression";
+			case SubStatement:
+				return "Sub-Statement";
+			case MethodCall:
+				return "Method Call";
+			default:
+				return super.toString();
+			}
+		}
+	}
+	
+	public static enum EffectSetVarGoal {
+		Return,
+		MethodEnvironment,
+		Flow;
+		
+		public String toString() {
+			switch (this) {
+			case Return:
+				return "Return";
+			case MethodEnvironment:
+				return "Method Environment";
+			case Flow:
+				return "Flow";
+			default:
+				return super.toString();
+			}
+		}
 	}
 }
