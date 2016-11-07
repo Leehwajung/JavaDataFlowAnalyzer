@@ -96,19 +96,23 @@ public class AbstractObject extends AbsObjSet {
 	 * @return 찾아낸 타입
 	 */
 	private static Type inferType(Expr expr, Info info) {
-		if(info != null) {
-			switch (info) {
-			case ArrayInitLength:
-				JL5ArrayType arrType = (JL5ArrayType)((ArrayInit) expr).type();
-				return arrType.lengthField().type();
-			case FieldAssignOp:
-			case LocalAssignOp:
-			case ArrayAccessAssignOp:
-				Assign asgn = (Assign) expr;
-				return asgn.left().type();
+		try {
+			if(info != null) {
+				switch (info) {
+				case ArrayInitLength:
+					JL5ArrayType arrType = (JL5ArrayType) ((ArrayInit) expr).type();
+					return arrType.lengthField().type();
+				case FieldAssignOp:
+				case LocalAssignOp:
+				case ArrayAccessAssignOp:
+					Assign asgn = (Assign) expr;
+					return asgn.left().type();
+				}
 			}
+			return expr.type();
+		} catch (ClassCastException e) {
+			throw new IllegalArgumentException("expr's type and info are NOT matched.");
 		}
-		return expr.type();
 	}
 	
 	/**

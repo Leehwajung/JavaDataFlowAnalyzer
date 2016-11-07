@@ -10,11 +10,7 @@ import java.util.ArrayList;
 public class Main {
 	
 	// 컴파일할 파일 타입 지정
-	private static String[] compilableFileTypes;
-	static {
-		compilableFileTypes = new String[1];
-		compilableFileTypes[0] = ".java";
-	}
+	private static final String[] compilableFileTypes = {".java"};
 	
 	public static void main(String[] args) {
 		polyglot.main.Main polyglotMain = new polyglot.main.Main();
