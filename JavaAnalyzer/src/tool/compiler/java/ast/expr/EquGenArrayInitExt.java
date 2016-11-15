@@ -3,7 +3,6 @@ package tool.compiler.java.ast.expr;
 import polyglot.ast.ArrayInit;
 import polyglot.ast.Expr;
 import polyglot.ast.Node;
-import polyglot.ext.jl5.types.JL5ArrayType;
 import polyglot.util.SerialVersionUID;
 import tool.compiler.java.aos.AbstractObject;
 import tool.compiler.java.aos.ArrayMetaSetVariable;
@@ -45,9 +44,11 @@ public class EquGenArrayInitExt extends EquGenExprExt {
 		v.addToSet(absObj);
 		ReportUtil.report(absObj);
 		
-		length = new AbstractObject(arrInit, Info.ArrayInitLength);
-		v.addToSet(length);
-		ReportUtil.report(length);
+		if (!arrInit.type().isNull()) {
+			length = new AbstractObject(arrInit, Info.ArrayInitLength);
+			v.addToSet(length);
+			ReportUtil.report(length);
+		}
 		
 		return super.equGenEnter(v);
 	}
@@ -59,7 +60,7 @@ public class EquGenArrayInitExt extends EquGenExprExt {
 		
 		// {e1, ... , en}
 		//   1. C[]{Chi} 변수 생성
-		ArrayMetaSetVariable cchi = ArrayMetaSetVariable.create((JL5ArrayType) arrInit.type());
+		MetaSetVariable cchi = MetaSetVariable.create(arrInit.type());
 		ReportUtil.report(cchi, MetaSetVarSource.New, MetaSetVarGoal.Return);
 		
 		//   2-1. C[]{o} <: C[]{Chi} 제약식을 추가
@@ -67,34 +68,37 @@ public class EquGenArrayInitExt extends EquGenExprExt {
 		v.getCurrCF().addMetaConstraint(ox);
 		ReportUtil.report(ox);
 		
-		//   2-2. C{Chi}.length에 대한 제약식 생성
-		MetaSetVariable cchi_length = cchi.length();
-		ReportUtil.report(cchi_length, MetaSetVarSource.ArrayLength, MetaSetVarGoal.ArraySubFlow);
-		ox = new ObjsSubseteqX(length, cchi_length);
-		v.getCurrCF().addMetaConstraint(ox);
-		ReportUtil.report(ox);
-		
-		//   2-3. elements에 대한 데이터 플로우
-			//   2-3a. C[]{Chi}의 base의 타입 C[]{Chi}.base를 가져오고
-		MetaSetVariable cchi_base = cchi.base();
-		ReportUtil.report(cchi_base, MetaSetVarSource.ArrayBase, MetaSetVarGoal.ArraySubFlow);
-		
-		for(Expr ei : arrInit.elements()) {
-			//   2-3b. ei의 타입 Ci{Chii}를 가져온 다음 (element의 타입에 대한 MSV)
-			MetaSetVariable cichii = metaSetVar(ei);
-			ReportUtil.report(cichii, MetaSetVarSource.ArrayElement, MetaSetVarGoal.ArraySubFlow);
+		if (!arrInit.type().isNull()) {
+			//   2-2. C{Chi}.length에 대한 제약식 생성
+			ArrayMetaSetVariable cchi_arr = (ArrayMetaSetVariable) cchi;
+			MetaSetVariable cchi_length = cchi_arr.length();
+			ReportUtil.report(cchi_length, MetaSetVarSource.ArrayLength, MetaSetVarGoal.ArraySubFlow);
+			ox = new ObjsSubseteqX(length, cchi_length);
+			v.getCurrCF().addMetaConstraint(ox);
+			ReportUtil.report(ox);
 			
-			//   2-3c. Ci{Chii} <: C[]{Chi}.base 제약식을 추가 (element에 대한 Top Level)
-			XSubseteqY xy = new XSubseteqY(cichii, cchi_base);
-			v.getCurrCF().addMetaConstraint(xy);
-			ReportUtil.report(xy);
+			//   2-3. elements에 대한 데이터 플로우
+				//   2-3a. C[]{Chi}의 base의 타입 C[]{Chi}.base를 가져오고
+			MetaSetVariable cchi_base = cchi_arr.base();
+			ReportUtil.report(cchi_base, MetaSetVarSource.ArrayBase, MetaSetVarGoal.ArraySubFlow);
 			
-			//   2-3d. ei가 배열인 경우, Ci{Chii} <: C[]{Chi}.base의 하위 레벨 제약식을 집합에 추가
-			//         (Top Level 아래의 MetaSetVariable(s)의 데이터 플로우)
-			if(EquGenUtil.isArray(ei.type())) {
-				Collection<XSubseteqY> xys = XSubseteqY.constrain(
-						cichii, (ArrayMetaSetVariable) cchi_base);
-				v.getCurrCF().addMetaConstraints(xys);
+			for(Expr ei : arrInit.elements()) {
+				//   2-3b. ei의 타입 Ci{Chii}를 가져온 다음 (element의 타입에 대한 MSV)
+				MetaSetVariable cichii = metaSetVar(ei);
+				ReportUtil.report(cichii, MetaSetVarSource.ArrayElement, MetaSetVarGoal.ArraySubFlow);
+				
+				//   2-3c. Ci{Chii} <: C[]{Chi}.base 제약식을 추가 (element에 대한 Top Level)
+				XSubseteqY xy = new XSubseteqY(cichii, cchi_base);
+				v.getCurrCF().addMetaConstraint(xy);
+				ReportUtil.report(xy);
+				
+				//   2-3d. ei가 배열인 경우, Ci{Chii} <: C[]{Chi}.base의 하위 레벨 제약식을 집합에 추가
+				//         (Top Level 아래의 MetaSetVariable(s)의 데이터 플로우)
+				if(EquGenUtil.isArray(ei.type())) {
+					Collection<XSubseteqY> xys = XSubseteqY.constrain(
+							cichii, (ArrayMetaSetVariable) cchi_base);
+					v.getCurrCF().addMetaConstraints(xys);
+				}
 			}
 		}
 		

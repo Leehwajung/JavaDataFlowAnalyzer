@@ -160,14 +160,15 @@ public class EquGenStmtExt extends EquGenExt implements Effectable {
 	 * @param effectSrc source of effects
 	 * @see tool.compiler.java.ast.Effectable.Effectable_c#effects(HashMap, EffectSetVarSource, LinkedHashMap)
 	 */
-	public static final void effects(Collection<? extends Stmt> ns, 
+	public static final LinkedHashMap<EffectName, Map<EffectSetVariable, EffectSetVarSource>> effects(
+			Collection<? extends Stmt> ns, 
 			LinkedHashMap<EffectName, Map<EffectSetVariable, EffectSetVarSource>> effectMap, 
 			EffectSetVarSource effectSrc) {
 		final LinkedHashMap<EffectName, Map<EffectSetVariable, EffectSetVarSource>> subMap = new LinkedHashMap<>();
 		for (Stmt n : ns) {
 			EquGenStmtExt.effects(n, subMap, effectSrc);
 		}
-		Effectable_c.effects(subMap, effectMap);
+		return Effectable_c.effects(subMap, effectMap);
 	}
 	
 	/**

@@ -114,7 +114,8 @@ public interface Effectable {
 		 * @param effectSrc	연관시킬 EffectSetVarSource
 		 * @param effectMap	연관시킨 effects를 담을 Map
 		 */
-		public static final void effects(HashMap<EffectName, Map<EffectSetVariable, EffectSetVarSource>> subMap, 
+		public static final LinkedHashMap<EffectName, Map<EffectSetVariable, EffectSetVarSource>> effects(
+				HashMap<EffectName, Map<EffectSetVariable, EffectSetVarSource>> subMap, 
 				LinkedHashMap<EffectName, Map<EffectSetVariable, EffectSetVarSource>> effectMap) {
 			for (Entry<EffectName, Map<EffectSetVariable, EffectSetVarSource>> entry : subMap.entrySet()) {
 				Map<EffectSetVariable, EffectSetVarSource> effect = effectMap.get(entry.getKey());
@@ -125,6 +126,7 @@ public interface Effectable {
 				}
 				effect.put(union.part1(), union.part2());
 			}
+			return effectMap;
 		}
 		
 		/**

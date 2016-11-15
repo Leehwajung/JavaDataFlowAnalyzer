@@ -1,5 +1,6 @@
 package tool.compiler.java.ast.stmt;
 
+import polyglot.ast.Block;
 import polyglot.ast.Catch;
 import polyglot.ast.LocalDecl;
 import polyglot.ast.Node;
@@ -97,7 +98,10 @@ public class EquGenTryExt extends EquGenStmtExt {
 		}
 		
 		//   5. stmtn을 분석하면 나오는 effects(exn, activity)인 X_effn를 가져온 다음,
-		EquGenStmtExt.effects(tryStmt.finallyBlock(), x_effs, EffectSetVarSource.SubStatement);
+		Block finallyBlock = tryStmt.finallyBlock();
+		if (finallyBlock != null) {
+			EquGenStmtExt.effects(finallyBlock, x_effs, EffectSetVarSource.SubStatement);
+		}
 		
 		//   6. 최종적으로 X_eff_res ∪ X_eff0 ∖ X_C ∪ X_eff1 ∪ ... ∪ X_effk ∪ X_effn을 구하고, 이를 리턴할 effects(exn, activity)로 지정.
 		setEffects(x_effs);

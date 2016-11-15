@@ -210,38 +210,48 @@ public final class ReportUtil {
 		ArrayBase,
 		ArrayElement;
 		
-		private String translate() {
-			switch(this) {
+		@Override
+		public String toString() {
+			switch (this) {
 			case New:
 				return "New";
 			case Receiver:
-				return "From Receiver";
+				return "Receiver";
 			case Lvalue:
-				return "From L-value";
+				return "L-value";
 			case Rvalue:
-				return "From R-value";
+				return "R-value";
 			case SubExpression:
-				return "From Sub-Expression";
+				return "Sub-Expression";
 			case Argument:
-				return "From Argument";
+				return "Argument";
 			case ClassEnvironment:
-				return "From Class Environment";
+				return "Class Environment";
 			case MethodEnvironment:
-				return "From Method Environment";
+				return "Method Environment";
 			case LocalEnvironment:
-				return "From Local Environment";
+				return "Local Environment";
 			case ArrayInit:
-				return "From Initialization of Array";
+				return "Initialization of Array";
 			case ArrayLength:
-				return "From Length of Array";
+				return "Length of Array";
 			case ArrayDimension:
-				return "From Dimension of Array";
+				return "Dimension of Array";
 			case ArrayBase:
-				return "From Base of Array";
+				return "Base of Array";
 			case ArrayElement:
-				return "From Element of Array";
+				return "Element of Array";
 			default:
-				return this.toString();
+				return super.toString();
+			}
+		}
+		
+		private String translate() {
+			switch (this) {
+			case New:
+				return toString();
+			default:
+				return "From " + toString();
 			}
 		}
 	}
@@ -255,6 +265,7 @@ public final class ReportUtil {
 		ArraySubFlow,
 		Effect;
 		
+		@Override
 		public String toString() {
 			switch (this) {
 			case Return:
@@ -284,6 +295,7 @@ public final class ReportUtil {
 		SubStatement,
 		MethodCall;
 		
+		@Override
 		public String toString() {
 			switch (this) {
 			case New:
@@ -307,6 +319,7 @@ public final class ReportUtil {
 		MethodEnvironment,
 		Flow;
 		
+		@Override
 		public String toString() {
 			switch (this) {
 			case Return:
